@@ -144,4 +144,6 @@ export default {
   labelAfdian: { message: "Afdian" },
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "Destek ve Hakkında" },
+  secDebug: { message: "Hata Ayıklama (Yalnızca test)" },
+  prefSimulateDownloadFailure: { message: "İndirme hatasını simüle et" },
 };

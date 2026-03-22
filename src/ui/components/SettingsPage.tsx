@@ -29,6 +29,7 @@ import {
   IconBrandGithub,
   IconCoffee,
   IconHeart,
+  IconBug,
 } from "@tabler/icons-react";
 import { Settings } from "../../types";
 import { PortalSelect } from "./common/PortalSelect";
@@ -602,6 +603,28 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 </Group>
               </Stack>
             </SettingCard>
+
+            {import.meta.env.DEV && (
+              <SettingCard
+                icon={<IconBug />}
+                title={t("secDebug")}
+                iconColor="var(--mantine-color-red-filled)"
+              >
+                <SettingSwitch
+                  label={t("prefSimulateDownloadFailure")}
+                  checked={settings.debug?.simulateDownloadFailure || false}
+                  onChange={(e) =>
+                    onUpdate((prev) => ({
+                      ...prev,
+                      debug: {
+                        ...prev.debug,
+                        simulateDownloadFailure: e.currentTarget.checked,
+                      },
+                    }))
+                  }
+                />
+              </SettingCard>
+            )}
           </Stack>
         </SimpleGrid>
       </Stack>

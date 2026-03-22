@@ -136,4 +136,6 @@ export default {
   labelAfdian: { message: "爱发电 (Afdian)" },
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "关于与支持" },
+  secDebug: { message: "调试模式 (仅供测试)" },
+  prefSimulateDownloadFailure: { message: "模拟下载失败" },
 };

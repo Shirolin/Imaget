@@ -63,6 +63,9 @@ export interface Settings {
     conflictResolution: "uniquify" | "overwrite" | "prompt";
     maxConcurrency: number;
   };
+  debug?: {
+    simulateDownloadFailure: boolean;
+  };
 }
 
 export const defaultSettings: Settings = {
@@ -90,5 +93,8 @@ export const defaultSettings: Settings = {
   downloadControl: {
     conflictResolution: "uniquify",
     maxConcurrency: 0, // 0 means no limit
+  },
+  debug: {
+    simulateDownloadFailure: false,
   },
 };

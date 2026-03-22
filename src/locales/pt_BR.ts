@@ -144,4 +144,6 @@ export default {
   labelAfdian: { message: "Afdian" },
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "Suporte e Sobre" },
+  secDebug: { message: "Depuração (Apenas para testes)" },
+  prefSimulateDownloadFailure: { message: "Simular falha no download" },
 };

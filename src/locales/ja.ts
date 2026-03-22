@@ -146,4 +146,6 @@ export default {
   labelAfdian: { message: "Afdian" },
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "サポートと詳細" },
+  secDebug: { message: "デバッグ (テスト専用)" },
+  prefSimulateDownloadFailure: { message: "ダウンロード失敗をシミュレート" },
 };

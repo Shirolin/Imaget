@@ -349,6 +349,9 @@ export class FloatingController {
     }, 150);
 
     try {
+      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
+        throw new Error("Simulated download failure");
+      }
       await this.processor.downloadBatch([item], customSettings);
 
       if (this.currentUrl !== url) return true;
@@ -430,6 +433,9 @@ export class FloatingController {
 
     // 触发下载
     try {
+      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
+        throw new Error("Simulated download failure");
+      }
       await this.processor.downloadBatch([item], this.settings);
 
       // 如果在此期间鼠标已经移到了其他图片，不要更新状态

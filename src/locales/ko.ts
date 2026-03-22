@@ -140,4 +140,6 @@ export default {
   labelAfdian: { message: "Afdian" },
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "지원 및 정보" },
+  secDebug: { message: "디버그 (테스트 전용)" },
+  prefSimulateDownloadFailure: { message: "다운로드 실패 시뮬레이션" },
 };
