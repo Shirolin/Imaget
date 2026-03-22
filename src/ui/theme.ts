@@ -30,7 +30,6 @@ export const theme = createTheme({
           backgroundOpacity: 0.55,
           blur: 10,
         },
-        centered: true,
         padding: "xl",
         radius: "lg",
       },

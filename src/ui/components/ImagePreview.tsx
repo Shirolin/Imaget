@@ -123,6 +123,8 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
         position: "relative",
         width: "100%",
         height: "100%",
+        display: "flex",
+        alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
         backgroundColor: "rgba(0, 0, 0, 0.9)",
