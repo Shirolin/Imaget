@@ -62,7 +62,7 @@ const Footer: React.FC<FooterProps> = ({
             onClick={onZip}
             loading={loading}
             disabled={selectedCount === 0}
-            style={{ minWidth: "120px" }}
+            w={{ base: 120 }}
           >
             {t("downloadZip")}
           </Button>
@@ -71,7 +71,7 @@ const Footer: React.FC<FooterProps> = ({
             onClick={onDownload}
             loading={loading}
             disabled={selectedCount === 0}
-            style={{ minWidth: "100px" }}
+            w={{ base: 100 }}
           >
             {t("btnDownload")}
           </Button>

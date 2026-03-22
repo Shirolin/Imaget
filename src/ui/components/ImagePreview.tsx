@@ -1,5 +1,13 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Box, ActionIcon, Tooltip, Group, Stack, Text } from "@mantine/core";
+import {
+  Box,
+  ActionIcon,
+  Tooltip,
+  Group,
+  Stack,
+  Text,
+  Image,
+} from "@mantine/core";
 import {
   IconZoomIn,
   IconZoomOut,
@@ -144,11 +152,11 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
         }}
       >
         <Box style={{ pointerEvents: "auto" }}>
-          <img
+          <Image
             src={url}
             alt="Preview"
             draggable={false}
-            onDragStart={(e) => e.preventDefault()}
+            onDragStart={(e: React.DragEvent) => e.preventDefault()}
             style={{
               maxWidth: "90vw",
               maxHeight: "90vh",

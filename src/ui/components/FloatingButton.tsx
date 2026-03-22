@@ -81,9 +81,9 @@ const GlobalAnimations = () => (
     }
 
     .imaget-glass-button[data-status="success"] {
-      background: rgba(0, 255, 128, 0.25) !important;
+      background: color-mix(in srgb, var(--mantine-color-green-5), transparent 75%) !important;
       backdrop-filter: blur(20px) !important;
-      box-shadow: 0 0 20px rgba(0, 255, 128, 0.4), inset 0 0 0 1px rgba(0, 255, 128, 0.6) !important;
+      box-shadow: 0 0 20px color-mix(in srgb, var(--mantine-color-green-5), transparent 60%), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-green-5), transparent 40%) !important;
     }
 
     .imaget-glass-button[data-status="success"] .imaget-progress-fill {
@@ -92,12 +92,14 @@ const GlobalAnimations = () => (
     }
 
     .imaget-glass-wrapper:hover .imaget-glass-button {
-      background: rgba(255, 255, 255, 0.22) !important;
+      background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
       backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
       -webkit-backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 60%), inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 50%) !important;
       transform: scale(1.2) translate3d(0, 0, 0) !important;
     }
+
+
 
     .imaget-glass-wrapper:hover .imaget-icon-inner {
       animation: imaget-icon-pulse 2s infinite ease-in-out !important;
@@ -109,20 +111,29 @@ const GlobalAnimations = () => (
 
 const getTooltipStyles = (fontSize = "11px", padding = "4px 10px") => ({
   tooltip: {
-    backgroundColor: "rgba(20, 20, 20, 0.65)",
-    backdropFilter: "blur(10px)",
-    border: "1px solid rgba(255, 255, 255, 0.15)",
-    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
-    color: "white",
+    backgroundColor:
+      "color-mix(in srgb, var(--mantine-color-dark-8), transparent 25%)",
+    backdropFilter: "blur(14px) saturate(180%)",
+    border:
+      "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 88%)",
+    boxShadow: `
+      0 4px 6px -1px rgba(0, 0, 0, 0.2), 
+      0 10px 20px -5px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 92%)
+    `,
+    color: "var(--mantine-color-white)",
     fontWeight: 500,
     fontSize,
     padding,
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif",
+    letterSpacing: "0.02em",
+    fontFamily: "var(--mantine-font-family)",
   },
   arrow: {
-    border: "1px solid rgba(255, 255, 255, 0.15)",
-    backgroundColor: "rgba(20, 20, 20, 0.65)",
-    backdropFilter: "blur(10px)",
+    border:
+      "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 88%)",
+    backgroundColor:
+      "color-mix(in srgb, var(--mantine-color-dark-8), transparent 25%)",
+    backdropFilter: "blur(14px) saturate(180%)",
   },
 });
 
@@ -166,9 +177,14 @@ const MainDownloadAction = ({
       style={
         {
           outline: "none",
-          color: "rgba(255, 255, 255, 1)",
+          color: "var(--mantine-color-white)",
           "--imaget-progress": status === "success" ? "100%" : `${progress}%`,
         } as React.CSSProperties & { [key: string]: string | number }
+      }
+      aria-label={
+        status === "success"
+          ? t("labelFloatingSuccess")
+          : t("labelFloatingDownload")
       }
     >
       <div
@@ -192,8 +208,9 @@ const MainDownloadAction = ({
           stroke={3.5}
           style={{
             position: "absolute",
-            color: "#ffffff",
+            color: "var(--mantine-color-white)",
             filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
+
             opacity: status === "success" ? 1 : 0,
             transform:
               status === "success" ? "scale(1)" : "scale(0.5) translateY(10px)",
@@ -265,8 +282,10 @@ const CloseAction = ({
             right: 11,
             backgroundColor: "rgba(0, 0, 0, 0.35)",
             backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
+            border:
+              "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
             boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+
             transition:
               styles.transition +
               ", background-color 0.2s ease, transform 0.2s ease",

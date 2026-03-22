@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Box, Overlay, Progress, Modal, Transition } from "@mantine/core";
+import { Box, Overlay, Progress, Modal, Transition, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
+
 import { t, setLocale, getLocale } from "../core/utils/i18n";
 import "@mantine/core/styles.css";
 
@@ -123,12 +125,33 @@ const App: React.FC = () => {
       selected.length > 30 &&
       !settings.interfaceBehavior.hideDownloadWarning
     ) {
-      if (!confirm(t("warnManyFiles", [selected.length.toString()]))) {
-        return;
-      }
+      modals.openConfirmModal({
+        title: t("warning"),
+        children: (
+          <Text size="sm">
+            {t("warnManyFiles", [selected.length.toString()])}
+          </Text>
+        ),
+        labels: { confirm: t("confirm"), cancel: t("cancel") },
+        onConfirm: async () => {
+          setLoading(true);
+          setProgress(0);
+          await processor.downloadBatch(
+            selected,
+            settings,
+            (curr: number, total: number) => {
+              setProgress(Math.round((curr / total) * 100));
+            },
+          );
+          setLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+        },
+      });
+      return;
     }
 
     setLoading(true);
+
     setProgress(0);
     await processor.downloadBatch(
       selected,
@@ -152,12 +175,33 @@ const App: React.FC = () => {
       selected.length > 30 &&
       !settings.interfaceBehavior.hideDownloadWarning
     ) {
-      if (!confirm(t("warnManyFiles", [selected.length.toString()]))) {
-        return;
-      }
+      modals.openConfirmModal({
+        title: t("warning"),
+        children: (
+          <Text size="sm">
+            {t("warnManyFiles", [selected.length.toString()])}
+          </Text>
+        ),
+        labels: { confirm: t("confirm"), cancel: t("cancel") },
+        onConfirm: async () => {
+          setLoading(true);
+          setProgress(0);
+          await processor.downloadAsZip(
+            selected,
+            settings,
+            (curr: number, total: number) => {
+              setProgress(Math.round((curr / total) * 100));
+            },
+          );
+          setLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+        },
+      });
+      return;
     }
 
     setLoading(true);
+
     setProgress(0);
     await processor.downloadAsZip(
       selected,

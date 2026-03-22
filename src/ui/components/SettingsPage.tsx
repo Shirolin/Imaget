@@ -237,10 +237,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 </Button>
               </Group>
               <Box
-                bg="dark.6"
+                bg="var(--mantine-color-dark-6)"
                 p="xs"
                 style={{
-                  borderRadius: "8px",
+                  borderRadius: "var(--mantine-radius-md)",
                   border: "1px dashed var(--mantine-color-dark-4)",
                 }}
               >
@@ -454,6 +454,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                           ? "var(--mantine-color-blue-filled)"
                           : "var(--mantine-color-dark-4)"
                       }`,
+
                       transition: "all 0.2s ease",
                       width: "100%",
                       cursor: "pointer",
