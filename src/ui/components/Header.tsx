@@ -16,6 +16,8 @@ import {
   IconArrowsDown,
   IconPhoto,
   IconSettings,
+  IconBrandGithub,
+  IconHeart,
 } from "@tabler/icons-react";
 
 interface HeaderProps {
@@ -50,6 +52,32 @@ const Header: React.FC<HeaderProps> = ({
         <Title order={4} c="blue" style={{ letterSpacing: 1 }}>
           IMAGET
         </Title>
+        <Group gap={4} ml="xs">
+          <Tooltip label={t("labelGithub")} position="bottom" withArrow>
+            <ActionIcon
+              component="a"
+              href="https://github.com/Shirolin/Imaget"
+              target="_blank"
+              variant="subtle"
+              color="gray"
+              size="sm"
+            >
+              <IconBrandGithub size={16} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t("labelDonate")} position="bottom" withArrow>
+            <ActionIcon
+              component="a"
+              href="https://ko-fi.com/shirolin"
+              target="_blank"
+              variant="subtle"
+              color="pink"
+              size="sm"
+            >
+              <IconHeart size={16} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
       </Group>
 
       <Box

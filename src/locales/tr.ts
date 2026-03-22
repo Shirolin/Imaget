@@ -137,4 +137,9 @@ export default {
   imgLoadError: { message: "Yükleme Hatası" },
   labelClearSearch: { message: "Aramayı temizle" },
   unitPixel: { message: "$1px+" },
+  labelGithub: { message: "GitHub Deposu" },
+  labelDonate: { message: "Destekle ve Bağış Yap" },
+  labelAfdian: { message: "Afdian" },
+  labelKofi: { message: "Ko-fi" },
+  secSupport: { message: "Destek ve Hakkında" },
 };

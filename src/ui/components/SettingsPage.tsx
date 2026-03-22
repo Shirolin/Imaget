@@ -26,6 +26,9 @@ import {
   IconFolder,
   IconVariable,
   IconRestore,
+  IconBrandGithub,
+  IconCoffee,
+  IconHeart,
 } from "@tabler/icons-react";
 import { Settings } from "../../types";
 import { PortalSelect } from "./common/PortalSelect";
@@ -553,6 +556,50 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   }}
                 />
               </SimpleGrid>
+            </SettingCard>
+            <SettingCard
+              icon={<IconHeart />}
+              title={t("secSupport")}
+              iconColor="var(--mantine-color-orange-filled)"
+            >
+              <Stack gap="xs">
+                <Button
+                  component="a"
+                  href="https://github.com/Shirolin/Imaget"
+                  target="_blank"
+                  variant="light"
+                  color="gray"
+                  leftSection={<IconBrandGithub size={16} />}
+                  justify="flex-start"
+                  fullWidth
+                >
+                  {t("labelGithub")}
+                </Button>
+                <Group grow gap="xs">
+                  <Button
+                    component="a"
+                    href="https://ifdian.net/a/shirolin"
+                    target="_blank"
+                    variant="light"
+                    color="blue"
+                    leftSection={<IconCoffee size={16} />}
+                    justify="flex-start"
+                  >
+                    {t("labelAfdian")}
+                  </Button>
+                  <Button
+                    component="a"
+                    href="https://ko-fi.com/shirolin"
+                    target="_blank"
+                    variant="light"
+                    color="pink"
+                    leftSection={<IconHeart size={16} />}
+                    justify="flex-start"
+                  >
+                    {t("labelKofi")}
+                  </Button>
+                </Group>
+              </Stack>
             </SettingCard>
           </Stack>
         </SimpleGrid>

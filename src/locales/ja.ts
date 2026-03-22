@@ -139,4 +139,9 @@ export default {
   imgLoadError: { message: "読み込みエラー" },
   labelClearSearch: { message: "検索をクリア" },
   unitPixel: { message: "$1px+" },
+  labelGithub: { message: "GitHub リポジトリ" },
+  labelDonate: { message: "寄付・サポート" },
+  labelAfdian: { message: "Afdian" },
+  labelKofi: { message: "Ko-fi" },
+  secSupport: { message: "サポートと詳細" },
 };

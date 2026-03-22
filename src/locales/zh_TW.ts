@@ -129,4 +129,9 @@ export default {
   imgLoadError: { message: "加載錯誤" },
   labelClearSearch: { message: "清空搜索" },
   unitPixel: { message: "$1px+" },
+  labelGithub: { message: "GitHub 倉庫" },
+  labelDonate: { message: "贊助支持" },
+  labelAfdian: { message: "愛發電 (Afdian)" },
+  labelKofi: { message: "Ko-fi" },
+  secSupport: { message: "關於与支持" },
 };

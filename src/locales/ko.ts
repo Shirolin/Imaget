@@ -133,4 +133,9 @@ export default {
   imgLoadError: { message: "로드 오류" },
   labelClearSearch: { message: "검색 지우기" },
   unitPixel: { message: "$1px+" },
+  labelGithub: { message: "GitHub 저장소" },
+  labelDonate: { message: "후원 및 지원" },
+  labelAfdian: { message: "Afdian" },
+  labelKofi: { message: "Ko-fi" },
+  secSupport: { message: "지원 및 정보" },
 };

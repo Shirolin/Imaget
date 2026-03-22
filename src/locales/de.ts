@@ -138,4 +138,9 @@ export default {
   imgLoadError: { message: "Ladefehler" },
   labelClearSearch: { message: "Suche löschen" },
   unitPixel: { message: "$1px+" },
+  labelGithub: { message: "GitHub-Repository" },
+  labelDonate: { message: "Spenden & Unterstützung" },
+  labelAfdian: { message: "Afdian" },
+  labelKofi: { message: "Ko-fi" },
+  secSupport: { message: "Support & Über" },
 };
