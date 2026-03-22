@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Box, Overlay, Progress, Modal, Transition, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { modals, ModalsProvider } from "@mantine/modals";
 
 import { t, setLocale, getLocale } from "../core/utils/i18n";
 import "@mantine/core/styles.css";
@@ -286,148 +286,158 @@ const App: React.FC = () => {
         }}
       />
 
-      <Overlay
-        color="black"
-        backgroundOpacity={0.5}
-        onClick={handleClose}
-        zIndex={0}
-      />
-
-      <Box
-        w={{ base: "100vw", sm: "85vw" }}
-        h={{ base: "100vh", sm: "90vh" }}
-        maw={1200}
-        bg="dark.7"
-        style={{
-          borderRadius: "var(--mantine-radius-lg)",
-          margin: 0,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          boxShadow: "var(--mantine-shadow-xl)",
-          border: "1px solid var(--mantine-color-dark-4)",
-          zIndex: 1,
-          transition: "all 0.2s ease",
+      <ModalsProvider
+        modalProps={{
+          portalProps: { target: portalNode || undefined },
+          zIndex: 99999,
         }}
       >
-        <Header
-          onClose={handleClose}
-          onRefresh={handleRefresh}
-          onDeepScan={handleDeepScan}
-          isScanning={loading}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
+        <Overlay
+          color="black"
+          backgroundOpacity={0.5}
+          onClick={handleClose}
+          zIndex={0}
         />
-        {progress > 0 && (
-          <Progress
-            value={progress}
-            size="xs"
-            radius={0}
-            color="blue"
-            animated
-            style={{ transition: "opacity 0.3s ease" }}
-          />
-        )}
 
-        <Box style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-          <Transition
-            mounted={activeTab === "images"}
-            transition="fade"
-            duration={150}
-            timingFunction="ease"
-            exitDuration={100}
-          >
-            {(styles) => (
-              <Box
-                style={{
-                  ...styles,
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FilterBar
-                  options={filters}
-                  onChange={setFilters}
-                  portalNode={portalNode}
-                />
-
-                <ImageGrid
-                  items={filteredImages}
-                  layout={filters.layout}
-                  onSelect={toggleSelect}
-                  onPreview={setPreviewUrl}
-                  onDownload={handleSingleDownload}
-                  portalNode={portalNode}
-                />
-
-                <Footer
-                  selectedCount={selectedCount}
-                  totalCount={images.length}
-                  onSelectAll={selectAll}
-                  onDeselectAll={deselectAll}
-                  onDownload={handleDownload}
-                  onZip={handleZip}
-                  loading={loading}
-                />
-              </Box>
-            )}
-          </Transition>
-
-          <Transition
-            mounted={activeTab === "settings"}
-            transition="fade"
-            duration={150}
-            timingFunction="ease"
-            exitDuration={100}
-          >
-            {(styles) => (
-              <Box
-                style={{
-                  ...styles,
-                  position: "absolute",
-                  inset: 0,
-                  overflowY: "auto",
-                }}
-              >
-                <SettingsPage
-                  settings={settings}
-                  onUpdate={updateSettings}
-                  onReset={resetSettings}
-                  portalNode={portalNode}
-                />
-              </Box>
-            )}
-          </Transition>
-        </Box>
-      </Box>
-
-      <Modal
-        opened={!!previewUrl}
-        onClose={() => setPreviewUrl(null)}
-        withCloseButton={false}
-        padding={0}
-        fullScreen
-        portalProps={{ target: portalNode || undefined }}
-        transitionProps={{ transition: "fade", duration: 200 }}
-        styles={{
-          content: {
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            pointerEvents: "auto",
-          },
-          body: {
-            padding: 0,
-            height: "100%",
+        <Box
+          w={{ base: "100vw", sm: "85vw" }}
+          h={{ base: "100vh", sm: "90vh" }}
+          maw={1200}
+          bg="dark.7"
+          style={{
+            borderRadius: "var(--mantine-radius-lg)",
+            margin: 0,
             overflow: "hidden",
-          },
-        }}
-      >
-        {previewUrl && (
-          <ImagePreview url={previewUrl} onClose={() => setPreviewUrl(null)} />
-        )}
-      </Modal>
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: "var(--mantine-shadow-xl)",
+            border: "1px solid var(--mantine-color-dark-4)",
+            zIndex: 1,
+            transition: "all 0.2s ease",
+          }}
+        >
+          <Header
+            onClose={handleClose}
+            onRefresh={handleRefresh}
+            onDeepScan={handleDeepScan}
+            isScanning={loading}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+          {progress > 0 && (
+            <Progress
+              value={progress}
+              size="xs"
+              radius={0}
+              color="blue"
+              animated
+              style={{ transition: "opacity 0.3s ease" }}
+            />
+          )}
+
+          <Box style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+            <Transition
+              mounted={activeTab === "images"}
+              transition="fade"
+              duration={150}
+              timingFunction="ease"
+              exitDuration={100}
+            >
+              {(styles) => (
+                <Box
+                  style={{
+                    ...styles,
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <FilterBar
+                    options={filters}
+                    onChange={setFilters}
+                    portalNode={portalNode}
+                  />
+
+                  <ImageGrid
+                    items={filteredImages}
+                    layout={filters.layout}
+                    onSelect={toggleSelect}
+                    onPreview={setPreviewUrl}
+                    onDownload={handleSingleDownload}
+                    portalNode={portalNode}
+                  />
+
+                  <Footer
+                    selectedCount={selectedCount}
+                    totalCount={images.length}
+                    onSelectAll={selectAll}
+                    onDeselectAll={deselectAll}
+                    onDownload={handleDownload}
+                    onZip={handleZip}
+                    loading={loading}
+                  />
+                </Box>
+              )}
+            </Transition>
+
+            <Transition
+              mounted={activeTab === "settings"}
+              transition="fade"
+              duration={150}
+              timingFunction="ease"
+              exitDuration={100}
+            >
+              {(styles) => (
+                <Box
+                  style={{
+                    ...styles,
+                    position: "absolute",
+                    inset: 0,
+                    overflowY: "auto",
+                  }}
+                >
+                  <SettingsPage
+                    settings={settings}
+                    onUpdate={updateSettings}
+                    onReset={resetSettings}
+                    portalNode={portalNode}
+                  />
+                </Box>
+              )}
+            </Transition>
+          </Box>
+        </Box>
+
+        <Modal
+          opened={!!previewUrl}
+          onClose={() => setPreviewUrl(null)}
+          withCloseButton={false}
+          padding={0}
+          fullScreen
+          portalProps={{ target: portalNode || undefined }}
+          transitionProps={{ transition: "fade", duration: 200 }}
+          styles={{
+            content: {
+              backgroundColor: "transparent",
+              boxShadow: "none",
+              pointerEvents: "auto",
+            },
+            body: {
+              padding: 0,
+              height: "100%",
+              overflow: "hidden",
+            },
+          }}
+        >
+          {previewUrl && (
+            <ImagePreview
+              url={previewUrl}
+              onClose={() => setPreviewUrl(null)}
+            />
+          )}
+        </Modal>
+      </ModalsProvider>
     </Box>
   );
 };

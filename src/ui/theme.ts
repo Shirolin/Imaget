@@ -28,7 +28,6 @@ export const theme = createTheme({
       defaultProps: {
         overlayProps: {
           backgroundOpacity: 0.55,
-          blur: 10,
         },
         padding: "xl",
         radius: "lg",
