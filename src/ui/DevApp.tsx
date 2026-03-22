@@ -3,6 +3,7 @@ import { MantineProvider, ActionIcon } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import App from "./App";
 import TestPage from "./TestPage";
+import { theme } from "./theme";
 
 const DevApp = () => {
   const [visible, setVisible] = useState(true);
@@ -18,7 +19,7 @@ const DevApp = () => {
   }, []);
 
   return (
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <div
         style={{
           position: "relative",

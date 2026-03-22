@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Box, Overlay, Progress, Modal, Transition } from "@mantine/core";
-import { t, setLocale } from "../core/utils/i18n";
+import { t, setLocale, getLocale } from "../core/utils/i18n";
 import "@mantine/core/styles.css";
 
 import Header from "./components/Header";
@@ -66,7 +66,13 @@ const App: React.FC = () => {
     runSniffer();
   }, [sniffer, settings]);
 
-  // 同步 UI 语言
+  const currentLang = useMemo(() => {
+    const lang = settings.general.language;
+    if (lang === "auto") return getLocale();
+    return lang.replace("_", "-"); // HTML lang attribute normalization (zh_CN -> zh-CN)
+  }, [settings.general.language]);
+
+  // 同步 UI 语言与 lang 属性
   useEffect(() => {
     setLocale(settings.general.language);
   }, [settings.general.language]);
@@ -218,6 +224,7 @@ const App: React.FC = () => {
     <Box
       pos="fixed"
       inset={0}
+      lang={currentLang}
       style={{
         zIndex: 1000,
         display: "flex",

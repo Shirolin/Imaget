@@ -9,6 +9,7 @@ import { Sniffer } from "../core/sniffer";
 import { ImageProcessor } from "../core/processor";
 import { ExtensionAdapter } from "../core/adapters/extension";
 import { WebAdapter } from "../core/adapters/web";
+import { theme, FONT_STACK } from "../ui/theme";
 
 const ROOT_ID = "imaget-reborn-root";
 const SELECTOR = ".imaget-extension-container";
@@ -45,7 +46,7 @@ function init() {
   extensionRoot.style.display = "block";
   extensionRoot.style.width = "100%";
   extensionRoot.style.height = "100%";
-  extensionRoot.style.fontFamily = "system-ui, -apple-system, sans-serif";
+  extensionRoot.style.fontFamily = FONT_STACK;
   extensionRoot.style.pointerEvents = "auto";
   // 重要：修复 all: initial 导致的颜色继承丢失
   extensionRoot.style.color = "var(--mantine-color-text, #C1C2C5)";
@@ -83,6 +84,7 @@ function init() {
   ReactDOM.createRoot(appMountPoint).render(
     <React.StrictMode>
       <MantineProvider
+        theme={theme}
         forceColorScheme="dark"
         cssVariablesSelector={SELECTOR}
         getRootElement={() => extensionRoot}
