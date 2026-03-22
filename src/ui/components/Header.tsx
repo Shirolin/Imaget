@@ -106,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({
         />
         <UnstyledButton
           onClick={() => onTabChange("images")}
-          w={{ base: 80, xs: 100 }}
+          miw={{ base: 80, xs: 100 }}
           style={{
             zIndex: 1,
             height: 28,
@@ -129,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({
         </UnstyledButton>
         <UnstyledButton
           onClick={() => onTabChange("settings")}
-          w={{ base: 80, xs: 100 }}
+          miw={{ base: 80, xs: 100 }}
           style={{
             zIndex: 1,
             height: 28,

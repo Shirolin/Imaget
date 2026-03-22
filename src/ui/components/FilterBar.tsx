@@ -77,7 +77,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           aria-label={t("labelSearchImages")}
           size="xs"
           flex={1}
-          w={{ base: "100%", xs: 200 }}
+          miw={{ base: "100%", xs: 180 }}
         />
         <PortalMultiSelect
           placeholder={t("filterType")}
@@ -90,7 +90,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           portalNode={portalNode}
           size="xs"
           flex={1}
-          w={{ base: "100%", xs: 150 }}
+          miw={{ base: "100%", xs: 120 }}
         />
       </Group>
 
@@ -131,7 +131,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             }
             portalNode={portalNode}
             size="xs"
-            w={{ base: 75, xs: 100 }}
+            miw={{ base: 75, xs: 100 }}
           />
         </Group>
 
@@ -153,7 +153,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             clearable
             portalNode={portalNode}
             size="xs"
-            w={{ base: 85, xs: 100 }}
+            miw={{ base: 85, xs: 110 }}
           />
 
           <Group gap={2} wrap="nowrap">
