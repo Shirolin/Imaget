@@ -105,6 +105,8 @@ export default {
   labelDeepScan: { message: "深度掃描" },
   labelFloatingDownload: { message: "Imaget 下載此圖" },
   labelFloatingSuccess: { message: "Imaget 下載成功" },
+  labelFloatingError: { message: "下載失敗" },
+
   labelFloatingClose: { message: "不再顯示" },
   labelZoomOut: { message: "縮小" },
   labelZoomIn: { message: "放大" },

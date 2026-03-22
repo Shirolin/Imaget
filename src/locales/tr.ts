@@ -113,6 +113,8 @@ export default {
   labelDeepScan: { message: "Derin Tarama" },
   labelFloatingDownload: { message: "Resmi İndir" },
   labelFloatingSuccess: { message: "Başarıyla İndirildi" },
+  labelFloatingError: { message: "İndirme başarısız" },
+
   labelFloatingClose: { message: "Tekrar Gösterme" },
   labelZoomOut: { message: "Uzaklaştır" },
   labelZoomIn: { message: "Yakınlaştır" },

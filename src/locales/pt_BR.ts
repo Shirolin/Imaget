@@ -113,6 +113,8 @@ export default {
   labelDeepScan: { message: "Busca Profunda" },
   labelFloatingDownload: { message: "Baixar imagem" },
   labelFloatingSuccess: { message: "Download concluído" },
+  labelFloatingError: { message: "Falha no download" },
+
   labelFloatingClose: { message: "Não mostrar novamente" },
   labelZoomOut: { message: "Diminuir Zoom" },
   labelZoomIn: { message: "Aumentar Zoom" },

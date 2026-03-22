@@ -31,6 +31,9 @@ export class FloatingController {
   private progress: number = 0;
   private progressInterval: number | null = null;
 
+  // 🚀 追踪鼠标是否仍在触发目标图片上
+  private isHoveringTarget: boolean = false;
+
   constructor(
     private sniffer: Sniffer,
     private processor: ImageProcessor,
@@ -166,6 +169,7 @@ export class FloatingController {
       this.currentTarget = finalTarget;
       this.lastTarget = finalTarget;
       this.lastUrl = url;
+      this.isHoveringTarget = true;
       this.showFloating(finalTarget, url, rect);
     }, 300);
   }
@@ -187,6 +191,18 @@ export class FloatingController {
       return;
     }
 
+    // 标记鼠标已离开目标
+    this.isHoveringTarget = false;
+
+    // 🚀 下载进行中：不隐藏按钮，等下载完成后再决定
+    if (this.status !== "idle") {
+      if (this.hideTimer) {
+        window.clearTimeout(this.hideTimer);
+        this.hideTimer = null;
+      }
+      return;
+    }
+
     if (this.hideTimer) window.clearTimeout(this.hideTimer);
     this.hideTimer = window.setTimeout(() => {
       this.hideFloatingImmediate();
@@ -194,6 +210,9 @@ export class FloatingController {
   }
 
   private showFloating(_target: HTMLElement, url: string, rect: DOMRect) {
+    // 🚀 下载进行中时不销毁当前按钮，直接忽略新目标的激活
+    if (this.status !== "idle") return;
+
     this.hideFloatingImmediate();
 
     const host = document.createElement("div");
@@ -423,12 +442,16 @@ export class FloatingController {
       this.progress = 100;
       this.render();
 
-      // 2秒后重置
+      // 2秒后重置，如鼠标已离开则隐藏
       window.setTimeout(() => {
         if (this.currentHost && this.currentUrl === url) {
           this.status = "idle";
           this.progress = 0;
-          this.render();
+          if (!this.isHoveringTarget) {
+            this.hideFloatingImmediate();
+          } else {
+            this.render();
+          }
         }
       }, 2000);
     } catch (err) {
@@ -444,7 +467,11 @@ export class FloatingController {
       window.setTimeout(() => {
         if (this.currentHost && this.currentUrl === url) {
           this.status = "idle";
-          this.render();
+          if (!this.isHoveringTarget) {
+            this.hideFloatingImmediate();
+          } else {
+            this.render();
+          }
         }
       }, 2000);
     }

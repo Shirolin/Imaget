@@ -109,6 +109,8 @@ export default {
   labelDeepScan: { message: "심층 스캔" },
   labelFloatingDownload: { message: "이미지 다운로드" },
   labelFloatingSuccess: { message: "다운로드 성공" },
+  labelFloatingError: { message: "다운로드 실패" },
+
   labelFloatingClose: { message: "다시 표시하지 않음" },
   labelZoomOut: { message: "축소" },
   labelZoomIn: { message: "확대" },

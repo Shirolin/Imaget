@@ -91,6 +91,22 @@ const GlobalAnimations = () => (
       transition: height 0.3s ease-out, opacity 0.5s ease 0.1s;
     }
 
+    /* 🚀 下载进行中和成功/失败后：无论鼠标是否悬停，始终保持展开状态 */
+    .imaget-glass-button[data-status="downloading"],
+    .imaget-glass-button[data-status="error"] {
+      background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
+      backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
+      -webkit-backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 60%), inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 50%) !important;
+      transform: scale(1.2) translate3d(0, 0, 0) !important;
+    }
+
+    /* 错误状态：红色玻璃主题 */
+    .imaget-glass-button[data-status="error"] {
+      background: color-mix(in srgb, var(--mantine-color-red-6), transparent 72%) !important;
+      box-shadow: 0 0 20px color-mix(in srgb, var(--mantine-color-red-6), transparent 50%), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-red-4), transparent 40%) !important;
+    }
+
     .imaget-glass-wrapper:hover .imaget-glass-button {
       background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
       backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
@@ -155,7 +171,9 @@ const MainDownloadAction = ({
     label={
       status === "success"
         ? t("labelFloatingSuccess")
-        : t("labelFloatingDownload")
+        : status === "error"
+          ? t("labelFloatingError")
+          : t("labelFloatingDownload")
     }
     position="left"
     withArrow
@@ -184,7 +202,9 @@ const MainDownloadAction = ({
       aria-label={
         status === "success"
           ? t("labelFloatingSuccess")
-          : t("labelFloatingDownload")
+          : status === "error"
+            ? t("labelFloatingError")
+            : t("labelFloatingDownload")
       }
     >
       <div
@@ -210,10 +230,22 @@ const MainDownloadAction = ({
             position: "absolute",
             color: "var(--mantine-color-white)",
             filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
-
             opacity: status === "success" ? 1 : 0,
             transform:
               status === "success" ? "scale(1)" : "scale(0.5) translateY(10px)",
+            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          }}
+        />
+        <IconX
+          size={22}
+          stroke={3}
+          style={{
+            position: "absolute",
+            color: "var(--mantine-color-red-3)",
+            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))",
+            opacity: status === "error" ? 1 : 0,
+            transform:
+              status === "error" ? "scale(1)" : "scale(0.5) translateY(10px)",
             transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
           }}
         />
@@ -223,9 +255,9 @@ const MainDownloadAction = ({
           stroke={2.5}
           style={{
             position: "absolute",
-            opacity: status === "success" ? 0 : 1,
+            opacity: status === "success" || status === "error" ? 0 : 1,
             transform:
-              status === "success"
+              status === "success" || status === "error"
                 ? "scale(0.5) translateY(-10px)"
                 : "scale(1) translateY(0)",
             filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",

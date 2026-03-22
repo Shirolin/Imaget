@@ -115,6 +115,8 @@ export default {
   labelDeepScan: { message: "ディープスキャン" },
   labelFloatingDownload: { message: "画像をダウンロード" },
   labelFloatingSuccess: { message: "ダウンロード成功" },
+  labelFloatingError: { message: "ダウンロード失敗" },
+
   labelFloatingClose: { message: "次回から表示しない" },
   labelZoomOut: { message: "縮小" },
   labelZoomIn: { message: "拡大" },
