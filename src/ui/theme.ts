@@ -36,8 +36,7 @@ export const theme = createTheme({
     },
     Overlay: {
       defaultProps: {
-        backgroundOpacity: 0.55,
-        blur: 10,
+        backgroundOpacity: 0.5,
       },
     },
   },

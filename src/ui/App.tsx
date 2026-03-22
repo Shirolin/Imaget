@@ -286,7 +286,12 @@ const App: React.FC = () => {
         }}
       />
 
-      <Overlay color="black" onClick={handleClose} zIndex={0} />
+      <Overlay
+        color="black"
+        backgroundOpacity={0.5}
+        onClick={handleClose}
+        zIndex={0}
+      />
 
       <Box
         w={{ base: "100vw", sm: "85vw" }}
