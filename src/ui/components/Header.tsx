@@ -4,10 +4,9 @@ import {
   Title,
   ActionIcon,
   Button,
-  Box,
-  UnstyledButton,
   Text,
   Tooltip,
+  SegmentedControl,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import {
@@ -80,77 +79,54 @@ const Header: React.FC<HeaderProps> = ({
         </Group>
       </Group>
 
-      <Box
+      <SegmentedControl
+        value={activeTab}
+        onChange={(val: string) => onTabChange(val as "images" | "settings")}
+        data={[
+          {
+            label: (
+              <Group gap={6} wrap="nowrap" px="xs">
+                <IconPhoto size={14} />
+                <Text size="xs" fw={activeTab === "images" ? 600 : 500}>
+                  {t("tabImages")}
+                </Text>
+              </Group>
+            ),
+            value: "images",
+          },
+          {
+            label: (
+              <Group gap={6} wrap="nowrap" px="xs">
+                <IconSettings size={14} />
+                <Text size="xs" fw={activeTab === "settings" ? 600 : 500}>
+                  {t("tabPreferences")}
+                </Text>
+              </Group>
+            ),
+            value: "settings",
+          },
+        ]}
+        radius="xl"
+        size="xs"
         bg="dark.6"
-        p={4}
-        style={{
-          display: "flex",
-          borderRadius: 12,
-          position: "relative",
-          border: "1px solid var(--mantine-color-dark-4)",
-        }}
-      >
-        <Box
-          bg="dark.4"
-          style={{
-            position: "absolute",
-            left: activeTab === "images" ? 4 : "50%",
-            top: 4,
-            bottom: 4,
-            width: "calc(50% - 4px)",
-            borderRadius: 8,
-            transition: "all 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
-            zIndex: 0,
+        styles={{
+          root: {
+            border: "1px solid var(--mantine-color-dark-4)",
+            padding: 4,
+          },
+          indicator: {
+            backgroundColor: "var(--mantine-color-dark-4)",
             boxShadow: "var(--mantine-shadow-sm)",
-          }}
-        />
-        <UnstyledButton
-          onClick={() => onTabChange("images")}
-          miw={{ base: 80, xs: 100 }}
-          style={{
-            zIndex: 1,
-            height: 28,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            borderRadius: 8,
-            transition: "color 0.2s ease",
-            color:
-              activeTab === "images"
-                ? "var(--mantine-color-white)"
-                : "var(--mantine-color-dark-2)",
-          }}
-        >
-          <IconPhoto size={14} />
-          <Text size="xs" fw={activeTab === "images" ? 600 : 500}>
-            {t("tabImages")}
-          </Text>
-        </UnstyledButton>
-        <UnstyledButton
-          onClick={() => onTabChange("settings")}
-          miw={{ base: 80, xs: 100 }}
-          style={{
-            zIndex: 1,
-            height: 28,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            borderRadius: 8,
-            transition: "color 0.2s ease",
-            color:
-              activeTab === "settings"
-                ? "var(--mantine-color-white)"
-                : "var(--mantine-color-dark-2)",
-          }}
-        >
-          <IconSettings size={14} />
-          <Text size="xs" fw={activeTab === "settings" ? 600 : 500}>
-            {t("tabPreferences")}
-          </Text>
-        </UnstyledButton>
-      </Box>
+          },
+          control: {
+            border: "none",
+          },
+          label: {
+            paddingTop: 4,
+            paddingBottom: 4,
+          },
+        }}
+      />
 
       <Group gap="xs" wrap="nowrap">
         {onDeepScan && (
