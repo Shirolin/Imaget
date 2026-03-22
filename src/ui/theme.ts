@@ -24,5 +24,22 @@ export const theme = createTheme({
         radius: "md",
       },
     },
+    Modal: {
+      defaultProps: {
+        overlayProps: {
+          backgroundOpacity: 0.55,
+          blur: 10,
+        },
+        centered: true,
+        padding: "xl",
+        radius: "lg",
+      },
+    },
+    Overlay: {
+      defaultProps: {
+        backgroundOpacity: 0.55,
+        blur: 10,
+      },
+    },
   },
 });
