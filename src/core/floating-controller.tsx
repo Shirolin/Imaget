@@ -204,10 +204,10 @@ export class FloatingController {
     Object.assign(host.style, {
       all: "initial", // 彻底隔离外界干扰
       position: "absolute",
-      left: `${rect.left + window.scrollX}px`,
-      top: `${rect.top + window.scrollY}px`,
-      width: `${rect.width}px`,
-      height: `${rect.height}px`,
+      left: `${Math.round(rect.left + window.scrollX)}px`,
+      top: `${Math.round(rect.top + window.scrollY)}px`,
+      width: `${Math.round(rect.width)}px`,
+      height: `${Math.round(rect.height)}px`,
       pointerEvents: "none",
       zIndex: "2147483646",
     });

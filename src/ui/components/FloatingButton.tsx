@@ -23,6 +23,11 @@ const GlobalAnimations = () => (
       from { opacity: 0; transform: scale(0.8) translate3d(0, -10px, 0); }
       to { opacity: 1; transform: scale(1) translate3d(0, 0, 0); }
     }
+    
+    .imaget-pop-in-animated {
+      animation: imaget-pop-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
+
     @keyframes imaget-icon-pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
@@ -39,6 +44,8 @@ const GlobalAnimations = () => (
       position: relative;
       backface-visibility: hidden;
       -webkit-font-smoothing: antialiased;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
     }
 
     .imaget-glass-button {
@@ -54,8 +61,11 @@ const GlobalAnimations = () => (
       box-shadow: none !important;
       transition: background 0.4s ease, backdrop-filter 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
       backface-visibility: hidden;
+      -webkit-font-smoothing: antialiased;
       position: relative;
       overflow: hidden !important;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
     }
     
     .imaget-progress-fill {
@@ -86,7 +96,7 @@ const GlobalAnimations = () => (
       backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
       -webkit-backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
-      transform: scale(1.2) !important;
+      transform: scale(1.2) translate3d(0, 0, 0) !important;
     }
 
     .imaget-glass-wrapper:hover .imaget-icon-inner {
@@ -286,16 +296,21 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
 
   return (
     <Box
-      style={{
-        position: "absolute",
-        top: 12,
-        right: 12,
-        zIndex: 2147483647,
-        pointerEvents: "none",
-        animation: visible
-          ? "imaget-pop-in 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
-          : "none",
-      }}
+      style={
+        {
+          position: "absolute",
+          top: 12,
+          right: 12,
+          zIndex: 999999,
+          pointerEvents: "none",
+          animation: visible
+            ? "imaget-pop-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards"
+            : "none",
+          backfaceVisibility: "hidden",
+          WebkitFontSmoothing: "antialiased",
+          transform: "translate3d(0, 0, 0)",
+        } as React.CSSProperties
+      }
     >
       <GlobalAnimations />
 
