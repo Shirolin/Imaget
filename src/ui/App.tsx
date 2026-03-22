@@ -294,7 +294,7 @@ const App: React.FC = () => {
       >
         <Overlay
           color="black"
-          backgroundOpacity={0.5}
+          backgroundOpacity={0.65}
           onClick={handleClose}
           zIndex={0}
         />

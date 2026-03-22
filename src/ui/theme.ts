@@ -27,7 +27,7 @@ export const theme = createTheme({
     Modal: {
       defaultProps: {
         overlayProps: {
-          backgroundOpacity: 0.55,
+          backgroundOpacity: 0.65,
         },
         padding: "xl",
         radius: "lg",
@@ -35,7 +35,7 @@ export const theme = createTheme({
     },
     Overlay: {
       defaultProps: {
-        backgroundOpacity: 0.5,
+        backgroundOpacity: 0.65,
       },
     },
   },
