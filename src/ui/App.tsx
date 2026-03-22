@@ -68,10 +68,7 @@ const App: React.FC = () => {
 
   // 同步 UI 语言
   useEffect(() => {
-    const lang = settings.general.language;
-    if (lang === "zh-CN") setLocale("zh");
-    else if (lang === "en-US") setLocale("en");
-    else setLocale("auto");
+    setLocale(settings.general.language);
   }, [settings.general.language]);
 
   // 计算过滤后的列表

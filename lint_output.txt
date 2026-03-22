@@ -1,0 +1,24 @@
+
+> new-imaget@0.0.0 lint
+> eslint .
+
+
+D:\Project\New-Imaget\src\core\utils\i18n.ts
+  13:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  14:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  15:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  16:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  17:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  18:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  19:19  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  20:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  21:19  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  22:19  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  36:7   error  'lang' is never reassigned. Use 'const' instead  prefer-const
+
+D:\Project\New-Imaget\src\ui\components\SettingsPage.tsx
+  119:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+鉁?12 problems (12 errors, 0 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

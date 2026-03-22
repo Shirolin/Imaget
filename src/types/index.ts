@@ -28,7 +28,18 @@ export interface FilterOptions {
 
 export interface Settings {
   general: {
-    language: "zh-CN" | "en-US" | "auto";
+    language:
+      | "zh_CN"
+      | "zh_TW"
+      | "en"
+      | "ja"
+      | "ko"
+      | "de"
+      | "fr"
+      | "es"
+      | "pt_BR"
+      | "tr"
+      | "auto";
   };
   fileSaving: {
     subfolder: string;

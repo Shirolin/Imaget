@@ -116,14 +116,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     ...prev,
                     general: {
                       ...prev.general,
-                      language: (val as "zh-CN" | "en-US" | "auto") || "auto",
+                      language:
+                        (val as Settings["general"]["language"]) || "auto",
                     },
                   }))
                 }
                 data={[
                   { value: "auto", label: t("langAuto") },
-                  { value: "zh-CN", label: t("langChinese") },
-                  { value: "en-US", label: t("langEnglish") },
+                  { value: "en", label: "English" },
+                  { value: "zh_CN", label: "中文 (中国)" },
+                  { value: "zh_TW", label: "中文 (台灣)" },
+                  { value: "ja", label: "日本語" },
+                  { value: "ko", label: "한국어" },
+                  { value: "de", label: "Deutsch" },
+                  { value: "fr", label: "Français" },
+                  { value: "es", label: "Español" },
+                  { value: "pt_BR", label: "Português (Brasil)" },
+                  { value: "tr", label: "Türkçe" },
                 ]}
                 styles={{
                   input: { cursor: "pointer" },
