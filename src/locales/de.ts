@@ -131,4 +131,11 @@ export default {
   labelSelectAll: { message: "Alle auswählen" },
   labelDeselectAll: { message: "Alle abwählen" },
   labelImageQuality: { message: "Bilderqualität" },
+  sortResolution: { message: "Auflösung" },
+  concurrencySingle: { message: "1 (Einzelthread)" },
+  concurrencyRecommended: { message: "3 (Empfohlen)" },
+  imgAlt: { message: "Gescanntes Bild" },
+  imgLoadError: { message: "Ladefehler" },
+  labelClearSearch: { message: "Suche löschen" },
+  unitPixel: { message: "$1px+" },
 };

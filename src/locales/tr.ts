@@ -130,4 +130,11 @@ export default {
   labelSelectAll: { message: "Tümünü seç" },
   labelDeselectAll: { message: "Seçimi bırak" },
   labelImageQuality: { message: "Resim kalitesi" },
+  sortResolution: { message: "Çözünürlük" },
+  concurrencySingle: { message: "1 (Tek İş Parçacığı)" },
+  concurrencyRecommended: { message: "3 (Önerilen)" },
+  imgAlt: { message: "Algılanan Resim" },
+  imgLoadError: { message: "Yükleme Hatası" },
+  labelClearSearch: { message: "Aramayı temizle" },
+  unitPixel: { message: "$1px+" },
 };

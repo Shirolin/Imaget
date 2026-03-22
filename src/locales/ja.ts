@@ -132,4 +132,11 @@ export default {
   labelSelectAll: { message: "すべて選択" },
   labelDeselectAll: { message: "選択を解除" },
   labelImageQuality: { message: "画質" },
+  sortResolution: { message: "解像度" },
+  concurrencySingle: { message: "1 (シングルスレッド)" },
+  concurrencyRecommended: { message: "3 (推奨)" },
+  imgAlt: { message: "画像" },
+  imgLoadError: { message: "読み込みエラー" },
+  labelClearSearch: { message: "検索をクリア" },
+  unitPixel: { message: "$1px+" },
 };

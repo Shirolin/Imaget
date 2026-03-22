@@ -122,4 +122,11 @@ export default {
   labelSelectAll: { message: "全選" },
   labelDeselectAll: { message: "取消全選" },
   labelImageQuality: { message: "轉換質量" },
+  sortResolution: { message: "解析度" },
+  concurrencySingle: { message: "1 (單線程)" },
+  concurrencyRecommended: { message: "3 (推薦)" },
+  imgAlt: { message: "圖片" },
+  imgLoadError: { message: "加載錯誤" },
+  labelClearSearch: { message: "清空搜索" },
+  unitPixel: { message: "$1px+" },
 };

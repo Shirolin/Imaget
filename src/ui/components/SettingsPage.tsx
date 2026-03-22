@@ -344,9 +344,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   aria-label={t("prefMinImageSize")}
                   data={[
                     { label: t("sizeAlways"), value: "0" },
-                    { label: "32px+", value: "32" },
-                    { label: "64px+", value: "64" },
-                    { label: "128px+", value: "128" },
+                    { label: t("unitPixel", ["32"]), value: "32" },
+                    { label: t("unitPixel", ["64"]), value: "64" },
+                    { label: t("unitPixel", ["128"]), value: "128" },
                   ]}
                 />
               </Stack>
@@ -542,8 +542,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   }
                   data={[
                     { value: "0", label: t("concurrencyUnlimited") },
-                    { value: "1", label: "1 (单线程)" },
-                    { value: "3", label: "3 (推荐)" },
+                    { value: "1", label: t("concurrencySingle") },
+                    { value: "3", label: t("concurrencyRecommended") },
                     { value: "5", label: "5" },
                     { value: "10", label: "10" },
                   ]}

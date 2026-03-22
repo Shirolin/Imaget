@@ -91,9 +91,9 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
             w={{ base: 60, xs: 80 }}
             h={{ base: 45, xs: 60 }}
             radius="sm"
-            alt={item.filename || "Sniffed Image"}
+            alt={t("imgAlt")}
             fit="cover"
-            fallbackSrc="https://placehold.co/400x400?text=Error"
+            fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
             loading="lazy"
           />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
@@ -257,9 +257,9 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         <Image
           src={item.url}
           height={layout === "columns" ? 300 : 160}
-          alt={item.filename || "Sniffed Image"}
+          alt={t("imgAlt")}
           fit="cover"
-          fallbackSrc="https://placehold.co/400x400?text=Load+Error"
+          fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
           loading="lazy"
         />
 

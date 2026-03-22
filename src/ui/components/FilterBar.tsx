@@ -66,7 +66,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           rightSectionPointerEvents="all"
           rightSection={
             <CloseButton
-              aria-label="Clear search"
+              aria-label={t("labelClearSearch")}
               onClick={() => {
                 setSearch("");
                 onChange({ ...options, searchQuery: "" });
@@ -141,7 +141,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             data={[
               { value: "order", label: t("sortOrder") },
               { value: "size", label: t("sortSize") },
-              { value: "resolution", label: "Resolution" },
+              { value: "resolution", label: t("sortResolution") },
             ]}
             value={options.sortBy}
             onChange={(val) =>

@@ -126,4 +126,11 @@ export default {
   labelSelectAll: { message: "전체 선택" },
   labelDeselectAll: { message: "전체 해제" },
   labelImageQuality: { message: "이미지 품질" },
+  sortResolution: { message: "해상도" },
+  concurrencySingle: { message: "1 (단일 스레드)" },
+  concurrencyRecommended: { message: "3 (권장)" },
+  imgAlt: { message: "이미지" },
+  imgLoadError: { message: "로드 오류" },
+  labelClearSearch: { message: "검색 지우기" },
+  unitPixel: { message: "$1px+" },
 };
