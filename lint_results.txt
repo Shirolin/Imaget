@@ -1,0 +1,24 @@
+
+D:\Project\New-Imaget\src\core\utils\i18n.ts
+  4:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Project\New-Imaget\src\ui\App.tsx
+  4:10  error  'useMediaQuery' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Project\New-Imaget\src\ui\components\Header.tsx
+  20:10  error  'PortalTooltip' is defined but never used  @typescript-eslint/no-unused-vars
+  39:3   error  'portalNode' is defined but never used     @typescript-eslint/no-unused-vars
+
+D:\Project\New-Imaget\src\ui\components\settings\SettingCard.tsx
+  29:59  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Project\New-Imaget\src\ui\components\settings\SettingSwitch.tsx
+  4:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+D:\Project\New-Imaget\src\ui\hooks\useSettings.ts
+  77:1  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+  96:1  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+
+鉁?8 problems (6 errors, 2 warnings)
+  0 errors and 2 warnings potentially fixable with the `--fix` option.
+

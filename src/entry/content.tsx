@@ -1,0 +1,191 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { MantineProvider } from "@mantine/core";
+import mantineStyles from "@mantine/core/styles.css?inline";
+import App from "../ui/App";
+import { FloatingController } from "../core/floating-controller";
+import { ImageFormat } from "../types";
+import { Sniffer } from "../core/sniffer";
+import { ImageProcessor } from "../core/processor";
+import { ExtensionAdapter } from "../core/adapters/extension";
+import { WebAdapter } from "../core/adapters/web";
+
+const ROOT_ID = "imaget-reborn-root";
+const SELECTOR = ".imaget-extension-container";
+const finalCSS = mantineStyles.replaceAll(":root", SELECTOR);
+
+function init() {
+  let rootContainer = document.getElementById(ROOT_ID);
+
+  if (rootContainer) {
+    // 如果已经存在，直接切回显示状态
+    if (rootContainer.style.display === "none") {
+      rootContainer.style.display = "block";
+    } else {
+      rootContainer.style.display = "none"; // 再次点击图标可以切换关闭 (对齐常见插件行为)
+    }
+    return;
+  }
+
+  rootContainer = document.createElement("div");
+  rootContainer.id = ROOT_ID;
+
+  // 1. 创建最外层宿主 (Shadow Host)
+  const shadow = rootContainer.attachShadow({ mode: "open" });
+
+  // 2. 注入全局样式
+  const styleTag = document.createElement("style");
+  styleTag.textContent = finalCSS;
+  shadow.appendChild(styleTag);
+
+  // 🚀 3. 创建总容器（承载 CSS 变量作用域）
+  const extensionRoot = document.createElement("div");
+  extensionRoot.className = SELECTOR.replace(".", "");
+  extensionRoot.style.all = "initial";
+  extensionRoot.style.display = "block";
+  extensionRoot.style.width = "100%";
+  extensionRoot.style.height = "100%";
+  extensionRoot.style.fontFamily = "system-ui, -apple-system, sans-serif";
+  extensionRoot.style.pointerEvents = "auto";
+  // 重要：修复 all: initial 导致的颜色继承丢失
+  extensionRoot.style.color = "var(--mantine-color-text, #C1C2C5)";
+  extensionRoot.style.backgroundColor = "var(--mantine-color-body, #1A1B1E)";
+
+  // 4. 创建 App 挂载点
+  const appMountPoint = document.createElement("div");
+  appMountPoint.style.width = "100%";
+  appMountPoint.style.height = "100%";
+
+  extensionRoot.appendChild(appMountPoint);
+  shadow.appendChild(extensionRoot);
+
+  // 容器样式：占满全屏以支持 Backdrop
+  Object.assign(rootContainer.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    zIndex: "2147483647",
+    pointerEvents: "none",
+    display: "block",
+  });
+
+  // 监听来自 React 的关闭信号
+  window.addEventListener("message", (event) => {
+    if (event.data.type === "IMAGET_CLOSE") {
+      if (rootContainer) rootContainer.style.display = "none";
+    }
+  });
+
+  document.body.appendChild(rootContainer);
+
+  ReactDOM.createRoot(appMountPoint).render(
+    <React.StrictMode>
+      <MantineProvider
+        forceColorScheme="dark"
+        cssVariablesSelector={SELECTOR}
+        getRootElement={() => extensionRoot}
+      >
+        <App />
+      </MantineProvider>
+    </React.StrictMode>,
+  );
+}
+
+// 监听消息触发
+chrome.runtime.onMessage.addListener(async (message) => {
+  if (message.action === "toggle-sniffer") {
+    init();
+  }
+
+  if (message.type === "CONTEXT_SAVE_SINGLE") {
+    const { srcUrl, targetFormat } = message.payload;
+    if (!srcUrl) return;
+
+    try {
+      console.log("[Content] Context save requested for:", srcUrl);
+      // 1. 扫描页面
+      const items = await sniffer.sniffAll();
+
+      // 2. 匹配图片 (使用 transformSiteSpecificUrl 辅助匹配)
+      const { UrlResolver } = await import("../core/utils/url-resolver");
+      const normalizedSrcUrl = UrlResolver.transformSiteSpecificUrl(srcUrl);
+
+      const target = items.find((item) => {
+        const normalizedItemUrl = UrlResolver.transformSiteSpecificUrl(
+          item.url,
+        );
+        return (
+          normalizedItemUrl === normalizedSrcUrl ||
+          item.url === srcUrl ||
+          item.url.includes(srcUrl) ||
+          srcUrl.includes(item.url)
+        );
+      });
+
+      if (target) {
+        console.log("[Content] Found matching image:", target);
+        // 3. 执行单张下载
+        // 获取当前配置
+        const settings = await adapter.getSettings();
+        // 覆盖格式策略 (对齐 Settings 类型结构)
+        const tempSettings = {
+          ...settings,
+          downloadLogic: {
+            ...settings.downloadLogic,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            targetFormat: targetFormat.toLowerCase() as any,
+          },
+        };
+
+        const started = await floatingController.tryTriggerCustomDownload(
+          target.url,
+          target,
+          tempSettings,
+        );
+        if (!started) {
+          // 如果无法运用悬浮动画（比如页面没滚动到对应图片或者没hover过），回退到静默下载
+          console.log(
+            "[Content] Floating animation inapplicable, fallback to silent download",
+          );
+          await processor.downloadBatch([target], tempSettings);
+        }
+      } else {
+        console.warn("[Content] No matching image found for URL:", srcUrl);
+
+        // 兜底：构造一个虚拟 Item 下载
+        const fallbackItem = {
+          id: "fallback-" + Date.now(),
+          url: srcUrl,
+          width: 0,
+          height: 0,
+          format: (targetFormat.toUpperCase() || "UNKNOWN") as ImageFormat,
+          sizeKB: 0,
+          isSelected: true,
+          pageTitle: document.title,
+          pageUrl: window.location.href,
+        };
+        await processor.downloadBatch(
+          [fallbackItem],
+          await adapter.getSettings(),
+        );
+      }
+    } catch (err) {
+      console.error("[Content] Context save error:", err);
+    }
+  }
+});
+
+// 开发模式下直接启动
+if (import.meta.env.DEV) {
+  init();
+}
+
+// 初始化悬浮按钮控制器
+const isExtension = typeof chrome !== "undefined" && !!chrome.runtime?.id;
+const adapter = isExtension ? new ExtensionAdapter() : new WebAdapter();
+const sniffer = new Sniffer();
+const processor = new ImageProcessor(adapter);
+const floatingController = new FloatingController(sniffer, processor);
+floatingController.init();
