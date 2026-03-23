@@ -180,7 +180,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   }))
                 }
                 rightSection={
-                  <Tooltip label={t("viewVariables")}>
+                  <Tooltip
+                    label={t("viewVariables")}
+                    portalProps={{ target: portalNode || undefined }}
+                  >
                     <ActionIcon variant="transparent" color="gray">
                       <IconVariable size={16} />
                     </ActionIcon>
@@ -259,7 +262,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               title={t("secUiBehavior")}
               iconColor="var(--mantine-color-indigo-filled)"
             >
-              <SimpleGrid cols={2} spacing="md">
+              <SimpleGrid cols={{ base: 1, xs: 2, sm: 1, lg: 2 }} spacing="lg">
                 <SettingSwitch
                   label={t("prefShowInSidebar")}
                   checked={settings.interfaceBehavior.showInSidebar}
@@ -327,8 +330,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 />
               </SimpleGrid>
               <Stack mt="md" gap="xs">
-                <Group justify="space-between">
-                  <Text size="sm">{t("prefShowHoverBtn")}</Text>
+                <Group justify="space-between" wrap="nowrap">
+                  <Text size="sm" fw={500}>
+                    {t("prefShowHoverBtn")}
+                  </Text>
                   <SettingSwitch
                     checked={settings.interfaceBehavior.showFloatingButton}
                     onChange={(e) =>
@@ -519,7 +524,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               title={t("secDownloadControl")}
               iconColor="var(--mantine-color-blue-filled)"
             >
-              <SimpleGrid cols={2} spacing="md">
+              <SimpleGrid cols={{ base: 1, xs: 2, sm: 1, lg: 2 }} spacing="lg">
                 <PortalSelect
                   label={t("prefConflictResolution")}
                   value={settings.downloadControl.conflictResolution}

@@ -43,8 +43,8 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   // Grid or Columns
   const cols =
     layout === "columns"
-      ? { base: 1, sm: 2 }
-      : { base: 1, xs: 2, sm: 3, md: 4, lg: 5 };
+      ? { base: 2, sm: 2 }
+      : { base: 2, xs: 2, sm: 3, md: 4, lg: 5 };
 
   return (
     <ScrollArea style={{ flex: 1 }} p="md" pt="lg" pb="xl">

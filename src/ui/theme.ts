@@ -1,6 +1,6 @@
 import { createTheme } from "@mantine/core";
 
-export const FONT_STACK = "Inter, system-ui, -apple-system, sans-serif";
+export const FONT_STACK = "Outfit, system-ui, -apple-system, sans-serif";
 
 export const theme = createTheme({
   fontFamily: FONT_STACK,

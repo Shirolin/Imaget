@@ -26,6 +26,7 @@ interface HeaderProps {
   isScanning?: boolean;
   activeTab: "images" | "settings";
   onTabChange: (tab: "images" | "settings") => void;
+  portalNode: HTMLDivElement | null;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -35,6 +36,7 @@ const Header: React.FC<HeaderProps> = ({
   isScanning,
   activeTab,
   onTabChange,
+  portalNode,
 }) => {
   return (
     <Group
@@ -52,7 +54,12 @@ const Header: React.FC<HeaderProps> = ({
           IMAGET
         </Title>
         <Group gap={4} ml="xs">
-          <Tooltip label={t("labelGithub")} position="bottom" withArrow>
+          <Tooltip
+            label={t("labelGithub")}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
             <ActionIcon
               component="a"
               href="https://github.com/Shirolin/Imaget"
@@ -64,7 +71,12 @@ const Header: React.FC<HeaderProps> = ({
               <IconBrandGithub size={16} />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={t("labelDonate")} position="bottom" withArrow>
+          <Tooltip
+            label={t("labelDonate")}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
             <ActionIcon
               component="a"
               href="https://ko-fi.com/shirolin"
@@ -136,6 +148,7 @@ const Header: React.FC<HeaderProps> = ({
               position="bottom"
               withArrow
               hiddenFrom="sm"
+              portalProps={{ target: portalNode || undefined }}
             >
               <ActionIcon
                 variant="light"

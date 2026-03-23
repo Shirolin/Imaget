@@ -21,9 +21,14 @@ import { t } from "../../core/utils/i18n";
 interface ImagePreviewProps {
   url: string;
   onClose: () => void;
+  portalNode: HTMLDivElement | null;
 }
 
-export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
+export const ImagePreview: React.FC<ImagePreviewProps> = ({
+  url,
+  onClose,
+  portalNode,
+}) => {
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -198,7 +203,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
           }}
         >
           <Group gap={4} wrap="nowrap">
-            <Tooltip label={t("labelZoomOut")} position="top" openDelay={500}>
+            <Tooltip
+              label={t("labelZoomOut")}
+              position="top"
+              openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
+            >
               <ActionIcon
                 variant="subtle"
                 color="gray.2"
@@ -214,7 +224,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
               {Math.round(scale * 100)}%
             </Text>
 
-            <Tooltip label={t("labelZoomIn")} position="top" openDelay={500}>
+            <Tooltip
+              label={t("labelZoomIn")}
+              position="top"
+              openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
+            >
               <ActionIcon
                 variant="subtle"
                 color="gray.2"
@@ -230,7 +245,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
           <Box w={1} h={20} bg="dark.4" visibleFrom="xs" />
 
           <Group gap={4} wrap="nowrap">
-            <Tooltip label={t("labelRotate")} position="top" openDelay={500}>
+            <Tooltip
+              label={t("labelRotate")}
+              position="top"
+              openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
+            >
               <ActionIcon
                 variant="subtle"
                 color="gray.2"
@@ -242,7 +262,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
               </ActionIcon>
             </Tooltip>
 
-            <Tooltip label={t("labelFit")} position="top" openDelay={500}>
+            <Tooltip
+              label={t("labelFit")}
+              position="top"
+              openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
+            >
               <ActionIcon
                 variant="subtle"
                 color="gray.2"
@@ -258,6 +283,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
               label={t("labelOriginalSize")}
               position="top"
               openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
             >
               <ActionIcon
                 variant="subtle"
@@ -273,7 +299,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ url, onClose }) => {
 
           <Box w={1} h={20} bg="dark.4" />
 
-          <Tooltip label={t("labelCloseEsc")} position="top" openDelay={500}>
+          <Tooltip
+            label={t("labelCloseEsc")}
+            position="top"
+            openDelay={500}
+            portalProps={{ target: portalNode || undefined }}
+          >
             <ActionIcon
               variant="subtle"
               color="red.6"

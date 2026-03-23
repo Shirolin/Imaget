@@ -276,11 +276,11 @@ const App: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      <div
+      <Box
         ref={setPortalNode}
+        pos="absolute"
+        inset={0}
         style={{
-          position: "absolute",
-          inset: 0,
           zIndex: 99999,
           pointerEvents: "none",
         }}
@@ -306,11 +306,11 @@ const App: React.FC = () => {
           bg="dark.7"
           style={{
             borderRadius: "var(--mantine-radius-lg)",
+            boxShadow: "var(--mantine-shadow-xl)",
             margin: 0,
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
-            boxShadow: "var(--mantine-shadow-xl)",
             border: "1px solid var(--mantine-color-dark-4)",
             zIndex: 1,
             transition: "all 0.2s ease",
@@ -323,6 +323,7 @@ const App: React.FC = () => {
             isScanning={loading}
             activeTab={activeTab}
             onTabChange={setActiveTab}
+            portalNode={portalNode}
           />
           {progress > 0 && (
             <Progress
@@ -436,6 +437,7 @@ const App: React.FC = () => {
             <ImagePreview
               url={previewUrl}
               onClose={() => setPreviewUrl(null)}
+              portalNode={portalNode}
             />
           )}
         </Modal>
