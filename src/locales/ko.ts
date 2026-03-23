@@ -71,8 +71,11 @@ export default {
   prefConflictPrompt: { message: "확인" },
   prefShowInSidebar: { message: "사이드바에 표시" },
   prefHideDownloadWarning: { message: "다운로드 경고 숨기기" },
-  prefSearchAllFrames: { message: "모든 프레임 검색" },
+  prefSearchAllFrames: { message: "모든 프레임 스캔 (iFrame)" },
   prefIdentifyBackgroundImages: { message: "배경 이미지 식별" },
+  prefIdentifyBlobImages: {
+    message: "Blob 동적 리소스 식별 (Telegram, Discord 등)",
+  },
   prefMinImageSize: { message: "플로팅 버튼 최소 크기" },
   sizeAlways: { message: "항상 표시" },
   prefTargetFormat: { message: "대상 형식" },

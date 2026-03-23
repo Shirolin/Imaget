@@ -67,8 +67,11 @@ export default {
   prefConflictPrompt: { message: "詢問我" },
   prefShowInSidebar: { message: "在側邊欄顯示" },
   prefHideDownloadWarning: { message: "關閉多文件下載警告" },
-  prefSearchAllFrames: { message: "搜索所有框架" },
+  prefSearchAllFrames: { message: "搜尋所有框架" },
   prefIdentifyBackgroundImages: { message: "識別背景圖片" },
+  prefIdentifyBlobImages: {
+    message: "識別 Blob 動態資源 (適用於 Telegram / Discord 等)",
+  },
   prefMinImageSize: { message: "懸浮按鈕顯示閾值" },
   sizeAlways: { message: "總是顯示" },
   prefTargetFormat: { message: "目標格式轉換" },

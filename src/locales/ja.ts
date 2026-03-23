@@ -78,6 +78,9 @@ export default {
   prefHideDownloadWarning: { message: "ダウンロード警告を非表示" },
   prefSearchAllFrames: { message: "すべてのフレームを検索" },
   prefIdentifyBackgroundImages: { message: "背景画像を識別" },
+  prefIdentifyBlobImages: {
+    message: "Blob動的リソースの識別 (Telegram、Discordなど)",
+  },
   prefMinImageSize: { message: "ボタン表示の最小サイズ" },
   sizeAlways: { message: "常に表示" },
   prefTargetFormat: { message: "出力形式" },

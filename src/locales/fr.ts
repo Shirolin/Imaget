@@ -76,9 +76,14 @@ export default {
   prefConflictPrompt: { message: "Me Demander" },
   prefShowInSidebar: { message: "Afficher en Sidebar" },
   prefHideDownloadWarning: { message: "Masquer l'Avertissement" },
-  prefSearchAllFrames: { message: "Chercher dans tous les Frames" },
-  prefIdentifyBackgroundImages: { message: "Identifier les Images de Fond" },
-  prefMinImageSize: { message: "Taille Min. pour Bouton Flottant" },
+  prefSearchAllFrames: { message: "Rechercher tous les cadres" },
+  prefIdentifyBackgroundImages: { message: "Identifier les images de fond" },
+  prefIdentifyBlobImages: {
+    message: "Identifier les ressources Blob (pour Telegram, Discord, etc.)",
+  },
+  prefMinImageSize: {
+    message: "Taille minimale de l'image pour le bouton flottant",
+  },
   sizeAlways: { message: "Toujours Afficher" },
   prefTargetFormat: { message: "Format de Destination" },
   prefQuality: { message: "Qualité" },

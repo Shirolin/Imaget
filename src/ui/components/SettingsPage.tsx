@@ -312,6 +312,19 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     }))
                   }
                 />
+                <SettingSwitch
+                  label={t("prefIdentifyBlobImages")}
+                  checked={settings.interfaceBehavior.identifyBlobImages}
+                  onChange={(e) =>
+                    onUpdate((prev) => ({
+                      ...prev,
+                      interfaceBehavior: {
+                        ...prev.interfaceBehavior,
+                        identifyBlobImages: e.currentTarget.checked,
+                      },
+                    }))
+                  }
+                />
               </SimpleGrid>
               <Stack mt="md" gap="xs">
                 <Group justify="space-between">

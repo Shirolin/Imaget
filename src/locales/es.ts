@@ -80,6 +80,9 @@ export default {
   prefHideDownloadWarning: { message: "Ocultar Advertencia" },
   prefSearchAllFrames: { message: "Buscar en todos los Frames" },
   prefIdentifyBackgroundImages: { message: "Identificar Imágenes de Fondo" },
+  prefIdentifyBlobImages: {
+    message: "Identificar recursos Blob (para Telegram, Discord, etc.)",
+  },
   prefMinImageSize: { message: "Tamaño Mín. para Botón Flotante" },
   sizeAlways: { message: "Mostrar Siempre" },
   prefTargetFormat: { message: "Formato de Destino" },

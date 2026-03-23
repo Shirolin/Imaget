@@ -69,6 +69,9 @@ export default {
   prefHideDownloadWarning: { message: "关闭多文件下载警告" },
   prefSearchAllFrames: { message: "搜索所有框架" },
   prefIdentifyBackgroundImages: { message: "识别背景图片" },
+  prefIdentifyBlobImages: {
+    message: "识别 Blob 动态资源 (适用于 Telegram / Discord 等)",
+  },
   prefMinImageSize: { message: "悬浮按钮显示阈值" },
   sizeAlways: { message: "总是显示" },
   prefTargetFormat: { message: "目标格式转换" },

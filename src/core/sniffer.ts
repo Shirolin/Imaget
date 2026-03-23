@@ -173,6 +173,7 @@ export class Sniffer {
     interfaceBehavior: {
       searchAllFrames: boolean;
       identifyBackgroundImages: boolean;
+      identifyBlobImages: boolean;
     };
   }): Promise<ImageItem[]> {
     const urls = new Set<string>();
@@ -181,6 +182,8 @@ export class Sniffer {
       settings?.interfaceBehavior?.searchAllFrames ?? true;
     const identifyBackground =
       settings?.interfaceBehavior?.identifyBackgroundImages ?? true;
+    const identifyBlob =
+      settings?.interfaceBehavior?.identifyBlobImages ?? false;
 
     const [domUrls, shadowUrls, perfUrls, svgUrls] = await Promise.all([
       this.sniffDOMContent(document, identifyBackground),
@@ -188,9 +191,13 @@ export class Sniffer {
       Promise.resolve(this.sniffPerformance()),
       Promise.resolve(this.sniffSVGElements()),
     ]);
-
     [...domUrls, ...shadowUrls, ...perfUrls, ...svgUrls].forEach((url) => {
-      if (url && (url.startsWith("http") || url.startsWith("data:"))) {
+      if (
+        url &&
+        (url.startsWith("http") ||
+          url.startsWith("data:") ||
+          (identifyBlob && url.startsWith("blob:")))
+      ) {
         urls.add(url);
       }
     });
@@ -241,10 +248,11 @@ export class Sniffer {
         const isUrlExternal =
           url.startsWith("http") && !url.includes(window.location.host);
         const isExtension = window.location.protocol === "chrome-extension:";
+        const isBlob = url.startsWith("blob:");
 
-        if (isExtension || !isUrlExternal) {
+        if (isExtension || !isUrlExternal || isBlob) {
           const response = await fetch(url, {
-            method: "HEAD",
+            method: isBlob ? "GET" : "HEAD",
             cache: "no-cache",
           });
           if (response.ok) {

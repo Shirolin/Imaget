@@ -77,6 +77,9 @@ export default {
   prefHideDownloadWarning: { message: "Hide Download Warning" },
   prefSearchAllFrames: { message: "Search All Frames" },
   prefIdentifyBackgroundImages: { message: "Identify Background Images" },
+  prefIdentifyBlobImages: {
+    message: "Identify Blob Resources (for Telegram, Discord, etc.)",
+  },
   prefMinImageSize: { message: "Min Image Size for Floating Button" },
   sizeAlways: { message: "Always Show" },
   prefTargetFormat: { message: "Target Format" },

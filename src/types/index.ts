@@ -59,6 +59,7 @@ export interface Settings {
     hideDownloadWarning: boolean;
     searchAllFrames: boolean;
     identifyBackgroundImages: boolean;
+    identifyBlobImages: boolean;
     showFloatingButton: boolean;
     minImageSize: number;
   };
@@ -90,6 +91,7 @@ export const defaultSettings: Settings = {
     hideDownloadWarning: false,
     searchAllFrames: true,
     identifyBackgroundImages: true,
+    identifyBlobImages: false,
     showFloatingButton: true,
     minImageSize: 128,
   },
