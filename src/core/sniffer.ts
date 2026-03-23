@@ -1,5 +1,6 @@
 import { ImageItem, ImageFormat } from "../types";
 import { UrlResolver } from "./utils/url-resolver";
+import { ImageTypeDetector } from "./utils/image-type-detector";
 
 export class Sniffer {
   /**
@@ -252,11 +253,7 @@ export class Sniffer {
 
             const contentType = response.headers.get("content-type");
             if (contentType) {
-              if (contentType.includes("png")) format = "PNG";
-              else if (contentType.includes("jpeg")) format = "JPG";
-              else if (contentType.includes("webp")) format = "WEBP";
-              else if (contentType.includes("svg")) format = "SVG";
-              else if (contentType.includes("gif")) format = "GIF";
+              format = ImageTypeDetector.getFormatFromMimeType(contentType);
             }
           }
         }
@@ -264,15 +261,9 @@ export class Sniffer {
         // 忽略 fetch 失败
       }
 
-      // 兜底策略
+      // 兜底策略：使用智能 URL 解析
       if (format === "UNKNOWN") {
-        const ext = url.split(".").pop()?.split(/[?#]/)[0].toUpperCase();
-        if (ext === "JPG" || ext === "JPEG") format = "JPG";
-        else if (ext === "PNG") format = "PNG";
-        else if (ext === "WEBP") format = "WEBP";
-        else if (ext === "SVG") format = "SVG";
-        else if (ext === "GIF") format = "GIF";
-        else if (url.includes("picsum.photos")) format = "JPG";
+        format = ImageTypeDetector.getFormatFromUrl(url);
       }
 
       return {

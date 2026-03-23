@@ -1,4 +1,13 @@
-export type ImageFormat = "PNG" | "JPG" | "WEBP" | "SVG" | "GIF" | "UNKNOWN";
+export type ImageFormat =
+  | "PNG"
+  | "JPG"
+  | "WEBP"
+  | "SVG"
+  | "GIF"
+  | "AVIF"
+  | "BMP"
+  | "ICO"
+  | "UNKNOWN";
 export type AspectRatioType = "all" | "square" | "landscape" | "portrait";
 
 export interface ImageItem {
