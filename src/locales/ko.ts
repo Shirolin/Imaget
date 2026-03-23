@@ -9,7 +9,10 @@ export default {
   selectAll: { message: "전체 선택" },
   deselectAll: { message: "전체 해제" },
   downloadSelected: { message: "선택 항목 다운로드 ($1)" },
-  selectedCount: { message: "$1 / $2 선택됨" },
+  selectedCount: { message: "$1 선택 / $2 필터 / $3 전체" },
+  statTotal: { message: "총 발견됨" },
+  statFilter: { message: "필터링됨" },
+  statSelected: { message: "선택됨" },
   noImages: { message: "이미지를 찾을 수 없습니다" },
   noImagesHint: {
     message: "필터 설정을 조정하거나 페이지를 새로고침 해보세요",

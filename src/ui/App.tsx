@@ -370,12 +370,14 @@ const App: React.FC = () => {
 
                   <Footer
                     selectedCount={selectedCount}
+                    filteredCount={filteredImages.length}
                     totalCount={images.length}
                     onSelectAll={selectAll}
                     onDeselectAll={deselectAll}
                     onDownload={handleDownload}
                     onZip={handleZip}
                     loading={loading}
+                    portalNode={portalNode}
                   />
                 </Box>
               )}

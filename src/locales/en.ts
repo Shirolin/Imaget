@@ -9,7 +9,10 @@ export default {
   selectAll: { message: "Select All" },
   deselectAll: { message: "Deselect All" },
   downloadSelected: { message: "Download ($1)" },
-  selectedCount: { message: "Selected $1 / $2" },
+  selectedCount: { message: "Selected $1 / Matched $2 / Total $3" },
+  statTotal: { message: "Total Discovered" },
+  statFilter: { message: "Matched Filter" },
+  statSelected: { message: "Current Selection" },
   noImages: { message: "No images found" },
   noImagesHint: {
     message: "Try adjusting filter options or refreshing the page",

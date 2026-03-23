@@ -10,7 +10,10 @@ export default {
   selectAll: { message: "すべて選択" },
   deselectAll: { message: "選択を解除" },
   downloadSelected: { message: "選択項目をダウンロード ($1)" },
-  selectedCount: { message: "選択中 $1 / $2" },
+  selectedCount: { message: "選択 $1 / 抽出 $2 / 全 $3" },
+  statTotal: { message: "合計検出" },
+  statFilter: { message: "フィルター一致" },
+  statSelected: { message: "現在選択中" },
   noImages: { message: "画像が見つかりません" },
   noImagesHint: {
     message: "フィルター設定を調整するか、ページを更新してください",

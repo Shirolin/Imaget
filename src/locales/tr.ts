@@ -10,7 +10,10 @@ export default {
   selectAll: { message: "Tümünü Seç" },
   deselectAll: { message: "Seçimi Kaldır" },
   downloadSelected: { message: "Seçilenleri İndir ($1)" },
-  selectedCount: { message: "$1 / $2 seçildi" },
+  selectedCount: { message: "$1 seçili / $2 filtreli / $3 toplam" },
+  statTotal: { message: "Toplam keşfedilen" },
+  statFilter: { message: "Filtrelendi" },
+  statSelected: { message: "Seçildi" },
   noImages: { message: "Resim bulunamadı" },
   noImagesHint: {
     message: "Filtre seçeneklerini ayarlamayı veya sayfayı yenilemeyi deneyin",

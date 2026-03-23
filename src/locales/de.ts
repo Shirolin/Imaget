@@ -10,7 +10,10 @@ export default {
   selectAll: { message: "Alle auswählen" },
   deselectAll: { message: "Auswahl aufheben" },
   downloadSelected: { message: "Ausgewählte herunterladen ($1)" },
-  selectedCount: { message: "$1 / $2 ausgewählt" },
+  selectedCount: { message: "$1 ausgewählt / $2 gefiltert / $3 gesamt" },
+  statTotal: { message: "Gesamt entdeckt" },
+  statFilter: { message: "Gefiltert" },
+  statSelected: { message: "Ausgewählt" },
   noImages: { message: "Keine Bilder gefunden" },
   noImagesHint: {
     message: "Versuchen Sie, die Filter anzupassen oder die Seite neu zu laden",
