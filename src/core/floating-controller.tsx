@@ -114,8 +114,8 @@ export class FloatingController {
           s.backgroundImage &&
           s.backgroundImage !== "none" &&
           s.backgroundImage.startsWith("url(") &&
-          el.offsetWidth > 20 &&
-          el.offsetHeight > 20
+          el.offsetWidth >= this.settings.interfaceBehavior.minImageSize &&
+          el.offsetHeight >= this.settings.interfaceBehavior.minImageSize
         ) {
           target = el;
           break;
@@ -131,7 +131,9 @@ export class FloatingController {
       this.settings.interfaceBehavior.identifyBackgroundImages &&
       finalStyle.backgroundImage &&
       finalStyle.backgroundImage !== "none" &&
-      finalStyle.backgroundImage.startsWith("url(");
+      finalStyle.backgroundImage.startsWith("url(") &&
+      finalTarget.offsetWidth >= this.settings.interfaceBehavior.minImageSize &&
+      finalTarget.offsetHeight >= this.settings.interfaceBehavior.minImageSize;
 
     if (!isImg && !isBg) return;
 
@@ -149,8 +151,8 @@ export class FloatingController {
       const rect = finalTarget.getBoundingClientRect();
       const minSize = this.settings.interfaceBehavior.minImageSize || 0;
 
-      // 如果宽高都小于阈值，则不显示
-      if (rect.width < minSize && rect.height < minSize) return;
+      // 如果宽高任一维度小于阈值，则不显示
+      if (rect.width < minSize || rect.height < minSize) return;
 
       // 获取图片 URL 并通过 Resolver 获取最高清版本
       const url = UrlResolver.resolveBestUrl(finalTarget);

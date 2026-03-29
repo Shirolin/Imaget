@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import { zipPlugin } from './scripts/plugins/vite-plugin-zip';
+import { manifestPlugin } from './scripts/plugins/vite-plugin-manifest';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    manifestPlugin(),
+    zipPlugin(),
+  ],
   build: {
     rollupOptions: {
       input: {
@@ -16,6 +22,6 @@ export default defineConfig({
         assetFileNames: '[name].[ext]',
       },
     },
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
 });

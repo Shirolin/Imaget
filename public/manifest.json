@@ -3,8 +3,11 @@
   "name": "__MSG_extName__",
   "version": "1.0.0",
   "description": "__MSG_extDesc__",
+  "author": "shirolin",
+  "homepage_url": "https://github.com/Shirolin/New-Imaget",
+  "short_name": "Imaget",
   "default_locale": "en",
-  "permissions": ["downloads", "activeTab", "scripting", "storage", "contextMenus"],
+  "permissions": ["downloads", "activeTab", "storage", "contextMenus"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_title": "Open Imaget"
