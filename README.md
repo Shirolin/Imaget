@@ -11,7 +11,7 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License" />
+    <img src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square" alt="License" />
     <img src="https://img.shields.io/badge/platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine" />
@@ -87,4 +87,4 @@ When pushing tags in `v*` format to GitHub, the [Release Workflow](.github/workf
 
 ## 📄 License
 
-This project is licensed under the [MIT](./LICENSE) License © 2026 shirolin
+This project is licensed under the [GPL-3.0](./LICENSE) License © 2026 shirolin

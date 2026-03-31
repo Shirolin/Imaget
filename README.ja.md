@@ -11,7 +11,7 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License" />
+    <img src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square" alt="License" />
     <img src="https://img.shields.io/badge/platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine" />
@@ -87,4 +87,4 @@ GitHub に `v*` 形式のタグがプッシュされると、[Release ワーク�
 
 ## 📄 ライセンス
 
-このプロジェクトは [MIT](./LICENSE) ライセンスの下で公開されています © 2026 shirolin
+このプロジェクトは [GPL-3.0](./LICENSE) ライセンスの下で公開されています © 2026 shirolin
