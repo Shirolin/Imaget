@@ -15,12 +15,22 @@ export class FloatingController {
   private currentHost: HTMLElement | null = null;
   private currentRoot: ReactDOM.Root | null = null;
   private currentRootElement: HTMLElement | null = null;
+  private isMuted: boolean = false;
+  private settings: Settings = defaultSettings;
+  private observer: MutationObserver | null = null;
   private timer: number | null = null;
   private hideTimer: number | null = null;
   private currentTarget: HTMLElement | null = null;
   private currentUrl: string = "";
-  private isMuted: boolean = false;
-  private settings: Settings = defaultSettings;
+
+  // 🚀 记录鼠标位置与宽限期计时器
+  private lastMouseX: number = 0;
+  private lastMouseY: number = 0;
+  private graceTimer: number | null = null;
+
+  // 🚀 待处理的目标（用于延迟衔接）
+  private pendingTarget: HTMLElement | null = null;
+  private pendingUrl: string = "";
 
   // 记忆最近一次的悬浮目标，以供右键菜单唤起动画
   private lastTarget: HTMLElement | null = null;
@@ -79,7 +89,10 @@ export class FloatingController {
     // 每次 hover 尝试加载最新设置
     await this.loadSettings();
 
-    if (!this.settings.interfaceBehavior.showFloatingButton) return;
+    if (!this.settings.interfaceBehavior.showFloatingButton) {
+      // console.log("[FloatingController] showFloatingButton setting is disabled.");
+      return;
+    }
 
     if (!target || !(target instanceof HTMLElement)) return;
 
@@ -145,39 +158,115 @@ export class FloatingController {
     )
       return;
 
-    if (this.timer) window.clearTimeout(this.timer);
+    // 🚀 识别位移与宽限期逻辑
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const dist = Math.sqrt(
+      Math.pow(mouseX - this.lastMouseX, 2) +
+        Math.pow(mouseY - this.lastMouseY, 2),
+    );
+    this.lastMouseX = mouseX;
+    this.lastMouseY = mouseY;
 
-    this.timer = window.setTimeout(async () => {
-      const rect = finalTarget.getBoundingClientRect();
+    // 🚀 核心逻辑：如果在 50ms 宽限期内且位移很小，视为“同一个目标的 DOM 替换”
+    if (this.graceTimer && dist < 20) {
+      window.clearTimeout(this.graceTimer);
+      this.graceTimer = null;
+
+      this.pendingTarget = finalTarget;
+      this.isHoveringTarget = true; // 恢复悬停状态，避免误隐藏
+
+      if (this.hideTimer) {
+        window.clearTimeout(this.hideTimer);
+        this.hideTimer = null;
+      }
+
+      // 如果浮动按钮已经显示（即 300ms 计时器已完成），无缝移交追踪对象
+      if (!this.timer && this.currentHost) {
+        this.currentTarget = finalTarget;
+        this.lastTarget = finalTarget;
+        this.setupObserver(finalTarget);
+        this.updateFloatingRect(finalTarget.getBoundingClientRect());
+      }
+      return;
+    }
+
+    // 否则：这是一次真正的鼠标移动或新目标触发，清理旧状态并重新开始计时
+    if (this.timer) {
+      window.clearTimeout(this.timer);
+      this.timer = null;
+    }
+    if (this.graceTimer) {
+      window.clearTimeout(this.graceTimer);
+      this.graceTimer = null;
+    }
+
+    this.pendingTarget = finalTarget;
+
+    const triggerLogic = async () => {
+      // 避免 timer 在 50ms 宽限期内误触（例如鼠标刚移出，DOM 尚未替换时）
+      if (this.graceTimer) {
+        this.timer = window.setTimeout(triggerLogic, 50);
+        return;
+      }
+
+      const activeTarget = this.pendingTarget;
+      if (!activeTarget) {
+        this.timer = null;
+        return;
+      }
+
+      const rect = activeTarget.getBoundingClientRect();
       const minSize = this.settings.interfaceBehavior.minImageSize || 0;
 
-      // 如果宽高任一维度小于阈值，则不显示
-      if (rect.width < minSize || rect.height < minSize) return;
+      if (rect.width < minSize || rect.height < minSize) {
+        this.timer = null;
+        return;
+      }
 
-      // 获取图片 URL 并通过 Resolver 获取最高清版本
-      const url = UrlResolver.resolveBestUrl(finalTarget);
+      const url = UrlResolver.resolveBestUrl(activeTarget);
+      if (!url || url.startsWith("data:")) {
+        this.timer = null;
+        return;
+      }
 
-      if (!url || url.startsWith("data:")) return;
-
-      // 如果已经在显示同一个目标的按钮，则不重新创建
       if (this.currentHost && this.currentHost.dataset.targetUrl === url) {
         if (this.hideTimer) {
           window.clearTimeout(this.hideTimer);
           this.hideTimer = null;
         }
+        this.currentTarget = activeTarget;
+        this.lastTarget = activeTarget;
+        this.lastUrl = url;
+        this.isHoveringTarget = true;
+        this.setupObserver(activeTarget);
+        this.updateFloatingRect(rect);
+        this.timer = null;
         return;
       }
 
-      this.currentTarget = finalTarget;
-      this.lastTarget = finalTarget;
+      this.currentTarget = activeTarget;
+      this.lastTarget = activeTarget;
       this.lastUrl = url;
       this.isHoveringTarget = true;
-      this.showFloating(finalTarget, url, rect);
-    }, 300);
+      this.showFloating(activeTarget, url, rect);
+      this.timer = null;
+    };
+
+    this.timer = window.setTimeout(triggerLogic, 300);
   }
 
   private handleMouseOut(e: MouseEvent) {
-    if (this.timer) window.clearTimeout(this.timer);
+    // 🚀 计时器宽限期处理：避免 DOM 替换导致计时归零以及防误触发关闭
+    if (this.graceTimer) window.clearTimeout(this.graceTimer);
+    this.graceTimer = window.setTimeout(() => {
+      if (this.timer) {
+        window.clearTimeout(this.timer);
+        this.timer = null;
+      }
+      this.graceTimer = null;
+      this.pendingTarget = null;
+    }, 50); // 50ms 宽限，足以应对大多数框架的 DOM 变更
 
     // 如果移到了按钮容器内，或者移回了原图片，不要隐藏
     if (
@@ -211,9 +300,21 @@ export class FloatingController {
     }, 500); // 增加缓冲时间到 500ms
   }
 
+  private updateFloatingRect(rect: DOMRect) {
+    if (!this.currentHost) return;
+    Object.assign(this.currentHost.style, {
+      left: `${Math.round(rect.left + window.scrollX)}px`,
+      top: `${Math.round(rect.top + window.scrollY)}px`,
+      width: `${Math.round(rect.width)}px`,
+      height: `${Math.round(rect.height)}px`,
+    });
+  }
+
   private showFloating(_target: HTMLElement, url: string, rect: DOMRect) {
     // 🚀 下载进行中时不销毁当前按钮，直接忽略新目标的激活
-    if (this.status !== "idle") return;
+    if (this.status !== "idle") {
+      return;
+    }
 
     this.hideFloatingImmediate();
 
@@ -225,16 +326,15 @@ export class FloatingController {
     Object.assign(host.style, {
       all: "initial", // 彻底隔离外界干扰
       position: "absolute",
-      left: `${Math.round(rect.left + window.scrollX)}px`,
-      top: `${Math.round(rect.top + window.scrollY)}px`,
-      width: `${Math.round(rect.width)}px`,
-      height: `${Math.round(rect.height)}px`,
       pointerEvents: "none",
       zIndex: "2147483646",
     });
 
     document.body.appendChild(host);
     this.currentHost = host;
+
+    // 初始化位置与大小
+    this.updateFloatingRect(rect);
 
     const shadow = host.attachShadow({ mode: "open" });
 
@@ -255,6 +355,27 @@ export class FloatingController {
     this.currentRootElement = rootElement;
     this.currentRoot = ReactDOM.createRoot(rootElement);
     this.render();
+
+    // 🚀 绑定 MutationObserver 监听 URL 动态变更
+    this.setupObserver(_target);
+  }
+
+  private setupObserver(target: HTMLElement) {
+    if (this.observer) this.observer.disconnect();
+
+    this.observer = new MutationObserver(() => {
+      const newUrl = UrlResolver.resolveBestUrl(target);
+      if (newUrl && newUrl !== this.currentUrl) {
+        this.currentUrl = newUrl;
+        if (this.currentHost) this.currentHost.dataset.targetUrl = newUrl;
+        this.render();
+      }
+    });
+
+    this.observer.observe(target, {
+      attributes: true,
+      attributeFilter: ["src", "srcset"],
+    });
   }
 
   /**
@@ -300,6 +421,17 @@ export class FloatingController {
       }
       this.currentHost = null;
     }
+
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+
+    if (this.graceTimer) {
+      window.clearTimeout(this.graceTimer);
+      this.graceTimer = null;
+    }
+
     this.currentTarget = null;
     if (this.hideTimer) {
       window.clearTimeout(this.hideTimer);
