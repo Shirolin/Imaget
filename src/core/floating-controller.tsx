@@ -71,6 +71,28 @@ export class FloatingController {
     // 使用 pointerover 以更好地处理触控和现代浏览器的多种交互
     document.addEventListener("pointerover", this.handleMouseOver, true);
     document.addEventListener("pointerout", this.handleMouseOut, true);
+
+    // 🚀 监听存储变更以实现跨标签页同步
+    if (typeof chrome !== "undefined" && chrome.storage?.onChanged) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === "local" && changes.imaget_settings) {
+          const newSettings = changes.imaget_settings.newValue as Settings;
+          if (newSettings) {
+            const oldDisabled =
+              this.settings.interfaceBehavior.disabledDomains || [];
+            const newDisabled = newSettings.interfaceBehavior.disabledDomains || [];
+            const currentHost = window.location.hostname;
+
+            // 如果当前域名从黑名单中移除了，自动取消静音
+            if (oldDisabled.includes(currentHost) && !newDisabled.includes(currentHost)) {
+              this.isMuted = false;
+            }
+
+            this.settings = newSettings;
+          }
+        }
+      });
+    }
   }
 
   public destroy() {
@@ -85,9 +107,6 @@ export class FloatingController {
     let target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
     if (this.isMuted) return;
-
-    // 每次 hover 尝试加载最新设置
-    await this.loadSettings();
 
     if (!this.settings.interfaceBehavior.showFloatingButton) {
       // console.log("[FloatingController] showFloatingButton setting is disabled.");

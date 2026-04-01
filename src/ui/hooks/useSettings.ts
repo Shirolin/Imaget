@@ -30,6 +30,47 @@ export function useSettings() {
 
   useEffect(() => {
     loadSettings();
+
+    // Listen for storage changes from other contexts (e.g. content script -> UI)
+    if (
+      typeof chrome !== "undefined" &&
+      chrome.storage &&
+      chrome.storage.onChanged
+    ) {
+      const handleStorageChange = (
+        changes: { [key: string]: chrome.storage.StorageChange },
+        areaName: string,
+      ) => {
+        if (areaName === "local" && changes.imaget_settings) {
+          const newValue = changes.imaget_settings.newValue;
+          if (newValue) {
+            setSettings((prev) => {
+              // Deep compare to avoid unnecessary re-renders if the value is the same
+              const merged = mergeDeep(defaultSettings, newValue);
+              if (JSON.stringify(merged) === JSON.stringify(prev)) return prev;
+              return merged;
+            });
+          }
+        }
+      };
+
+      chrome.storage.onChanged.addListener(handleStorageChange);
+      return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+    } else {
+      // For web environment (localStorage), we can listen to the 'storage' event
+      const handleLocalStorageChange = (e: StorageEvent) => {
+        if (e.key === "imaget_settings" && e.newValue) {
+          setSettings((prev) => {
+            const merged = mergeDeep(defaultSettings, JSON.parse(e.newValue!));
+            if (JSON.stringify(merged) === JSON.stringify(prev)) return prev;
+            return merged;
+          });
+        }
+      };
+      window.addEventListener("storage", handleLocalStorageChange);
+      return () =>
+        window.removeEventListener("storage", handleLocalStorageChange);
+    }
   }, [loadSettings]);
 
   useEffect(() => {
