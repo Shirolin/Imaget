@@ -122,7 +122,7 @@ export default {
   labelFloatingSuccess: { message: "Erfolgreich heruntergeladen" },
   labelFloatingError: { message: "Download fehlgeschlagen" },
 
-  labelFloatingClose: { message: "Vorübergehend ausblenden" },
+  labelFloatingClose: { message: "Button vorübergehend ausblenden" },
   labelZoomOut: { message: "Verkleinern" },
   labelZoomIn: { message: "Vergrößern" },
   labelRotate: { message: "90° drehen" },
@@ -158,4 +158,5 @@ export default {
   descDisabledDomains: { message: "Der schwebende Button wird auf diesen Websites nicht angezeigt" },
   btnRemoveDomain: { message: "Entfernen" },
   noDisabledDomains: { message: "Keine deaktivierten Websites" },
+  labelFloatingHidePermanent: { message: "Schwebendes Button-Feature dauerhaft deaktivieren" },
 };

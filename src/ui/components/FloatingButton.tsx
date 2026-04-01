@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ActionIcon, Box, Tooltip, Transition } from "@mantine/core";
-import { IconDownload, IconX, IconCheck, IconBan } from "@tabler/icons-react";
+import { IconDownload, IconX, IconCheck, IconBan, IconEyeOff } from "@tabler/icons-react";
 import { t } from "../../core/utils/i18n";
 
 // ==============================================
@@ -13,6 +13,7 @@ interface FloatingButtonProps {
   onDownload: () => void;
   onClose: () => void;
   onDisable?: () => void;
+  onHidePermanent?: () => void;
 }
 
 // ==============================================
@@ -47,6 +48,23 @@ const GlobalAnimations = () => (
       -webkit-font-smoothing: antialiased;
       will-change: transform;
       transform: translate3d(0, 0, 0);
+    }
+
+    /* 🚀 增加透明桥接层，防止鼠标移动到子按钮过程中因间隙导致闪烁 */
+    .imaget-glass-wrapper::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -30px;
+      right: -30px;
+      bottom: -50px;
+      background: transparent;
+      pointer-events: none;
+      z-index: -2;
+    }
+    
+    .imaget-glass-wrapper:hover::after {
+      pointer-events: auto;
     }
 
     .imaget-glass-button {
@@ -92,7 +110,6 @@ const GlobalAnimations = () => (
       transition: height 0.3s ease-out, opacity 0.5s ease 0.1s;
     }
 
-    /* 🚀 下载进行中和成功/失败后：无论鼠标是否悬停，始终保持展开状态 */
     .imaget-glass-button[data-status="downloading"],
     .imaget-glass-button[data-status="error"] {
       background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
@@ -102,7 +119,6 @@ const GlobalAnimations = () => (
       transform: scale(1.2) translate3d(0, 0, 0) !important;
     }
 
-    /* 错误状态：红色玻璃主题 */
     .imaget-glass-button[data-status="error"] {
       background: color-mix(in srgb, var(--mantine-color-red-6), transparent 72%) !important;
       box-shadow: 0 0 20px color-mix(in srgb, var(--mantine-color-red-6), transparent 50%), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-red-4), transparent 40%) !important;
@@ -115,8 +131,6 @@ const GlobalAnimations = () => (
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 60%), inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 50%) !important;
       transform: scale(1.2) translate3d(0, 0, 0) !important;
     }
-
-
 
     .imaget-glass-wrapper:hover .imaget-icon-inner {
       animation: imaget-icon-pulse 2s infinite ease-in-out !important;
@@ -282,12 +296,12 @@ const CloseAction = ({
   <Transition
     mounted={visible}
     transition={{
-      in: { opacity: 1, transform: "translateY(0)" },
-      out: { opacity: 0, transform: "translateY(-8px)" },
+      in: { opacity: 1, transform: "translate(26px, 34px) scale(1)" },
+      out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
       transitionProperty: "transform, opacity",
     }}
-    duration={300}
-    timingFunction="cubic-bezier(0.16, 1, 0.3, 1)"
+    duration={400}
+    timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
   >
     {(styles) => (
       <Tooltip
@@ -301,7 +315,7 @@ const CloseAction = ({
         <ActionIcon
           variant="subtle"
           color="gray.5"
-          size={18}
+          size={20}
           radius="xl"
           onClick={(e) => {
             e.stopPropagation();
@@ -311,22 +325,22 @@ const CloseAction = ({
           style={{
             ...styles,
             position: "absolute",
-            bottom: -24,
-            right: 11,
-            backgroundColor: "rgba(0, 0, 0, 0.35)",
+            top: 10,
+            left: 10,
+            backgroundColor: "rgba(0, 0, 0, 0.45)",
             backdropFilter: "blur(8px)",
             border:
               "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-
+            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+            zIndex: -1,
             transition:
               styles.transition +
               ", background-color 0.2s ease, transform 0.2s ease",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(26px, 34px) scale(1.2)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(26px, 34px) scale(1)")}
         >
-          <IconX size={10} stroke={3} />
+          <IconX size={12} stroke={3} />
         </ActionIcon>
       </Tooltip>
     )}
@@ -347,12 +361,13 @@ const DisableAction = ({
     <Transition
       mounted={visible}
       transition={{
-        in: { opacity: 1, transform: "translateY(0)" },
-        out: { opacity: 0, transform: "translateY(-8px)" },
+        in: { opacity: 1, transform: "translate(0, 40px) scale(1)" },
+        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
         transitionProperty: "transform, opacity",
       }}
-      duration={300}
-      timingFunction="cubic-bezier(0.16, 1, 0.3, 1)"
+      duration={400}
+      delay={40}
+      timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
     >
       {(styles) => (
         <Tooltip
@@ -366,7 +381,7 @@ const DisableAction = ({
           <ActionIcon
             variant="subtle"
             color="red.4"
-            size={18}
+            size={20}
             radius="xl"
             onClick={(e) => {
               e.stopPropagation();
@@ -376,22 +391,89 @@ const DisableAction = ({
             style={{
               ...styles,
               position: "absolute",
-              bottom: -24,
-              right: 33, // Shifted to the left of CloseAction
-              backgroundColor: "rgba(0, 0, 0, 0.35)",
+              top: 10,
+              left: 10,
+              backgroundColor: "rgba(0, 0, 0, 0.45)",
               backdropFilter: "blur(8px)",
               border:
                 "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              zIndex: -1,
               transition:
                 styles.transition +
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(0, 40px) scale(1.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(0, 40px) scale(1)")}
           >
-            <IconBan size={10} stroke={3} />
+            <IconBan size={12} stroke={3} />
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </Transition>
+  );
+};
+
+const HidePermanentAction = ({
+  visible,
+  portalNode,
+  onClick,
+}: {
+  visible: boolean;
+  portalNode: HTMLDivElement | null;
+  onClick?: () => void;
+}) => {
+  if (!onClick) return null;
+  return (
+    <Transition
+      mounted={visible}
+      transition={{
+        in: { opacity: 1, transform: "translate(-26px, 34px) scale(1)" },
+        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
+        transitionProperty: "transform, opacity",
+      }}
+      duration={400}
+      delay={80}
+      timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
+    >
+      {(styles) => (
+        <Tooltip
+          label={t("labelFloatingHidePermanent")}
+          position="bottom"
+          withArrow
+          transitionProps={{ transition: "fade", duration: 200 }}
+          portalProps={{ target: portalNode || undefined }}
+          styles={getTooltipStyles("10px", "3px 8px")}
+        >
+          <ActionIcon
+            variant="subtle"
+            color="orange.4"
+            size={20}
+            radius="xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onClick();
+            }}
+            style={{
+              ...styles,
+              position: "absolute",
+              top: 10,
+              left: 10,
+              backgroundColor: "rgba(0, 0, 0, 0.45)",
+              backdropFilter: "blur(8px)",
+              border:
+                "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              zIndex: -1,
+              transition:
+                styles.transition +
+                ", background-color 0.2s ease, transform 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(-26px, 34px) scale(1.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(-26px, 34px) scale(1)")}
+          >
+            <IconEyeOff size={12} stroke={3} />
           </ActionIcon>
         </Tooltip>
       )}
@@ -409,6 +491,7 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
   onDownload,
   onClose,
   onDisable,
+  onHidePermanent,
 }) => {
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -456,6 +539,11 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
           onClick={onDownload}
         />
 
+        <HidePermanentAction
+          visible={hovered}
+          portalNode={portalNode}
+          onClick={onHidePermanent}
+        />
         <DisableAction
           visible={hovered}
           portalNode={portalNode}

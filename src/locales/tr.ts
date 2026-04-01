@@ -157,4 +157,5 @@ export default {
   descDisabledDomains: { message: "Kayan düğme bu web sitelerinde gösterilmeyecektir" },
   btnRemoveDomain: { message: "Kaldır" },
   noDisabledDomains: { message: "Devre dışı bırakılmış web sitesi yok" },
+  labelFloatingHidePermanent: { message: "Kalıcı olarak gizle (Özelliği kapat)" },
 };

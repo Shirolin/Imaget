@@ -113,7 +113,7 @@ export default {
   labelFloatingSuccess: { message: "Imaget 下載成功" },
   labelFloatingError: { message: "下載失敗" },
 
-  labelFloatingClose: { message: "暫時隱藏" },
+  labelFloatingClose: { message: "暫時隱藏按鈕" },
   labelZoomOut: { message: "縮小" },
   labelZoomIn: { message: "放大" },
   labelRotate: { message: "旋轉 90°" },
@@ -144,9 +144,10 @@ export default {
   secSupport: { message: "關於与支持" },
   secDebug: { message: "調試模式 (僅供測試)" },
   prefSimulateDownloadFailure: { message: "模擬下載失敗" },
-  labelFloatingDisable: { message: "當前網站禁用" },
+  labelFloatingDisable: { message: "在此網站禁用" },
   secDisabledDomains: { message: "禁用管理" },
   descDisabledDomains: { message: "懸浮按鈕將不會在以下網站顯示" },
   btnRemoveDomain: { message: "移除" },
   noDisabledDomains: { message: "暫無禁用網站" },
+  labelFloatingHidePermanent: { message: "永久關閉懸浮按鈕功能" },
 };

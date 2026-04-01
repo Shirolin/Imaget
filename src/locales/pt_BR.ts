@@ -157,4 +157,5 @@ export default {
   descDisabledDomains: { message: "O botão flutuante não será exibido nesses sites" },
   btnRemoveDomain: { message: "Remover" },
   noDisabledDomains: { message: "Nenhum site desativado" },
+  labelFloatingHidePermanent: { message: "Ocultar permanentemente (Desativar recurso)" },
 };

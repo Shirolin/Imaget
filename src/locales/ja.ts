@@ -123,7 +123,7 @@ export default {
   labelFloatingSuccess: { message: "ダウンロード成功" },
   labelFloatingError: { message: "ダウンロード失敗" },
 
-  labelFloatingClose: { message: "一時的に非表示" },
+  labelFloatingClose: { message: "一時的にボタンを非表示" },
   labelZoomOut: { message: "縮小" },
   labelZoomIn: { message: "拡大" },
   labelRotate: { message: "90°回転" },
@@ -159,4 +159,5 @@ export default {
   descDisabledDomains: { message: "フローティングボタンはこれらのサイトでは表示されません" },
   btnRemoveDomain: { message: "削除" },
   noDisabledDomains: { message: "無効にされたサイトはありません" },
+  labelFloatingHidePermanent: { message: "フローティングボタン機能を永久に無効化" },
 };

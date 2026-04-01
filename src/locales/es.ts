@@ -123,7 +123,7 @@ export default {
   labelFloatingSuccess: { message: "Descarga exitosa" },
   labelFloatingError: { message: "Error en la descarga" },
 
-  labelFloatingClose: { message: "Ocultar temporalmente" },
+  labelFloatingClose: { message: "Ocultar botón temporalmente" },
   labelZoomOut: { message: "Alejar" },
   labelZoomIn: { message: "Acercar" },
   labelRotate: { message: "Girar 90°" },
@@ -154,9 +154,10 @@ export default {
   secSupport: { message: "Soporte y Acerca de" },
   secDebug: { message: "Depuración (Solo para pruebas)" },
   prefSimulateDownloadFailure: { message: "Simular error de descarga" },
-  labelFloatingDisable: { message: "Desactivar en este sitio" },
+  labelFloatingDisable: { message: "Desactivar en este sitio web" },
   secDisabledDomains: { message: "Sitios web desactivados" },
   descDisabledDomains: { message: "El botón flotante no se mostrará en estos sitios web" },
   btnRemoveDomain: { message: "Eliminar" },
   noDisabledDomains: { message: "No hay sitios web desactivados" },
+  labelFloatingHidePermanent: { message: "Desactivar la función del botón flotante permanentemente" },
 };

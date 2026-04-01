@@ -117,7 +117,7 @@ export default {
   labelFloatingSuccess: { message: "다운로드 성공" },
   labelFloatingError: { message: "다운로드 실패" },
 
-  labelFloatingClose: { message: "잠시 숨기기" },
+  labelFloatingClose: { message: "버튼 잠시 숨기기" },
   labelZoomOut: { message: "축소" },
   labelZoomIn: { message: "확대" },
   labelRotate: { message: "90° 회전" },
@@ -153,4 +153,5 @@ export default {
   descDisabledDomains: { message: "이 웹사이트들에서는 플로팅 버튼이 표시되지 않습니다" },
   btnRemoveDomain: { message: "제거" },
   noDisabledDomains: { message: "비활성화된 웹사이트 없음" },
+  labelFloatingHidePermanent: { message: "플로팅 버튼 기능 영구적으로 끄기" },
 };

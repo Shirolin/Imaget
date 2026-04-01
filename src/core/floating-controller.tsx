@@ -445,6 +445,22 @@ export class FloatingController {
               }
               this.hideFloatingImmediate();
             }}
+            onHidePermanent={() => {
+              const newSettings = {
+                ...this.settings,
+                interfaceBehavior: {
+                  ...this.settings.interfaceBehavior,
+                  showFloatingButton: false,
+                },
+              };
+              this.settings = newSettings;
+              if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+                chrome.storage.local.set({ imaget_settings: newSettings });
+              } else {
+                localStorage.setItem("imaget_settings", JSON.stringify(newSettings));
+              }
+              this.hideFloatingImmediate();
+            }}
             onClose={() => {
               this.isMuted = true;
               this.hideFloatingImmediate();
