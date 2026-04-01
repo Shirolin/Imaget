@@ -113,7 +113,7 @@ export default {
   labelFloatingSuccess: { message: "Imaget 下载成功" },
   labelFloatingError: { message: "下载失败" },
 
-  labelFloatingClose: { message: "不再显示" },
+  labelFloatingClose: { message: "暂时隐藏" },
   labelZoomOut: { message: "缩小" },
   labelZoomIn: { message: "放大" },
   labelRotate: { message: "旋转 90°" },
@@ -144,4 +144,9 @@ export default {
   secSupport: { message: "关于与支持" },
   secDebug: { message: "调试模式 (仅供测试)" },
   prefSimulateDownloadFailure: { message: "模拟下载失败" },
+  labelFloatingDisable: { message: "当前网站禁用" },
+  secDisabledDomains: { message: "禁用管理" },
+  descDisabledDomains: { message: "悬浮按钮将不会在以下网站显示" },
+  btnRemoveDomain: { message: "移除" },
+  noDisabledDomains: { message: "暂无禁用网站" },
 };

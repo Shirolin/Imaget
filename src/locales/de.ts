@@ -122,7 +122,7 @@ export default {
   labelFloatingSuccess: { message: "Erfolgreich heruntergeladen" },
   labelFloatingError: { message: "Download fehlgeschlagen" },
 
-  labelFloatingClose: { message: "Nicht mehr anzeigen" },
+  labelFloatingClose: { message: "Vorübergehend ausblenden" },
   labelZoomOut: { message: "Verkleinern" },
   labelZoomIn: { message: "Vergrößern" },
   labelRotate: { message: "90° drehen" },
@@ -153,4 +153,9 @@ export default {
   secSupport: { message: "Support & Über" },
   secDebug: { message: "Debug (Nur zum Testen)" },
   prefSimulateDownloadFailure: { message: "Download-Fehler simulieren" },
+  labelFloatingDisable: { message: "Auf dieser Website deaktivieren" },
+  secDisabledDomains: { message: "Deaktivierte Websites" },
+  descDisabledDomains: { message: "Der schwebende Button wird auf diesen Websites nicht angezeigt" },
+  btnRemoveDomain: { message: "Entfernen" },
+  noDisabledDomains: { message: "Keine deaktivierten Websites" },
 };

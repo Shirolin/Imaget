@@ -123,7 +123,7 @@ export default {
   labelFloatingSuccess: { message: "ダウンロード成功" },
   labelFloatingError: { message: "ダウンロード失敗" },
 
-  labelFloatingClose: { message: "次回から表示しない" },
+  labelFloatingClose: { message: "一時的に非表示" },
   labelZoomOut: { message: "縮小" },
   labelZoomIn: { message: "拡大" },
   labelRotate: { message: "90°回転" },
@@ -154,4 +154,9 @@ export default {
   secSupport: { message: "サポートと詳細" },
   secDebug: { message: "デバッグ (テスト専用)" },
   prefSimulateDownloadFailure: { message: "ダウンロード失敗をシミュレート" },
+  labelFloatingDisable: { message: "このサイトで無効にする" },
+  secDisabledDomains: { message: "無効にされたサイト" },
+  descDisabledDomains: { message: "フローティングボタンはこれらのサイトでは表示されません" },
+  btnRemoveDomain: { message: "削除" },
+  noDisabledDomains: { message: "無効にされたサイトはありません" },
 };

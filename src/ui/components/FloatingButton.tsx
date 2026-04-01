@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ActionIcon, Box, Tooltip, Transition } from "@mantine/core";
-import { IconDownload, IconX, IconCheck } from "@tabler/icons-react";
+import { IconDownload, IconX, IconCheck, IconBan } from "@tabler/icons-react";
 import { t } from "../../core/utils/i18n";
 
 // ==============================================
@@ -12,6 +12,7 @@ interface FloatingButtonProps {
   progress?: number;
   onDownload: () => void;
   onClose: () => void;
+  onDisable?: () => void;
 }
 
 // ==============================================
@@ -332,6 +333,72 @@ const CloseAction = ({
   </Transition>
 );
 
+const DisableAction = ({
+  visible,
+  portalNode,
+  onClick,
+}: {
+  visible: boolean;
+  portalNode: HTMLDivElement | null;
+  onClick?: () => void;
+}) => {
+  if (!onClick) return null;
+  return (
+    <Transition
+      mounted={visible}
+      transition={{
+        in: { opacity: 1, transform: "translateY(0)" },
+        out: { opacity: 0, transform: "translateY(-8px)" },
+        transitionProperty: "transform, opacity",
+      }}
+      duration={300}
+      timingFunction="cubic-bezier(0.16, 1, 0.3, 1)"
+    >
+      {(styles) => (
+        <Tooltip
+          label={t("labelFloatingDisable")}
+          position="bottom"
+          withArrow
+          transitionProps={{ transition: "fade", duration: 200 }}
+          portalProps={{ target: portalNode || undefined }}
+          styles={getTooltipStyles("10px", "3px 8px")}
+        >
+          <ActionIcon
+            variant="subtle"
+            color="red.4"
+            size={18}
+            radius="xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onClick();
+            }}
+            style={{
+              ...styles,
+              position: "absolute",
+              bottom: -24,
+              right: 33, // Shifted to the left of CloseAction
+              backgroundColor: "rgba(0, 0, 0, 0.35)",
+              backdropFilter: "blur(8px)",
+              border:
+                "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+
+              transition:
+                styles.transition +
+                ", background-color 0.2s ease, transform 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <IconBan size={10} stroke={3} />
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </Transition>
+  );
+};
+
 // ==============================================
 // Main Component
 // ==============================================
@@ -341,6 +408,7 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
   progress = 0,
   onDownload,
   onClose,
+  onDisable,
 }) => {
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -388,6 +456,11 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
           onClick={onDownload}
         />
 
+        <DisableAction
+          visible={hovered}
+          portalNode={portalNode}
+          onClick={onDisable}
+        />
         <CloseAction
           visible={hovered}
           portalNode={portalNode}

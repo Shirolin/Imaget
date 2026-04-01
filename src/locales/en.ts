@@ -121,7 +121,7 @@ export default {
   labelFloatingDownload: { message: "Imaget Download this image" },
   labelFloatingSuccess: { message: "Imaget Download successful" },
   labelFloatingError: { message: "Download failed" },
-  labelFloatingClose: { message: "Don't show again" },
+  labelFloatingClose: { message: "Hide temporarily" },
   labelZoomOut: { message: "Zoom Out" },
   labelZoomIn: { message: "Zoom In" },
   labelRotate: { message: "Rotate 90°" },
@@ -152,4 +152,9 @@ export default {
   secSupport: { message: "Support & About" },
   secDebug: { message: "Debug (Testing Only)" },
   prefSimulateDownloadFailure: { message: "Simulate Download Failure" },
+  labelFloatingDisable: { message: "Disable on this site" },
+  secDisabledDomains: { message: "Disabled Websites" },
+  descDisabledDomains: { message: "Floating button will not be shown on these websites" },
+  btnRemoveDomain: { message: "Remove" },
+  noDisabledDomains: { message: "No disabled websites" },
 };

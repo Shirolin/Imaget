@@ -62,6 +62,7 @@ export interface Settings {
     identifyBlobImages: boolean;
     showFloatingButton: boolean;
     minImageSize: number;
+    disabledDomains?: string[];
   };
   downloadLogic: {
     targetFormat: "original" | "webp" | "png" | "jpg";
@@ -94,6 +95,7 @@ export const defaultSettings: Settings = {
     identifyBlobImages: false,
     showFloatingButton: true,
     minImageSize: 128,
+    disabledDomains: [],
   },
   downloadLogic: {
     targetFormat: "original",

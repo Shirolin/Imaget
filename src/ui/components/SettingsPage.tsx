@@ -30,6 +30,7 @@ import {
   IconCoffee,
   IconHeart,
   IconBug,
+  IconBan,
 } from "@tabler/icons-react";
 import { Settings } from "../../types";
 import { PortalSelect } from "./common/PortalSelect";
@@ -372,6 +373,60 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   ]}
                 />
               </Stack>
+            </SettingCard>
+
+            <SettingCard
+              icon={<IconBan />}
+              title={t("secDisabledDomains")}
+              iconColor="var(--mantine-color-red-filled)"
+            >
+              <Text size="xs" c="dimmed" mb="md">
+                {t("descDisabledDomains")}
+              </Text>
+              
+              {(!settings.interfaceBehavior.disabledDomains || settings.interfaceBehavior.disabledDomains.length === 0) ? (
+                <Text size="sm" c="dimmed" fs="italic">
+                  {t("noDisabledDomains")}
+                </Text>
+              ) : (
+                <Group gap="xs">
+                  {settings.interfaceBehavior.disabledDomains.map((domain) => (
+                    <Box
+                      key={domain}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        backgroundColor: "var(--mantine-color-dark-6)",
+                        border: "1px solid var(--mantine-color-dark-4)",
+                        borderRadius: "var(--mantine-radius-sm)",
+                        padding: "2px 8px",
+                      }}
+                    >
+                      <Text size="xs" mr="xs">{domain}</Text>
+                      <ActionIcon
+                        size="xs"
+                        variant="transparent"
+                        color="red"
+                        onClick={() => {
+                          onUpdate((prev) => ({
+                            ...prev,
+                            interfaceBehavior: {
+                              ...prev.interfaceBehavior,
+                              disabledDomains: prev.interfaceBehavior.disabledDomains?.filter(d => d !== domain) || []
+                            }
+                          }));
+                        }}
+                        aria-label={t("btnRemoveDomain")}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </ActionIcon>
+                    </Box>
+                  ))}
+                </Group>
+              )}
             </SettingCard>
           </Stack>
 

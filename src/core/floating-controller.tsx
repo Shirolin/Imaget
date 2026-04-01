@@ -94,6 +94,15 @@ export class FloatingController {
       return;
     }
 
+    if (
+      this.settings.interfaceBehavior.disabledDomains &&
+      this.settings.interfaceBehavior.disabledDomains.includes(
+        window.location.hostname,
+      )
+    ) {
+      return;
+    }
+
     if (!target || !(target instanceof HTMLElement)) return;
 
     // 🚀 核心改进：穿透遮罩层寻找真正的图片
@@ -396,6 +405,27 @@ export class FloatingController {
             status={this.status}
             progress={this.progress}
             onDownload={() => this.triggerDownload(this.currentUrl)}
+            onDisable={() => {
+              this.isMuted = true;
+              const currentDomain = window.location.hostname;
+              const domains = this.settings.interfaceBehavior.disabledDomains || [];
+              if (!domains.includes(currentDomain)) {
+                const newSettings = {
+                  ...this.settings,
+                  interfaceBehavior: {
+                    ...this.settings.interfaceBehavior,
+                    disabledDomains: [...domains, currentDomain],
+                  },
+                };
+                this.settings = newSettings;
+                if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+                  chrome.storage.local.set({ imaget_settings: newSettings });
+                } else {
+                  localStorage.setItem("imaget_settings", JSON.stringify(newSettings));
+                }
+              }
+              this.hideFloatingImmediate();
+            }}
             onClose={() => {
               this.isMuted = true;
               this.hideFloatingImmediate();

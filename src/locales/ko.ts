@@ -117,7 +117,7 @@ export default {
   labelFloatingSuccess: { message: "다운로드 성공" },
   labelFloatingError: { message: "다운로드 실패" },
 
-  labelFloatingClose: { message: "다시 표시하지 않음" },
+  labelFloatingClose: { message: "잠시 숨기기" },
   labelZoomOut: { message: "축소" },
   labelZoomIn: { message: "확대" },
   labelRotate: { message: "90° 회전" },
@@ -148,4 +148,9 @@ export default {
   secSupport: { message: "지원 및 정보" },
   secDebug: { message: "디버그 (테스트 전용)" },
   prefSimulateDownloadFailure: { message: "다운로드 실패 시뮬레이션" },
+  labelFloatingDisable: { message: "이 사이트에서 비활성화" },
+  secDisabledDomains: { message: "비활성화된 웹사이트" },
+  descDisabledDomains: { message: "이 웹사이트들에서는 플로팅 버튼이 표시되지 않습니다" },
+  btnRemoveDomain: { message: "제거" },
+  noDisabledDomains: { message: "비활성화된 웹사이트 없음" },
 };

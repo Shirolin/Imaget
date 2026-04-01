@@ -121,7 +121,7 @@ export default {
   labelFloatingSuccess: { message: "Download concluído" },
   labelFloatingError: { message: "Falha no download" },
 
-  labelFloatingClose: { message: "Não mostrar novamente" },
+  labelFloatingClose: { message: "Ocultar temporariamente" },
   labelZoomOut: { message: "Diminuir Zoom" },
   labelZoomIn: { message: "Aumentar Zoom" },
   labelRotate: { message: "Girar 90°" },
@@ -152,4 +152,9 @@ export default {
   secSupport: { message: "Suporte e Sobre" },
   secDebug: { message: "Depuração (Apenas para testes)" },
   prefSimulateDownloadFailure: { message: "Simular falha no download" },
+  labelFloatingDisable: { message: "Desativar neste site" },
+  secDisabledDomains: { message: "Sites desativados" },
+  descDisabledDomains: { message: "O botão flutuante não será exibido nesses sites" },
+  btnRemoveDomain: { message: "Remover" },
+  noDisabledDomains: { message: "Nenhum site desativado" },
 };

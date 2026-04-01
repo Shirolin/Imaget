@@ -121,7 +121,7 @@ export default {
   labelFloatingSuccess: { message: "Başarıyla İndirildi" },
   labelFloatingError: { message: "İndirme başarısız" },
 
-  labelFloatingClose: { message: "Tekrar Gösterme" },
+  labelFloatingClose: { message: "Geçici olarak gizle" },
   labelZoomOut: { message: "Uzaklaştır" },
   labelZoomIn: { message: "Yakınlaştır" },
   labelRotate: { message: "90° Döndür" },
@@ -151,5 +151,10 @@ export default {
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "Destek ve Hakkında" },
   secDebug: { message: "Hata Ayıklama (Yalnızca test)" },
-  prefSimulateDownloadFailure: { message: "İndirme hatasını simüle et" },
+  prefSimulateDownloadFailure: { message: "İndirme Hatasını Simüle Et" },
+  labelFloatingDisable: { message: "Bu sitede devre dışı bırak" },
+  secDisabledDomains: { message: "Devre dışı bırakılan web siteleri" },
+  descDisabledDomains: { message: "Kayan düğme bu web sitelerinde gösterilmeyecektir" },
+  btnRemoveDomain: { message: "Kaldır" },
+  noDisabledDomains: { message: "Devre dışı bırakılmış web sitesi yok" },
 };

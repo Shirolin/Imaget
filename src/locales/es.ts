@@ -123,7 +123,7 @@ export default {
   labelFloatingSuccess: { message: "Descarga exitosa" },
   labelFloatingError: { message: "Error en la descarga" },
 
-  labelFloatingClose: { message: "No mostrar más" },
+  labelFloatingClose: { message: "Ocultar temporalmente" },
   labelZoomOut: { message: "Alejar" },
   labelZoomIn: { message: "Acercar" },
   labelRotate: { message: "Girar 90°" },
@@ -153,5 +153,10 @@ export default {
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "Soporte y Acerca de" },
   secDebug: { message: "Depuración (Solo para pruebas)" },
-  prefSimulateDownloadFailure: { message: "Simular fallo de descarga" },
+  prefSimulateDownloadFailure: { message: "Simular error de descarga" },
+  labelFloatingDisable: { message: "Desactivar en este sitio" },
+  secDisabledDomains: { message: "Sitios web desactivados" },
+  descDisabledDomains: { message: "El botón flotante no se mostrará en estos sitios web" },
+  btnRemoveDomain: { message: "Eliminar" },
+  noDisabledDomains: { message: "No hay sitios web desactivados" },
 };
