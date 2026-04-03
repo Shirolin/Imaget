@@ -83,6 +83,7 @@ export default {
   },
   prefMinImageSize: { message: "Yüzer Buton İçin Min. Resim Boyutu" },
   sizeAlways: { message: "Her Zaman Göster" },
+  prefCustomSize: { message: "Özel" },
   prefTargetFormat: { message: "Hedef Format" },
   prefQuality: { message: "Kalite" },
   prefReEncodeWebp: { message: "WebP'yi Yeniden Kodlamaya Zorla" },
@@ -154,8 +155,12 @@ export default {
   prefSimulateDownloadFailure: { message: "İndirme Hatasını Simüle Et" },
   labelFloatingDisable: { message: "Bu sitede devre dışı bırak" },
   secDisabledDomains: { message: "Devre dışı bırakılan web siteleri" },
-  descDisabledDomains: { message: "Kayan düğme bu web sitelerinde gösterilmeyecektir" },
+  descDisabledDomains: {
+    message: "Kayan düğme bu web sitelerinde gösterilmeyecektir",
+  },
   btnRemoveDomain: { message: "Kaldır" },
   noDisabledDomains: { message: "Devre dışı bırakılmış web sitesi yok" },
-  labelFloatingHidePermanent: { message: "Kalıcı olarak gizle (Özelliği kapat)" },
+  labelFloatingHidePermanent: {
+    message: "Kalıcı olarak gizle (Özelliği kapat)",
+  },
 };

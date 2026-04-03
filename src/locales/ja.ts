@@ -83,6 +83,7 @@ export default {
   },
   prefMinImageSize: { message: "ボタン表示の最小サイズ" },
   sizeAlways: { message: "常に表示" },
+  prefCustomSize: { message: "カスタム" },
   prefTargetFormat: { message: "出力形式" },
   prefQuality: { message: "品質" },
   prefReEncodeWebp: { message: "WebPを強制再エンコード" },
@@ -156,8 +157,12 @@ export default {
   prefSimulateDownloadFailure: { message: "ダウンロード失敗をシミュレート" },
   labelFloatingDisable: { message: "このサイトで無効にする" },
   secDisabledDomains: { message: "無効にされたサイト" },
-  descDisabledDomains: { message: "フローティングボタンはこれらのサイトでは表示されません" },
+  descDisabledDomains: {
+    message: "フローティングボタンはこれらのサイトでは表示されません",
+  },
   btnRemoveDomain: { message: "削除" },
   noDisabledDomains: { message: "無効にされたサイトはありません" },
-  labelFloatingHidePermanent: { message: "フローティングボタン機能を永久に無効化" },
+  labelFloatingHidePermanent: {
+    message: "フローティングボタン機能を永久に無効化",
+  },
 };

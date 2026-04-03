@@ -74,6 +74,7 @@ export default {
   },
   prefMinImageSize: { message: "悬浮按钮显示阈值" },
   sizeAlways: { message: "总是显示" },
+  prefCustomSize: { message: "自定义" },
   prefTargetFormat: { message: "目标格式转换" },
   prefQuality: { message: "转换质量控制" },
   prefReEncodeWebp: { message: "即便源是 WEBP 也强制重新编码" },

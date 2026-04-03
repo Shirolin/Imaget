@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { ActionIcon, Box, Tooltip, Transition } from "@mantine/core";
-import { IconDownload, IconX, IconCheck, IconBan, IconEyeOff } from "@tabler/icons-react";
+import {
+  IconDownload,
+  IconX,
+  IconCheck,
+  IconBan,
+  IconEyeOff,
+} from "@tabler/icons-react";
 import { t } from "../../core/utils/i18n";
 
 // ==============================================
@@ -337,8 +343,13 @@ const CloseAction = ({
               styles.transition +
               ", background-color 0.2s ease, transform 0.2s ease",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(26px, 34px) scale(1.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(26px, 34px) scale(1)")}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform =
+              "translate(26px, 34px) scale(1.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "translate(26px, 34px) scale(1)")
+          }
         >
           <IconX size={12} stroke={3} />
         </ActionIcon>
@@ -361,12 +372,19 @@ const DisableAction = ({
     <Transition
       mounted={visible}
       transition={{
-        in: { opacity: 1, transform: "translate(0, 40px) scale(1)" },
-        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
+        in: {
+          opacity: 1,
+          transform: "translate(0, 40px) scale(1)",
+          transitionDelay: "40ms",
+        },
+        out: {
+          opacity: 0,
+          transform: "translate(0, 0) scale(0.4)",
+          transitionDelay: "0ms",
+        },
         transitionProperty: "transform, opacity",
       }}
       duration={400}
-      delay={40}
       timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
     >
       {(styles) => (
@@ -403,8 +421,13 @@ const DisableAction = ({
                 styles.transition +
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(0, 40px) scale(1.2)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(0, 40px) scale(1)")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform =
+                "translate(0, 40px) scale(1.2)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "translate(0, 40px) scale(1)")
+            }
           >
             <IconBan size={12} stroke={3} />
           </ActionIcon>
@@ -428,12 +451,19 @@ const HidePermanentAction = ({
     <Transition
       mounted={visible}
       transition={{
-        in: { opacity: 1, transform: "translate(-26px, 34px) scale(1)" },
-        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
+        in: {
+          opacity: 1,
+          transform: "translate(-26px, 34px) scale(1)",
+          transitionDelay: "80ms",
+        },
+        out: {
+          opacity: 0,
+          transform: "translate(0, 0) scale(0.4)",
+          transitionDelay: "0ms",
+        },
         transitionProperty: "transform, opacity",
       }}
       duration={400}
-      delay={80}
       timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
     >
       {(styles) => (
@@ -470,8 +500,14 @@ const HidePermanentAction = ({
                 styles.transition +
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(-26px, 34px) scale(1.2)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translate(-26px, 34px) scale(1)")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform =
+                "translate(-26px, 34px) scale(1.2)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform =
+                "translate(-26px, 34px) scale(1)")
+            }
           >
             <IconEyeOff size={12} stroke={3} />
           </ActionIcon>

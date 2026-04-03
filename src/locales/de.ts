@@ -84,6 +84,7 @@ export default {
   },
   prefMinImageSize: { message: "Min. Größe für Floating Button" },
   sizeAlways: { message: "Immer anzeigen" },
+  prefCustomSize: { message: "Benutzerdefiniert" },
   prefTargetFormat: { message: "Zielformat" },
   prefQuality: { message: "Qualität" },
   prefReEncodeWebp: { message: "WebP neu codieren erzwingen" },
@@ -155,8 +156,12 @@ export default {
   prefSimulateDownloadFailure: { message: "Download-Fehler simulieren" },
   labelFloatingDisable: { message: "Auf dieser Website deaktivieren" },
   secDisabledDomains: { message: "Deaktivierte Websites" },
-  descDisabledDomains: { message: "Der schwebende Button wird auf diesen Websites nicht angezeigt" },
+  descDisabledDomains: {
+    message: "Der schwebende Button wird auf diesen Websites nicht angezeigt",
+  },
   btnRemoveDomain: { message: "Entfernen" },
   noDisabledDomains: { message: "Keine deaktivierten Websites" },
-  labelFloatingHidePermanent: { message: "Schwebendes Button-Feature dauerhaft deaktivieren" },
+  labelFloatingHidePermanent: {
+    message: "Schwebendes Button-Feature dauerhaft deaktivieren",
+  },
 };

@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   Slider,
+  NumberInput,
   Button,
   Box,
   SimpleGrid,
@@ -354,15 +355,31 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 <SegmentedControl
                   size="xs"
                   style={{ cursor: "pointer" }}
-                  value={settings.interfaceBehavior.minImageSize.toString()}
+                  value={
+                    [0, 32, 64, 128, 256].includes(
+                      settings.interfaceBehavior.minImageSize,
+                    )
+                      ? settings.interfaceBehavior.minImageSize.toString()
+                      : "custom"
+                  }
                   onChange={(val) =>
-                    onUpdate((prev) => ({
-                      ...prev,
-                      interfaceBehavior: {
-                        ...prev.interfaceBehavior,
-                        minImageSize: parseInt(val),
-                      },
-                    }))
+                    onUpdate((prev) => {
+                      let newSize = parseInt(val);
+                      if (val === "custom") {
+                        newSize = [0, 32, 64, 128, 256].includes(
+                          prev.interfaceBehavior.minImageSize,
+                        )
+                          ? prev.interfaceBehavior.minImageSize + 1
+                          : prev.interfaceBehavior.minImageSize;
+                      }
+                      return {
+                        ...prev,
+                        interfaceBehavior: {
+                          ...prev.interfaceBehavior,
+                          minImageSize: newSize,
+                        },
+                      };
+                    })
                   }
                   aria-label={t("prefMinImageSize")}
                   data={[
@@ -370,8 +387,31 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     { label: t("unitPixel", ["32"]), value: "32" },
                     { label: t("unitPixel", ["64"]), value: "64" },
                     { label: t("unitPixel", ["128"]), value: "128" },
+                    { label: t("unitPixel", ["256"]), value: "256" },
+                    { label: t("prefCustomSize"), value: "custom" },
                   ]}
                 />
+                {![0, 32, 64, 128, 256].includes(
+                  settings.interfaceBehavior.minImageSize,
+                ) && (
+                  <NumberInput
+                    size="xs"
+                    placeholder={t("prefMinImageSize")}
+                    value={settings.interfaceBehavior.minImageSize}
+                    onChange={(val) =>
+                      onUpdate((prev) => ({
+                        ...prev,
+                        interfaceBehavior: {
+                          ...prev.interfaceBehavior,
+                          minImageSize: typeof val === "number" ? val : 0,
+                        },
+                      }))
+                    }
+                    min={0}
+                    max={5000}
+                    suffix=" px"
+                  />
+                )}
               </Stack>
             </SettingCard>
 
@@ -383,8 +423,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               <Text size="xs" c="dimmed" mb="md">
                 {t("descDisabledDomains")}
               </Text>
-              
-              {(!settings.interfaceBehavior.disabledDomains || settings.interfaceBehavior.disabledDomains.length === 0) ? (
+
+              {!settings.interfaceBehavior.disabledDomains ||
+              settings.interfaceBehavior.disabledDomains.length === 0 ? (
                 <Text size="sm" c="dimmed" fs="italic">
                   {t("noDisabledDomains")}
                 </Text>
@@ -402,7 +443,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                         padding: "2px 8px",
                       }}
                     >
-                      <Text size="xs" mr="xs">{domain}</Text>
+                      <Text size="xs" mr="xs">
+                        {domain}
+                      </Text>
                       <ActionIcon
                         size="xs"
                         variant="transparent"
@@ -412,13 +455,25 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                             ...prev,
                             interfaceBehavior: {
                               ...prev.interfaceBehavior,
-                              disabledDomains: prev.interfaceBehavior.disabledDomains?.filter(d => d !== domain) || []
-                            }
+                              disabledDomains:
+                                prev.interfaceBehavior.disabledDomains?.filter(
+                                  (d) => d !== domain,
+                                ) || [],
+                            },
                           }));
                         }}
                         aria-label={t("btnRemoveDomain")}
                       >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <line x1="18" y1="6" x2="6" y2="18"></line>
                           <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>

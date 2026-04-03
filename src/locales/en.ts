@@ -82,6 +82,7 @@ export default {
   },
   prefMinImageSize: { message: "Min Image Size for Floating Button" },
   sizeAlways: { message: "Always Show" },
+  prefCustomSize: { message: "Custom" },
   prefTargetFormat: { message: "Target Format" },
   prefQuality: { message: "Quality" },
   prefReEncodeWebp: { message: "Force Re-encode WebP" },
@@ -154,8 +155,12 @@ export default {
   prefSimulateDownloadFailure: { message: "Simulate Download Failure" },
   labelFloatingDisable: { message: "Disable on this website" },
   secDisabledDomains: { message: "Disabled Websites" },
-  descDisabledDomains: { message: "Floating button will not be shown on these websites" },
+  descDisabledDomains: {
+    message: "Floating button will not be shown on these websites",
+  },
   btnRemoveDomain: { message: "Remove" },
   noDisabledDomains: { message: "No disabled websites" },
-  labelFloatingHidePermanent: { message: "Disable floating button feature permanently" },
+  labelFloatingHidePermanent: {
+    message: "Disable floating button feature permanently",
+  },
 };

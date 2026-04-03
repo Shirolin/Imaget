@@ -85,6 +85,7 @@ export default {
   },
   prefMinImageSize: { message: "Tamaño Mín. para Botón Flotante" },
   sizeAlways: { message: "Mostrar Siempre" },
+  prefCustomSize: { message: "Personalizado" },
   prefTargetFormat: { message: "Formato de Destino" },
   prefQuality: { message: "Calidad" },
   prefReEncodeWebp: { message: "Forzar Re-codificación WebP" },
@@ -156,8 +157,12 @@ export default {
   prefSimulateDownloadFailure: { message: "Simular error de descarga" },
   labelFloatingDisable: { message: "Desactivar en este sitio web" },
   secDisabledDomains: { message: "Sitios web desactivados" },
-  descDisabledDomains: { message: "El botón flotante no se mostrará en estos sitios web" },
+  descDisabledDomains: {
+    message: "El botón flotante no se mostrará en estos sitios web",
+  },
   btnRemoveDomain: { message: "Eliminar" },
   noDisabledDomains: { message: "No hay sitios web desactivados" },
-  labelFloatingHidePermanent: { message: "Desactivar la función del botón flotante permanentemente" },
+  labelFloatingHidePermanent: {
+    message: "Desactivar la función del botón flotante permanentemente",
+  },
 };

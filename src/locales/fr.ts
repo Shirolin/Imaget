@@ -85,6 +85,7 @@ export default {
     message: "Taille minimale de l'image pour le bouton flottant",
   },
   sizeAlways: { message: "Toujours Afficher" },
+  prefCustomSize: { message: "Personnalisé" },
   prefTargetFormat: { message: "Format de Destination" },
   prefQuality: { message: "Qualité" },
   prefReEncodeWebp: { message: "Forcer Réencodage WebP" },
@@ -153,11 +154,17 @@ export default {
   labelKofi: { message: "Ko-fi" },
   secSupport: { message: "Support et à propos" },
   secDebug: { message: "Débogage (Test uniquement)" },
-  prefSimulateDownloadFailure: { message: "Simuler un échec de téléchargement" },
+  prefSimulateDownloadFailure: {
+    message: "Simuler un échec de téléchargement",
+  },
   labelFloatingDisable: { message: "Désactiver sur ce site Web" },
   secDisabledDomains: { message: "Sites Web désactivés" },
-  descDisabledDomains: { message: "Le bouton flottant ne s'affichera pas sur ces sites Web" },
+  descDisabledDomains: {
+    message: "Le bouton flottant ne s'affichera pas sur ces sites Web",
+  },
   btnRemoveDomain: { message: "Supprimer" },
   noDisabledDomains: { message: "Aucun site Web désactivé" },
-  labelFloatingHidePermanent: { message: "Désactiver définitivement la fonction du bouton flottant" },
+  labelFloatingHidePermanent: {
+    message: "Désactiver définitivement la fonction du bouton flottant",
+  },
 };

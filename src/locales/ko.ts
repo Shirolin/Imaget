@@ -78,6 +78,7 @@ export default {
   },
   prefMinImageSize: { message: "플로팅 버튼 최소 크기" },
   sizeAlways: { message: "항상 표시" },
+  prefCustomSize: { message: "사용자 정의" },
   prefTargetFormat: { message: "대상 형식" },
   prefQuality: { message: "품질" },
   prefReEncodeWebp: { message: "WebP 강제 재인코딩" },
@@ -150,7 +151,9 @@ export default {
   prefSimulateDownloadFailure: { message: "다운로드 실패 시뮬레이션" },
   labelFloatingDisable: { message: "이 사이트에서 비활성화" },
   secDisabledDomains: { message: "비활성화된 웹사이트" },
-  descDisabledDomains: { message: "이 웹사이트들에서는 플로팅 버튼이 표시되지 않습니다" },
+  descDisabledDomains: {
+    message: "이 웹사이트들에서는 플로팅 버튼이 표시되지 않습니다",
+  },
   btnRemoveDomain: { message: "제거" },
   noDisabledDomains: { message: "비활성화된 웹사이트 없음" },
   labelFloatingHidePermanent: { message: "플로팅 버튼 기능 영구적으로 끄기" },

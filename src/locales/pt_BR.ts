@@ -83,6 +83,7 @@ export default {
   },
   prefMinImageSize: { message: "Tamanho Mín. para Botão Flutuante" },
   sizeAlways: { message: "Sempre Mostrar" },
+  prefCustomSize: { message: "Personalizado" },
   prefTargetFormat: { message: "Formato de Destino" },
   prefQuality: { message: "Qualidade" },
   prefReEncodeWebp: { message: "Forçar Re-codificação WebP" },
@@ -154,8 +155,12 @@ export default {
   prefSimulateDownloadFailure: { message: "Simular falha no download" },
   labelFloatingDisable: { message: "Desativar neste site" },
   secDisabledDomains: { message: "Sites desativados" },
-  descDisabledDomains: { message: "O botão flutuante não será exibido nesses sites" },
+  descDisabledDomains: {
+    message: "O botão flutuante não será exibido nesses sites",
+  },
   btnRemoveDomain: { message: "Remover" },
   noDisabledDomains: { message: "Nenhum site desativado" },
-  labelFloatingHidePermanent: { message: "Ocultar permanentemente (Desativar recurso)" },
+  labelFloatingHidePermanent: {
+    message: "Ocultar permanentemente (Desativar recurso)",
+  },
 };

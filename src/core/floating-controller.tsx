@@ -80,11 +80,15 @@ export class FloatingController {
           if (newSettings) {
             const oldDisabled =
               this.settings.interfaceBehavior.disabledDomains || [];
-            const newDisabled = newSettings.interfaceBehavior.disabledDomains || [];
+            const newDisabled =
+              newSettings.interfaceBehavior.disabledDomains || [];
             const currentHost = window.location.hostname;
 
             // 如果当前域名从黑名单中移除了，自动取消静音
-            if (oldDisabled.includes(currentHost) && !newDisabled.includes(currentHost)) {
+            if (
+              oldDisabled.includes(currentHost) &&
+              !newDisabled.includes(currentHost)
+            ) {
               this.isMuted = false;
             }
 
@@ -427,7 +431,8 @@ export class FloatingController {
             onDisable={() => {
               this.isMuted = true;
               const currentDomain = window.location.hostname;
-              const domains = this.settings.interfaceBehavior.disabledDomains || [];
+              const domains =
+                this.settings.interfaceBehavior.disabledDomains || [];
               if (!domains.includes(currentDomain)) {
                 const newSettings = {
                   ...this.settings,
@@ -437,10 +442,17 @@ export class FloatingController {
                   },
                 };
                 this.settings = newSettings;
-                if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+                if (
+                  typeof chrome !== "undefined" &&
+                  chrome.storage &&
+                  chrome.storage.local
+                ) {
                   chrome.storage.local.set({ imaget_settings: newSettings });
                 } else {
-                  localStorage.setItem("imaget_settings", JSON.stringify(newSettings));
+                  localStorage.setItem(
+                    "imaget_settings",
+                    JSON.stringify(newSettings),
+                  );
                 }
               }
               this.hideFloatingImmediate();
@@ -454,10 +466,17 @@ export class FloatingController {
                 },
               };
               this.settings = newSettings;
-              if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+              if (
+                typeof chrome !== "undefined" &&
+                chrome.storage &&
+                chrome.storage.local
+              ) {
                 chrome.storage.local.set({ imaget_settings: newSettings });
               } else {
-                localStorage.setItem("imaget_settings", JSON.stringify(newSettings));
+                localStorage.setItem(
+                  "imaget_settings",
+                  JSON.stringify(newSettings),
+                );
               }
               this.hideFloatingImmediate();
             }}
