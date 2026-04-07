@@ -27,106 +27,83 @@ export class Sniffer {
   }
 
   /**
-   * 基础提取：从指定根节点提取图片 URL
+   * 单遍深度扫描：合并普通元素、背景图、Shadow DOM 和 iframe 的扫描，大幅优化性能
    */
-  private async sniffDOMContent(
+  private async sniffNodeTree(
     root: Document | ShadowRoot | Element,
-    identifyBackground: boolean = true,
-  ): Promise<string[]> {
-    const urls = new Set<string>();
-
-    root.querySelectorAll("img").forEach((img) => {
-      const url = UrlResolver.resolveBestUrl(img);
-      if (url) urls.add(url);
-    });
-
-    root.querySelectorAll("picture source").forEach((source) => {
-      const srcset = (source as HTMLSourceElement).srcset;
-      if (srcset) {
-        const bestUrl = UrlResolver.parseSrcset(srcset);
-        if (bestUrl) {
-          try {
-            const absolute = new URL(bestUrl, window.location.href).href;
-            urls.add(UrlResolver.transformSiteSpecificUrl(absolute));
-          } catch {
-            urls.add(bestUrl);
-          }
-        }
-      }
-    });
-
-    if (identifyBackground) {
-      root.querySelectorAll("*").forEach((el) => {
-        if (!(el instanceof HTMLElement)) return;
-        // 如果不是 img，UrlResolver 会尝试解析背景图
-        if (el.tagName !== "IMG" && el.tagName !== "SOURCE") {
-          const url = UrlResolver.resolveBestUrl(el);
-          if (url) urls.add(url);
-        }
-      });
-    }
-
-    return Array.from(urls);
-  }
-
-  /**
-   * 深度扫描：递归穿透 Shadow DOM 和 iFrame
-   */
-  public async sniffRecursive(
-    root: Document | ShadowRoot | Element = document,
     searchAllFrames: boolean = true,
     identifyBackground: boolean = true,
+    visited: Set<Document | ShadowRoot | Element> = new Set(),
   ): Promise<string[]> {
-    let urls: string[] = [];
+    if (visited.has(root)) return [];
+    visited.add(root);
+
+    const urls = new Set<string>();
     const elements = root.querySelectorAll("*");
 
-    for (const el of Array.from(elements)) {
-      // 1. 处理 Shadow DOM
+    // 使用标准 for 循环，避免 Array.from 造成的大量内存分配
+    for (let i = 0; i < elements.length; i++) {
+      const el = elements[i];
+
+      // 1. 处理普通图片
+      if (el.tagName === "IMG") {
+        const url = UrlResolver.resolveBestUrl(el as HTMLElement);
+        if (url) urls.add(url);
+      } else if (
+        el.tagName === "SOURCE" &&
+        el.parentElement?.tagName === "PICTURE"
+      ) {
+        const srcset = (el as HTMLSourceElement).srcset;
+        if (srcset) {
+          const bestUrl = UrlResolver.parseSrcset(srcset);
+          if (bestUrl) {
+            try {
+              const absolute = new URL(bestUrl, window.location.href).href;
+              urls.add(UrlResolver.transformSiteSpecificUrl(absolute));
+            } catch {
+              urls.add(bestUrl);
+            }
+          }
+        }
+      } else if (identifyBackground && el instanceof HTMLElement) {
+        // 2. 处理背景图
+        const url = UrlResolver.resolveBestUrl(el);
+        if (url) urls.add(url);
+      }
+
+      // 3. 处理 Shadow DOM
       if (el.shadowRoot) {
-        const shadowUrls = await this.sniffRecursive(
+        const shadowUrls = await this.sniffNodeTree(
           el.shadowRoot,
           searchAllFrames,
           identifyBackground,
+          visited,
         );
-        urls = urls.concat(shadowUrls);
-
-        const currentShadowUrls = await this.sniffDOMContent(
-          el.shadowRoot,
-          identifyBackground,
-        );
-        urls = urls.concat(currentShadowUrls);
+        for (const u of shadowUrls) urls.add(u);
       }
 
-      // 2. 处理 iframe (如果开启)
-      if (
-        searchAllFrames &&
-        el.tagName === "IFRAME" &&
-        (el as HTMLIFrameElement).contentDocument
-      ) {
+      // 4. 处理 iframe
+      if (searchAllFrames && el.tagName === "IFRAME") {
+        const iframe = el as HTMLIFrameElement;
         try {
-          const iframe = el as HTMLIFrameElement;
           const frameDoc =
             iframe.contentDocument || iframe.contentWindow?.document;
           if (frameDoc) {
-            const frameUrls = await this.sniffRecursive(
+            const frameUrls = await this.sniffNodeTree(
               frameDoc,
               searchAllFrames,
               identifyBackground,
+              visited,
             );
-            urls = urls.concat(frameUrls);
-
-            const currentFrameUrls = await this.sniffDOMContent(
-              frameDoc,
-              identifyBackground,
-            );
-            urls = urls.concat(currentFrameUrls);
+            for (const u of frameUrls) urls.add(u);
           }
-        } catch (e) {
-          console.debug("Sniffer: Cannot access cross-origin iframe", e);
+        } catch {
+          // 忽略跨域 iframe 报错
         }
       }
     }
-    return urls;
+
+    return Array.from(urls);
   }
 
   /**
@@ -185,13 +162,12 @@ export class Sniffer {
     const identifyBlob =
       settings?.interfaceBehavior?.identifyBlobImages ?? false;
 
-    const [domUrls, shadowUrls, perfUrls, svgUrls] = await Promise.all([
-      this.sniffDOMContent(document, identifyBackground),
-      this.sniffRecursive(document, searchAllFrames, identifyBackground),
+    const [treeUrls, perfUrls, svgUrls] = await Promise.all([
+      this.sniffNodeTree(document, searchAllFrames, identifyBackground),
       Promise.resolve(this.sniffPerformance()),
       Promise.resolve(this.sniffSVGElements()),
     ]);
-    [...domUrls, ...shadowUrls, ...perfUrls, ...svgUrls].forEach((url) => {
+    [...treeUrls, ...perfUrls, ...svgUrls].forEach((url) => {
       if (
         url &&
         (url.startsWith("http") ||

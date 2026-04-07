@@ -97,12 +97,12 @@ const App: React.FC = () => {
     const allSelected = filteredImages.every(
       (img: ImageItem) => img.isSelected,
     );
+    const filteredIds = new Set(filteredImages.map((fi: ImageItem) => fi.id));
     setImages((prev: ImageItem[]) =>
       prev.map((img: ImageItem) => {
-        const isFiltered = filteredImages.some(
-          (fi: ImageItem) => fi.id === img.id,
-        );
-        return isFiltered ? { ...img, isSelected: !allSelected } : img;
+        return filteredIds.has(img.id)
+          ? { ...img, isSelected: !allSelected }
+          : img;
       }),
     );
   };

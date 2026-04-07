@@ -20,15 +20,19 @@ export class ImageProcessor {
     onProgress?: (current: number, total: number) => void,
   ): Promise<void> {
     const total = images.length;
-    const CONCURRENCY = settings.downloadControl?.maxConcurrency || 5;
-    const queue = [...images.entries()];
+    const CONCURRENCY =
+      settings.downloadControl?.maxConcurrency > 0
+        ? settings.downloadControl.maxConcurrency
+        : settings.downloadControl?.maxConcurrency === 0
+          ? total
+          : 5;
+    let currentIndex = 0;
     let completed = 0;
 
     const worker = async () => {
-      while (queue.length > 0) {
-        const item = queue.shift();
-        if (!item) break;
-        const [index, img] = item;
+      while (currentIndex < total) {
+        const index = currentIndex++;
+        const img = images[index];
 
         // GIF 过滤策略: skip
         if (
@@ -138,15 +142,19 @@ export class ImageProcessor {
   ): Promise<void> {
     const zip = new JSZip();
     const total = images.length;
-    const CONCURRENCY = settings.downloadControl?.maxConcurrency || 5;
-    const queue = [...images.entries()];
+    const CONCURRENCY =
+      settings.downloadControl?.maxConcurrency > 0
+        ? settings.downloadControl.maxConcurrency
+        : settings.downloadControl?.maxConcurrency === 0
+          ? total
+          : 5;
+    let currentIndex = 0;
     let completed = 0;
 
     const worker = async () => {
-      while (queue.length > 0) {
-        const item = queue.shift();
-        if (!item) break;
-        const [index, img] = item;
+      while (currentIndex < total) {
+        const index = currentIndex++;
+        const img = images[index];
 
         // GIF 过滤
         if (

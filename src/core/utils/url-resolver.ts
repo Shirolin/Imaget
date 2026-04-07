@@ -11,12 +11,19 @@ export class UrlResolver {
   public static resolveBestUrl(el: HTMLElement): string {
     let bestUrl = "";
 
-    if (el instanceof HTMLImageElement) {
-      bestUrl = el.currentSrc || el.src;
+    if (el instanceof HTMLImageElement || el.tagName === "SOURCE") {
+      const srcEl = el as HTMLImageElement | HTMLSourceElement;
+      bestUrl =
+        (srcEl as HTMLImageElement).currentSrc ||
+        (srcEl as HTMLImageElement).src ||
+        (srcEl as HTMLSourceElement).srcset;
 
       // 1. 优先尝试解析 srcset (取最高倍率/宽度)
-      if (el.srcset) {
-        const srcsetBest = this.parseSrcset(el.srcset);
+      const srcset =
+        (srcEl as HTMLImageElement).srcset ||
+        (srcEl as HTMLSourceElement).srcset;
+      if (srcset) {
+        const srcsetBest = this.parseSrcset(srcset);
         if (srcsetBest) bestUrl = srcsetBest;
       }
 

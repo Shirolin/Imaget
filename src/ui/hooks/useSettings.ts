@@ -75,15 +75,18 @@ export function useSettings() {
 
   useEffect(() => {
     if (loading) return;
-    if (
-      typeof chrome !== "undefined" &&
-      chrome.storage &&
-      chrome.storage.local
-    ) {
-      chrome.storage.local.set({ imaget_settings: settings });
-    } else {
-      localStorage.setItem("imaget_settings", JSON.stringify(settings));
-    }
+    const timer = setTimeout(() => {
+      if (
+        typeof chrome !== "undefined" &&
+        chrome.storage &&
+        chrome.storage.local
+      ) {
+        chrome.storage.local.set({ imaget_settings: settings });
+      } else {
+        localStorage.setItem("imaget_settings", JSON.stringify(settings));
+      }
+    }, 500);
+    return () => clearTimeout(timer);
   }, [settings, loading]);
 
   const updateSettings = useCallback(

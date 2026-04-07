@@ -9,6 +9,7 @@ import { Sniffer } from "../core/sniffer";
 import { ImageProcessor } from "../core/processor";
 import { ExtensionAdapter } from "../core/adapters/extension";
 import { WebAdapter } from "../core/adapters/web";
+import { UrlResolver } from "../core/utils/url-resolver";
 import { theme, FONT_STACK } from "../ui/theme";
 
 const ROOT_ID = "imaget-reborn-root";
@@ -113,7 +114,6 @@ chrome.runtime.onMessage.addListener(async (message) => {
       const items = await sniffer.sniffAll();
 
       // 2. 匹配图片 (使用 transformSiteSpecificUrl 辅助匹配)
-      const { UrlResolver } = await import("../core/utils/url-resolver");
       const normalizedSrcUrl = UrlResolver.transformSiteSpecificUrl(srcUrl);
 
       const target = items.find((item) => {

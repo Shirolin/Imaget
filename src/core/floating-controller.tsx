@@ -44,6 +44,9 @@ export class FloatingController {
   // 🚀 追踪鼠标是否仍在触发目标图片上
   private isHoveringTarget: boolean = false;
 
+  // 🚀 性能优化：缓存上一次处理的目标，避免冗余计算
+  private lastProcessedTarget: HTMLElement | null = null;
+
   constructor(
     private sniffer: Sniffer,
     private processor: ImageProcessor,
@@ -108,12 +111,11 @@ export class FloatingController {
   private async handleMouseOver(e: MouseEvent) {
     // 穿透 Shadow DOM 获取真实触发目标
     const path = e.composedPath();
-    let target = (path[0] as HTMLElement) || (e.target as HTMLElement);
+    const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
     if (this.isMuted) return;
 
     if (!this.settings.interfaceBehavior.showFloatingButton) {
-      // console.log("[FloatingController] showFloatingButton setting is disabled.");
       return;
     }
 
@@ -128,67 +130,104 @@ export class FloatingController {
 
     if (!target || !(target instanceof HTMLElement)) return;
 
-    // 🚀 核心改进：穿透遮罩层寻找真正的图片
-    // 如果当前目标不是图片且没有背景图，尝试从当前坐标向下寻找
-    const isDirectImg = target.tagName === "IMG";
-    const style = window.getComputedStyle(target);
-    const isDirectBg =
-      this.settings.interfaceBehavior.identifyBackgroundImages &&
-      style.backgroundImage &&
-      style.backgroundImage !== "none" &&
-      style.backgroundImage.startsWith("url(");
+    // 🚀 性能优化：如果鼠标仍在同一个原始目标上移动，且探测已在进行或已完成，直接跳过
+    if (this.lastProcessedTarget === target) return;
+    this.lastProcessedTarget = target;
 
-    if (!isDirectImg && !isDirectBg) {
-      const elementsUnder = document.elementsFromPoint(e.clientX, e.clientY);
-      for (const el of elementsUnder) {
-        if (!(el instanceof HTMLElement)) continue;
-        // 排除掉悬浮按钮自身及其宿主
-        if (
-          this.currentHost &&
-          (this.currentHost === el || this.currentHost.contains(el))
-        )
-          continue;
+    const minSize = this.settings.interfaceBehavior.minImageSize;
+    const elementsUnder = document.elementsFromPoint(e.clientX, e.clientY);
 
-        if (el.tagName === "IMG") {
-          target = el;
-          break;
+    let bestTarget: HTMLElement | null = null;
+    let bestUrl: string = "";
+
+    // 🚀 性能优化：限制探测深度（前10层足以穿透推特的所有遮罩）
+    const searchDepth = Math.min(elementsUnder.length, 10);
+
+    for (let i = 0; i < searchDepth; i++) {
+      const el = elementsUnder[i];
+      if (!(el instanceof HTMLElement)) continue;
+
+      const htmlEl = el as HTMLElement;
+
+      // 排除掉悬浮按钮自身及其宿主
+      if (
+        this.currentHost &&
+        (this.currentHost === htmlEl || this.currentHost.contains(htmlEl))
+      )
+        continue;
+
+      const tagName = htmlEl.tagName;
+
+      // 🚀 性能优化：先尝试从标签属性获取 URL，避免 getComputedStyle
+      let candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
+      let candidateEl = htmlEl;
+
+      if (
+        !candidateUrl &&
+        (tagName === "A" ||
+          tagName === "DIV" ||
+          tagName === "PICTURE" ||
+          tagName === "SOURCE")
+      ) {
+        const imgInside = htmlEl.querySelector("img");
+        if (imgInside) {
+          candidateUrl = UrlResolver.resolveBestUrl(imgInside);
+          candidateEl = imgInside;
         }
-        const s = window.getComputedStyle(el);
+      }
+
+      // 如果还是没 URL，再看背景图（仅在需要时调用昂贵的 getComputedStyle）
+      if (
+        !candidateUrl &&
+        this.settings.interfaceBehavior.identifyBackgroundImages
+      ) {
+        const s = window.getComputedStyle(htmlEl);
         if (
-          this.settings.interfaceBehavior.identifyBackgroundImages &&
           s.backgroundImage &&
           s.backgroundImage !== "none" &&
-          s.backgroundImage.startsWith("url(") &&
-          el.offsetWidth >= this.settings.interfaceBehavior.minImageSize &&
-          el.offsetHeight >= this.settings.interfaceBehavior.minImageSize
+          s.backgroundImage.startsWith("url(")
         ) {
-          target = el;
-          break;
+          candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
         }
+      }
+
+      if (!candidateUrl || candidateUrl.startsWith("data:")) continue;
+
+      // 检查尺寸要求 (基于找到的实际图片元素或当前容器)
+      const rect = candidateEl.getBoundingClientRect();
+      const displayWidth = rect.width || candidateEl.offsetWidth;
+      const displayHeight = rect.height || candidateEl.offsetHeight;
+
+      let isLargeEnough = false;
+      if (candidateEl instanceof HTMLImageElement) {
+        isLargeEnough =
+          displayWidth >= minSize - 8 ||
+          displayHeight >= minSize - 8 ||
+          candidateEl.naturalWidth >= minSize ||
+          candidateEl.naturalHeight >= minSize;
+      } else {
+        isLargeEnough =
+          displayWidth >= minSize - 8 || displayHeight >= minSize - 8;
+      }
+
+      if (isLargeEnough) {
+        bestTarget = htmlEl;
+        bestUrl = candidateUrl;
+        break;
       }
     }
 
-    // 重新获取 target 的状态（可能是寻找到的底层元素）
-    const finalTarget = target;
-    const isImg = finalTarget.tagName === "IMG";
-    const finalStyle = window.getComputedStyle(finalTarget);
-    const isBg =
-      this.settings.interfaceBehavior.identifyBackgroundImages &&
-      finalStyle.backgroundImage &&
-      finalStyle.backgroundImage !== "none" &&
-      finalStyle.backgroundImage.startsWith("url(") &&
-      finalTarget.offsetWidth >= this.settings.interfaceBehavior.minImageSize &&
-      finalTarget.offsetHeight >= this.settings.interfaceBehavior.minImageSize;
-
-    if (!isImg && !isBg) return;
+    if (!bestTarget || !bestUrl) return;
 
     // 过滤输入框
     if (
-      finalTarget.tagName === "INPUT" ||
-      finalTarget.tagName === "TEXTAREA" ||
-      finalTarget.isContentEditable
+      bestTarget.tagName === "INPUT" ||
+      bestTarget.tagName === "TEXTAREA" ||
+      bestTarget.isContentEditable
     )
       return;
+
+    const finalTarget = bestTarget;
 
     // 🚀 识别位移与宽限期逻辑
     const mouseX = e.clientX;
@@ -251,7 +290,26 @@ export class FloatingController {
       const rect = activeTarget.getBoundingClientRect();
       const minSize = this.settings.interfaceBehavior.minImageSize || 0;
 
-      if (rect.width < minSize || rect.height < minSize) {
+      const displayWidth = rect.width || activeTarget.offsetWidth;
+      const displayHeight = rect.height || activeTarget.offsetHeight;
+
+      let isLargeEnough =
+        displayWidth >= minSize - 8 || displayHeight >= minSize - 8;
+
+      // 如果显示尺寸不够，尝试从内部图片获取原始尺寸
+      if (!isLargeEnough) {
+        const imgInside =
+          activeTarget instanceof HTMLImageElement
+            ? activeTarget
+            : activeTarget.querySelector("img");
+        if (imgInside) {
+          isLargeEnough =
+            imgInside.naturalWidth >= minSize ||
+            imgInside.naturalHeight >= minSize;
+        }
+      }
+
+      if (!isLargeEnough) {
         this.timer = null;
         return;
       }

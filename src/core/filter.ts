@@ -6,8 +6,8 @@ export function filterImages(
 ): ImageItem[] {
   return images
     .filter((img) => {
-      // 尺寸过滤
-      if (img.width < options.minWidth || img.height < options.minHeight)
+      // 尺寸过滤：任一维度达到阈值即可，避免过滤掉超长或超宽的大图
+      if (img.width < options.minWidth && img.height < options.minHeight)
         return false;
 
       // 格式过滤
