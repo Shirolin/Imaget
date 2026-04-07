@@ -75,6 +75,9 @@ export default {
   prefConflictOverwrite: { message: "上書き" },
   prefConflictPrompt: { message: "確認する" },
   prefShowInSidebar: { message: "サイドバーに表示" },
+  prefShowInSidebarHint: {
+    message: "変更を有効にするには、一度閉じてから再度開く必要があります",
+  },
   prefHideDownloadWarning: { message: "ダウンロード警告を非表示" },
   prefSearchAllFrames: { message: "すべてのフレームを検索" },
   prefIdentifyBackgroundImages: { message: "背景画像を識別" },

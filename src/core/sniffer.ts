@@ -9,6 +9,27 @@ export class Sniffer {
   public async autoScroll(
     onProgress?: (percent: number) => void,
   ): Promise<void> {
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (isExtensionPage) {
+      return new Promise((resolve) => {
+        chrome.tabs
+          .query({ active: true, currentWindow: true })
+          .then((tabs) => {
+            const activeTab = tabs[0];
+            if (!activeTab?.id) return resolve();
+            chrome.tabs.sendMessage(
+              activeTab.id,
+              { action: "AUTOSCROLL_REQUEST" },
+              () => resolve(),
+            );
+          })
+          .catch(() => resolve());
+      });
+    }
+
     const totalHeight = document.body.scrollHeight;
     const distance = 400;
     let currentPosition = 0;
@@ -153,6 +174,40 @@ export class Sniffer {
       identifyBlobImages: boolean;
     };
   }): Promise<ImageItem[]> {
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (isExtensionPage) {
+      return new Promise((resolve) => {
+        chrome.tabs
+          .query({ active: true, currentWindow: true })
+          .then((tabs) => {
+            const activeTab = tabs[0];
+            if (!activeTab?.id) return resolve([]);
+            chrome.tabs.sendMessage(
+              activeTab.id,
+              { action: "SNIFF_REQUEST", payload: { settings } },
+              (response) => {
+                if (chrome.runtime.lastError || !response) {
+                  console.warn(
+                    "[SidePanel Sniffer] Error connecting to content script:",
+                    chrome.runtime.lastError,
+                  );
+                  resolve([]);
+                } else {
+                  resolve(response.results || []);
+                }
+              },
+            );
+          })
+          .catch((err) => {
+            console.error("[SidePanel Sniffer] Error querying tabs:", err);
+            resolve([]);
+          });
+      });
+    }
+
     const urls = new Set<string>();
 
     const searchAllFrames =

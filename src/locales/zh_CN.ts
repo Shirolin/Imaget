@@ -66,6 +66,9 @@ export default {
   prefConflictOverwrite: { message: "直接覆盖" },
   prefConflictPrompt: { message: "询问我" },
   prefShowInSidebar: { message: "在侧边栏显示" },
+  prefShowInSidebarHint: {
+    message: "更改后需关闭当前插件弹窗并重新点击图标方可生效",
+  },
   prefHideDownloadWarning: { message: "关闭多文件下载警告" },
   prefSearchAllFrames: { message: "搜索所有框架" },
   prefIdentifyBackgroundImages: { message: "识别背景图片" },

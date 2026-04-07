@@ -75,6 +75,9 @@ export default {
   prefConflictOverwrite: { message: "Sobrescrever" },
   prefConflictPrompt: { message: "Perguntar" },
   prefShowInSidebar: { message: "Mostrar na Sidebar" },
+  prefShowInSidebarHint: {
+    message: "Requer fechar e reabrir a extensão para entrar em vigor",
+  },
   prefHideDownloadWarning: { message: "Ocultar Aviso de Download" },
   prefSearchAllFrames: { message: "Buscar em todos os Frames" },
   prefIdentifyBackgroundImages: { message: "Identificar Imagens de Fundo" },

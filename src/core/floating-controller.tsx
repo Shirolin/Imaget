@@ -11,41 +11,34 @@ import mantineStyles from "@mantine/core/styles.css?inline";
 const SELECTOR = ".imaget-floating-container";
 const finalCSS = mantineStyles.replaceAll(":root", SELECTOR);
 
+interface FloatingInstance {
+  host: HTMLElement;
+  root: ReactDOM.Root;
+  rootElement: HTMLElement;
+  target: HTMLElement;
+  url: string;
+  status: "idle" | "downloading" | "success" | "error";
+  progress: number;
+  progressInterval: number | null;
+  observer: MutationObserver | null;
+  hideTimer: number | null;
+  isHovering: boolean;
+}
+
 export class FloatingController {
-  private currentHost: HTMLElement | null = null;
-  private currentRoot: ReactDOM.Root | null = null;
-  private currentRootElement: HTMLElement | null = null;
+  private instances: Map<HTMLElement, FloatingInstance> = new Map();
   private isMuted: boolean = false;
   private settings: Settings = defaultSettings;
-  private observer: MutationObserver | null = null;
   private timer: number | null = null;
-  private hideTimer: number | null = null;
-  private currentTarget: HTMLElement | null = null;
-  private currentUrl: string = "";
-
-  // 🚀 记录鼠标位置与宽限期计时器
+  private pendingTarget: HTMLElement | null = null;
+  private lastProcessedTarget: HTMLElement | null = null;
   private lastMouseX: number = 0;
   private lastMouseY: number = 0;
   private graceTimer: number | null = null;
 
-  // 🚀 待处理的目标（用于延迟衔接）
-  private pendingTarget: HTMLElement | null = null;
-  private pendingUrl: string = "";
-
   // 记忆最近一次的悬浮目标，以供右键菜单唤起动画
   private lastTarget: HTMLElement | null = null;
   private lastUrl: string = "";
-
-  // 🚀 进度与状态追踪
-  private status: "idle" | "downloading" | "success" | "error" = "idle";
-  private progress: number = 0;
-  private progressInterval: number | null = null;
-
-  // 🚀 追踪鼠标是否仍在触发目标图片上
-  private isHoveringTarget: boolean = false;
-
-  // 🚀 性能优化：缓存上一次处理的目标，避免冗余计算
-  private lastProcessedTarget: HTMLElement | null = null;
 
   constructor(
     private sniffer: Sniffer,
@@ -70,12 +63,9 @@ export class FloatingController {
   }
 
   public init() {
-    // 使用 capture 为 true 以先行捕获事件
-    // 使用 pointerover 以更好地处理触控和现代浏览器的多种交互
     document.addEventListener("pointerover", this.handleMouseOver, true);
     document.addEventListener("pointerout", this.handleMouseOut, true);
 
-    // 🚀 监听存储变更以实现跨标签页同步
     if (typeof chrome !== "undefined" && chrome.storage?.onChanged) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes.imaget_settings) {
@@ -87,7 +77,6 @@ export class FloatingController {
               newSettings.interfaceBehavior.disabledDomains || [];
             const currentHost = window.location.hostname;
 
-            // 如果当前域名从黑名单中移除了，自动取消静音
             if (
               oldDisabled.includes(currentHost) &&
               !newDisabled.includes(currentHost)
@@ -96,6 +85,8 @@ export class FloatingController {
             }
 
             this.settings = newSettings;
+            // 通知所有实例更新设置（如果需要，目前主要用于 render）
+            this.instances.forEach((instance) => this.renderInstance(instance));
           }
         }
       });
@@ -105,32 +96,25 @@ export class FloatingController {
   public destroy() {
     document.removeEventListener("pointerover", this.handleMouseOver, true);
     document.removeEventListener("pointerout", this.handleMouseOut, true);
-    this.hideFloatingImmediate();
+    this.instances.forEach((_, target) => this.removeInstance(target));
   }
 
   private async handleMouseOver(e: MouseEvent) {
-    // 穿透 Shadow DOM 获取真实触发目标
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
     if (this.isMuted) return;
-
-    if (!this.settings.interfaceBehavior.showFloatingButton) {
-      return;
-    }
-
+    if (!this.settings.interfaceBehavior.showFloatingButton) return;
     if (
       this.settings.interfaceBehavior.disabledDomains &&
       this.settings.interfaceBehavior.disabledDomains.includes(
         window.location.hostname,
       )
-    ) {
+    )
       return;
-    }
 
     if (!target || !(target instanceof HTMLElement)) return;
 
-    // 🚀 性能优化：如果鼠标仍在同一个原始目标上移动，且探测已在进行或已完成，直接跳过
     if (this.lastProcessedTarget === target) return;
     this.lastProcessedTarget = target;
 
@@ -140,7 +124,6 @@ export class FloatingController {
     let bestTarget: HTMLElement | null = null;
     let bestUrl: string = "";
 
-    // 🚀 性能优化：限制探测深度（前10层足以穿透推特的所有遮罩）
     const searchDepth = Math.min(elementsUnder.length, 10);
 
     for (let i = 0; i < searchDepth; i++) {
@@ -149,25 +132,25 @@ export class FloatingController {
 
       const htmlEl = el as HTMLElement;
 
-      // 排除掉悬浮按钮自身及其宿主
-      if (
-        this.currentHost &&
-        (this.currentHost === htmlEl || this.currentHost.contains(htmlEl))
-      )
-        continue;
+      // 检查是否已经是某个实例的 host
+      let isHost = false;
+      for (const inst of this.instances.values()) {
+        if (inst.host === htmlEl || inst.host.contains(htmlEl)) {
+          isHost = true;
+          break;
+        }
+      }
+      if (isHost) continue;
 
-      const tagName = htmlEl.tagName;
-
-      // 🚀 性能优化：先尝试从标签属性获取 URL，避免 getComputedStyle
       let candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
       let candidateEl = htmlEl;
 
       if (
         !candidateUrl &&
-        (tagName === "A" ||
-          tagName === "DIV" ||
-          tagName === "PICTURE" ||
-          tagName === "SOURCE")
+        (htmlEl.tagName === "A" ||
+          htmlEl.tagName === "DIV" ||
+          htmlEl.tagName === "PICTURE" ||
+          htmlEl.tagName === "SOURCE")
       ) {
         const imgInside = htmlEl.querySelector("img");
         if (imgInside) {
@@ -176,7 +159,6 @@ export class FloatingController {
         }
       }
 
-      // 如果还是没 URL，再看背景图（仅在需要时调用昂贵的 getComputedStyle）
       if (
         !candidateUrl &&
         this.settings.interfaceBehavior.identifyBackgroundImages
@@ -193,7 +175,6 @@ export class FloatingController {
 
       if (!candidateUrl || candidateUrl.startsWith("data:")) continue;
 
-      // 检查尺寸要求 (基于找到的实际图片元素或当前容器)
       const rect = candidateEl.getBoundingClientRect();
       const displayWidth = rect.width || candidateEl.offsetWidth;
       const displayHeight = rect.height || candidateEl.offsetHeight;
@@ -218,8 +199,6 @@ export class FloatingController {
     }
 
     if (!bestTarget || !bestUrl) return;
-
-    // 过滤输入框
     if (
       bestTarget.tagName === "INPUT" ||
       bestTarget.tagName === "TEXTAREA" ||
@@ -228,8 +207,6 @@ export class FloatingController {
       return;
 
     const finalTarget = bestTarget;
-
-    // 🚀 识别位移与宽限期逻辑
     const mouseX = e.clientX;
     const mouseY = e.clientY;
     const dist = Math.sqrt(
@@ -239,30 +216,24 @@ export class FloatingController {
     this.lastMouseX = mouseX;
     this.lastMouseY = mouseY;
 
-    // 🚀 核心逻辑：如果在 50ms 宽限期内且位移很小，视为“同一个目标的 DOM 替换”
+    const existingInstance = this.instances.get(finalTarget);
+
     if (this.graceTimer && dist < 20) {
       window.clearTimeout(this.graceTimer);
       this.graceTimer = null;
-
       this.pendingTarget = finalTarget;
-      this.isHoveringTarget = true; // 恢复悬停状态，避免误隐藏
 
-      if (this.hideTimer) {
-        window.clearTimeout(this.hideTimer);
-        this.hideTimer = null;
-      }
-
-      // 如果浮动按钮已经显示（即 300ms 计时器已完成），无缝移交追踪对象
-      if (!this.timer && this.currentHost) {
-        this.currentTarget = finalTarget;
-        this.lastTarget = finalTarget;
-        this.setupObserver(finalTarget);
-        this.updateFloatingRect(finalTarget.getBoundingClientRect());
+      if (existingInstance) {
+        existingInstance.isHovering = true;
+        if (existingInstance.hideTimer) {
+          window.clearTimeout(existingInstance.hideTimer);
+          existingInstance.hideTimer = null;
+        }
+        this.updateInstanceRect(existingInstance);
       }
       return;
     }
 
-    // 否则：这是一次真正的鼠标移动或新目标触发，清理旧状态并重新开始计时
     if (this.timer) {
       window.clearTimeout(this.timer);
       this.timer = null;
@@ -275,7 +246,6 @@ export class FloatingController {
     this.pendingTarget = finalTarget;
 
     const triggerLogic = async () => {
-      // 避免 timer 在 50ms 宽限期内误触（例如鼠标刚移出，DOM 尚未替换时）
       if (this.graceTimer) {
         this.timer = window.setTimeout(triggerLogic, 50);
         return;
@@ -287,59 +257,26 @@ export class FloatingController {
         return;
       }
 
-      const rect = activeTarget.getBoundingClientRect();
-      const minSize = this.settings.interfaceBehavior.minImageSize || 0;
-
-      const displayWidth = rect.width || activeTarget.offsetWidth;
-      const displayHeight = rect.height || activeTarget.offsetHeight;
-
-      let isLargeEnough =
-        displayWidth >= minSize - 8 || displayHeight >= minSize - 8;
-
-      // 如果显示尺寸不够，尝试从内部图片获取原始尺寸
-      if (!isLargeEnough) {
-        const imgInside =
-          activeTarget instanceof HTMLImageElement
-            ? activeTarget
-            : activeTarget.querySelector("img");
-        if (imgInside) {
-          isLargeEnough =
-            imgInside.naturalWidth >= minSize ||
-            imgInside.naturalHeight >= minSize;
-        }
-      }
-
-      if (!isLargeEnough) {
-        this.timer = null;
-        return;
-      }
-
       const url = UrlResolver.resolveBestUrl(activeTarget);
       if (!url || url.startsWith("data:")) {
         this.timer = null;
         return;
       }
 
-      if (this.currentHost && this.currentHost.dataset.targetUrl === url) {
-        if (this.hideTimer) {
-          window.clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-        }
-        this.currentTarget = activeTarget;
-        this.lastTarget = activeTarget;
-        this.lastUrl = url;
-        this.isHoveringTarget = true;
-        this.setupObserver(activeTarget);
-        this.updateFloatingRect(rect);
-        this.timer = null;
-        return;
-      }
-
-      this.currentTarget = activeTarget;
       this.lastTarget = activeTarget;
       this.lastUrl = url;
-      this.isHoveringTarget = true;
-      this.showFloating(activeTarget, url, rect);
+
+      const inst = this.instances.get(activeTarget);
+      if (inst) {
+        inst.isHovering = true;
+        if (inst.hideTimer) {
+          window.clearTimeout(inst.hideTimer);
+          inst.hideTimer = null;
+        }
+        this.updateInstanceRect(inst);
+      } else {
+        this.createInstance(activeTarget, url);
+      }
       this.timer = null;
     };
 
@@ -347,7 +284,6 @@ export class FloatingController {
   }
 
   private handleMouseOut(e: MouseEvent) {
-    // 🚀 计时器宽限期处理：避免 DOM 替换导致计时归零以及防误触发关闭
     if (this.graceTimer) window.clearTimeout(this.graceTimer);
     this.graceTimer = window.setTimeout(() => {
       if (this.timer) {
@@ -356,79 +292,58 @@ export class FloatingController {
       }
       this.graceTimer = null;
       this.pendingTarget = null;
-    }, 50); // 50ms 宽限，足以应对大多数框架的 DOM 变更
+    }, 50);
 
-    // 如果移到了按钮容器内，或者移回了原图片，不要隐藏
-    if (
-      this.currentHost &&
-      e.relatedTarget &&
-      (this.currentHost.contains(e.relatedTarget as Node) ||
-        this.currentTarget === e.relatedTarget)
-    ) {
-      if (this.hideTimer) {
-        window.clearTimeout(this.hideTimer);
-        this.hideTimer = null;
+    // 检查是否离开了某个实例的目标或按钮
+    for (const [target, inst] of this.instances.entries()) {
+      if (
+        e.relatedTarget &&
+        (inst.host.contains(e.relatedTarget as Node) ||
+          target === e.relatedTarget)
+      ) {
+        inst.isHovering = true;
+        if (inst.hideTimer) {
+          window.clearTimeout(inst.hideTimer);
+          inst.hideTimer = null;
+        }
+        continue;
       }
-      return;
-    }
 
-    // 标记鼠标已离开目标
-    this.isHoveringTarget = false;
+      // 如果确实离开了
+      inst.isHovering = false;
 
-    // 🚀 下载进行中：不隐藏按钮，等下载完成后再决定
-    if (this.status !== "idle") {
-      if (this.hideTimer) {
-        window.clearTimeout(this.hideTimer);
-        this.hideTimer = null;
+      // 如果正在下载或成功/错误显示中，不隐藏
+      if (inst.status !== "idle") {
+        if (inst.hideTimer) {
+          window.clearTimeout(inst.hideTimer);
+          inst.hideTimer = null;
+        }
+        continue;
       }
-      return;
-    }
 
-    if (this.hideTimer) window.clearTimeout(this.hideTimer);
-    this.hideTimer = window.setTimeout(() => {
-      this.hideFloatingImmediate();
-    }, 500); // 增加缓冲时间到 500ms
+      if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
+      inst.hideTimer = window.setTimeout(() => {
+        if (!inst.isHovering && inst.status === "idle") {
+          this.removeInstance(target);
+        }
+      }, 500);
+    }
   }
 
-  private updateFloatingRect(rect: DOMRect) {
-    if (!this.currentHost) return;
-    Object.assign(this.currentHost.style, {
-      left: `${Math.round(rect.left + window.scrollX)}px`,
-      top: `${Math.round(rect.top + window.scrollY)}px`,
-      width: `${Math.round(rect.width)}px`,
-      height: `${Math.round(rect.height)}px`,
-    });
-  }
-
-  private showFloating(_target: HTMLElement, url: string, rect: DOMRect) {
-    // 🚀 下载进行中时不销毁当前按钮，直接忽略新目标的激活
-    if (this.status !== "idle") {
-      return;
-    }
-
-    this.hideFloatingImmediate();
-
+  private createInstance(target: HTMLElement, url: string) {
     const host = document.createElement("div");
     host.className = "imaget-floating-host";
     host.dataset.targetUrl = url;
-
-    // 绝对定位覆盖在图片上
     Object.assign(host.style, {
-      all: "initial", // 彻底隔离外界干扰
+      all: "initial",
       position: "absolute",
       pointerEvents: "none",
       zIndex: "2147483646",
     });
 
     document.body.appendChild(host);
-    this.currentHost = host;
-
-    // 初始化位置与大小
-    this.updateFloatingRect(rect);
 
     const shadow = host.attachShadow({ mode: "open" });
-
-    // 注入样式
     const styleTag = document.createElement("style");
     styleTag.textContent = finalCSS;
     shadow.appendChild(styleTag);
@@ -438,54 +353,69 @@ export class FloatingController {
     rootElement.style.width = "100%";
     rootElement.style.height = "100%";
     shadow.appendChild(rootElement);
-    this.currentUrl = url;
-    this.status = "idle";
-    this.progress = 0;
 
-    this.currentRootElement = rootElement;
-    this.currentRoot = ReactDOM.createRoot(rootElement);
-    this.render();
+    const root = ReactDOM.createRoot(rootElement);
+    const instance: FloatingInstance = {
+      host,
+      root,
+      rootElement,
+      target,
+      url,
+      status: "idle",
+      progress: 0,
+      progressInterval: null,
+      observer: null,
+      hideTimer: null,
+      isHovering: true,
+    };
 
-    // 🚀 绑定 MutationObserver 监听 URL 动态变更
-    this.setupObserver(_target);
+    this.instances.set(target, instance);
+    this.updateInstanceRect(instance);
+    this.setupObserver(instance);
+    this.renderInstance(instance);
   }
 
-  private setupObserver(target: HTMLElement) {
-    if (this.observer) this.observer.disconnect();
+  private updateInstanceRect(instance: FloatingInstance) {
+    const rect = instance.target.getBoundingClientRect();
+    Object.assign(instance.host.style, {
+      left: `${Math.round(rect.left + window.scrollX)}px`,
+      top: `${Math.round(rect.top + window.scrollY)}px`,
+      width: `${Math.round(rect.width)}px`,
+      height: `${Math.round(rect.height)}px`,
+    });
+  }
 
-    this.observer = new MutationObserver(() => {
-      const newUrl = UrlResolver.resolveBestUrl(target);
-      if (newUrl && newUrl !== this.currentUrl) {
-        this.currentUrl = newUrl;
-        if (this.currentHost) this.currentHost.dataset.targetUrl = newUrl;
-        this.render();
+  private setupObserver(instance: FloatingInstance) {
+    if (instance.observer) instance.observer.disconnect();
+
+    instance.observer = new MutationObserver(() => {
+      const newUrl = UrlResolver.resolveBestUrl(instance.target);
+      if (newUrl && newUrl !== instance.url) {
+        instance.url = newUrl;
+        instance.host.dataset.targetUrl = newUrl;
+        this.renderInstance(instance);
       }
     });
 
-    this.observer.observe(target, {
+    instance.observer.observe(instance.target, {
       attributes: true,
       attributeFilter: ["src", "srcset"],
     });
   }
 
-  /**
-   * 🚀 渲染方法：支持状态更新时的重绘
-   */
-  private render() {
-    if (!this.currentRoot || !this.currentRootElement) return;
-
-    this.currentRoot.render(
+  private renderInstance(instance: FloatingInstance) {
+    instance.root.render(
       <React.StrictMode>
         <MantineProvider
           forceColorScheme="dark"
           cssVariablesSelector={SELECTOR}
-          getRootElement={() => this.currentRootElement!}
+          getRootElement={() => instance.rootElement}
         >
           <FloatingButton
             visible={true}
-            status={this.status}
-            progress={this.progress}
-            onDownload={() => this.triggerDownload(this.currentUrl)}
+            status={instance.status}
+            progress={instance.progress}
+            onDownload={() => this.triggerDownload(instance)}
             onDisable={() => {
               this.isMuted = true;
               const currentDomain = window.location.hostname;
@@ -500,20 +430,9 @@ export class FloatingController {
                   },
                 };
                 this.settings = newSettings;
-                if (
-                  typeof chrome !== "undefined" &&
-                  chrome.storage &&
-                  chrome.storage.local
-                ) {
-                  chrome.storage.local.set({ imaget_settings: newSettings });
-                } else {
-                  localStorage.setItem(
-                    "imaget_settings",
-                    JSON.stringify(newSettings),
-                  );
-                }
+                chrome.storage.local.set({ imaget_settings: newSettings });
               }
-              this.hideFloatingImmediate();
+              this.instances.forEach((_, t) => this.removeInstance(t));
             }}
             onHidePermanent={() => {
               const newSettings = {
@@ -524,23 +443,11 @@ export class FloatingController {
                 },
               };
               this.settings = newSettings;
-              if (
-                typeof chrome !== "undefined" &&
-                chrome.storage &&
-                chrome.storage.local
-              ) {
-                chrome.storage.local.set({ imaget_settings: newSettings });
-              } else {
-                localStorage.setItem(
-                  "imaget_settings",
-                  JSON.stringify(newSettings),
-                );
-              }
-              this.hideFloatingImmediate();
+              chrome.storage.local.set({ imaget_settings: newSettings });
+              this.instances.forEach((_, t) => this.removeInstance(t));
             }}
             onClose={() => {
-              this.isMuted = true;
-              this.hideFloatingImmediate();
+              this.removeInstance(instance.target);
             }}
           />
         </MantineProvider>
@@ -548,150 +455,41 @@ export class FloatingController {
     );
   }
 
-  private hideFloatingImmediate() {
-    if (this.progressInterval) {
-      window.clearInterval(this.progressInterval);
-      this.progressInterval = null;
-    }
-    if (this.currentHost) {
-      if (this.currentRoot) {
-        this.currentRoot.unmount();
-        this.currentRoot = null;
-      }
-      if (this.currentHost.parentNode) {
-        this.currentHost.parentNode.removeChild(this.currentHost);
-      }
-      this.currentHost = null;
-    }
+  private removeInstance(target: HTMLElement) {
+    const inst = this.instances.get(target);
+    if (!inst) return;
 
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = null;
+    if (inst.progressInterval) {
+      window.clearInterval(inst.progressInterval);
     }
-
-    if (this.graceTimer) {
-      window.clearTimeout(this.graceTimer);
-      this.graceTimer = null;
+    if (inst.observer) {
+      inst.observer.disconnect();
     }
-
-    this.currentTarget = null;
-    if (this.hideTimer) {
-      window.clearTimeout(this.hideTimer);
-      this.hideTimer = null;
+    if (inst.hideTimer) {
+      window.clearTimeout(inst.hideTimer);
     }
+    inst.root.unmount();
+    if (inst.host.parentNode) {
+      inst.host.parentNode.removeChild(inst.host);
+    }
+    this.instances.delete(target);
   }
 
-  /**
-   * 供外部（如右键菜单）调用：尝试用悬浮动画接管下载过程
-   * @returns boolean 是否成功触发动画（如果未找到元素则返回 false，让外部回退到静默下载）
-   */
-  public async tryTriggerCustomDownload(
-    url: string,
-    item: ImageItem,
-    customSettings: Settings,
-  ): Promise<boolean> {
-    let targetEl =
-      this.currentHost && this.currentUrl === url ? this.currentTarget : null;
+  private async triggerDownload(instance: FloatingInstance) {
+    if (instance.status !== "idle") return;
 
-    // 如果悬浮按钮已隐藏，但目标图片仍在视口 DOM 中，强行唤醒！
-    if (!targetEl && this.lastUrl === url && this.lastTarget?.isConnected) {
-      targetEl = this.lastTarget;
-      const rect = targetEl.getBoundingClientRect();
-      this.showFloating(targetEl, url, rect);
-    }
+    const url = instance.url;
+    instance.status = "downloading";
+    instance.progress = 0;
+    this.renderInstance(instance);
 
-    if (!targetEl) return false;
-
-    // 确保状态复位
-    if (this.status !== "idle") {
-      this.hideFloatingImmediate();
-      this.showFloating(targetEl, url, targetEl.getBoundingClientRect());
-    }
-
-    this.status = "downloading";
-    this.progress = 0;
-    this.render();
-
-    this.progressInterval = window.setInterval(() => {
-      if (this.currentUrl !== url) {
-        if (this.progressInterval) window.clearInterval(this.progressInterval);
-        this.progressInterval = null;
-        return;
-      }
-      if (this.progress < 30) this.progress += Math.random() * 10;
-      else if (this.progress < 95) this.progress += Math.random() * 2;
-      if (this.progress > 95) this.progress = 95;
-      this.render();
+    instance.progressInterval = window.setInterval(() => {
+      if (instance.progress < 30) instance.progress += Math.random() * 10;
+      else if (instance.progress < 95) instance.progress += Math.random() * 2;
+      if (instance.progress > 95) instance.progress = 95;
+      this.renderInstance(instance);
     }, 150);
 
-    try {
-      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
-        throw new Error("Simulated download failure");
-      }
-      await this.processor.downloadBatch([item], customSettings);
-
-      if (this.currentUrl !== url) return true;
-
-      if (this.progressInterval) window.clearInterval(this.progressInterval);
-      this.progressInterval = null;
-      this.status = "success";
-      this.progress = 100;
-      this.render();
-
-      window.setTimeout(() => {
-        if (this.currentHost && this.currentUrl === url) {
-          this.status = "idle";
-          this.progress = 0;
-          this.render();
-        }
-      }, 2000);
-    } catch (err) {
-      console.error("Floating custom download failed:", err);
-      if (this.currentUrl !== url) return true;
-
-      this.status = "error";
-      this.render();
-      if (this.progressInterval) window.clearInterval(this.progressInterval);
-
-      window.setTimeout(() => {
-        if (this.currentHost && this.currentUrl === url) {
-          this.status = "idle";
-          this.render();
-        }
-      }, 2000);
-    }
-
-    return true;
-  }
-
-  private async triggerDownload(url: string) {
-    if (this.status !== "idle") return;
-
-    // 1. 设置开始下载状态
-    this.status = "downloading";
-    this.progress = 0;
-    this.render();
-
-    // 2. 启动进度模拟 (Liquid Fill 模拟)
-    // 快速填满前 30%，然后缓慢增长至 95%
-    this.progressInterval = window.setInterval(() => {
-      // 如果当前 hover 的不是触发下载时的图片，停止进度更新
-      if (this.currentUrl !== url) {
-        if (this.progressInterval) window.clearInterval(this.progressInterval);
-        this.progressInterval = null;
-        return;
-      }
-
-      if (this.progress < 30) {
-        this.progress += Math.random() * 10;
-      } else if (this.progress < 95) {
-        this.progress += Math.random() * 2;
-      }
-      if (this.progress > 95) this.progress = 95;
-      this.render();
-    }, 150);
-
-    // 构造一个临时的 ImageItem
     const item: ImageItem = {
       id: "floating-" + Math.random().toString(36).slice(2),
       url: url,
@@ -704,58 +502,140 @@ export class FloatingController {
       pageUrl: window.location.href,
     };
 
-    // 重新加载配置保证最新
     await this.loadSettings();
 
-    // 触发下载
     try {
       if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
         throw new Error("Simulated download failure");
       }
       await this.processor.downloadBatch([item], this.settings);
 
-      // 如果在此期间鼠标已经移到了其他图片，不要更新状态
-      if (this.currentUrl !== url) return;
+      if (instance.progressInterval)
+        window.clearInterval(instance.progressInterval);
+      instance.progressInterval = null;
+      instance.status = "success";
+      instance.progress = 100;
+      this.renderInstance(instance);
 
-      // 3. 下载成功：冲刺到 100% 并切换图标
-      if (this.progressInterval) window.clearInterval(this.progressInterval);
-      this.progressInterval = null;
-      this.status = "success";
-      this.progress = 100;
-      this.render();
-
-      // 2秒后重置，如鼠标已离开则隐藏
       window.setTimeout(() => {
-        if (this.currentHost && this.currentUrl === url) {
-          this.status = "idle";
-          this.progress = 0;
-          if (!this.isHoveringTarget) {
-            this.hideFloatingImmediate();
+        if (this.instances.has(instance.target)) {
+          instance.status = "idle";
+          instance.progress = 0;
+          if (!instance.isHovering) {
+            this.removeInstance(instance.target);
           } else {
-            this.render();
+            this.renderInstance(instance);
           }
         }
       }, 2000);
     } catch (err) {
       console.error("Floating download failed:", err);
-
-      // 如果已经移动到其他图片，不再显示错误并干扰它
-      if (this.currentUrl !== url) return;
-
-      this.status = "error";
-      this.render();
-      if (this.progressInterval) window.clearInterval(this.progressInterval);
+      instance.status = "error";
+      if (instance.progressInterval)
+        window.clearInterval(instance.progressInterval);
+      instance.progressInterval = null;
+      this.renderInstance(instance);
 
       window.setTimeout(() => {
-        if (this.currentHost && this.currentUrl === url) {
-          this.status = "idle";
-          if (!this.isHoveringTarget) {
-            this.hideFloatingImmediate();
+        if (this.instances.has(instance.target)) {
+          instance.status = "idle";
+          if (!instance.isHovering) {
+            this.removeInstance(instance.target);
           } else {
-            this.render();
+            this.renderInstance(instance);
           }
         }
       }, 2000);
     }
+  }
+
+  public async tryTriggerCustomDownload(
+    url: string,
+    item: ImageItem,
+    customSettings: Settings,
+  ): Promise<boolean> {
+    // 寻找匹配 URL 的实例
+    let inst: FloatingInstance | undefined;
+    for (const i of this.instances.values()) {
+      if (i.url === url) {
+        inst = i;
+        break;
+      }
+    }
+
+    if (!inst && this.lastUrl === url && this.lastTarget?.isConnected) {
+      this.createInstance(this.lastTarget, url);
+      inst = this.instances.get(this.lastTarget);
+    }
+
+    if (!inst) return false;
+
+    if (inst.status !== "idle") {
+      const target = inst.target;
+      this.removeInstance(target);
+      this.createInstance(target, url);
+      inst = this.instances.get(target);
+    }
+
+    if (!inst) return false;
+
+    const targetInst = inst;
+    targetInst.status = "downloading";
+    targetInst.progress = 0;
+    this.renderInstance(targetInst);
+
+    targetInst.progressInterval = window.setInterval(() => {
+      if (targetInst.progress < 30) targetInst.progress += Math.random() * 10;
+      else if (targetInst.progress < 95)
+        targetInst.progress += Math.random() * 2;
+      if (targetInst.progress > 95) targetInst.progress = 95;
+      this.renderInstance(targetInst);
+    }, 150);
+
+    try {
+      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
+        throw new Error("Simulated download failure");
+      }
+      await this.processor.downloadBatch([item], customSettings);
+
+      if (targetInst.progressInterval)
+        window.clearInterval(targetInst.progressInterval);
+      targetInst.progressInterval = null;
+      targetInst.status = "success";
+      targetInst.progress = 100;
+      this.renderInstance(targetInst);
+
+      window.setTimeout(() => {
+        if (this.instances.has(targetInst.target)) {
+          targetInst.status = "idle";
+          targetInst.progress = 0;
+          if (!targetInst.isHovering) {
+            this.removeInstance(targetInst.target);
+          } else {
+            this.renderInstance(targetInst);
+          }
+        }
+      }, 2000);
+    } catch (err) {
+      console.error("Floating custom download failed:", err);
+      targetInst.status = "error";
+      if (targetInst.progressInterval)
+        window.clearInterval(targetInst.progressInterval);
+      targetInst.progressInterval = null;
+      this.renderInstance(targetInst);
+
+      window.setTimeout(() => {
+        if (this.instances.has(targetInst.target)) {
+          targetInst.status = "idle";
+          if (!targetInst.isHovering) {
+            this.removeInstance(targetInst.target);
+          } else {
+            this.renderInstance(targetInst);
+          }
+        }
+      }, 2000);
+    }
+
+    return true;
   }
 }

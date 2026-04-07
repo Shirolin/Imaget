@@ -10,11 +10,13 @@ export default defineConfig({
     manifestPlugin(),
     zipPlugin(),
   ],
+  base: './',
   build: {
     rollupOptions: {
       input: {
         content: resolve(__dirname, 'src/entry/content.tsx'),
         background: resolve(__dirname, 'src/entry/background.ts'),
+        sidepanel: resolve(__dirname, 'sidepanel.html'),
       },
       output: {
         entryFileNames: '[name].js',

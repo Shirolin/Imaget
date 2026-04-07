@@ -66,6 +66,9 @@ export default {
   prefConflictOverwrite: { message: "直接覆蓋" },
   prefConflictPrompt: { message: "詢問我" },
   prefShowInSidebar: { message: "在側邊欄顯示" },
+  prefShowInSidebarHint: {
+    message: "更改後需關閉目前外掛程式彈窗並重新點擊圖示方可生效",
+  },
   prefHideDownloadWarning: { message: "關閉多文件下載警告" },
   prefSearchAllFrames: { message: "搜尋所有框架" },
   prefIdentifyBackgroundImages: { message: "識別背景圖片" },

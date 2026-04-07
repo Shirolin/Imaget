@@ -76,6 +76,10 @@ export default {
   prefConflictOverwrite: { message: "Überschreiben" },
   prefConflictPrompt: { message: "Nachfragen" },
   prefShowInSidebar: { message: "In Sidebar anzeigen" },
+  prefShowInSidebarHint: {
+    message:
+      "Erfordert das Schließen und erneute Öffnen der Erweiterung, um wirksam zu werden",
+  },
   prefHideDownloadWarning: { message: "Download-Warnung ausblenden" },
   prefSearchAllFrames: { message: "Alle Frames durchsuchen" },
   prefIdentifyBackgroundImages: { message: "Hintergrundbilder erkennen" },

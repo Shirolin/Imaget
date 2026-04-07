@@ -35,21 +35,25 @@ const Footer: React.FC<FooterProps> = ({
   portalNode,
 }) => {
   return (
-    <Box p="md" style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}>
-      <Group justify="space-between" gap="md" wrap="wrap">
-        <Group gap="sm" w={{ base: "100%", xs: "auto" }}>
-          <Group gap="xs" style={{ cursor: "default" }}>
+    <Box p="xs" style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}>
+      <Group justify="space-between" gap="xs" wrap="wrap">
+        <Group
+          gap="xs"
+          w={{ base: "100%", sm: "auto" }}
+          justify="space-between"
+        >
+          <Group gap={4} style={{ cursor: "default" }}>
             <PortalTooltip
               label={t("statSelected")}
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={6} c={selectedCount > 0 ? "blue" : "dimmed"}>
-                <IconCircleCheck size={18} />
+              <Group gap={4} c={selectedCount > 0 ? "blue" : "dimmed"}>
+                <IconCircleCheck size={16} />
                 <Text
-                  size="sm"
+                  size="xs"
                   fw={700}
-                  miw={32}
+                  miw={20}
                   style={{ fontVariantNumeric: "tabular-nums" }}
                 >
                   {selectedCount}
@@ -57,19 +61,19 @@ const Footer: React.FC<FooterProps> = ({
               </Group>
             </PortalTooltip>
 
-            <Divider orientation="vertical" h={14} mt={4} />
+            <Divider orientation="vertical" h={12} mt={4} />
 
             <PortalTooltip
               label={t("statFilter")}
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={6} c="gray.4">
-                <IconFilter size={18} />
+              <Group gap={4} c="gray.4">
+                <IconFilter size={16} />
                 <Text
-                  size="sm"
+                  size="xs"
                   fw={700}
-                  miw={32}
+                  miw={20}
                   style={{ fontVariantNumeric: "tabular-nums" }}
                 >
                   {filteredCount}
@@ -77,19 +81,19 @@ const Footer: React.FC<FooterProps> = ({
               </Group>
             </PortalTooltip>
 
-            <Divider orientation="vertical" h={14} mt={4} />
+            <Divider orientation="vertical" h={12} mt={4} />
 
             <PortalTooltip
               label={t("statTotal")}
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={6} c="dark.2">
-                <IconPhoto size={18} />
+              <Group gap={4} c="dark.2">
+                <IconPhoto size={16} />
                 <Text
-                  size="sm"
+                  size="xs"
                   fw={700}
-                  miw={32}
+                  miw={20}
                   style={{ fontVariantNumeric: "tabular-nums" }}
                 >
                   {totalCount}
@@ -97,40 +101,47 @@ const Footer: React.FC<FooterProps> = ({
               </Group>
             </PortalTooltip>
           </Group>
-          <Group gap={4}>
+
+          <Group gap={2}>
             <ActionIcon
               title={t("selectAll")}
               aria-label={t("labelSelectAll")}
               onClick={onSelectAll}
+              size="sm"
             >
-              <IconSelectAll size={18} />
+              <IconSelectAll size={16} />
             </ActionIcon>
             <ActionIcon
               title={t("deselectAll")}
               aria-label={t("labelDeselectAll")}
               color="gray"
               onClick={onDeselectAll}
+              size="sm"
             >
-              <IconMinus size={18} />
+              <IconMinus size={16} />
             </ActionIcon>
           </Group>
         </Group>
 
-        <Group gap="sm" w={{ base: "100%", xs: "auto" }} wrap="nowrap">
+        <Group gap="xs" w={{ base: "100%", sm: "auto" }} wrap="nowrap">
           <Button
             variant="light"
-            leftSection={<IconArchive size={18} />}
+            leftSection={<IconArchive size={16} />}
             onClick={onZip}
             loading={loading}
             disabled={selectedCount === 0}
+            size="xs"
+            flex={1}
           >
             {t("downloadZip")}
           </Button>
           <Button
-            leftSection={<IconDownload size={18} />}
+            leftSection={<IconDownload size={16} />}
             onClick={onDownload}
             loading={loading}
             disabled={selectedCount === 0}
+            size="xs"
+            flex={1}
           >
             {t("btnDownload")}
           </Button>

@@ -99,86 +99,123 @@ function init() {
 }
 
 // 监听消息触发
-chrome.runtime.onMessage.addListener(async (message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "toggle-sniffer") {
     init();
+    sendResponse({ success: true });
+    return false;
+  }
+
+  if (message.action === "SNIFF_REQUEST") {
+    sniffer
+      .sniffAll(message.payload?.settings)
+      .then((results) => {
+        sendResponse({ results });
+      })
+      .catch((err) => {
+        console.error("[Content] Sniff error:", err);
+        sendResponse({ results: [] });
+      });
+    return true; // Keep channel open for async response
+  }
+
+  if (message.action === "AUTOSCROLL_REQUEST") {
+    sniffer
+      .autoScroll()
+      .then(() => {
+        sendResponse({ success: true });
+      })
+      .catch((err) => {
+        console.error("[Content] Autoscroll error:", err);
+        sendResponse({ success: false });
+      });
+    return true; // Keep channel open for async response
   }
 
   if (message.type === "CONTEXT_SAVE_SINGLE") {
     const { srcUrl, targetFormat } = message.payload;
-    if (!srcUrl) return;
-
-    try {
-      console.log("[Content] Context save requested for:", srcUrl);
-      // 1. 扫描页面
-      const items = await sniffer.sniffAll();
-
-      // 2. 匹配图片 (使用 transformSiteSpecificUrl 辅助匹配)
-      const normalizedSrcUrl = UrlResolver.transformSiteSpecificUrl(srcUrl);
-
-      const target = items.find((item) => {
-        const normalizedItemUrl = UrlResolver.transformSiteSpecificUrl(
-          item.url,
-        );
-        return (
-          normalizedItemUrl === normalizedSrcUrl ||
-          item.url === srcUrl ||
-          item.url.includes(srcUrl) ||
-          srcUrl.includes(item.url)
-        );
-      });
-
-      if (target) {
-        console.log("[Content] Found matching image:", target);
-        // 3. 执行单张下载
-        // 获取当前配置
-        const settings = await adapter.getSettings();
-        // 覆盖格式策略 (对齐 Settings 类型结构)
-        const tempSettings = {
-          ...settings,
-          downloadLogic: {
-            ...settings.downloadLogic,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            targetFormat: targetFormat.toLowerCase() as any,
-          },
-        };
-
-        const started = await floatingController.tryTriggerCustomDownload(
-          target.url,
-          target,
-          tempSettings,
-        );
-        if (!started) {
-          // 如果无法运用悬浮动画（比如页面没滚动到对应图片或者没hover过），回退到静默下载
-          console.log(
-            "[Content] Floating animation inapplicable, fallback to silent download",
-          );
-          await processor.downloadBatch([target], tempSettings);
-        }
-      } else {
-        console.warn("[Content] No matching image found for URL:", srcUrl);
-
-        // 兜底：构造一个虚拟 Item 下载
-        const fallbackItem = {
-          id: "fallback-" + Date.now(),
-          url: srcUrl,
-          width: 0,
-          height: 0,
-          format: (targetFormat.toUpperCase() || "UNKNOWN") as ImageFormat,
-          sizeKB: 0,
-          isSelected: true,
-          pageTitle: document.title,
-          pageUrl: window.location.href,
-        };
-        await processor.downloadBatch(
-          [fallbackItem],
-          await adapter.getSettings(),
-        );
-      }
-    } catch (err) {
-      console.error("[Content] Context save error:", err);
+    if (!srcUrl) {
+      sendResponse({ success: false });
+      return false;
     }
+
+    (async () => {
+      try {
+        console.log("[Content] Context save requested for:", srcUrl);
+        // 1. 扫描页面
+        const items = await sniffer.sniffAll();
+
+        // 2. 匹配图片 (使用 transformSiteSpecificUrl 辅助匹配)
+        const normalizedSrcUrl = UrlResolver.transformSiteSpecificUrl(srcUrl);
+
+        const target = items.find((item) => {
+          const normalizedItemUrl = UrlResolver.transformSiteSpecificUrl(
+            item.url,
+          );
+          return (
+            normalizedItemUrl === normalizedSrcUrl ||
+            item.url === srcUrl ||
+            item.url.includes(srcUrl) ||
+            srcUrl.includes(item.url)
+          );
+        });
+
+        if (target) {
+          console.log("[Content] Found matching image:", target);
+          // 3. 执行单张下载
+          // 获取当前配置
+          const settings = await adapter.getSettings();
+          // 覆盖格式策略 (对齐 Settings 类型结构)
+          const tempSettings = {
+            ...settings,
+            downloadLogic: {
+              ...settings.downloadLogic,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              targetFormat: targetFormat.toLowerCase() as any,
+            },
+          };
+
+          const started = await floatingController.tryTriggerCustomDownload(
+            target.url,
+            target,
+            tempSettings,
+          );
+          if (!started) {
+            // 如果无法运用悬浮动画（比如页面没滚动到对应图片或者没hover过），回退到静默下载
+            console.log(
+              "[Content] Floating animation inapplicable, fallback to silent download",
+            );
+            await processor.downloadBatch([target], tempSettings);
+          }
+        } else {
+          console.warn("[Content] No matching image found for URL:", srcUrl);
+
+          // 兜底：构造一个虚拟 Item 下载
+          const fallbackItem = {
+            id: "fallback-" + Date.now(),
+            url: srcUrl,
+            width: 0,
+            height: 0,
+            format: (targetFormat.toUpperCase() || "UNKNOWN") as ImageFormat,
+            sizeKB: 0,
+            isSelected: true,
+            pageTitle: document.title,
+            pageUrl: window.location.href,
+          };
+          await processor.downloadBatch(
+            [fallbackItem],
+            await adapter.getSettings(),
+          );
+        }
+        sendResponse({ success: true });
+      } catch (err) {
+        console.error("[Content] Context save error:", err);
+        sendResponse({ success: false, error: String(err) });
+      }
+    })();
+    return true;
   }
+  return false;
 });
 
 // 开发模式下直接启动

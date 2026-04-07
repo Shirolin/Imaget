@@ -3,7 +3,6 @@ import {
   Group,
   Title,
   ActionIcon,
-  Button,
   Text,
   Tooltip,
   SegmentedControl,
@@ -15,8 +14,6 @@ import {
   IconArrowsDown,
   IconPhoto,
   IconSettings,
-  IconBrandGithub,
-  IconHeart,
 } from "@tabler/icons-react";
 
 interface HeaderProps {
@@ -53,42 +50,6 @@ const Header: React.FC<HeaderProps> = ({
         <Title order={4} c="blue" style={{ letterSpacing: 1 }}>
           IMAGET
         </Title>
-        <Group gap={4} ml="xs">
-          <Tooltip
-            label={t("labelGithub")}
-            position="bottom"
-            withArrow
-            portalProps={{ target: portalNode || undefined }}
-          >
-            <ActionIcon
-              component="a"
-              href="https://github.com/Shirolin/Imaget"
-              target="_blank"
-              variant="subtle"
-              color="gray"
-              size="sm"
-            >
-              <IconBrandGithub size={16} />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            label={t("labelDonate")}
-            position="bottom"
-            withArrow
-            portalProps={{ target: portalNode || undefined }}
-          >
-            <ActionIcon
-              component="a"
-              href="https://ko-fi.com/shirolin"
-              target="_blank"
-              variant="subtle"
-              color="pink"
-              size="sm"
-            >
-              <IconHeart size={16} />
-            </ActionIcon>
-          </Tooltip>
-        </Group>
       </Group>
 
       <SegmentedControl
@@ -97,9 +58,13 @@ const Header: React.FC<HeaderProps> = ({
         data={[
           {
             label: (
-              <Group gap={6} wrap="nowrap" px="xs">
+              <Group gap={6} wrap="nowrap" px={4}>
                 <IconPhoto size={14} />
-                <Text size="xs" fw={activeTab === "images" ? 600 : 500}>
+                <Text
+                  size="xs"
+                  fw={activeTab === "images" ? 600 : 500}
+                  visibleFrom="xs"
+                >
                   {t("tabImages")}
                 </Text>
               </Group>
@@ -108,9 +73,13 @@ const Header: React.FC<HeaderProps> = ({
           },
           {
             label: (
-              <Group gap={6} wrap="nowrap" px="xs">
+              <Group gap={6} wrap="nowrap" px={4}>
                 <IconSettings size={14} />
-                <Text size="xs" fw={activeTab === "settings" ? 600 : 500}>
+                <Text
+                  size="xs"
+                  fw={activeTab === "settings" ? 600 : 500}
+                  visibleFrom="xs"
+                >
                   {t("tabPreferences")}
                 </Text>
               </Group>
@@ -124,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({
         styles={{
           root: {
             border: "1px solid var(--mantine-color-dark-4)",
-            padding: 4,
+            padding: 2,
           },
           indicator: {
             backgroundColor: "var(--mantine-color-dark-4)",
@@ -140,37 +109,23 @@ const Header: React.FC<HeaderProps> = ({
         }}
       />
 
-      <Group gap="xs" wrap="nowrap">
+      <Group gap={4} wrap="nowrap">
         {onDeepScan && (
-          <>
-            <Tooltip
-              label={t("labelDeepScan")}
-              position="bottom"
-              withArrow
-              hiddenFrom="sm"
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="light"
-                onClick={onDeepScan}
-                loading={isScanning}
-                size="md"
-                hiddenFrom="sm"
-              >
-                <IconArrowsDown size={18} />
-              </ActionIcon>
-            </Tooltip>
-            <Button
+          <Tooltip
+            label={t("labelDeepScan")}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
               variant="light"
-              size="xs"
               onClick={onDeepScan}
               loading={isScanning}
-              leftSection={<IconArrowsDown size={14} />}
-              visibleFrom="sm"
+              size="md"
             >
-              {t("btnDeepScan")}
-            </Button>
-          </>
+              <IconArrowsDown size={18} />
+            </ActionIcon>
+          </Tooltip>
         )}
 
         {onRefresh && (
@@ -178,14 +133,14 @@ const Header: React.FC<HeaderProps> = ({
             variant="default"
             onClick={onRefresh}
             loading={isScanning}
-            size="sm"
+            size="md"
             visibleFrom="xs"
           >
             <IconRefresh size={16} />
           </ActionIcon>
         )}
 
-        <ActionIcon variant="subtle" color="gray" onClick={onClose} size="lg">
+        <ActionIcon variant="subtle" color="gray" onClick={onClose} size="md">
           <IconX size={20} />
         </ActionIcon>
       </Group>

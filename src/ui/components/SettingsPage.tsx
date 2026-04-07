@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Stack,
   Group,
@@ -10,11 +10,12 @@ import {
   Button,
   Box,
   SimpleGrid,
-  SegmentedControl,
   ActionIcon,
   Tooltip,
-  UnstyledButton,
   ScrollArea,
+  Radio,
+  Badge,
+  Transition,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import {
@@ -32,6 +33,8 @@ import {
   IconHeart,
   IconBug,
   IconBan,
+  IconCheck,
+  IconPlus,
 } from "@tabler/icons-react";
 import { Settings } from "../../types";
 import { PortalSelect } from "./common/PortalSelect";
@@ -53,6 +56,51 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   onReset,
   portalNode,
 }) => {
+  const [showSaved, setShowSaved] = useState(false);
+  const [newDomain, setNewDomain] = useState("");
+  const isInitialMount = useRef(true);
+
+  // 模拟保存状态反馈
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    let hideTimer: ReturnType<typeof setTimeout>;
+    const timer = setTimeout(() => {
+      setShowSaved(true);
+      hideTimer = setTimeout(() => setShowSaved(false), 2000);
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+      if (hideTimer) clearTimeout(hideTimer);
+    };
+  }, [settings]);
+
+  const handleAddDomain = useCallback(() => {
+    const domain = newDomain.trim().toLowerCase();
+    if (!domain) return;
+
+    if (settings.interfaceBehavior.disabledDomains?.includes(domain)) {
+      setNewDomain("");
+      return;
+    }
+
+    onUpdate((prev) => ({
+      ...prev,
+      interfaceBehavior: {
+        ...prev.interfaceBehavior,
+        disabledDomains: [
+          ...(prev.interfaceBehavior.disabledDomains || []),
+          domain,
+        ],
+      },
+    }));
+    setNewDomain("");
+  }, [newDomain, settings.interfaceBehavior.disabledDomains, onUpdate]);
+
   return (
     <ScrollArea
       h="100%"
@@ -71,14 +119,37 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
       }}
     >
       <Stack gap="xl" p="xl">
-        <Group justify="space-between">
-          <Stack gap={0}>
-            <Group gap="xs">
+        <Group justify="space-between" wrap="nowrap">
+          <Stack gap={0} style={{ overflow: "hidden" }}>
+            <Group gap="xs" wrap="nowrap">
               <IconSettings
                 size={22}
-                style={{ color: "var(--mantine-color-blue-filled)" }}
+                style={{
+                  color: "var(--mantine-color-blue-filled)",
+                  flexShrink: 0,
+                }}
               />
-              <Title order={3}>{t("tabPreferences")}</Title>
+              <Title order={3} style={{ whiteSpace: "nowrap" }}>
+                {t("tabPreferences")}
+              </Title>
+              <Transition
+                mounted={showSaved}
+                transition="fade"
+                duration={400}
+                timingFunction="ease"
+              >
+                {(styles) => (
+                  <Badge
+                    variant="light"
+                    color="green"
+                    size="xs"
+                    leftSection={<IconCheck size={10} />}
+                    style={{ ...styles, flexShrink: 0 }}
+                  >
+                    {t("statusSaved") || "已保存"}
+                  </Badge>
+                )}
+              </Transition>
             </Group>
             {!(
               typeof chrome !== "undefined" &&
@@ -105,7 +176,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
           </Button>
         </Group>
 
-        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+        <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
           <Stack gap="lg">
             <SettingCard
               icon={<IconLanguage />}
@@ -250,12 +321,40 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   border: "1px dashed var(--mantine-color-dark-4)",
                 }}
               >
-                <Text size="xs" c="dimmed" style={{ fontFamily: "monospace" }}>
-                  {t("viewVariables")}:{" "}
-                  {
-                    "{date}, {time}, {title}, {id}, {index}, {page_title}, {origin}"
-                  }
+                <Text size="xs" c="dimmed" mb={8} fw={500}>
+                  {t("viewVariables")} (点击插入):
                 </Text>
+                <Group gap={6}>
+                  {[
+                    "{date}",
+                    "{time}",
+                    "{title}",
+                    "{id}",
+                    "{index}",
+                    "{page_title}",
+                    "{origin}",
+                  ].map((variable) => (
+                    <Badge
+                      key={variable}
+                      variant="light"
+                      color="blue"
+                      size="sm"
+                      style={{ cursor: "pointer", textTransform: "none" }}
+                      onClick={() =>
+                        onUpdate((prev) => ({
+                          ...prev,
+                          fileSaving: {
+                            ...prev.fileSaving,
+                            filenameTemplate:
+                              prev.fileSaving.filenameTemplate + variable,
+                          },
+                        }))
+                      }
+                    >
+                      {variable}
+                    </Badge>
+                  ))}
+                </Group>
               </Box>
             </SettingCard>
 
@@ -267,6 +366,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               <SimpleGrid cols={{ base: 1, xs: 2, sm: 1, lg: 2 }} spacing="lg">
                 <SettingSwitch
                   label={t("prefShowInSidebar")}
+                  description={t("prefShowInSidebarHint")}
                   checked={settings.interfaceBehavior.showInSidebar}
                   onChange={(e) =>
                     onUpdate((prev) => ({
@@ -349,12 +449,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     }
                   />
                 </Group>
-                <Text size="xs" c="dimmed">
-                  {t("prefMinImageSize")}
-                </Text>
-                <SegmentedControl
+                <PortalSelect
                   size="xs"
-                  style={{ cursor: "pointer" }}
+                  label={t("prefMinImageSize")}
+                  portalNode={portalNode}
                   value={
                     [0, 32, 64, 128, 256].includes(
                       settings.interfaceBehavior.minImageSize,
@@ -364,7 +462,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   }
                   onChange={(val) =>
                     onUpdate((prev) => {
-                      let newSize = parseInt(val);
+                      let newSize = parseInt(val || "0");
                       if (val === "custom") {
                         newSize = [0, 32, 64, 128, 256].includes(
                           prev.interfaceBehavior.minImageSize,
@@ -381,7 +479,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                       };
                     })
                   }
-                  aria-label={t("prefMinImageSize")}
                   data={[
                     { label: t("sizeAlways"), value: "0" },
                     { label: t("unitPixel", ["32"]), value: "32" },
@@ -420,9 +517,31 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               title={t("secDisabledDomains")}
               iconColor="var(--mantine-color-red-filled)"
             >
-              <Text size="xs" c="dimmed" mb="md">
+              <Text size="xs" c="dimmed" mb="xs">
                 {t("descDisabledDomains")}
               </Text>
+
+              <TextInput
+                placeholder="example.com"
+                size="xs"
+                value={newDomain}
+                onChange={(e) => setNewDomain(e.currentTarget.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddDomain();
+                }}
+                rightSection={
+                  <ActionIcon
+                    size="sm"
+                    variant="subtle"
+                    color="blue"
+                    onClick={handleAddDomain}
+                    disabled={!newDomain.trim()}
+                  >
+                    <IconPlus size={14} />
+                  </ActionIcon>
+                }
+                mb="md"
+              />
 
               {!settings.interfaceBehavior.disabledDomains ||
               settings.interfaceBehavior.disabledDomains.length === 0 ? (
@@ -564,69 +683,61 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               title={t("secGifHandling")}
               iconColor="var(--mantine-color-pink-filled)"
             >
-              <Stack gap="xs">
-                {(["keep", "firstFrame", "skip"] as const).map((strategy) => (
-                  <UnstyledButton
-                    key={strategy}
-                    onClick={() =>
-                      onUpdate((prev) => ({ ...prev, gifStrategy: strategy }))
-                    }
-                    p="sm"
-                    style={{
-                      borderRadius: "var(--mantine-radius-md)",
-                      backgroundColor:
-                        settings.gifStrategy === strategy
-                          ? "var(--mantine-color-blue-light)"
-                          : "transparent",
-                      border: `1px solid ${
-                        settings.gifStrategy === strategy
-                          ? "var(--mantine-color-blue-filled)"
-                          : "var(--mantine-color-dark-4)"
-                      }`,
-
-                      transition: "all 0.2s ease",
-                      width: "100%",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <Group gap="xs">
-                      <Box
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: "50%",
-                          border: "2px solid var(--mantine-color-blue-filled)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
+              <Radio.Group
+                value={settings.gifStrategy}
+                onChange={(val) =>
+                  onUpdate((prev) => ({
+                    ...prev,
+                    gifStrategy: val as "keep" | "firstFrame" | "skip",
+                  }))
+                }
+              >
+                <Stack gap="xs">
+                  {(["keep", "firstFrame", "skip"] as const).map((strategy) => (
+                    <Box
+                      key={strategy}
+                      onClick={() =>
+                        onUpdate((prev) => ({ ...prev, gifStrategy: strategy }))
+                      }
+                      p="sm"
+                      style={{
+                        borderRadius: "var(--mantine-radius-md)",
+                        backgroundColor:
+                          settings.gifStrategy === strategy
+                            ? "var(--mantine-color-blue-light)"
+                            : "transparent",
+                        border: `1px solid ${
+                          settings.gifStrategy === strategy
+                            ? "var(--mantine-color-blue-filled)"
+                            : "var(--mantine-color-dark-4)"
+                        }`,
+                        transition: "all 0.2s ease",
+                        width: "100%",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Radio
+                        value={strategy}
+                        label={
+                          strategy === "keep"
+                            ? t("gifOriginal")
+                            : strategy === "firstFrame"
+                              ? t("gifExtract")
+                              : t("gifSkip")
+                        }
+                        styles={{
+                          label: {
+                            fontWeight:
+                              settings.gifStrategy === strategy ? 600 : 400,
+                            cursor: "pointer",
+                          },
+                          radio: { cursor: "pointer" },
                         }}
-                      >
-                        {settings.gifStrategy === strategy && (
-                          <Box
-                            style={{
-                              width: 10,
-                              height: 10,
-                              borderRadius: "50%",
-                              background: "var(--mantine-color-blue-filled)",
-                            }}
-                          />
-                        )}
-                      </Box>
-                      <Text
-                        size="sm"
-                        fw={settings.gifStrategy === strategy ? 600 : 400}
-                      >
-                        {strategy === "keep"
-                          ? t("gifOriginal")
-                          : strategy === "firstFrame"
-                            ? t("gifExtract")
-                            : t("gifSkip")}
-                      </Text>
-                    </Group>
-                  </UnstyledButton>
-                ))}
-              </Stack>
+                      />
+                    </Box>
+                  ))}
+                </Stack>
+              </Radio.Group>
             </SettingCard>
 
             <SettingCard

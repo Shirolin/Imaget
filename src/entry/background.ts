@@ -3,6 +3,7 @@
  * Prevents loss of state on Service Worker restart and solves race conditions with ID callbacks.
  */
 import { t } from "../core/utils/i18n";
+import { Settings } from "../types";
 
 interface PendingDownloadConfig {
   filename: string;
@@ -219,9 +220,45 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // 初始化
 chrome.runtime.onInstalled.addListener(() => {
   setupContextMenus();
+  // 初始化侧边栏行为
+  if (chrome.storage && chrome.sidePanel?.setPanelBehavior) {
+    chrome.storage.local.get(["imaget_settings"], (res) => {
+      const settings = res.imaget_settings as Settings;
+      const showInSidebar = settings?.interfaceBehavior?.showInSidebar || false;
+      chrome.sidePanel
+        .setPanelBehavior({ openPanelOnActionClick: showInSidebar })
+        .catch((err) => console.error(err));
+    });
+  }
 });
 
 // Service Worker 启动时也确保挂载
 setupContextMenus();
+// 确保每次 Service Worker 唤醒时也同步配置 (非必需但更健壮)
+if (chrome.storage && chrome.sidePanel?.setPanelBehavior) {
+  chrome.storage.local.get(["imaget_settings"], (res) => {
+    const settings = res.imaget_settings as Settings;
+    const showInSidebar = settings?.interfaceBehavior?.showInSidebar || false;
+    chrome.sidePanel
+      .setPanelBehavior({ openPanelOnActionClick: showInSidebar })
+      .catch((err) => console.error(err));
+  });
+}
+
+// 监听设置更改以动态更新图标点击行为
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes["imaget_settings"]) {
+    const newSettings = changes["imaget_settings"].newValue as Settings;
+    if (newSettings?.interfaceBehavior?.showInSidebar !== undefined) {
+      if (chrome.sidePanel?.setPanelBehavior) {
+        chrome.sidePanel
+          .setPanelBehavior({
+            openPanelOnActionClick: newSettings.interfaceBehavior.showInSidebar,
+          })
+          .catch((err) => console.error(err));
+      }
+    }
+  }
+});
 
 console.log("Imaget Reborn Background Aligned with Legacy Logic");

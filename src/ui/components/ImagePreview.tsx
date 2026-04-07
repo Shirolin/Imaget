@@ -180,18 +180,18 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         onMouseDown={(e) => e.stopPropagation()}
         style={{
           position: "absolute",
-          bottom: 24,
+          bottom: 16,
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 10,
           width: "auto",
-          maxWidth: "96vw",
+          maxWidth: "calc(100% - 32px)",
         }}
       >
         <Group
-          gap="xs"
-          px={{ base: "xs", xs: "md" }}
-          py="xs"
+          gap={4}
+          px={8}
+          py={6}
           bg="dark.7"
           justify="center"
           wrap="wrap"
@@ -202,7 +202,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
             backdropFilter: "blur(12px)",
           }}
         >
-          <Group gap={4} wrap="nowrap">
+          <Group gap={2} wrap="nowrap">
             <Tooltip
               label={t("labelZoomOut")}
               position="top"
@@ -213,14 +213,14 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 variant="subtle"
                 color="gray.2"
                 radius="xl"
-                size="lg"
+                size="md"
                 onClick={() => handleZoom(-0.2)}
               >
-                <IconZoomOut size={20} />
+                <IconZoomOut size={18} />
               </ActionIcon>
             </Tooltip>
 
-            <Text size="xs" fw={700} w={36} ta="center" c="gray.2">
+            <Text size="xs" fw={700} w={32} ta="center" c="gray.2">
               {Math.round(scale * 100)}%
             </Text>
 
@@ -234,17 +234,17 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 variant="subtle"
                 color="gray.2"
                 radius="xl"
-                size="lg"
+                size="md"
                 onClick={() => handleZoom(0.2)}
               >
-                <IconZoomIn size={20} />
+                <IconZoomIn size={18} />
               </ActionIcon>
             </Tooltip>
           </Group>
 
-          <Box w={1} h={20} bg="dark.4" visibleFrom="xs" />
+          <Box w={1} h={16} bg="dark.4" visibleFrom="xs" />
 
-          <Group gap={4} wrap="nowrap">
+          <Group gap={2} wrap="nowrap">
             <Tooltip
               label={t("labelRotate")}
               position="top"
@@ -255,10 +255,10 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 variant="subtle"
                 color="gray.2"
                 radius="xl"
-                size="lg"
+                size="md"
                 onClick={handleRotate}
               >
-                <IconRotate size={20} />
+                <IconRotate size={18} />
               </ActionIcon>
             </Tooltip>
 
@@ -272,10 +272,10 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 variant="subtle"
                 color="gray.2"
                 radius="xl"
-                size="lg"
+                size="md"
                 onClick={handleReset}
               >
-                <IconArrowsMaximize size={20} />
+                <IconArrowsMaximize size={18} />
               </ActionIcon>
             </Tooltip>
 
@@ -289,15 +289,15 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 variant="subtle"
                 color="gray.2"
                 radius="xl"
-                size="lg"
+                size="md"
                 onClick={handleOriginalSize}
               >
-                <IconFocus2 size={20} />
+                <IconFocus2 size={18} />
               </ActionIcon>
             </Tooltip>
           </Group>
 
-          <Box w={1} h={20} bg="dark.4" />
+          <Box w={1} h={16} bg="dark.4" />
 
           <Tooltip
             label={t("labelCloseEsc")}
@@ -309,10 +309,10 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
               variant="subtle"
               color="red.6"
               radius="xl"
-              size="lg"
+              size="md"
               onClick={onClose}
             >
-              <IconX size={20} />
+              <IconX size={18} />
             </ActionIcon>
           </Tooltip>
         </Group>

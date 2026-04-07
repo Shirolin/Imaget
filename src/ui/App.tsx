@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import { Box, Overlay, Progress, Modal, Transition, Text } from "@mantine/core";
 import { modals, ModalsProvider } from "@mantine/modals";
 
@@ -42,6 +48,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"images" | "settings">("images");
 
   const { settings, updateSettings, resetSettings } = useSettings();
+  const downloadingUrls = useRef<Set<string>>(new Set());
 
   const sniffer = useMemo(() => new Sniffer(), []);
 
@@ -66,6 +73,27 @@ const App: React.FC = () => {
     };
 
     runSniffer();
+
+    // 监听侧边栏模式下的 Tab 切换
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (isExtensionPage) {
+      const handleTabChange = () => runSniffer();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const handleTabUpdate = (_tabId: number, changeInfo: any) => {
+        if (changeInfo.status === "complete") runSniffer();
+      };
+
+      chrome.tabs.onActivated.addListener(handleTabChange);
+      chrome.tabs.onUpdated.addListener(handleTabUpdate);
+
+      return () => {
+        chrome.tabs.onActivated.removeListener(handleTabChange);
+        chrome.tabs.onUpdated.removeListener(handleTabUpdate);
+      };
+    }
   }, [sniffer, settings]);
 
   const currentLang = useMemo(() => {
@@ -116,9 +144,29 @@ const App: React.FC = () => {
   // 下载逻辑
   const handleDownload = async (): Promise<void> => {
     const selected: ImageItem[] = images.filter(
-      (img: ImageItem) => img.isSelected,
+      (img: ImageItem) =>
+        img.isSelected && !downloadingUrls.current.has(img.url),
     );
     if (selected.length === 0) return;
+
+    const startDownload = async (items: ImageItem[]) => {
+      items.forEach((img) => downloadingUrls.current.add(img.url));
+      setLoading(true);
+      setProgress(0);
+      try {
+        await processor.downloadBatch(
+          items,
+          settings,
+          (curr: number, total: number) => {
+            setProgress(Math.round((curr / total) * 100));
+          },
+        );
+      } finally {
+        items.forEach((img) => downloadingUrls.current.delete(img.url));
+        setLoading(false);
+        setTimeout(() => setProgress(0), 1000);
+      }
+    };
 
     // 多文件下载警告
     if (
@@ -133,35 +181,12 @@ const App: React.FC = () => {
           </Text>
         ),
         labels: { confirm: t("confirm"), cancel: t("cancel") },
-        onConfirm: async () => {
-          setLoading(true);
-          setProgress(0);
-          await processor.downloadBatch(
-            selected,
-            settings,
-            (curr: number, total: number) => {
-              setProgress(Math.round((curr / total) * 100));
-            },
-          );
-          setLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-        },
+        onConfirm: () => startDownload(selected),
       });
       return;
     }
 
-    setLoading(true);
-
-    setProgress(0);
-    await processor.downloadBatch(
-      selected,
-      settings,
-      (curr: number, total: number) => {
-        setProgress(Math.round((curr / total) * 100));
-      },
-    );
-    setLoading(false);
-    setTimeout(() => setProgress(0), 1000);
+    await startDownload(selected);
   };
 
   const handleZip = async (): Promise<void> => {
@@ -169,6 +194,23 @@ const App: React.FC = () => {
       (img: ImageItem) => img.isSelected,
     );
     if (selected.length === 0) return;
+
+    const startZip = async (items: ImageItem[]) => {
+      setLoading(true);
+      setProgress(0);
+      try {
+        await processor.downloadAsZip(
+          items,
+          settings,
+          (curr: number, total: number) => {
+            setProgress(Math.round((curr / total) * 100));
+          },
+        );
+      } finally {
+        setLoading(false);
+        setTimeout(() => setProgress(0), 1000);
+      }
+    };
 
     // 同样适用于 ZIP
     if (
@@ -183,39 +225,23 @@ const App: React.FC = () => {
           </Text>
         ),
         labels: { confirm: t("confirm"), cancel: t("cancel") },
-        onConfirm: async () => {
-          setLoading(true);
-          setProgress(0);
-          await processor.downloadAsZip(
-            selected,
-            settings,
-            (curr: number, total: number) => {
-              setProgress(Math.round((curr / total) * 100));
-            },
-          );
-          setLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-        },
+        onConfirm: () => startZip(selected),
       });
       return;
     }
 
-    setLoading(true);
-
-    setProgress(0);
-    await processor.downloadAsZip(
-      selected,
-      settings,
-      (curr: number, total: number) => {
-        setProgress(Math.round((curr / total) * 100));
-      },
-    );
-    setLoading(false);
-    setTimeout(() => setProgress(0), 1000);
+    await startZip(selected);
   };
 
   const handleSingleDownload = async (item: ImageItem): Promise<void> => {
-    await processor.downloadBatch([item], settings);
+    if (downloadingUrls.current.has(item.url)) return;
+
+    downloadingUrls.current.add(item.url);
+    try {
+      await processor.downloadBatch([item], settings);
+    } finally {
+      downloadingUrls.current.delete(item.url);
+    }
   };
 
   // 统计
@@ -248,7 +274,15 @@ const App: React.FC = () => {
   };
 
   const handleClose = () => {
-    window.parent.postMessage({ type: "IMAGET_CLOSE" }, "*");
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (isExtensionPage) {
+      window.close();
+    } else {
+      window.parent.postMessage({ type: "IMAGET_CLOSE" }, "*");
+    }
   };
 
   // 全局快捷键监听

@@ -74,6 +74,9 @@ export default {
   prefConflictOverwrite: { message: "Overwrite" },
   prefConflictPrompt: { message: "Ask Me" },
   prefShowInSidebar: { message: "Show in Sidebar" },
+  prefShowInSidebarHint: {
+    message: "Requires closing and reopening the extension to take effect",
+  },
   prefHideDownloadWarning: { message: "Hide Download Warning" },
   prefSearchAllFrames: { message: "Search All Frames" },
   prefIdentifyBackgroundImages: { message: "Identify Background Images" },

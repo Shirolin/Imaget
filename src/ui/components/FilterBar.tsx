@@ -77,7 +77,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           aria-label={t("labelSearchImages")}
           size="xs"
           flex={1}
-          miw={{ base: "100%", xs: 180 }}
+          miw={{ base: "100%", xs: 150 }}
         />
         <PortalMultiSelect
           placeholder={t("filterType")}
@@ -90,7 +90,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           portalNode={portalNode}
           size="xs"
           flex={1}
-          miw={{ base: "100%", xs: 120 }}
+          miw={{ base: "100%", xs: 100 }}
         />
       </Group>
 
@@ -101,7 +101,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={options.minWidth}
             onChange={(val) => onChange({ ...options, minWidth: Number(val) })}
             size="xs"
-            w={{ base: 55, xs: 70 }}
+            w={{ base: 50, xs: 65 }}
           />
           <Text size="xs" c="dimmed">
             ×
@@ -112,7 +112,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={options.minHeight}
             onChange={(val) => onChange({ ...options, minHeight: Number(val) })}
             size="xs"
-            w={{ base: 55, xs: 70 }}
+            w={{ base: 50, xs: 65 }}
           />
           <PortalSelect
             placeholder={t("filterLayout")}
@@ -131,11 +131,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
             }
             portalNode={portalNode}
             size="xs"
-            miw={{ base: 75, xs: 100 }}
+            miw={{ base: 70, xs: 90 }}
           />
         </Group>
 
-        <Group gap="xs">
+        <Group gap="xs" flex={1} justify="flex-end" wrap="nowrap">
           <PortalSelect
             placeholder={t("sortBy")}
             data={[
@@ -153,10 +153,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
             clearable
             portalNode={portalNode}
             size="xs"
-            miw={{ base: 85, xs: 110 }}
+            flex={1}
+            miw={80}
+            maw={120}
           />
 
-          <Group gap={2} wrap="nowrap">
+          <Group gap={2} wrap="nowrap" style={{ flexShrink: 0 }}>
             <Group gap={2} wrap="nowrap">
               <ActionIcon
                 variant={options.layout === "grid" ? "filled" : "default"}

@@ -7,8 +7,11 @@
   "homepage_url": "https://github.com/Shirolin/New-Imaget",
   "short_name": "Imaget",
   "default_locale": "en",
-  "permissions": ["downloads", "activeTab", "storage", "contextMenus"],
+  "permissions": ["downloads", "activeTab", "storage", "contextMenus", "sidePanel"],
   "host_permissions": ["<all_urls>"],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "action": {
     "default_title": "Open Imaget"
   },

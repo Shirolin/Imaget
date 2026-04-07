@@ -75,6 +75,10 @@ export default {
   prefConflictOverwrite: { message: "Üzerine Yaz" },
   prefConflictPrompt: { message: "Bana Sor" },
   prefShowInSidebar: { message: "Yan Panelde Göster" },
+  prefShowInSidebarHint: {
+    message:
+      "Değişikliklerin etkili olması için uzantıyı kapatıp yeniden açmanız gerekir",
+  },
   prefHideDownloadWarning: { message: "İndirme Uyarısını Gizle" },
   prefSearchAllFrames: { message: "Tüm Çerçeveleri Tara (iFrame)" },
   prefIdentifyBackgroundImages: { message: "Arka Plan Resimlerini Tanımla" },

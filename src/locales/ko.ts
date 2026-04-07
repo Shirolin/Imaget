@@ -70,6 +70,9 @@ export default {
   prefConflictOverwrite: { message: "덮어쓰기" },
   prefConflictPrompt: { message: "확인" },
   prefShowInSidebar: { message: "사이드바에 표시" },
+  prefShowInSidebarHint: {
+    message: "설정을 적용하려면 확장 프로그램을 닫았다가 다시 열어야 합니다",
+  },
   prefHideDownloadWarning: { message: "다운로드 경고 숨기기" },
   prefSearchAllFrames: { message: "모든 프레임 스캔 (iFrame)" },
   prefIdentifyBackgroundImages: { message: "배경 이미지 식별" },

@@ -9,10 +9,13 @@ interface SettingCardProps {
 }
 
 const cardStyle = {
-  transition: "all 0.3s ease",
+  transition: "all 0.25s cubic-bezier(0.25, 1, 0.5, 1)", // ease-out-quart
+  backgroundColor: "var(--mantine-color-dark-7)",
   "&:hover": {
-    borderColor: "var(--mantine-color-blue-filled)",
+    backgroundColor: "var(--mantine-color-dark-6)",
+    borderColor: "var(--mantine-color-dark-4)",
     boxShadow: "var(--mantine-shadow-md)",
+    transform: "translateY(-1px)",
   },
 };
 
