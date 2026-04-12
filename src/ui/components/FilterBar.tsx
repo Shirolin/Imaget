@@ -164,6 +164,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 variant={options.layout === "grid" ? "filled" : "default"}
                 size="md"
                 onClick={() => onChange({ ...options, layout: "grid" })}
+                aria-label={t("labelGridLayout")}
               >
                 <IconLayoutGrid size={16} />
               </ActionIcon>
@@ -171,6 +172,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 variant={options.layout === "columns" ? "filled" : "default"}
                 size="md"
                 onClick={() => onChange({ ...options, layout: "columns" })}
+                aria-label={t("labelColumnLayout")}
               >
                 <IconLayoutColumns size={16} />
               </ActionIcon>
@@ -178,6 +180,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 variant={options.layout === "list" ? "filled" : "default"}
                 size="md"
                 onClick={() => onChange({ ...options, layout: "list" })}
+                aria-label={t("labelListLayout")}
               >
                 <IconLayoutList size={16} />
               </ActionIcon>
@@ -192,6 +195,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
                   sortDirection:
                     options.sortDirection === "asc" ? "desc" : "asc",
                 })
+              }
+              aria-label={
+                options.sortDirection === "asc"
+                  ? t("labelSortDesc")
+                  : t("labelSortAsc")
               }
             >
               {options.sortDirection === "asc" ? (

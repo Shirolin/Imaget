@@ -60,10 +60,9 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
   };
 
   const badgeStyle: React.CSSProperties = {
-    backdropFilter: "blur(8px)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
     border:
       "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
-    textShadow: "0 1px 2px rgba(0,0,0,0.5)",
   };
 
   if (layout === "list") {
@@ -331,7 +330,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
           }}
         >
           <Group
-            gap={2}
+            gap="xs"
             p={4}
             bg="dark.7"
             style={{

@@ -98,11 +98,15 @@ const GlobalAnimations = () => (
       bottom: 0;
       left: 0;
       width: 100%;
-      height: var(--imaget-progress, 0%);
-      background: linear-gradient(to top, rgba(0, 217, 255, 0.4), rgba(0, 255, 128, 0.5));
-      transition: height 0.15s linear, opacity 0.3s ease;
+      height: 100%;
+      background: var(--mantine-color-blue-filled);
+      opacity: 0.5;
+      transform: scaleY(var(--imaget-progress-scale, 0));
+      transform-origin: bottom;
+      transition: transform 0.15s linear, opacity 0.3s ease;
       z-index: 0;
       pointer-events: none;
+      will-change: transform;
     }
 
     .imaget-glass-button[data-status="success"] {
@@ -113,16 +117,16 @@ const GlobalAnimations = () => (
 
     .imaget-glass-button[data-status="success"] .imaget-progress-fill {
       opacity: 0;
-      transition: height 0.3s ease-out, opacity 0.5s ease 0.1s;
+      transition: transform 0.3s ease-out, opacity 0.5s ease 0.1s;
     }
 
     .imaget-glass-button[data-status="downloading"],
     .imaget-glass-button[data-status="error"] {
-      background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
-      backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
-      -webkit-backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 60%), inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 50%) !important;
-      transform: scale(1.2) translate3d(0, 0, 0) !important;
+      background: color-mix(in srgb, var(--mantine-color-dark-7), transparent 20%) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 90%) !important;
+      transform: scale(1.1) translate3d(0, 0, 0) !important;
     }
 
     .imaget-glass-button[data-status="error"] {
@@ -131,15 +135,15 @@ const GlobalAnimations = () => (
     }
 
     .imaget-glass-wrapper:hover .imaget-glass-button {
-      background: color-mix(in srgb, var(--mantine-color-white), transparent 78%) !important;
-      backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
-      -webkit-backdrop-filter: blur(25px) saturate(160%) contrast(1.1) brightness(1.1) !important;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 60%), inset 0 1px 1px color-mix(in srgb, var(--mantine-color-white), transparent 50%) !important;
-      transform: scale(1.2) translate3d(0, 0, 0) !important;
+      background: color-mix(in srgb, var(--mantine-color-dark-7), transparent 20%) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 0 0 1px color-mix(in srgb, var(--mantine-color-white), transparent 90%) !important;
+      transform: scale(1.1) translate3d(0, 0, 0) !important;
     }
 
     .imaget-glass-wrapper:hover .imaget-icon-inner {
-      animation: imaget-icon-pulse 2s infinite ease-in-out !important;
+      animation: imaget-icon-pulse 0.4s ease-out !important;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) !important;
       stroke-width: 2.8px !important;
     }
@@ -217,7 +221,7 @@ const MainDownloadAction = ({
         {
           outline: "none",
           color: "var(--mantine-color-white)",
-          "--imaget-progress": status === "success" ? "100%" : `${progress}%`,
+          "--imaget-progress-scale": status === "success" ? 1 : progress / 100,
         } as React.CSSProperties & { [key: string]: string | number }
       }
       aria-label={
@@ -254,7 +258,7 @@ const MainDownloadAction = ({
             opacity: status === "success" ? 1 : 0,
             transform:
               status === "success" ? "scale(1)" : "scale(0.5) translateY(10px)",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            transition: "all 0.5s ease-out",
           }}
         />
         <IconX
@@ -267,7 +271,7 @@ const MainDownloadAction = ({
             opacity: status === "error" ? 1 : 0,
             transform:
               status === "error" ? "scale(1)" : "scale(0.5) translateY(10px)",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            transition: "all 0.5s ease-out",
           }}
         />
         <IconDownload
@@ -282,7 +286,7 @@ const MainDownloadAction = ({
                 ? "scale(0.5) translateY(-10px)"
                 : "scale(1) translateY(0)",
             filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            transition: "all 0.5s ease-out",
           }}
         />
       </Box>
