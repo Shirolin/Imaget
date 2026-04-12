@@ -33,6 +33,7 @@ export interface FilterOptions {
   sortBy: "order" | "size" | "resolution";
   sortDirection: "asc" | "desc";
   layout: "grid" | "columns" | "list";
+  resolutionMode: "or" | "and";
 }
 
 export interface Settings {

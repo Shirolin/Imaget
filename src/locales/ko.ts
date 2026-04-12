@@ -160,4 +160,8 @@ export default {
   btnRemoveDomain: { message: "제거" },
   noDisabledDomains: { message: "비활성화된 웹사이트 없음" },
   labelFloatingHidePermanent: { message: "플로팅 버튼 기능 영구적으로 끄기" },
+  resModeOr: { message: "OR" },
+  resModeAnd: { message: "AND" },
+  resModeOrDesc: { message: "가로 또는 세로 중 하나만 일치" },
+  resModeAndDesc: { message: "가로와 세로 모두 일치" },
 };

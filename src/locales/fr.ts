@@ -170,4 +170,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "Désactiver définitivement la fonction du bouton flottant",
   },
+  resModeOr: { message: "OU" },
+  resModeAnd: { message: "ET" },
+  resModeOrDesc: { message: "La largeur ou la hauteur doit correspondre" },
+  resModeAndDesc: { message: "La largeur et la hauteur doivent correspondre" },
 };

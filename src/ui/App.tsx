@@ -37,6 +37,7 @@ const defaultFilters: FilterOptions = {
   sortBy: "order",
   sortDirection: "desc",
   layout: "grid",
+  resolutionMode: "or",
 };
 
 const App: React.FC = () => {

@@ -169,4 +169,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "Desactivar la función del botón flotante permanentemente",
   },
+  resModeOr: { message: "O" },
+  resModeAnd: { message: "Y" },
+  resModeOrDesc: { message: "Ancho o alto debe coincidir" },
+  resModeAndDesc: { message: "Tanto el ancho como el alto deben coincidir" },
 };

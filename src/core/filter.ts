@@ -6,9 +6,16 @@ export function filterImages(
 ): ImageItem[] {
   return images
     .filter((img) => {
-      // 尺寸过滤：任一维度达到阈值即可，避免过滤掉超长或超宽的大图
-      if (img.width < options.minWidth && img.height < options.minHeight)
-        return false;
+      // 尺寸过滤
+      const widthMatch = img.width >= options.minWidth;
+      const heightMatch = img.height >= options.minHeight;
+
+      const isResolutionMatch =
+        options.resolutionMode === "and"
+          ? widthMatch && heightMatch
+          : widthMatch || heightMatch;
+
+      if (!isResolutionMatch) return false;
 
       // 格式过滤
       if (

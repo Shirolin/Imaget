@@ -154,4 +154,8 @@ export default {
   btnRemoveDomain: { message: "移除" },
   noDisabledDomains: { message: "暫無禁用網站" },
   labelFloatingHidePermanent: { message: "永久關閉懸浮按鈕功能" },
+  resModeOr: { message: "或" },
+  resModeAnd: { message: "且" },
+  resModeOrDesc: { message: "寬度或高度滿足其一即可" },
+  resModeAndDesc: { message: "寬度和高度均須滿足閾值" },
 };

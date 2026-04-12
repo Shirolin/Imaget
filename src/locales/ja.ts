@@ -168,4 +168,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "フローティングボタン機能を永久に無効化",
   },
+  resModeOr: { message: "OR" },
+  resModeAnd: { message: "AND" },
+  resModeOrDesc: { message: "幅または高さのいずれかが一致" },
+  resModeAndDesc: { message: "幅と高さの両方が一致" },
 };

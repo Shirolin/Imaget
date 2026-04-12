@@ -5,8 +5,10 @@ import {
   NumberInput,
   ActionIcon,
   Stack,
-  Text,
   CloseButton,
+  Tooltip,
+  Badge,
+  UnstyledButton,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import { useDebouncedValue } from "@mantine/hooks";
@@ -103,9 +105,48 @@ const FilterBar: React.FC<FilterBarProps> = ({
             size="xs"
             w={{ base: 50, xs: 65 }}
           />
-          <Text size="xs" c="dimmed">
-            ×
-          </Text>
+          <Tooltip
+            label={
+              options.resolutionMode === "or"
+                ? t("resModeOr") === "OR" // 简单的启发式判断
+                  ? "Match either width OR height"
+                  : t("resModeOrDesc")
+                : t("resModeAnd") === "AND"
+                  ? "Match both width AND height"
+                  : t("resModeAndDesc")
+            }
+            portalProps={{ target: portalNode || undefined }}
+            withArrow
+          >
+            <UnstyledButton
+              onClick={() =>
+                onChange({
+                  ...options,
+                  resolutionMode:
+                    options.resolutionMode === "or" ? "and" : "or",
+                })
+              }
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0 4px",
+              }}
+            >
+              <Badge
+                size="xs"
+                variant="light"
+                color={options.resolutionMode === "or" ? "blue" : "teal"}
+                radius="sm"
+                px={4}
+                style={{ cursor: "pointer", userSelect: "none" }}
+              >
+                {options.resolutionMode === "or"
+                  ? t("resModeOr")
+                  : t("resModeAnd")}
+              </Badge>
+            </UnstyledButton>
+          </Tooltip>
           <NumberInput
             placeholder="H"
             aria-label={t("labelMinHeight")}

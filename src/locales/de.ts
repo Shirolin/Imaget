@@ -168,4 +168,10 @@ export default {
   labelFloatingHidePermanent: {
     message: "Schwebendes Button-Feature dauerhaft deaktivieren",
   },
+  resModeOr: { message: "ODER" },
+  resModeAnd: { message: "UND" },
+  resModeOrDesc: { message: "Breite oder Höhe muss Schwellenwert erreichen" },
+  resModeAndDesc: {
+    message: "Sowohl Breite als auch Höhe müssen Schwellenwert erreichen",
+  },
 };

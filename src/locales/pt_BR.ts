@@ -166,4 +166,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "Ocultar permanentemente (Desativar recurso)",
   },
+  resModeOr: { message: "OU" },
+  resModeAnd: { message: "E" },
+  resModeOrDesc: { message: "Largura ou altura deve coincidir" },
+  resModeAndDesc: { message: "Ambas largura e altura devem coincidir" },
 };

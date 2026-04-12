@@ -166,4 +166,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "Disable floating button feature permanently",
   },
+  resModeOr: { message: "OR" },
+  resModeAnd: { message: "AND" },
+  resModeOrDesc: { message: "Match either width OR height" },
+  resModeAndDesc: { message: "Match both width AND height" },
 };

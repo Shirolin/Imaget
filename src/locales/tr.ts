@@ -167,4 +167,8 @@ export default {
   labelFloatingHidePermanent: {
     message: "Kalıcı olarak gizle (Özelliği kapat)",
   },
+  resModeOr: { message: "VEYA" },
+  resModeAnd: { message: "VE" },
+  resModeOrDesc: { message: "Genişlik veya yükseklik eşleşmeli" },
+  resModeAndDesc: { message: "Hem genişlik hem de yükseklik eşleşmeli" },
 };
