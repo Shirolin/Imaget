@@ -41,6 +41,7 @@ export default {
   sortAsc: { message: "Artan" },
   sortDesc: { message: "Azalan" },
   tabImages: { message: "Resimler" },
+  labelRefresh: { message: "Yenile" },
   tabPreferences: { message: "Ayarlar" },
   prefSubfolder: { message: "Alt Klasör" },
   prefFilename: { message: "Dosya Adı Şablonu" },

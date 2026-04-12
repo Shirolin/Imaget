@@ -41,6 +41,7 @@ export default {
   sortAsc: { message: "Croissant" },
   sortDesc: { message: "Décroissant" },
   tabImages: { message: "Images" },
+  labelRefresh: { message: "Actualiser" },
   tabPreferences: { message: "Paramètres" },
   prefSubfolder: { message: "Sous-dossier" },
   prefFilename: { message: "Modèle de Nom" },

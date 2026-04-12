@@ -41,6 +41,7 @@ export default {
   sortAsc: { message: "Aufsteigend" },
   sortDesc: { message: "Absteigend" },
   tabImages: { message: "Bilder" },
+  labelRefresh: { message: "Aktualisieren" },
   tabPreferences: { message: "Einstellungen" },
   prefSubfolder: { message: "Unterordner" },
   prefFilename: { message: "Dateinamenvorlage" },

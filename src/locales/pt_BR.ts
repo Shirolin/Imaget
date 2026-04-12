@@ -41,6 +41,7 @@ export default {
   sortAsc: { message: "Crescente" },
   sortDesc: { message: "Decrescente" },
   tabImages: { message: "Imagens" },
+  labelRefresh: { message: "Actualizar" },
   tabPreferences: { message: "Configurações" },
   prefSubfolder: { message: "Subpasta" },
   prefFilename: { message: "Modelo de Nome" },

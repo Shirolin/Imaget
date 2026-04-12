@@ -43,6 +43,7 @@ export default {
   sortAsc: { message: "Ascendente" },
   sortDesc: { message: "Descendente" },
   tabImages: { message: "Imágenes" },
+  labelRefresh: { message: "Actualizar" },
   tabPreferences: { message: "Ajustes" },
   prefSubfolder: { message: "Subcarpeta" },
   prefFilename: { message: "Plantilla de Nombre" },

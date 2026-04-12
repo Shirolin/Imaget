@@ -36,6 +36,7 @@ export default {
   sortAsc: { message: "升序" },
   sortDesc: { message: "降序" },
   tabImages: { message: "圖片列表" },
+  labelRefresh: { message: "重新整理" },
   tabPreferences: { message: "選項設置" },
   prefSubfolder: { message: "子文件夾名" },
   prefFilename: { message: "文件名模板" },

@@ -41,6 +41,7 @@ export default {
   sortAsc: { message: "昇順" },
   sortDesc: { message: "降順" },
   tabImages: { message: "画像" },
+  labelRefresh: { message: "更新" },
   tabPreferences: { message: "設定" },
   prefSubfolder: { message: "サブフォルダ" },
   prefFilename: { message: "ファイル名テンプレート" },

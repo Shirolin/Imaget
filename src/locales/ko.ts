@@ -40,6 +40,7 @@ export default {
   sortAsc: { message: "오름차순" },
   sortDesc: { message: "내림차순" },
   tabImages: { message: "이미지" },
+  labelRefresh: { message: "새로고침" },
   tabPreferences: { message: "설정" },
   prefSubfolder: { message: "하위 폴더" },
   prefFilename: { message: "파일명 템플릿" },
