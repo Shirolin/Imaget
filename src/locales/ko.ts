@@ -164,4 +164,5 @@ export default {
   resModeAnd: { message: "AND" },
   resModeOrDesc: { message: "가로 또는 세로 중 하나만 일치" },
   resModeAndDesc: { message: "가로와 세로 모두 일치" },
+  labelClearExclude: { message: "제외 지우기" },
 };

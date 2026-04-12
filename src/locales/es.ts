@@ -173,4 +173,5 @@ export default {
   resModeAnd: { message: "Y" },
   resModeOrDesc: { message: "Ancho o alto debe coincidir" },
   resModeAndDesc: { message: "Tanto el ancho como el alto deben coincidir" },
+  labelClearExclude: { message: "Borrar exclusión" },
 };

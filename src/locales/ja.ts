@@ -172,4 +172,5 @@ export default {
   resModeAnd: { message: "AND" },
   resModeOrDesc: { message: "幅または高さのいずれかが一致" },
   resModeAndDesc: { message: "幅と高さの両方が一致" },
+  labelClearExclude: { message: "除外をクリア" },
 };

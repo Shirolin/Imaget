@@ -170,4 +170,5 @@ export default {
   resModeAnd: { message: "AND" },
   resModeOrDesc: { message: "Match either width OR height" },
   resModeAndDesc: { message: "Match both width AND height" },
+  labelClearExclude: { message: "Clear exclude" },
 };

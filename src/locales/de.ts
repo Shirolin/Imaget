@@ -174,4 +174,5 @@ export default {
   resModeAndDesc: {
     message: "Sowohl Breite als auch Höhe müssen Schwellenwert erreichen",
   },
+  labelClearExclude: { message: "Ausschluss löschen" },
 };

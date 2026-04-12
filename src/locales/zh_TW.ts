@@ -158,4 +158,5 @@ export default {
   resModeAnd: { message: "且" },
   resModeOrDesc: { message: "寬度或高度滿足其一即可" },
   resModeAndDesc: { message: "寬度和高度均須滿足閾值" },
+  labelClearExclude: { message: "清空排除" },
 };

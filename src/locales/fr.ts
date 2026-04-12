@@ -174,4 +174,5 @@ export default {
   resModeAnd: { message: "ET" },
   resModeOrDesc: { message: "La largeur ou la hauteur doit correspondre" },
   resModeAndDesc: { message: "La largeur et la hauteur doivent correspondre" },
+  labelClearExclude: { message: "Effacer l'exclusion" },
 };

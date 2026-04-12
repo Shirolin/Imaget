@@ -14,6 +14,7 @@ import { t } from "../../core/utils/i18n";
 import { useDebouncedValue } from "@mantine/hooks";
 import {
   IconSearch,
+  IconSearchOff,
   IconSortAscending,
   IconSortDescending,
   IconLayoutGrid,
@@ -38,20 +39,39 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   // 1. 本地搜索状态，确保输入流畅
   const [search, setSearch] = React.useState(options.searchQuery);
+  const [exclude, setExclude] = React.useState(options.excludeKeywords);
+
+  // 用 Ref 始终跟踪最新的 options，供异步的 useEffect 使用，防止由于闭包导致的“状态回滚”
+  const latestOptionsRef = React.useRef(options);
+  latestOptionsRef.current = options;
+
   // 2. 防抖处理
   const [debouncedSearch] = useDebouncedValue(search, 300);
+  const [debouncedExclude] = useDebouncedValue(exclude, 300);
 
   // 3. 当防抖值变化且与父组件不同步时，触发父组件更新
   React.useEffect(() => {
-    if (debouncedSearch !== options.searchQuery) {
-      onChange({ ...options, searchQuery: debouncedSearch });
+    // 只有当防抖后的值与当前输入值一致时（说明由于延迟捕获到了最新意图），才推送到父组件
+    // 这样可以防止手动清空（立即更新 options）后被旧的防抖值覆盖回去
+    if (debouncedSearch === search && debouncedSearch !== options.searchQuery) {
+      onChange({ ...latestOptionsRef.current, searchQuery: debouncedSearch });
     }
-  }, [debouncedSearch, options, onChange]);
+  }, [debouncedSearch, search, options.searchQuery]);
+
+  React.useEffect(() => {
+    if (debouncedExclude === exclude && debouncedExclude !== options.excludeKeywords) {
+      onChange({ ...latestOptionsRef.current, excludeKeywords: debouncedExclude });
+    }
+  }, [debouncedExclude, exclude, options.excludeKeywords]);
 
   // 4. 当父组件值从外部改变（如清空按钮）时，同步回本地
   React.useEffect(() => {
     setSearch(options.searchQuery);
   }, [options.searchQuery]);
+
+  React.useEffect(() => {
+    setExclude(options.excludeKeywords);
+  }, [options.excludeKeywords]);
 
   return (
     <Stack
@@ -71,12 +91,33 @@ const FilterBar: React.FC<FilterBarProps> = ({
               aria-label={t("labelClearSearch")}
               onClick={() => {
                 setSearch("");
-                onChange({ ...options, searchQuery: "" });
+                onChange({ ...latestOptionsRef.current, searchQuery: "" });
               }}
               style={{ display: search ? undefined : "none" }}
             />
           }
           aria-label={t("labelSearchImages")}
+          size="xs"
+          flex={1.2}
+          miw={{ base: "100%", xs: 150 }}
+        />
+        <TextInput
+          placeholder={t("filterExclude")}
+          leftSection={<IconSearchOff size={14} c="dimmed" />}
+          value={exclude}
+          onChange={(e) => setExclude(e.currentTarget.value)}
+          rightSectionPointerEvents="all"
+          rightSection={
+            <CloseButton
+              aria-label={t("labelClearExclude")}
+              onClick={() => {
+                setExclude("");
+                onChange({ ...latestOptionsRef.current, excludeKeywords: "" });
+              }}
+              style={{ display: exclude ? undefined : "none" }}
+            />
+          }
+          aria-label={t("filterExclude")}
           size="xs"
           flex={1}
           miw={{ base: "100%", xs: 150 }}
@@ -86,7 +127,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
           data={formats}
           value={options.allowedFormats}
           onChange={(val) =>
-            onChange({ ...options, allowedFormats: val as ImageFormat[] })
+            onChange({
+              ...latestOptionsRef.current,
+              allowedFormats: val as ImageFormat[],
+            })
           }
           clearable
           portalNode={portalNode}
@@ -101,7 +145,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <NumberInput
             aria-label={t("labelMinWidth")}
             value={options.minWidth}
-            onChange={(val) => onChange({ ...options, minWidth: Number(val) })}
+            onChange={(val) =>
+              onChange({ ...latestOptionsRef.current, minWidth: Number(val) })
+            }
             size="xs"
             w={{ base: 50, xs: 65 }}
           />
@@ -121,7 +167,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <UnstyledButton
               onClick={() =>
                 onChange({
-                  ...options,
+                  ...latestOptionsRef.current,
                   resolutionMode:
                     options.resolutionMode === "or" ? "and" : "or",
                 })
@@ -151,7 +197,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
             placeholder="H"
             aria-label={t("labelMinHeight")}
             value={options.minHeight}
-            onChange={(val) => onChange({ ...options, minHeight: Number(val) })}
+            onChange={(val) =>
+              onChange({ ...latestOptionsRef.current, minHeight: Number(val) })
+            }
             size="xs"
             w={{ base: 50, xs: 65 }}
           />
@@ -166,7 +214,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={options.aspectRatio}
             onChange={(val) =>
               onChange({
-                ...options,
+                ...latestOptionsRef.current,
                 aspectRatio: (val as AspectRatioType) || "all",
               })
             }
@@ -187,7 +235,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={options.sortBy}
             onChange={(val) =>
               onChange({
-                ...options,
+                ...latestOptionsRef.current,
                 sortBy: (val as "order" | "size" | "resolution") || "order",
               })
             }
@@ -204,7 +252,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
               <ActionIcon
                 variant={options.layout === "grid" ? "filled" : "default"}
                 size="md"
-                onClick={() => onChange({ ...options, layout: "grid" })}
+                onClick={() =>
+                  onChange({ ...latestOptionsRef.current, layout: "grid" })
+                }
                 aria-label={t("labelGridLayout")}
               >
                 <IconLayoutGrid size={16} />
@@ -212,7 +262,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
               <ActionIcon
                 variant={options.layout === "columns" ? "filled" : "default"}
                 size="md"
-                onClick={() => onChange({ ...options, layout: "columns" })}
+                onClick={() =>
+                  onChange({ ...latestOptionsRef.current, layout: "columns" })
+                }
                 aria-label={t("labelColumnLayout")}
               >
                 <IconLayoutColumns size={16} />
@@ -220,7 +272,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
               <ActionIcon
                 variant={options.layout === "list" ? "filled" : "default"}
                 size="md"
-                onClick={() => onChange({ ...options, layout: "list" })}
+                onClick={() =>
+                  onChange({ ...latestOptionsRef.current, layout: "list" })
+                }
                 aria-label={t("labelListLayout")}
               >
                 <IconLayoutList size={16} />
@@ -232,7 +286,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               size="md"
               onClick={() =>
                 onChange({
-                  ...options,
+                  ...latestOptionsRef.current,
                   sortDirection:
                     options.sortDirection === "asc" ? "desc" : "asc",
                 })

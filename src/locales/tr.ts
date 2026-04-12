@@ -171,4 +171,5 @@ export default {
   resModeAnd: { message: "VE" },
   resModeOrDesc: { message: "Genişlik veya yükseklik eşleşmeli" },
   resModeAndDesc: { message: "Hem genişlik hem de yükseklik eşleşmeli" },
+  labelClearExclude: { message: "Hariç tutulanları temizle" },
 };

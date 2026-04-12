@@ -170,4 +170,5 @@ export default {
   resModeAnd: { message: "E" },
   resModeOrDesc: { message: "Largura ou altura deve coincidir" },
   resModeAndDesc: { message: "Ambas largura e altura devem coincidir" },
+  labelClearExclude: { message: "Limpar exclusão" },
 };

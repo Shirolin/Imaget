@@ -5,7 +5,8 @@ export function filterImages(
   options: FilterOptions,
 ): ImageItem[] {
   return images
-    .filter((img) => {
+    .map((img, index) => ({ img, index }))
+    .filter(({ img }) => {
       // 尺寸过滤
       const widthMatch = img.width >= options.minWidth;
       const heightMatch = img.height >= options.minHeight;
@@ -61,10 +62,14 @@ export function filterImages(
     .sort((a, b) => {
       // 排序逻辑
       let comparison = 0;
-      if (options.sortBy === "size") comparison = a.sizeKB - b.sizeKB;
+      if (options.sortBy === "size") comparison = a.img.sizeKB - b.img.sizeKB;
       else if (options.sortBy === "resolution")
-        comparison = a.width * a.height - b.width * b.height;
+        comparison = a.img.width * a.img.height - b.img.width * b.img.height;
+
+      // 保底逻辑：如果权重相等，使用原始位序 index，确保排序是严格可反转且稳定的
+      if (comparison === 0) comparison = a.index - b.index;
 
       return options.sortDirection === "asc" ? comparison : -comparison;
-    });
+    })
+    .map((item) => item.img);
 }
