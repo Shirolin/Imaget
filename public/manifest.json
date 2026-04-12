@@ -7,13 +7,23 @@
   "homepage_url": "https://github.com/Shirolin/New-Imaget",
   "short_name": "Imaget",
   "default_locale": "en",
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
   "permissions": ["downloads", "activeTab", "storage", "contextMenus", "sidePanel"],
   "host_permissions": ["<all_urls>"],
   "side_panel": {
     "default_path": "sidepanel.html"
   },
   "action": {
-    "default_title": "Open Imaget"
+    "default_title": "Open Imaget",
+    "default_icon": {
+      "16": "icon-16.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    }
   },
   "background": {
     "service_worker": "background.js",

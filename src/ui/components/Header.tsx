@@ -6,6 +6,7 @@ import {
   Text,
   Tooltip,
   SegmentedControl,
+  Image,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import {
@@ -47,6 +48,7 @@ const Header: React.FC<HeaderProps> = ({
       }}
     >
       <Group gap="xs" visibleFrom="xs">
+        <Image src={chrome.runtime.getURL("favicon.svg")} w={24} h={24} />
         <Title order={4} c="blue" style={{ letterSpacing: 1 }}>
           IMAGET
         </Title>
