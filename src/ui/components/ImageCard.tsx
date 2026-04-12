@@ -60,7 +60,8 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
   };
 
   const badgeStyle: React.CSSProperties = {
-    backgroundColor: "rgba(0, 0, 0, 0.45)",
+    backgroundColor:
+      "color-mix(in srgb, var(--mantine-color-black), transparent 55%)",
     border:
       "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
   };

@@ -132,7 +132,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        backgroundColor: "var(--mantine-color-black)",
         cursor: isDragging ? "grabbing" : "grab",
       }}
       onMouseDown={handleMouseDown}
@@ -199,7 +199,6 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
             borderRadius: 24,
             border: "1px solid var(--mantine-color-dark-4)",
             boxShadow: "var(--mantine-shadow-lg)",
-            backdropFilter: "blur(12px)",
           }}
         >
           <Group gap={2} wrap="nowrap">
@@ -215,6 +214,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 radius="xl"
                 size="md"
                 onClick={() => handleZoom(-0.2)}
+                aria-label={t("labelZoomOut")}
               >
                 <IconZoomOut size={18} />
               </ActionIcon>
@@ -236,6 +236,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 radius="xl"
                 size="md"
                 onClick={() => handleZoom(0.2)}
+                aria-label={t("labelZoomIn")}
               >
                 <IconZoomIn size={18} />
               </ActionIcon>
@@ -257,6 +258,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 radius="xl"
                 size="md"
                 onClick={handleRotate}
+                aria-label={t("labelRotate")}
               >
                 <IconRotate size={18} />
               </ActionIcon>
@@ -274,6 +276,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 radius="xl"
                 size="md"
                 onClick={handleReset}
+                aria-label={t("labelFit")}
               >
                 <IconArrowsMaximize size={18} />
               </ActionIcon>
@@ -291,6 +294,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 radius="xl"
                 size="md"
                 onClick={handleOriginalSize}
+                aria-label={t("labelOriginalSize")}
               >
                 <IconFocus2 size={18} />
               </ActionIcon>
@@ -311,6 +315,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
               radius="xl"
               size="md"
               onClick={onClose}
+              aria-label={t("labelCloseEsc")}
             >
               <IconX size={18} />
             </ActionIcon>

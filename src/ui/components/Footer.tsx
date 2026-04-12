@@ -42,14 +42,18 @@ const Footer: React.FC<FooterProps> = ({
           w={{ base: "100%", sm: "auto" }}
           justify="space-between"
         >
-          <Group gap={4} style={{ cursor: "default" }}>
+          <Group gap="sm" style={{ cursor: "default" }}>
             <PortalTooltip
               label={t("statSelected")}
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={4} c={selectedCount > 0 ? "blue" : "dimmed"}>
-                <IconCircleCheck size={16} />
+              <Group
+                gap={4}
+                c={selectedCount > 0 ? "blue" : "dimmed"}
+                aria-label={`${t("statSelected")}: ${selectedCount}`}
+              >
+                <IconCircleCheck size={16} aria-hidden="true" />
                 <Text
                   size="xs"
                   fw={700}
@@ -68,8 +72,12 @@ const Footer: React.FC<FooterProps> = ({
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={4} c="gray.4">
-                <IconFilter size={16} />
+              <Group
+                gap={4}
+                c="gray.4"
+                aria-label={`${t("statFilter")}: ${filteredCount}`}
+              >
+                <IconFilter size={16} aria-hidden="true" />
                 <Text
                   size="xs"
                   fw={700}
@@ -88,8 +96,12 @@ const Footer: React.FC<FooterProps> = ({
               portalNode={portalNode}
               openDelay={300}
             >
-              <Group gap={4} c="dark.2">
-                <IconPhoto size={16} />
+              <Group
+                gap={4}
+                c="dark.2"
+                aria-label={`${t("statTotal")}: ${totalCount}`}
+              >
+                <IconPhoto size={16} aria-hidden="true" />
                 <Text
                   size="xs"
                   fw={700}
@@ -102,23 +114,25 @@ const Footer: React.FC<FooterProps> = ({
             </PortalTooltip>
           </Group>
 
-          <Group gap={2}>
+          <Group gap="xs">
             <ActionIcon
               title={t("selectAll")}
               aria-label={t("labelSelectAll")}
               onClick={onSelectAll}
-              size="sm"
+              size="md"
+              variant="subtle"
             >
-              <IconSelectAll size={16} />
+              <IconSelectAll size={18} />
             </ActionIcon>
             <ActionIcon
               title={t("deselectAll")}
               aria-label={t("labelDeselectAll")}
               color="gray"
               onClick={onDeselectAll}
-              size="sm"
+              size="md"
+              variant="subtle"
             >
-              <IconMinus size={16} />
+              <IconMinus size={18} />
             </ActionIcon>
           </Group>
         </Group>

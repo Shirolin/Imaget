@@ -31,6 +31,7 @@ export const GlassActionIcon: React.FC<GlassActionIconProps> = ({
         size="md"
         radius="xl"
         onClick={onClick}
+        aria-label={label}
         {...props}
         styles={{
           root: {

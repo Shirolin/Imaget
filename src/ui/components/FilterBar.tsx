@@ -43,7 +43,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   // 用 Ref 始终跟踪最新的 options，供异步的 useEffect 使用，防止由于闭包导致的“状态回滚”
   const latestOptionsRef = React.useRef(options);
-  latestOptionsRef.current = options;
+
+  React.useLayoutEffect(() => {
+    latestOptionsRef.current = options;
+  }, [options]);
 
   // 2. 防抖处理
   const [debouncedSearch] = useDebouncedValue(search, 300);
@@ -56,13 +59,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
     if (debouncedSearch === search && debouncedSearch !== options.searchQuery) {
       onChange({ ...latestOptionsRef.current, searchQuery: debouncedSearch });
     }
-  }, [debouncedSearch, search, options.searchQuery]);
+  }, [debouncedSearch, search, options.searchQuery, onChange]);
 
   React.useEffect(() => {
-    if (debouncedExclude === exclude && debouncedExclude !== options.excludeKeywords) {
-      onChange({ ...latestOptionsRef.current, excludeKeywords: debouncedExclude });
+    if (
+      debouncedExclude === exclude &&
+      debouncedExclude !== options.excludeKeywords
+    ) {
+      onChange({
+        ...latestOptionsRef.current,
+        excludeKeywords: debouncedExclude,
+      });
     }
-  }, [debouncedExclude, exclude, options.excludeKeywords]);
+  }, [debouncedExclude, exclude, options.excludeKeywords, onChange]);
 
   // 4. 当父组件值从外部改变（如清空按钮）时，同步回本地
   React.useEffect(() => {
@@ -103,7 +112,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         />
         <TextInput
           placeholder={t("filterExclude")}
-          leftSection={<IconSearchOff size={14} c="dimmed" />}
+          leftSection={<IconSearchOff size={14} color="dimmed" />}
           value={exclude}
           onChange={(e) => setExclude(e.currentTarget.value)}
           rightSectionPointerEvents="all"

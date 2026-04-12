@@ -40,6 +40,7 @@ export default {
   sortAsc: { message: "Asc" },
   sortDesc: { message: "Desc" },
   tabImages: { message: "Images" },
+  labelRefresh: { message: "Refresh" },
   tabPreferences: { message: "Settings" },
   prefSubfolder: { message: "Subfolder" },
   prefFilename: { message: "Filename Template" },

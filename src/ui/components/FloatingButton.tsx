@@ -337,8 +337,8 @@ const CloseAction = ({
             position: "absolute",
             top: 10,
             left: 10,
-            backgroundColor: "rgba(0, 0, 0, 0.45)",
-            backdropFilter: "blur(8px)",
+            backgroundColor:
+              "color-mix(in srgb, var(--mantine-color-dark-8), transparent 20%)",
             border:
               "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
             boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
@@ -415,8 +415,8 @@ const DisableAction = ({
               position: "absolute",
               top: 10,
               left: 10,
-              backgroundColor: "rgba(0, 0, 0, 0.45)",
-              backdropFilter: "blur(8px)",
+              backgroundColor:
+                "color-mix(in srgb, var(--mantine-color-dark-8), transparent 20%)",
               border:
                 "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
               boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
@@ -494,8 +494,8 @@ const HidePermanentAction = ({
               position: "absolute",
               top: 10,
               left: 10,
-              backgroundColor: "rgba(0, 0, 0, 0.45)",
-              backdropFilter: "blur(8px)",
+              backgroundColor:
+                "color-mix(in srgb, var(--mantine-color-dark-8), transparent 20%)",
               border:
                 "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
               boxShadow: "0 4px 12px rgba(0,0,0,0.4)",

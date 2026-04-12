@@ -124,6 +124,7 @@ const Header: React.FC<HeaderProps> = ({
               onClick={onDeepScan}
               loading={isScanning}
               size="md"
+              aria-label={t("labelDeepScan")}
             >
               <IconArrowsDown size={18} />
             </ActionIcon>
@@ -131,18 +132,32 @@ const Header: React.FC<HeaderProps> = ({
         )}
 
         {onRefresh && (
-          <ActionIcon
-            variant="default"
-            onClick={onRefresh}
-            loading={isScanning}
-            size="md"
-            visibleFrom="xs"
+          <Tooltip
+            label={t("labelRefresh")}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
           >
-            <IconRefresh size={16} />
-          </ActionIcon>
+            <ActionIcon
+              variant="default"
+              onClick={onRefresh}
+              loading={isScanning}
+              size="md"
+              visibleFrom="xs"
+              aria-label={t("labelRefresh")}
+            >
+              <IconRefresh size={16} />
+            </ActionIcon>
+          </Tooltip>
         )}
 
-        <ActionIcon variant="subtle" color="gray" onClick={onClose} size="md">
+        <ActionIcon
+          variant="subtle"
+          color="gray"
+          onClick={onClose}
+          size="md"
+          aria-label={t("labelCloseEsc")}
+        >
           <IconX size={20} />
         </ActionIcon>
       </Group>

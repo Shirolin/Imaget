@@ -51,6 +51,10 @@ const App: React.FC = () => {
   const { settings, updateSettings, resetSettings } = useSettings();
   const downloadingUrls = useRef<Set<string>>(new Set());
 
+  const handleClosePreview = useCallback(() => {
+    setPreviewUrl(null);
+  }, []);
+
   const sniffer = useMemo(() => new Sniffer(), []);
 
   const processor = useMemo(() => {
@@ -290,12 +294,12 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && previewUrl) {
-        setPreviewUrl(null);
+        handleClosePreview();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [previewUrl]);
+  }, [previewUrl, handleClosePreview]);
 
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
 
@@ -328,7 +332,7 @@ const App: React.FC = () => {
         }}
       >
         <Overlay
-          color="black"
+          color="var(--mantine-color-dark-9)"
           backgroundOpacity={0.65}
           onClick={handleClose}
           zIndex={0}
@@ -449,7 +453,7 @@ const App: React.FC = () => {
 
         <Modal
           opened={!!previewUrl}
-          onClose={() => setPreviewUrl(null)}
+          onClose={handleClosePreview}
           withCloseButton={false}
           padding={0}
           fullScreen
@@ -471,7 +475,7 @@ const App: React.FC = () => {
           {previewUrl && (
             <ImagePreview
               url={previewUrl}
-              onClose={() => setPreviewUrl(null)}
+              onClose={handleClosePreview}
               portalNode={portalNode}
             />
           )}
