@@ -70,7 +70,7 @@ export interface Settings {
     disabledDomains?: string[];
   };
   downloadLogic: {
-    targetFormat: "original" | "webp" | "png" | "jpg";
+    targetFormat: "original" | "webp" | "png" | "jpg" | "avif" | "bmp";
     quality: number;
     reEncodeWebp: boolean;
   };

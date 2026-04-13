@@ -91,6 +91,14 @@ export async function convertImage(
           finalMimeType = "image/jpeg";
           finalExt = "jpg";
           break;
+        case "avif":
+          finalMimeType = "image/avif";
+          finalExt = "avif";
+          break;
+        case "bmp":
+          finalMimeType = "image/bmp";
+          finalExt = "bmp";
+          break;
         case "png":
         default:
           finalMimeType = "image/png";

@@ -626,8 +626,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   onChange={(val) =>
                     handleDownloadLogicChange({
                       targetFormat:
-                        (val as "original" | "webp" | "png" | "jpg") ||
-                        "original",
+                        (val as
+                          | "original"
+                          | "webp"
+                          | "png"
+                          | "jpg"
+                          | "avif"
+                          | "bmp") || "original",
                     })
                   }
                   data={[
@@ -635,6 +640,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     { value: "webp", label: "WebP" },
                     { value: "png", label: "PNG" },
                     { value: "jpg", label: "JPG" },
+                    { value: "avif", label: "AVIF" },
+                    { value: "bmp", label: "BMP" },
                   ]}
                   styles={{
                     input: { cursor: "pointer" },
