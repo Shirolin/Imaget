@@ -1,4 +1,12 @@
-import { Group, Button, Text, ActionIcon, Box, Divider } from "@mantine/core";
+import {
+  Group,
+  Button,
+  Text,
+  ActionIcon,
+  Box,
+  Divider,
+  Flex,
+} from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import {
   IconDownload,
@@ -137,7 +145,12 @@ const Footer: React.FC<FooterProps> = ({
           </Group>
         </Group>
 
-        <Group gap="xs" w={{ base: "100%", sm: "auto" }} wrap="nowrap">
+        <Flex
+          gap="xs"
+          w={{ base: "100%", md: "auto" }}
+          wrap={{ base: "wrap", xs: "nowrap" }}
+          style={{ flex: 1 }}
+        >
           <Button
             variant="light"
             leftSection={<IconArchive size={16} />}
@@ -146,6 +159,17 @@ const Footer: React.FC<FooterProps> = ({
             disabled={selectedCount === 0}
             size="xs"
             flex={1}
+            miw={100}
+            styles={{
+              label: {
+                overflow: "visible",
+                whiteSpace: "normal",
+                textAlign: "center",
+                lineHeight: 1.1,
+                paddingTop: 2,
+                paddingBottom: 2,
+              },
+            }}
           >
             {t("downloadZip")}
           </Button>
@@ -156,10 +180,21 @@ const Footer: React.FC<FooterProps> = ({
             disabled={selectedCount === 0}
             size="xs"
             flex={1}
+            miw={100}
+            styles={{
+              label: {
+                overflow: "visible",
+                whiteSpace: "normal",
+                textAlign: "center",
+                lineHeight: 1.1,
+                paddingTop: 2,
+                paddingBottom: 2,
+              },
+            }}
           >
             {t("btnDownload")}
           </Button>
-        </Group>
+        </Flex>
       </Group>
     </Box>
   );
