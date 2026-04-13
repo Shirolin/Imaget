@@ -149,7 +149,6 @@ const Footer: React.FC<FooterProps> = ({
           gap="xs"
           w={{ base: "100%", md: "auto" }}
           wrap={{ base: "wrap", xs: "nowrap" }}
-          style={{ flex: 1 }}
         >
           <Button
             variant="light"
@@ -158,7 +157,7 @@ const Footer: React.FC<FooterProps> = ({
             loading={loading}
             disabled={selectedCount === 0}
             size="xs"
-            flex={1}
+            flex={{ base: 1, xs: "none" }}
             miw={100}
             styles={{
               label: {
@@ -179,7 +178,7 @@ const Footer: React.FC<FooterProps> = ({
             loading={loading}
             disabled={selectedCount === 0}
             size="xs"
-            flex={1}
+            flex={{ base: 1, xs: "none" }}
             miw={100}
             styles={{
               label: {

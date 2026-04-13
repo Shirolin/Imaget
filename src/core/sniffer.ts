@@ -149,13 +149,38 @@ export class Sniffer {
   public sniffSVGElements(): string[] {
     const urls = new Set<string>();
     document.querySelectorAll("svg").forEach((svg) => {
+      // 忽略作为宿主容器的 root 元素或过小的图标
+      if (svg.id === "imaget-reborn-root" || svg.closest("#imaget-reborn-root"))
+        return;
+
       const rect = svg.getBoundingClientRect();
       if (rect.width < 16 || rect.height < 16) return;
 
       try {
         const serializer = new XMLSerializer();
-        const svgString = serializer.serializeToString(svg);
-        const url = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
+        // 克隆一份以防修改原始 DOM
+        const clone = svg.cloneNode(true) as SVGSVGElement;
+
+        // 核心修复：确保 SVG 具有显式的 width/height，否则作为 <img> 加载时可能显示为 0x0
+        if (!clone.getAttribute("width") && rect.width > 0) {
+          clone.setAttribute("width", rect.width.toString());
+        }
+        if (!clone.getAttribute("height") && rect.height > 0) {
+          clone.setAttribute("height", rect.height.toString());
+        }
+        // 确保命名空间存在
+        if (!clone.getAttribute("xmlns")) {
+          clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        }
+
+        const svgString = serializer.serializeToString(clone);
+        // 使用更现代且安全的 Unicode 转 Base64 方式
+        const encoded = btoa(
+          encodeURIComponent(svgString).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+            String.fromCharCode(parseInt(p1, 16)),
+          ),
+        );
+        const url = `data:image/svg+xml;base64,${encoded}`;
         urls.add(url);
       } catch (e) {
         console.warn("Failed to serialize SVG", e);

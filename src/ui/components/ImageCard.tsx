@@ -72,6 +72,8 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
       "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
   };
 
+  const isSvg = item.format === "SVG";
+
   if (layout === "list") {
     return (
       <Card
@@ -99,7 +101,8 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
             h={{ base: 45, xs: 60 }}
             radius="sm"
             alt={t("imgAlt")}
-            fit="cover"
+            fit={isSvg ? "contain" : "cover"}
+            bg={isSvg ? "dark.7" : "transparent"}
             fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
             loading="lazy"
           />
@@ -267,7 +270,8 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
           src={item.url}
           height={layout === "columns" ? 300 : 160}
           alt={t("imgAlt")}
-          fit="cover"
+          fit={isSvg ? "contain" : "cover"}
+          bg={isSvg ? "dark.7" : "transparent"}
           fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
           loading="lazy"
         />
