@@ -110,40 +110,48 @@ const TestPage: React.FC = () => {
           </Title>
           <Stack gap="xl">
             {/* Deeply Nested Container */}
-            <Box p="md" bg="white" style={{ border: "1px dashed #aaa" }}>
-              <Text size="sm" mb="xs" fw={700}>
+            <Box
+              p="md"
+              bg="dark.8"
+              style={{
+                border: "1px dashed var(--mantine-color-dark-4)",
+                borderRadius: "var(--mantine-radius-md)",
+              }}
+            >
+              <Text size="sm" mb="xs" fw={700} c="bright">
                 Deeply Nested Context
               </Text>
-              <div>
-                <section>
-                  <article>
-                    <div className="content-wrapper">
+              <Box>
+                <Box component="section">
+                  <Box component="article">
+                    <Box style={{ position: "relative" }}>
                       <img
                         src="https://picsum.photos/id/15/300/200"
                         alt="Nested"
-                        style={{ borderRadius: 8 }}
+                        style={{ borderRadius: 8, display: "block" }}
                       />
-                      <Text size="xs">
-                        This image is nested: div {" > "} section {" > "}{" "}
-                        article {" > "} div {" > "} img
+                      <Text size="xs" mt="xs" c="dimmed">
+                        This image is nested: Box (section) {" > "} Box
+                        (article) {" > "} Box {" > "} img
                       </Text>
-                    </div>
-                  </article>
-                </section>
-              </div>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             </Box>
 
             {/* Overlapping items */}
             <Box
               h={250}
-              bg="white"
+              bg="dark.8"
               style={{
                 position: "relative",
                 overflow: "hidden",
-                border: "1px solid #eee",
+                border: "1px solid var(--mantine-color-dark-4)",
+                borderRadius: "var(--mantine-radius-md)",
               }}
             >
-              <Text size="sm" p="xs" fw={700}>
+              <Text size="sm" p="xs" fw={700} c="bright">
                 Absolute Positioning & Z-Index
               </Text>
               <img
@@ -165,7 +173,7 @@ const TestPage: React.FC = () => {
                   left: 100,
                   width: 200,
                   zIndex: 2,
-                  border: "4px solid white",
+                  border: "4px solid var(--mantine-color-dark-8)",
                 }}
                 alt="Overlap 2"
               />

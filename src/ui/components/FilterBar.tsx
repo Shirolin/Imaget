@@ -112,7 +112,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
         />
         <TextInput
           placeholder={t("filterExclude")}
-          leftSection={<IconSearchOff size={14} color="dimmed" />}
+          leftSection={
+            <IconSearchOff
+              size={14}
+              style={{ color: "var(--mantine-color-dimmed)" }}
+            />
+          }
           value={exclude}
           onChange={(e) => setExclude(e.currentTarget.value)}
           rightSectionPointerEvents="all"

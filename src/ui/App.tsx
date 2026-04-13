@@ -329,6 +329,7 @@ const App: React.FC = () => {
         modalProps={{
           portalProps: { target: portalNode || undefined },
           zIndex: 99999,
+          centered: true,
         }}
       >
         <Overlay

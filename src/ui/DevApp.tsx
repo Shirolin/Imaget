@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MantineProvider, ActionIcon } from "@mantine/core";
+import { MantineProvider, ActionIcon, Box } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 
 import { IconSearch } from "@tabler/icons-react";
@@ -23,14 +23,7 @@ const DevApp = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <ModalsProvider>
-        <div
-          style={{
-            position: "relative",
-            width: "100vw",
-            height: "100vh",
-            overflow: "hidden",
-          }}
-        >
+        <Box pos="relative" w="100vw" h="100vh" style={{ overflow: "hidden" }}>
           <TestPage />
           {visible ? (
             <App />
@@ -53,7 +46,7 @@ const DevApp = () => {
               <IconSearch size={24} />
             </ActionIcon>
           )}
-        </div>
+        </Box>
       </ModalsProvider>
     </MantineProvider>
   );

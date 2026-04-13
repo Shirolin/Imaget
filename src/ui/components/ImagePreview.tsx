@@ -124,6 +124,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   return (
     <Box
       ref={containerRef}
+      bg="dark.9"
       style={{
         position: "relative",
         width: "100%",
@@ -132,7 +133,6 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        backgroundColor: "var(--mantine-color-black)",
         cursor: isDragging ? "grabbing" : "grab",
       }}
       onMouseDown={handleMouseDown}

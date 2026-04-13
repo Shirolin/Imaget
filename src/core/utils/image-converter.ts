@@ -98,16 +98,9 @@ export async function convertImage(
           break;
       }
 
-      console.log(
-        `[ImageConverter] ToBlob: ${finalMimeType}, quality: ${quality}`,
-      );
-
       canvas.toBlob(
         (resultBlob) => {
           if (resultBlob) {
-            console.log(
-              `[ImageConverter] Success. New blob size: ${resultBlob.size}`,
-            );
             resolve({ blob: resultBlob, extension: finalExt });
           } else {
             console.error(

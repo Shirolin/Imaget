@@ -76,7 +76,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
           cursor: "pointer",
           borderColor: item.isSelected
             ? "var(--mantine-color-blue-filled)"
-            : undefined,
+            : "var(--mantine-color-dark-4)",
           transition: "all 0.2s ease",
           backgroundColor: hovered
             ? "var(--mantine-color-dark-6)"
@@ -105,7 +105,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
               <Badge
                 size="xs"
                 variant="filled"
-                bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+                bg="rgba(0, 0, 0, 0.4)"
                 style={badgeStyle}
               >
                 {item.width}x{item.height}
@@ -114,7 +114,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
                 <Badge
                   size="xs"
                   variant="filled"
-                  bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+                  bg="rgba(0, 0, 0, 0.4)"
                   style={badgeStyle}
                   visibleFrom="xs"
                 >
@@ -124,7 +124,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
               <Badge
                 size="xs"
                 variant="filled"
-                bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+                bg="rgba(0, 0, 0, 0.4)"
                 c={getFormatColor(item.format)}
                 style={badgeStyle}
               >
@@ -229,6 +229,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
             color="var(--mantine-color-blue-8)"
             backgroundOpacity={0.05}
             zIndex={1}
+            style={{ pointerEvents: "none" }}
           />
         )}
       </Card>
@@ -245,7 +246,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         transform: hovered ? "translateY(-4px)" : "none",
         borderColor: item.isSelected
           ? "var(--mantine-color-blue-filled)"
-          : undefined,
+          : "var(--mantine-color-dark-4)",
         transition: "all 0.2s ease",
         overflow: "hidden",
         backgroundColor: "var(--mantine-color-dark-8)",
@@ -281,7 +282,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
           <Stack gap={4}>
             <Badge
               variant="filled"
-              bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+              bg="rgba(0, 0, 0, 0.4)"
               size="xs"
               style={badgeStyle}
             >
@@ -290,7 +291,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
             {item.sizeKB > 0 && (
               <Badge
                 variant="filled"
-                bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+                bg="rgba(0, 0, 0, 0.4)"
                 size="xs"
                 style={badgeStyle}
               >
@@ -301,7 +302,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
 
           <Badge
             variant="filled"
-            bg="color-mix(in srgb, var(--mantine-color-black), transparent 40%)"
+            bg="rgba(0, 0, 0, 0.4)"
             size="xs"
             c={getFormatColor(item.format)}
             fw={700}
@@ -403,6 +404,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
           color="var(--mantine-color-blue-8)"
           backgroundOpacity={0.1}
           zIndex={1}
+          style={{ pointerEvents: "none" }}
         />
       )}
     </Card>

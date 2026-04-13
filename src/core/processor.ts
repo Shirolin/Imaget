@@ -97,8 +97,6 @@ export class ImageProcessor {
               ? "overwrite"
               : "uniquify";
 
-          console.log(`[Processor] Task ${index + 1}/${total}: ${finalPath}`);
-
           // 如果在插件环境下，尝试同步日志到后台以便调试
           if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
             chrome.runtime

@@ -50,7 +50,7 @@ function init() {
   extensionRoot.style.fontFamily = FONT_STACK;
   extensionRoot.style.pointerEvents = "auto";
   // 重要：修复 all: initial 导致的颜色继承丢失
-  extensionRoot.style.color = "var(--mantine-color-text, #C1C2C5)";
+  extensionRoot.style.color = "var(--mantine-color-text)";
   // 背景必须透明，否则 Overlay 的半透明效果会被此层的不透明色挡住，
   // 用户将无法透过遮罩层看到原网页。各面板自带 bg="dark.7" 提供深色背景。
   extensionRoot.style.backgroundColor = "transparent";

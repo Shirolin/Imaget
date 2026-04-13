@@ -5,7 +5,6 @@ type SettingSwitchProps = SwitchProps;
 
 const switchStyles = {
   root: {
-    cursor: "pointer",
     padding: "12px 14px",
     margin: "-4px -14px",
     borderRadius: "var(--mantine-radius-md)",
@@ -25,7 +24,6 @@ const switchStyles = {
     gap: "var(--mantine-spacing-md)",
   },
   track: {
-    cursor: "pointer",
     transition: "background-color 0.2s ease, border-color 0.2s ease",
     flexShrink: 0,
     marginTop: "2px",
@@ -34,7 +32,6 @@ const switchStyles = {
     transition: "transform 0.4s ease",
   },
   label: {
-    cursor: "pointer",
     paddingLeft: 0,
     paddingRight: 0,
     fontWeight: 500 as const,

@@ -15,6 +15,9 @@ import {
   IconArrowsDown,
   IconPhoto,
   IconSettings,
+  IconHeart,
+  IconBrandGithub,
+  IconCoffee,
 } from "@tabler/icons-react";
 
 interface HeaderProps {
@@ -43,9 +46,7 @@ const Header: React.FC<HeaderProps> = ({
       justify="space-between"
       wrap="nowrap"
       bg="dark.8"
-      style={{
-        borderBottom: "1px solid var(--mantine-color-dark-4)",
-      }}
+      style={{ borderBottom: "1px solid var(--mantine-color-dark-4)" }}
     >
       <Group gap="xs" visibleFrom="xs">
         <Image src={chrome.runtime.getURL("favicon.svg")} w={24} h={24} />
@@ -150,6 +151,65 @@ const Header: React.FC<HeaderProps> = ({
             </ActionIcon>
           </Tooltip>
         )}
+
+        <Group gap={4} wrap="nowrap" visibleFrom="md">
+          <Tooltip
+            label={t("labelGithub") || "GitHub"}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={() =>
+                window.open("https://github.com/Shirolin/New-Imaget", "_blank")
+              }
+              size="md"
+              aria-label={t("labelGithub") || "GitHub"}
+            >
+              <IconBrandGithub size={18} />
+            </ActionIcon>
+          </Tooltip>
+
+          <Tooltip
+            label={t("labelAfdian") || "Afdian"}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
+              variant="subtle"
+              color="blue"
+              onClick={() =>
+                window.open("https://ifdian.net/a/shirolin", "_blank")
+              }
+              size="md"
+              aria-label={t("labelAfdian") || "Afdian"}
+            >
+              <IconHeart size={18} fill="currentColor" />
+            </ActionIcon>
+          </Tooltip>
+
+          <Tooltip
+            label={t("labelKofi") || "Ko-fi"}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
+              variant="subtle"
+              color="orange"
+              onClick={() =>
+                window.open("https://ko-fi.com/shirolin", "_blank")
+              }
+              size="md"
+              aria-label={t("labelKofi") || "Ko-fi"}
+            >
+              <IconCoffee size={18} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
 
         <ActionIcon
           variant="subtle"
