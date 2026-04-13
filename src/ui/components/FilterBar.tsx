@@ -47,6 +47,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     "TIFF",
     "HEIC",
     "HEIF",
+    "DPG",
   ];
 
   // 1. 本地搜索状态，确保输入流畅

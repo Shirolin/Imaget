@@ -14,7 +14,7 @@ export class ImageTypeDetector {
     try {
       // 1. 标准路径：匹配常见图片后缀 (支持 ? # $ 结尾)
       const extMatch = url.match(
-        /\.(jpg|jpeg|png|gif|webp|avif|bmp|ico|svg|tiff|tif|heic|heif)(\?|$|#)/i,
+        /\.(jpg|jpeg|png|gif|webp|avif|bmp|ico|svg|tiff|tif|heic|heif|dpg)(\?|$|#)/i,
       );
       if (extMatch) {
         const ext = extMatch[1].toLowerCase();
@@ -26,6 +26,11 @@ export class ImageTypeDetector {
       // 2. 深度识别：社交/电商平台特定参数
       const urlObj = new URL(url, "http://localhost");
       const params = urlObj.searchParams;
+
+      // 京东 DPG (img.360buyimg.com/.../img.jpg.dpg)
+      if (url.includes("360buyimg.com") && url.toLowerCase().endsWith(".dpg")) {
+        return "DPG";
+      }
 
       // Twitter / X (pbs.twimg.com/.../id?format=xxx)
       if (url.includes("pbs.twimg.com") && params.has("format")) {

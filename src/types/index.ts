@@ -10,6 +10,7 @@ export type ImageFormat =
   | "TIFF"
   | "HEIC"
   | "HEIF"
+  | "DPG"
   | "UNKNOWN";
 export type AspectRatioType = "all" | "square" | "landscape" | "portrait";
 
