@@ -7,6 +7,9 @@ export type ImageFormat =
   | "AVIF"
   | "BMP"
   | "ICO"
+  | "TIFF"
+  | "HEIC"
+  | "HEIF"
   | "UNKNOWN";
 export type AspectRatioType = "all" | "square" | "landscape" | "portrait";
 

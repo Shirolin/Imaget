@@ -35,7 +35,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onChange,
   portalNode,
 }) => {
-  const formats: ImageFormat[] = ["PNG", "JPG", "WEBP", "SVG", "GIF"];
+  const formats: ImageFormat[] = [
+    "PNG",
+    "JPG",
+    "WEBP",
+    "SVG",
+    "GIF",
+    "AVIF",
+    "BMP",
+    "ICO",
+    "TIFF",
+    "HEIC",
+    "HEIF",
+  ];
 
   // 1. 本地搜索状态，确保输入流畅
   const [search, setSearch] = React.useState(options.searchQuery);

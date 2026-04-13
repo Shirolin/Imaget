@@ -56,6 +56,12 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
     if (f.includes("png")) return "blue.4";
     if (f.includes("svg")) return "violet.4";
     if (f.includes("webp")) return "teal.4";
+    if (f.includes("gif")) return "pink.4";
+    if (f.includes("avif")) return "cyan.4";
+    if (f.includes("bmp")) return "yellow.4";
+    if (f.includes("ico")) return "lime.4";
+    if (f.includes("tiff") || f.includes("tif")) return "indigo.4";
+    if (f.includes("heic") || f.includes("heif")) return "grape.4";
     return "gray.4";
   };
 

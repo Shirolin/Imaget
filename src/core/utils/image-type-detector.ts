@@ -14,11 +14,12 @@ export class ImageTypeDetector {
     try {
       // 1. 标准路径：匹配常见图片后缀 (支持 ? # $ 结尾)
       const extMatch = url.match(
-        /\.(jpg|jpeg|png|gif|webp|avif|bmp|ico|svg)(\?|$|#)/i,
+        /\.(jpg|jpeg|png|gif|webp|avif|bmp|ico|svg|tiff|tif|heic|heif)(\?|$|#)/i,
       );
       if (extMatch) {
         const ext = extMatch[1].toLowerCase();
         if (ext === "jpeg") return "JPG";
+        if (ext === "tif") return "TIFF";
         return ext.toUpperCase() as ImageFormat;
       }
 
@@ -74,6 +75,9 @@ export class ImageTypeDetector {
     if (type.includes("svg")) return "SVG";
     if (type.includes("avif")) return "AVIF";
     if (type.includes("bmp")) return "BMP";
+    if (type.includes("tiff")) return "TIFF";
+    if (type.includes("heic")) return "HEIC";
+    if (type.includes("heif")) return "HEIF";
     if (type.includes("x-icon") || type.includes("vnd.microsoft.icon"))
       return "ICO";
     return "UNKNOWN";
@@ -108,6 +112,14 @@ export class ImageTypeDetector {
 
     // AVIF: .... 66 74 79 70 61 76 69 66 (ftypavif)
     if (hex.includes("66 74 79 70 61 76 69 66")) return "AVIF";
+
+    // TIFF: 49 49 2A 00 (Little Endian) or 4D 4D 00 2A (Big Endian)
+    if (hex.startsWith("49 49 2A 00") || hex.startsWith("4D 4D 00 2A"))
+      return "TIFF";
+
+    // HEIC/HEIF: .... 66 74 79 70 68 65 69 63 (ftypheic) or .... 66 74 79 70 6D 69 66 31 (ftypmif1)
+    if (hex.includes("66 74 79 70 68 65 69 63")) return "HEIC";
+    if (hex.includes("66 74 79 70 6D 69 66 31")) return "HEIF";
 
     return "UNKNOWN";
   }
