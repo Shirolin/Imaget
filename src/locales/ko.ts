@@ -63,6 +63,10 @@ export default {
   warnResetAll: {
     message: "모든 설정을 재설정하시겠습니까? 초기 상태로 복구됩니다.",
   },
+  statusSaved: { message: "저장됨" },
+  secGeneral: { message: "일반" },
+  secExtraction: { message: "추출" },
+  secDownload: { message: "다운로드" },
   secLanguage: { message: "언어" },
   prefLanguage: { message: "인터페이스 언어" },
   prefSubfolderHint: { message: "다운로드 디렉토리의 이 폴더에 저장됩니다" },

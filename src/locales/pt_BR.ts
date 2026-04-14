@@ -66,6 +66,10 @@ export default {
   warnResetAll: {
     message: "Tem certeza que deseja redefinir todas as configurações?",
   },
+  statusSaved: { message: "Salvo" },
+  secGeneral: { message: "Geral" },
+  secExtraction: { message: "Extração" },
+  secDownload: { message: "Download" },
   secLanguage: { message: "Idioma" },
   prefLanguage: { message: "Idioma da Interface" },
   prefSubfolderHint: {

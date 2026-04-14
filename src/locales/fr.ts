@@ -66,6 +66,10 @@ export default {
   warnResetAll: {
     message: "Êtes-vous sûr de vouloir réinitialiser tout ?",
   },
+  statusSaved: { message: "Enregistré" },
+  secGeneral: { message: "Général" },
+  secExtraction: { message: "Extraction" },
+  secDownload: { message: "Téléchargement" },
   secLanguage: { message: "Langue" },
   prefLanguage: { message: "Langue de l'Interface" },
   prefSubfolderHint: {

@@ -68,6 +68,10 @@ export default {
   warnResetAll: {
     message: "¿Está seguro de restablecer todos los ajustes?",
   },
+  statusSaved: { message: "Guardado" },
+  secGeneral: { message: "General" },
+  secExtraction: { message: "Extracción" },
+  secDownload: { message: "Descargar" },
   secLanguage: { message: "Idioma" },
   prefLanguage: { message: "Idioma de Interfaz" },
   prefSubfolderHint: {

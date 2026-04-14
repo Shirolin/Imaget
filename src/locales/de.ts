@@ -67,6 +67,10 @@ export default {
     message:
       "Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten?",
   },
+  statusSaved: { message: "Gespeichert" },
+  secGeneral: { message: "Allgemein" },
+  secExtraction: { message: "Extraktion" },
+  secDownload: { message: "Download" },
   secLanguage: { message: "Sprache" },
   prefLanguage: { message: "Sprache der Benutzeroberfläche" },
   prefSubfolderHint: {

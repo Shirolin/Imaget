@@ -66,6 +66,10 @@ export default {
   warnResetAll: {
     message: "Tüm ayarları sıfırlamak istediğinizden emin misiniz?",
   },
+  statusSaved: { message: "Kaydedildi" },
+  secGeneral: { message: "Genel" },
+  secExtraction: { message: "Çıkarma" },
+  secDownload: { message: "İndir" },
   secLanguage: { message: "Dil" },
   prefLanguage: { message: "Arayüz Dili" },
   prefSubfolderHint: {
