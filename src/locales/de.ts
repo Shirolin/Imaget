@@ -119,6 +119,21 @@ export default {
   viewVariables: { message: "Variablen anzeigen" },
   secGifHandling: { message: "GIF-Behandlung" },
   secDownloadControl: { message: "Download-Kontrolle" },
+  secFilterDefaults: { message: "Standard-Filtereinstellungen" },
+  descFilterDefaults: {
+    message:
+      "Die Standardwerte, die beim Start der Erweiterung oder beim Zurücksetzen der Filter verwendet werden.",
+  },
+  prefDefaultMinWidth: { message: "Standard-Mindestbreite" },
+  prefDefaultMinHeight: { message: "Standard-Mindesthöhe" },
+  prefDefaultExcludeKeywords: { message: "Standard-Ausschluss-Keywords" },
+  prefDefaultSearchQuery: { message: "Standard-Suchanfrage" },
+  prefDefaultAllowedFormats: { message: "Standardmäßig erlaubte Formate" },
+  prefDefaultExcludeFormats: {
+    message: "Standardmäßig ausgeschlossene Formate",
+  },
+  prefDefaultAspectRatio: { message: "Standard-Seitenverhältnis" },
+  prefDefaultResolutionMode: { message: "Standard-Auflösungsmodus" },
   menuSaveAsWebP: { message: "Als WebP exportieren" },
   menuSaveAsPNG: { message: "Als PNG exportieren" },
   menuSaveAsJPG: { message: "Als JPG exportieren" },

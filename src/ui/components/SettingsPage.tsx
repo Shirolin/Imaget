@@ -37,9 +37,10 @@ import {
   IconCheck,
   IconPlus,
   IconX,
+  IconFilter,
 } from "@tabler/icons-react";
-import { Settings } from "../../types";
-import { PortalSelect } from "./common/PortalSelect";
+import { Settings, ImageFormat, AspectRatioType } from "../../types";
+import { PortalSelect, PortalMultiSelect } from "./common/PortalSelect";
 import { SettingCard } from "./settings/SettingCard";
 import { SettingSwitch } from "./settings/SettingSwitch";
 
@@ -108,6 +109,16 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
       onUpdate((prev) => ({
         ...prev,
         downloadControl: { ...prev.downloadControl, ...updates },
+      }));
+    },
+    [onUpdate],
+  );
+
+  const handleFilterDefaultsChange = useCallback(
+    (updates: Partial<Settings["filterDefaults"]>) => {
+      onUpdate((prev) => ({
+        ...prev,
+        filterDefaults: { ...prev.filterDefaults, ...updates },
       }));
     },
     [onUpdate],
@@ -601,6 +612,168 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     )}
                   </Group>
                 )}
+              </SettingCard>
+            </SimpleGrid>
+          </Stack>
+
+          {/* --- Section: Filter Defaults --- */}
+          <Stack gap="md">
+            <Group gap="xs">
+              <Text fw={700} size="sm" c="dimmed" tt="uppercase">
+                {t("secFilterDefaults") || "Filter Defaults"}
+              </Text>
+              <Divider style={{ flex: 1 }} opacity={0.5} />
+            </Group>
+            <Text size="xs" c="dimmed" mt={-10}>
+              {t("descFilterDefaults")}
+            </Text>
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+              <SettingCard
+                icon={<IconFilter />}
+                title={t("secGeneral")}
+                iconColor="var(--mantine-color-blue-filled)"
+              >
+                <Stack gap="md">
+                  <TextInput
+                    label={t("prefDefaultSearchQuery")}
+                    value={settings.filterDefaults.searchQuery}
+                    onChange={(e) =>
+                      handleFilterDefaultsChange({
+                        searchQuery: e.currentTarget.value,
+                      })
+                    }
+                    size="xs"
+                  />
+                  <TextInput
+                    label={t("prefDefaultExcludeKeywords")}
+                    value={settings.filterDefaults.excludeKeywords}
+                    onChange={(e) =>
+                      handleFilterDefaultsChange({
+                        excludeKeywords: e.currentTarget.value,
+                      })
+                    }
+                    size="xs"
+                  />
+                  <Group grow gap="xs">
+                    <NumberInput
+                      label={t("prefDefaultMinWidth")}
+                      value={settings.filterDefaults.minWidth}
+                      onChange={(val) =>
+                        handleFilterDefaultsChange({
+                          minWidth: typeof val === "number" ? val : 0,
+                        })
+                      }
+                      min={0}
+                      size="xs"
+                    />
+                    <NumberInput
+                      label={t("prefDefaultMinHeight")}
+                      value={settings.filterDefaults.minHeight}
+                      onChange={(val) =>
+                        handleFilterDefaultsChange({
+                          minHeight: typeof val === "number" ? val : 0,
+                        })
+                      }
+                      min={0}
+                      size="xs"
+                    />
+                  </Group>
+                  <Group grow gap="xs">
+                    <PortalSelect
+                      label={t("prefDefaultResolutionMode")}
+                      value={settings.filterDefaults.resolutionMode}
+                      portalNode={portalNode}
+                      onChange={(val) =>
+                        handleFilterDefaultsChange({
+                          resolutionMode: (val as "or" | "and") || "or",
+                        })
+                      }
+                      data={[
+                        { label: t("resModeOr"), value: "or" },
+                        { label: t("resModeAnd"), value: "and" },
+                      ]}
+                      size="xs"
+                    />
+                    <PortalSelect
+                      label={t("prefDefaultAspectRatio")}
+                      value={settings.filterDefaults.aspectRatio}
+                      portalNode={portalNode}
+                      onChange={(val) =>
+                        handleFilterDefaultsChange({
+                          aspectRatio: (val as AspectRatioType) || "all",
+                        })
+                      }
+                      data={[
+                        { label: t("layoutAny"), value: "all" },
+                        { label: t("layoutSquare"), value: "square" },
+                        { label: t("layoutWide"), value: "landscape" },
+                        { label: t("layoutTall"), value: "portrait" },
+                      ]}
+                      size="xs"
+                    />
+                  </Group>
+                </Stack>
+              </SettingCard>
+
+              <SettingCard
+                icon={<IconFileCode />}
+                title={t("filterType")}
+                iconColor="var(--mantine-color-teal-filled)"
+              >
+                <Stack gap="md">
+                  <PortalMultiSelect
+                    label={t("prefDefaultAllowedFormats")}
+                    value={settings.filterDefaults.allowedFormats}
+                    portalNode={portalNode}
+                    onChange={(val) =>
+                      handleFilterDefaultsChange({
+                        allowedFormats: val as ImageFormat[],
+                      })
+                    }
+                    data={[
+                      "PNG",
+                      "JPG",
+                      "WEBP",
+                      "SVG",
+                      "GIF",
+                      "AVIF",
+                      "BMP",
+                      "ICO",
+                      "TIFF",
+                      "HEIC",
+                      "HEIF",
+                      "DPG",
+                    ]}
+                    size="xs"
+                    clearable
+                  />
+                  <PortalMultiSelect
+                    label={t("prefDefaultExcludeFormats")}
+                    value={settings.filterDefaults.excludeFormats}
+                    portalNode={portalNode}
+                    onChange={(val) =>
+                      handleFilterDefaultsChange({
+                        excludeFormats: val as ImageFormat[],
+                      })
+                    }
+                    data={[
+                      "PNG",
+                      "JPG",
+                      "WEBP",
+                      "SVG",
+                      "GIF",
+                      "AVIF",
+                      "BMP",
+                      "ICO",
+                      "TIFF",
+                      "HEIC",
+                      "HEIF",
+                      "DPG",
+                    ]}
+                    size="xs"
+                    clearable
+                  />
+                </Stack>
               </SettingCard>
             </SimpleGrid>
           </Stack>

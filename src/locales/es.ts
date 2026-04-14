@@ -120,6 +120,21 @@ export default {
   viewVariables: { message: "Ver variables disponibles" },
   secGifHandling: { message: "Manejo de GIF" },
   secDownloadControl: { message: "Control de Descarga" },
+  secFilterDefaults: { message: "Valores predeterminados del filtro" },
+  descFilterDefaults: {
+    message:
+      "Los valores predeterminados que se utilizarán cuando se inicie la extensión o cuando se restablezcan los filtros.",
+  },
+  prefDefaultMinWidth: { message: "Ancho mínimo predeterminado" },
+  prefDefaultMinHeight: { message: "Altura mínima predeterminada" },
+  prefDefaultExcludeKeywords: {
+    message: "Palabras clave excluidas predeterminadas",
+  },
+  prefDefaultSearchQuery: { message: "Consulta de búsqueda predeterminada" },
+  prefDefaultAllowedFormats: { message: "Formatos permitidos predeterminados" },
+  prefDefaultExcludeFormats: { message: "Formatos excluidos predeterminados" },
+  prefDefaultAspectRatio: { message: "Relación de aspecto predeterminada" },
+  prefDefaultResolutionMode: { message: "Modo de resolución predeterminado" },
   menuSaveAsWebP: { message: "Guardar como WebP" },
   menuSaveAsPNG: { message: "Guardar como PNG" },
   menuSaveAsJPG: { message: "Guardar como JPG" },

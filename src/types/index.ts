@@ -80,6 +80,16 @@ export interface Settings {
     conflictResolution: "uniquify" | "overwrite" | "prompt";
     maxConcurrency: number;
   };
+  filterDefaults: {
+    minWidth: number;
+    minHeight: number;
+    excludeKeywords: string;
+    searchQuery: string;
+    allowedFormats: ImageFormat[];
+    excludeFormats: ImageFormat[];
+    aspectRatio: AspectRatioType;
+    resolutionMode: "or" | "and";
+  };
   debug?: {
     simulateDownloadFailure: boolean;
   };
@@ -112,6 +122,16 @@ export const defaultSettings: Settings = {
   downloadControl: {
     conflictResolution: "uniquify",
     maxConcurrency: 0, // 0 means no limit
+  },
+  filterDefaults: {
+    minWidth: 200,
+    minHeight: 200,
+    excludeKeywords: "",
+    searchQuery: "",
+    allowedFormats: [],
+    excludeFormats: [],
+    aspectRatio: "all",
+    resolutionMode: "or",
   },
   debug: {
     simulateDownloadFailure: false,

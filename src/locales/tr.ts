@@ -118,6 +118,21 @@ export default {
   viewVariables: { message: "Değişkenleri görüntüle" },
   secGifHandling: { message: "GIF Yönetimi" },
   secDownloadControl: { message: "İndirme Kontrolü" },
+  secFilterDefaults: { message: "Varsayılan Filtreler" },
+  descFilterDefaults: {
+    message:
+      "Uzantı başlatıldığında veya filtreler sıfırlandığında kullanılacak varsayılan değerler.",
+  },
+  prefDefaultMinWidth: { message: "Varsayılan Minimum Genişlik" },
+  prefDefaultMinHeight: { message: "Varsayılan Minimum Yükseklik" },
+  prefDefaultExcludeKeywords: {
+    message: "Varsayılan Hariç Tutulan Anahtar Kelimeler",
+  },
+  prefDefaultSearchQuery: { message: "Varsayılan Arama Sorgusu" },
+  prefDefaultAllowedFormats: { message: "Varsayılan İzin Verilen Formatlar" },
+  prefDefaultExcludeFormats: { message: "Varsayılan Hariç Tutulan Formatlar" },
+  prefDefaultAspectRatio: { message: "Varsayılan En Boy Oranı" },
+  prefDefaultResolutionMode: { message: "Varsayılan Çözünürlük Modu" },
   menuSaveAsWebP: { message: "WebP olarak kaydet" },
   menuSaveAsPNG: { message: "PNG olarak kaydet" },
   menuSaveAsJPG: { message: "JPG olarak kaydet" },
