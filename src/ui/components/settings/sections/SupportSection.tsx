@@ -16,88 +16,87 @@ interface SupportSectionProps {
   onUpdateDebug: (updates: Partial<NonNullable<Settings["debug"]>>) => void;
 }
 
-export const SupportSection = memo(({
-  settings,
-  onUpdateDebug,
-}: SupportSectionProps) => {
-  return (
-    <Stack gap="md">
-      <Stack gap="xs">
-        <Group gap="xs">
-          <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-            {t("secSupport") || "Support"}
-          </Text>
-          <Divider style={{ flex: 1 }} opacity={0.5} />
-        </Group>
-      </Stack>
+export const SupportSection = memo(
+  ({ settings, onUpdateDebug }: SupportSectionProps) => {
+    return (
+      <Stack gap="md">
+        <Stack gap="xs">
+          <Group gap="xs">
+            <Text fw={700} size="sm" c="dimmed" tt="uppercase">
+              {t("secSupport") || "Support"}
+            </Text>
+            <Divider style={{ flex: 1 }} opacity={0.5} />
+          </Group>
+        </Stack>
 
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-        <SettingCard
-          icon={<IconHeart />}
-          title={t("secSupport")}
-          iconColor="var(--mantine-color-orange-filled)"
-        >
-          <Stack gap="xs">
-            <Button
-              component="a"
-              href="https://github.com/Shirolin/Imaget"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="light"
-              color="gray"
-              leftSection={<IconBrandGithub size={16} />}
-              justify="flex-start"
-              fullWidth
-            >
-              {t("labelGithub")}
-            </Button>
-            <Group grow gap="xs">
-              <Button
-                component="a"
-                href="https://ifdian.net/a/shirolin"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="light"
-                color="gray"
-                leftSection={<IconCoffee size={16} />}
-                justify="flex-start"
-              >
-                {t("labelAfdian")}
-              </Button>
-              <Button
-                component="a"
-                href="https://ko-fi.com/shirolin"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="light"
-                color="gray"
-                leftSection={<IconHeart size={16} />}
-                justify="flex-start"
-              >
-                {t("labelKofi")}
-              </Button>
-            </Group>
-          </Stack>
-        </SettingCard>
-
-        {import.meta.env.DEV && (
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
           <SettingCard
-            icon={<IconBug />}
-            title={t("secDebug")}
-            iconColor="var(--mantine-color-red-filled)"
+            icon={<IconHeart />}
+            title={t("secSupport")}
+            iconColor="var(--mantine-color-orange-filled)"
           >
-            <SettingSwitch
-              label={t("prefSimulateDownloadFailure")}
-              checked={settings?.simulateDownloadFailure || false}
-              onChange={(e) =>
-                onUpdateDebug({
-                  simulateDownloadFailure: e.currentTarget.checked,
-                })
-              }
-            />
+            <Stack gap="xs">
+              <Button
+                component="a"
+                href="https://github.com/Shirolin/Imaget"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="light"
+                color="gray"
+                leftSection={<IconBrandGithub size={16} />}
+                justify="flex-start"
+                fullWidth
+              >
+                {t("labelGithub")}
+              </Button>
+              <Group grow gap="xs">
+                <Button
+                  component="a"
+                  href="https://ifdian.net/a/shirolin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="light"
+                  color="gray"
+                  leftSection={<IconCoffee size={16} />}
+                  justify="flex-start"
+                >
+                  {t("labelAfdian")}
+                </Button>
+                <Button
+                  component="a"
+                  href="https://ko-fi.com/shirolin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="light"
+                  color="gray"
+                  leftSection={<IconHeart size={16} />}
+                  justify="flex-start"
+                >
+                  {t("labelKofi")}
+                </Button>
+              </Group>
+            </Stack>
           </SettingCard>
-        )}
-      </SimpleGrid>
-    </Stack>
-  );
-});
+
+          {import.meta.env.DEV && (
+            <SettingCard
+              icon={<IconBug />}
+              title={t("secDebug")}
+              iconColor="var(--mantine-color-red-filled)"
+            >
+              <SettingSwitch
+                label={t("prefSimulateDownloadFailure")}
+                checked={settings?.simulateDownloadFailure || false}
+                onChange={(e) =>
+                  onUpdateDebug({
+                    simulateDownloadFailure: e.currentTarget.checked,
+                  })
+                }
+              />
+            </SettingCard>
+          )}
+        </SimpleGrid>
+      </Stack>
+    );
+  },
+);
