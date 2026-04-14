@@ -52,17 +52,15 @@ const App: React.FC = () => {
   const { settings, updateSettings, resetSettings } = useSettings();
   const downloadingUrls = useRef<Set<string>>(new Set());
 
-  // 初始化或重置时同步默认筛选配置
-  const isFirstLoad = useRef(true);
+  // 当默认配置发生变化时，立即同步到当前筛选（包括初始加载和设置页修改）
   useEffect(() => {
-    if (isFirstLoad.current && settings) {
+    if (settings?.filterDefaults) {
       setFilters((prev) => ({
         ...prev,
         ...settings.filterDefaults,
       }));
-      isFirstLoad.current = false;
     }
-  }, [settings]);
+  }, [settings.filterDefaults]);
 
   const handleClosePreview = useCallback(() => {
     setPreviewUrl(null);
