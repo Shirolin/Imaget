@@ -203,37 +203,33 @@ export const ExtractionSection: React.FC<ExtractionSectionProps> = ({
           ) : (
             <Group gap="xs" wrap="wrap">
               {settings.disabledDomains.map((domain) => (
-                <Box
+                <Badge
                   key={domain}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    backgroundColor: "var(--mantine-color-dark-6)",
-                    border: "1px solid var(--mantine-color-dark-4)",
-                    borderRadius: "var(--mantine-radius-sm)",
-                    padding: "2px 8px",
-                  }}
+                  variant="filled"
+                  color="dark.4"
+                  size="sm"
+                  pr={0}
+                  rightSection={
+                    <ActionIcon
+                      size={16}
+                      variant="transparent"
+                      color="red.4"
+                      onClick={() => {
+                        onUpdate({
+                          disabledDomains:
+                            settings.disabledDomains?.filter(
+                              (d) => d !== domain,
+                            ) || [],
+                        });
+                      }}
+                      aria-label={t("btnRemoveDomain")}
+                    >
+                      <IconX size={10} stroke={3} />
+                    </ActionIcon>
+                  }
                 >
-                  <Text size="xs" mr="xs">
-                    {domain}
-                  </Text>
-                  <ActionIcon
-                    size="xs"
-                    variant="transparent"
-                    color="red"
-                    onClick={() => {
-                      onUpdate({
-                        disabledDomains:
-                          settings.disabledDomains?.filter(
-                            (d) => d !== domain,
-                          ) || [],
-                      });
-                    }}
-                    aria-label={t("btnRemoveDomain")}
-                  >
-                    <IconX size={12} stroke={3} />
-                  </ActionIcon>
-                </Box>
+                  {domain}
+                </Badge>
               ))}
             </Group>
           )}

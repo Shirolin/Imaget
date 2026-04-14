@@ -56,7 +56,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                 href="https://ifdian.net/a/shirolin"
                 target="_blank"
                 variant="light"
-                color="blue"
+                color="gray"
                 leftSection={<IconCoffee size={16} />}
                 justify="flex-start"
               >
@@ -67,7 +67,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                 href="https://ko-fi.com/shirolin"
                 target="_blank"
                 variant="light"
-                color="pink"
+                color="gray"
                 leftSection={<IconHeart size={16} />}
                 justify="flex-start"
               >

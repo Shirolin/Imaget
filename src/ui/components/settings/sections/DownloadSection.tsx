@@ -180,7 +180,16 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
             {(["keep", "firstFrame", "skip"] as const).map((strategy) => (
               <Box
                 key={strategy}
+                role="radio"
+                aria-checked={settings.gifStrategy === strategy}
+                tabIndex={0}
                 onClick={() => onUpdateGifStrategy(strategy)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onUpdateGifStrategy(strategy);
+                  }
+                }}
                 p="sm"
                 style={{
                   borderRadius: "var(--mantine-radius-md)",
@@ -195,10 +204,12 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
                   }`,
                   transition: "all 0.2s ease",
                   cursor: "pointer",
+                  outline: "none",
                 }}
               >
                 <Radio
                   value={strategy}
+                  tabIndex={-1}
                   label={
                     strategy === "keep"
                       ? t("gifOriginal")
