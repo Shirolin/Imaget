@@ -59,6 +59,10 @@ export default {
   warnResetAll: {
     message: "確定要重置所有設置嗎？這將恢復初始狀態並清空自定義模板。",
   },
+  statusSaved: { message: "已保存" },
+  secGeneral: { message: "一般" },
+  secExtraction: { message: "提取" },
+  secDownload: { message: "下載" },
   secLanguage: { message: "顯示語言" },
   prefLanguage: { message: "界面語言" },
   prefSubfolderHint: { message: "文件將保存在下載目錄的該文件夾下" },

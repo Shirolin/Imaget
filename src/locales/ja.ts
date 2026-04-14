@@ -66,6 +66,10 @@ export default {
   warnResetAll: {
     message: "すべての設定をリセットしてもよろしいですか？初期状態に戻ります。",
   },
+  statusSaved: { message: "保存済み" },
+  secGeneral: { message: "全般" },
+  secExtraction: { message: "抽出" },
+  secDownload: { message: "ダウンロード" },
   secLanguage: { message: "言語" },
   prefLanguage: { message: "インターフェース言語" },
   prefSubfolderHint: {

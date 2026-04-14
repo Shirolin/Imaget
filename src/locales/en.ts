@@ -64,6 +64,10 @@ export default {
     message:
       "Are you sure you want to reset all settings? This will restore initial state.",
   },
+  statusSaved: { message: "Saved" },
+  secGeneral: { message: "General" },
+  secExtraction: { message: "Extraction" },
+  secDownload: { message: "Download" },
   secLanguage: { message: "Language" },
   prefLanguage: { message: "Interface Language" },
   prefSubfolderHint: {
