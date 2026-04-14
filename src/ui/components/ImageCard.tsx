@@ -19,15 +19,15 @@ import {
   IconEye,
   IconCheck,
 } from "@tabler/icons-react";
-import type { ImageItem } from "../../types";
+import { type ImageItem, getFormatColor } from "../../types";
 import { PortalTooltip } from "./common/PortalTooltip";
 import { GlassActionIcon } from "./common/GlassActionIcon";
 
 interface ImageCardProps {
   item: ImageItem;
   layout?: "grid" | "columns" | "list";
-  onSelect: (id: string) => void;
-  onPreview?: (url: string) => void;
+  onSelect: (id: string, isShift?: boolean) => void;
+  onPreview?: (id: string) => void;
   onDownload?: (item: ImageItem) => void;
   portalNode: HTMLDivElement | null;
 }
@@ -48,22 +48,6 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
     navigator.clipboard.writeText(item.url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const getFormatColor = (format: string) => {
-    const f = format.toLowerCase();
-    if (f.includes("jpg") || f.includes("jpeg")) return "orange.4";
-    if (f.includes("png")) return "blue.4";
-    if (f.includes("svg")) return "violet.4";
-    if (f.includes("webp")) return "teal.4";
-    if (f.includes("gif")) return "pink.4";
-    if (f.includes("avif")) return "cyan.4";
-    if (f.includes("bmp")) return "yellow.4";
-    if (f.includes("ico")) return "lime.4";
-    if (f.includes("tiff") || f.includes("tif")) return "indigo.4";
-    if (f.includes("heic") || f.includes("heif")) return "grape.4";
-    if (f.includes("dpg")) return "red.5";
-    return "gray.4";
   };
 
   const badgeStyle: React.CSSProperties = {
@@ -93,7 +77,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => onSelect(item.id)}
+        onClick={(e) => onSelect(item.id, e.shiftKey)}
       >
         <Group align="center" gap="md" wrap="nowrap">
           <Image
@@ -191,7 +175,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
                 radius="sm"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onPreview?.(item.url);
+                  onPreview?.(item.id);
                 }}
               >
                 <IconEye size={16} />
@@ -215,10 +199,16 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
                 <IconDownload size={16} />
               </ActionIcon>
             </PortalTooltip>
-            <Box onClick={(e) => e.stopPropagation()}>
+            <Box
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                opacity: hovered || item.isSelected ? 1 : 0.5,
+                transition: "opacity 0.2s ease",
+              }}
+            >
               <Checkbox
                 checked={item.isSelected}
-                onChange={() => onSelect(item.id)}
+                onChange={() => onSelect(item.id, false)}
                 size="xs"
                 color="blue"
                 aria-label={t("labelSelectImage", [item.filename || item.url])}
@@ -264,7 +254,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => onSelect(item.id)}
+      onClick={(e) => onSelect(item.id, e.shiftKey)}
     >
       <Card.Section style={{ position: "relative", overflow: "hidden" }}>
         <Image
@@ -374,7 +364,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
               icon={<IconEye size={18} />}
               onClick={(e) => {
                 e.stopPropagation();
-                onPreview?.(item.url);
+                onPreview?.(item.id);
               }}
             />
             <GlassActionIcon
@@ -388,18 +378,26 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
             />
           </Group>
 
-          <Box onClick={(e) => e.stopPropagation()}>
+          <Box
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              opacity: hovered || item.isSelected ? 1 : 0.6,
+              transition: "opacity 0.2s ease",
+              filter: "drop-shadow(0 0 2px rgba(0,0,0,0.5))",
+            }}
+          >
             <Checkbox
               checked={item.isSelected}
-              onChange={() => onSelect(item.id)}
+              onChange={() => onSelect(item.id, false)}
               size="sm"
               color="blue"
               aria-label={t("labelSelectImage", [item.filename || item.url])}
               styles={{
                 input: {
                   cursor: "pointer",
-                  backgroundColor: "var(--mantine-color-dark-7)",
-                  borderColor: "var(--mantine-color-dark-4)",
+                  backgroundColor: "rgba(30, 30, 30, 0.4)",
+                  backdropFilter: "blur(4px)",
+                  borderColor: "rgba(255, 255, 255, 0.2)",
                   boxShadow: item.isSelected
                     ? "0 0 0 2px var(--mantine-color-blue-filled)"
                     : "var(--mantine-shadow-sm)",

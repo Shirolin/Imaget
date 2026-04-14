@@ -12,6 +12,26 @@ export type ImageFormat =
   | "HEIF"
   | "DPG"
   | "UNKNOWN";
+
+/**
+ * 获取格式对应的语义化色彩
+ */
+export const getFormatColor = (format: string): string => {
+  const f = format.toUpperCase();
+  if (f === "JPG" || f === "JPEG") return "orange.4";
+  if (f === "PNG") return "blue.4";
+  if (f === "SVG") return "violet.4";
+  if (f === "WEBP") return "teal.4";
+  if (f === "GIF") return "pink.4";
+  if (f === "AVIF") return "cyan.4";
+  if (f === "BMP") return "yellow.4";
+  if (f === "ICO") return "lime.4";
+  if (f === "TIFF" || f === "TIF") return "indigo.4";
+  if (f === "HEIC" || f === "HEIF") return "grape.4";
+  if (f === "DPG") return "red.5";
+  return "gray.4";
+};
+
 export type AspectRatioType = "all" | "square" | "landscape" | "portrait";
 
 export interface ImageItem {

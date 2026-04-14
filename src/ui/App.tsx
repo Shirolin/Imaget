@@ -46,7 +46,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"images" | "settings">("images");
 
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -63,7 +63,7 @@ const App: React.FC = () => {
   }, [settings.filterDefaults]);
 
   const handleClosePreview = useCallback(() => {
-    setPreviewUrl(null);
+    setPreviewId(null);
   }, []);
 
   const sniffer = useMemo(() => new Sniffer(), []);
@@ -128,14 +128,57 @@ const App: React.FC = () => {
     return filterImages(images, filters);
   }, [images, filters]);
 
+  // 预览索引与导航控制 (必须在 filteredImages 之后)
+  const previewIndex = useMemo(
+    () => filteredImages.findIndex((img) => img.id === previewId),
+    [filteredImages, previewId],
+  );
+
+  const handleNextPreview = useCallback(() => {
+    if (previewIndex < filteredImages.length - 1) {
+      setPreviewId(filteredImages[previewIndex + 1].id);
+    }
+  }, [previewIndex, filteredImages]);
+
+  const handlePrevPreview = useCallback(() => {
+    if (previewIndex > 0) {
+      setPreviewId(filteredImages[previewIndex - 1].id);
+    }
+  }, [previewIndex, filteredImages]);
+
   // 选中逻辑
-  const toggleSelect = useCallback((id: string): void => {
-    setImages((prev: ImageItem[]) =>
-      prev.map((img: ImageItem) =>
-        img.id === id ? { ...img, isSelected: !img.isSelected } : img,
-      ),
-    );
-  }, []);
+  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(
+    null,
+  );
+
+  const toggleSelect = useCallback(
+    (id: string, isShift: boolean = false): void => {
+      setImages((prev: ImageItem[]) => {
+        const currentIndex = prev.findIndex((img) => img.id === id);
+        if (currentIndex === -1) return prev;
+
+        const newImages = [...prev];
+        const targetValue = !prev[currentIndex].isSelected;
+
+        if (isShift && lastSelectedIndex !== null) {
+          const start = Math.min(lastSelectedIndex, currentIndex);
+          const end = Math.max(lastSelectedIndex, currentIndex);
+          for (let i = start; i <= end; i++) {
+            newImages[i] = { ...newImages[i], isSelected: targetValue };
+          }
+        } else {
+          newImages[currentIndex] = {
+            ...newImages[currentIndex],
+            isSelected: targetValue,
+          };
+        }
+
+        setLastSelectedIndex(currentIndex);
+        return newImages;
+      });
+    },
+    [lastSelectedIndex],
+  );
 
   const selectAll = (): void => {
     const allSelected = filteredImages.every(
@@ -304,13 +347,13 @@ const App: React.FC = () => {
   // 全局快捷键监听
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && previewUrl) {
+      if (e.key === "Escape" && previewId) {
         handleClosePreview();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [previewUrl, handleClosePreview]);
+  }, [previewId, handleClosePreview]);
 
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
 
@@ -415,7 +458,7 @@ const App: React.FC = () => {
                     items={filteredImages}
                     layout={filters.layout}
                     onSelect={toggleSelect}
-                    onPreview={setPreviewUrl}
+                    onPreview={setPreviewId}
                     onDownload={handleSingleDownload}
                     portalNode={portalNode}
                   />
@@ -464,7 +507,7 @@ const App: React.FC = () => {
         </Box>
 
         <Modal
-          opened={!!previewUrl}
+          opened={!!previewId}
           onClose={handleClosePreview}
           withCloseButton={false}
           padding={0}
@@ -484,10 +527,18 @@ const App: React.FC = () => {
             },
           }}
         >
-          {previewUrl && (
+          {previewId && filteredImages[previewIndex] && (
             <ImagePreview
-              url={previewUrl}
+              item={filteredImages[previewIndex]}
               onClose={handleClosePreview}
+              onNext={
+                previewIndex < filteredImages.length - 1
+                  ? handleNextPreview
+                  : undefined
+              }
+              onPrev={previewIndex > 0 ? handlePrevPreview : undefined}
+              total={filteredImages.length}
+              currentIndex={previewIndex}
               portalNode={portalNode}
             />
           )}

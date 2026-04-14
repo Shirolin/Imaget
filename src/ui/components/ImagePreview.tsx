@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect, memo } from "react";
 import {
   Box,
   ActionIcon,
@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
   Image,
+  Badge,
 } from "@mantine/core";
 import {
   IconZoomIn,
@@ -15,20 +16,32 @@ import {
   IconArrowsMaximize,
   IconFocus2,
   IconX,
+  IconChevronLeft,
+  IconChevronRight,
 } from "@tabler/icons-react";
 import { t } from "../../core/utils/i18n";
+import type { ImageItem } from "../../types";
 
 interface ImagePreviewProps {
-  url: string;
+  item: ImageItem;
   onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+  currentIndex: number;
+  total: number;
   portalNode: HTMLDivElement | null;
 }
 
-export const ImagePreview: React.FC<ImagePreviewProps> = ({
-  url,
+const ImagePreviewBase: React.FC<ImagePreviewProps> = ({
+  item,
   onClose,
+  onNext,
+  onPrev,
+  currentIndex,
+  total,
   portalNode,
 }) => {
+  const url = item.url;
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -42,10 +55,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight" && onNext) onNext();
+      if (e.key === "ArrowLeft" && onPrev) onPrev();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [onClose, onNext, onPrev]);
 
   const handleZoom = useCallback((delta: number) => {
     setScale((prev) => Math.min(Math.max(prev + delta, 0.1), 10));
@@ -145,6 +160,68 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         }
       }}
     >
+      {/* Navigation - Prev */}
+      {onPrev && (
+        <Box
+          style={{
+            position: "absolute",
+            left: 20,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 100,
+          }}
+        >
+          <ActionIcon
+            variant="filled"
+            color="dark.6"
+            size={48}
+            radius={100}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPrev();
+            }}
+            style={{
+              backgroundColor: "rgba(30, 30, 30, 0.6)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid var(--mantine-color-dark-4)",
+            }}
+          >
+            <IconChevronLeft size={24} />
+          </ActionIcon>
+        </Box>
+      )}
+
+      {/* Navigation - Next */}
+      {onNext && (
+        <Box
+          style={{
+            position: "absolute",
+            right: 20,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 100,
+          }}
+        >
+          <ActionIcon
+            variant="filled"
+            color="dark.6"
+            size={48}
+            radius={100}
+            onClick={(e) => {
+              e.stopPropagation();
+              onNext();
+            }}
+            style={{
+              backgroundColor: "rgba(30, 30, 30, 0.6)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid var(--mantine-color-dark-4)",
+            }}
+          >
+            <IconChevronRight size={24} />
+          </ActionIcon>
+        </Box>
+      )}
+
       <Box
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -188,139 +265,144 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
           maxWidth: "calc(100% - 32px)",
         }}
       >
-        <Group
-          gap={4}
-          px={8}
-          py={6}
-          bg="dark.7"
-          justify="center"
-          wrap="wrap"
-          style={{
-            borderRadius: 24,
-            border: "1px solid var(--mantine-color-dark-4)",
-            boxShadow: "var(--mantine-shadow-lg)",
-          }}
-        >
-          <Group gap={2} wrap="nowrap">
-            <Tooltip
-              label={t("labelZoomOut")}
-              position="top"
-              openDelay={500}
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="subtle"
-                color="gray.2"
-                radius="xl"
-                size="md"
-                onClick={() => handleZoom(-0.2)}
-                aria-label={t("labelZoomOut")}
-              >
-                <IconZoomOut size={18} />
-              </ActionIcon>
-            </Tooltip>
-
-            <Text size="xs" fw={700} w={32} ta="center" c="gray.2">
-              {Math.round(scale * 100)}%
-            </Text>
-
-            <Tooltip
-              label={t("labelZoomIn")}
-              position="top"
-              openDelay={500}
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="subtle"
-                color="gray.2"
-                radius="xl"
-                size="md"
-                onClick={() => handleZoom(0.2)}
-                aria-label={t("labelZoomIn")}
-              >
-                <IconZoomIn size={18} />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-
-          <Box w={1} h={16} bg="dark.4" visibleFrom="xs" />
-
-          <Group gap={2} wrap="nowrap">
-            <Tooltip
-              label={t("labelRotate")}
-              position="top"
-              openDelay={500}
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="subtle"
-                color="gray.2"
-                radius="xl"
-                size="md"
-                onClick={handleRotate}
-                aria-label={t("labelRotate")}
-              >
-                <IconRotate size={18} />
-              </ActionIcon>
-            </Tooltip>
-
-            <Tooltip
-              label={t("labelFit")}
-              position="top"
-              openDelay={500}
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="subtle"
-                color="gray.2"
-                radius="xl"
-                size="md"
-                onClick={handleReset}
-                aria-label={t("labelFit")}
-              >
-                <IconArrowsMaximize size={18} />
-              </ActionIcon>
-            </Tooltip>
-
-            <Tooltip
-              label={t("labelOriginalSize")}
-              position="top"
-              openDelay={500}
-              portalProps={{ target: portalNode || undefined }}
-            >
-              <ActionIcon
-                variant="subtle"
-                color="gray.2"
-                radius="xl"
-                size="md"
-                onClick={handleOriginalSize}
-                aria-label={t("labelOriginalSize")}
-              >
-                <IconFocus2 size={18} />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-
-          <Box w={1} h={16} bg="dark.4" />
-
-          <Tooltip
-            label={t("labelCloseEsc")}
-            position="top"
-            openDelay={500}
-            portalProps={{ target: portalNode || undefined }}
+        <Stack gap="xs" align="center">
+          <Badge variant="filled" color="dark.6" size="sm">
+            {currentIndex + 1} / {total}
+          </Badge>
+          <Group
+            gap={4}
+            px={8}
+            py={6}
+            bg="dark.7"
+            justify="center"
+            wrap="wrap"
+            style={{
+              borderRadius: 24,
+              border: "1px solid var(--mantine-color-dark-4)",
+              boxShadow: "var(--mantine-shadow-lg)",
+            }}
           >
-            <ActionIcon
-              variant="subtle"
-              color="red.6"
-              radius="xl"
-              size="md"
-              onClick={onClose}
-              aria-label={t("labelCloseEsc")}
+            <Group gap={2} wrap="nowrap">
+              <Tooltip
+                label={t("labelZoomOut")}
+                position="top"
+                openDelay={500}
+                portalProps={{ target: portalNode || undefined }}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  color="gray.2"
+                  radius="xl"
+                  size="md"
+                  onClick={() => handleZoom(-0.2)}
+                  aria-label={t("labelZoomOut")}
+                >
+                  <IconZoomOut size={18} />
+                </ActionIcon>
+              </Tooltip>
+
+              <Text size="xs" fw={700} w={32} ta="center" c="gray.2">
+                {Math.round(scale * 100)}%
+              </Text>
+
+              <Tooltip
+                label={t("labelZoomIn")}
+                position="top"
+                openDelay={500}
+                portalProps={{ target: portalNode || undefined }}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  color="gray.2"
+                  radius="xl"
+                  size="md"
+                  onClick={() => handleZoom(0.2)}
+                  aria-label={t("labelZoomIn")}
+                >
+                  <IconZoomIn size={18} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+
+            <Box w={1} h={16} bg="dark.4" visibleFrom="xs" />
+
+            <Group gap={2} wrap="nowrap">
+              <Tooltip
+                label={t("labelRotate")}
+                position="top"
+                openDelay={500}
+                portalProps={{ target: portalNode || undefined }}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  color="gray.2"
+                  radius="xl"
+                  size="md"
+                  onClick={handleRotate}
+                  aria-label={t("labelRotate")}
+                >
+                  <IconRotate size={18} />
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip
+                label={t("labelFit")}
+                position="top"
+                openDelay={500}
+                portalProps={{ target: portalNode || undefined }}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  color="gray.2"
+                  radius="xl"
+                  size="md"
+                  onClick={handleReset}
+                  aria-label={t("labelFit")}
+                >
+                  <IconArrowsMaximize size={18} />
+                </ActionIcon>
+              </Tooltip>
+
+              <Tooltip
+                label={t("labelOriginalSize")}
+                position="top"
+                openDelay={500}
+                portalProps={{ target: portalNode || undefined }}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  color="gray.2"
+                  radius="xl"
+                  size="md"
+                  onClick={handleOriginalSize}
+                  aria-label={t("labelOriginalSize")}
+                >
+                  <IconFocus2 size={18} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+
+            <Box w={1} h={16} bg="dark.4" />
+
+            <Tooltip
+              label={t("labelCloseEsc")}
+              position="top"
+              openDelay={500}
+              portalProps={{ target: portalNode || undefined }}
             >
-              <IconX size={18} />
-            </ActionIcon>
-          </Tooltip>
-        </Group>
+              <ActionIcon
+                variant="subtle"
+                color="red.6"
+                radius="xl"
+                size="md"
+                onClick={onClose}
+                aria-label={t("labelCloseEsc")}
+              >
+                <IconX size={18} />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </Stack>
       </Box>
 
       <Stack
@@ -342,7 +424,13 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         <Text size="xs" c="dimmed">
           {t("hintClick")}
         </Text>
+        <Text size="xs" c="dimmed">
+          {t("hintArrows")}
+        </Text>
       </Stack>
     </Box>
   );
 };
+
+export const ImagePreview = memo(ImagePreviewBase);
+export default ImagePreview;
