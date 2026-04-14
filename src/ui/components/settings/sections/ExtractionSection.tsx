@@ -10,12 +10,7 @@ import {
   Box,
   NumberInput,
 } from "@mantine/core";
-import {
-  IconAppWindow,
-  IconBan,
-  IconPlus,
-  IconX,
-} from "@tabler/icons-react";
+import { IconAppWindow, IconBan, IconPlus, IconX } from "@tabler/icons-react";
 import { t } from "../../../../core/utils/i18n";
 import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";

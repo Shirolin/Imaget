@@ -111,7 +111,8 @@ export default {
   secDownloadControl: { message: "下载控制" },
   secFilterDefaults: { message: "默认过滤配置" },
   descFilterDefaults: {
-    message: "在此设置的默认值将在插件启动时自动应用，并在手动重置筛选器时恢复。修改后会立即同步到当前筛选状态。",
+    message:
+      "在此设置的默认值将在插件启动时自动应用，并在手动重置筛选器时恢复。修改后会立即同步到当前筛选状态。",
   },
   prefDefaultMinWidth: { message: "默认最小宽度" },
   prefDefaultMinHeight: { message: "默认最小高度" },

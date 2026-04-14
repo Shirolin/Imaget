@@ -39,7 +39,18 @@ const FilterBar: React.FC<FilterBarProps> = ({
   portalNode,
 }) => {
   const formats: ImageFormat[] = [
-    "PNG", "JPG", "WEBP", "SVG", "GIF", "AVIF", "BMP", "ICO", "TIFF", "HEIC", "HEIF", "DPG",
+    "PNG",
+    "JPG",
+    "WEBP",
+    "SVG",
+    "GIF",
+    "AVIF",
+    "BMP",
+    "ICO",
+    "TIFF",
+    "HEIC",
+    "HEIF",
+    "DPG",
   ];
 
   // 1. 本地搜索状态
@@ -63,8 +74,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
   }, [debouncedSearch, search, options.searchQuery, onChange]);
 
   React.useEffect(() => {
-    if (debouncedExclude === exclude && debouncedExclude !== options.excludeKeywords) {
-      onChange({ ...latestOptionsRef.current, excludeKeywords: debouncedExclude });
+    if (
+      debouncedExclude === exclude &&
+      debouncedExclude !== options.excludeKeywords
+    ) {
+      onChange({
+        ...latestOptionsRef.current,
+        excludeKeywords: debouncedExclude,
+      });
     }
   }, [debouncedExclude, exclude, options.excludeKeywords, onChange]);
 
@@ -92,7 +109,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <Autocomplete
           placeholder={t("filterSearch")}
           leftSection={<IconSearch size={14} />}
-          data={["avatar", "background", "banner", "icon", "logo", "wallpaper", "photo", "header", "footer", "thumbnail", "cover"]}
+          data={[
+            "avatar",
+            "background",
+            "banner",
+            "icon",
+            "logo",
+            "wallpaper",
+            "photo",
+            "header",
+            "footer",
+            "thumbnail",
+            "cover",
+          ]}
           value={search}
           onChange={setSearch}
           rightSectionPointerEvents="all"
@@ -114,8 +143,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
         />
         <Autocomplete
           placeholder={t("filterExclude")}
-          leftSection={<IconSearchOff size={14} style={{ color: "var(--mantine-color-dimmed)" }} />}
-          data={["ads", "pixel", "spacer", "tracking", "spinner", "loader", "dot", "line", "blank", "empty"]}
+          leftSection={
+            <IconSearchOff
+              size={14}
+              style={{ color: "var(--mantine-color-dimmed)" }}
+            />
+          }
+          data={[
+            "ads",
+            "pixel",
+            "spacer",
+            "tracking",
+            "spinner",
+            "loader",
+            "dot",
+            "line",
+            "blank",
+            "empty",
+          ]}
           value={exclude}
           onChange={setExclude}
           rightSectionPointerEvents="all"
@@ -135,14 +180,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
           miw={120}
           styles={{ input: { backgroundColor: "var(--mantine-color-dark-9)" } }}
         />
-        
+
         <PortalMultiSelect
           placeholder={t("filterType")}
           leftSection={<IconPhoto size={14} />}
           data={formats}
           value={options.allowedFormats}
           onChange={(val) =>
-            onChange({ ...latestOptionsRef.current, allowedFormats: val as ImageFormat[] })
+            onChange({
+              ...latestOptionsRef.current,
+              allowedFormats: val as ImageFormat[],
+            })
           }
           clearable
           portalNode={portalNode}
@@ -151,18 +199,26 @@ const FilterBar: React.FC<FilterBarProps> = ({
           miw={140}
           maxValues={2}
           styles={{
-            input: { backgroundColor: "var(--mantine-color-dark-9)", minHeight: "30px" },
-            pill: { height: "20px", fontSize: "10px" }
+            input: {
+              backgroundColor: "var(--mantine-color-dark-9)",
+              minHeight: "30px",
+            },
+            pill: { height: "20px", fontSize: "10px" },
           }}
         />
-        
+
         <PortalMultiSelect
           placeholder={t("filterExcludeType")}
-          leftSection={<IconPhotoOff size={14} color="var(--mantine-color-red-6)" />}
+          leftSection={
+            <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
+          }
           data={formats}
           value={options.excludeFormats}
           onChange={(val) =>
-            onChange({ ...latestOptionsRef.current, excludeFormats: val as ImageFormat[] })
+            onChange({
+              ...latestOptionsRef.current,
+              excludeFormats: val as ImageFormat[],
+            })
           }
           clearable
           portalNode={portalNode}
@@ -171,8 +227,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
           miw={120}
           maxValues={2}
           styles={{
-            input: { backgroundColor: "var(--mantine-color-dark-9)", minHeight: "30px" },
-            pill: { height: "20px", fontSize: "10px" }
+            input: {
+              backgroundColor: "var(--mantine-color-dark-9)",
+              minHeight: "30px",
+            },
+            pill: { height: "20px", fontSize: "10px" },
           }}
         />
       </Group>
@@ -185,14 +244,25 @@ const FilterBar: React.FC<FilterBarProps> = ({
               aria-label={t("labelMinWidth")}
               value={options.minWidth}
               placeholder="W"
-              onChange={(val) => onChange({ ...latestOptionsRef.current, minWidth: Number(val) })}
+              onChange={(val) =>
+                onChange({ ...latestOptionsRef.current, minWidth: Number(val) })
+              }
               size="xs"
               w={60}
               variant="filled"
-              styles={{ input: { textAlign: "center", backgroundColor: "var(--mantine-color-dark-9)" } }}
+              styles={{
+                input: {
+                  textAlign: "center",
+                  backgroundColor: "var(--mantine-color-dark-9)",
+                },
+              }}
             />
             <Tooltip
-              label={options.resolutionMode === "or" ? t("resModeOrDesc") : t("resModeAndDesc")}
+              label={
+                options.resolutionMode === "or"
+                  ? t("resModeOrDesc")
+                  : t("resModeAndDesc")
+              }
               portalProps={{ target: portalNode || undefined }}
               withArrow
               withinPortal
@@ -201,7 +271,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 onClick={() =>
                   onChange({
                     ...latestOptionsRef.current,
-                    resolutionMode: options.resolutionMode === "or" ? "and" : "or",
+                    resolutionMode:
+                      options.resolutionMode === "or" ? "and" : "or",
                   })
                 }
                 px={4}
@@ -214,8 +285,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
                   border: "1px solid var(--mantine-color-dark-4)",
                 }}
               >
-                <Text size="10px" fw={700} c={options.resolutionMode === "or" ? "blue.4" : "teal.4"}>
-                  {options.resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")}
+                <Text
+                  size="10px"
+                  fw={700}
+                  c={options.resolutionMode === "or" ? "blue.4" : "teal.4"}
+                >
+                  {options.resolutionMode === "or"
+                    ? t("resModeOr")
+                    : t("resModeAnd")}
                 </Text>
               </UnstyledButton>
             </Tooltip>
@@ -223,11 +300,21 @@ const FilterBar: React.FC<FilterBarProps> = ({
               placeholder="H"
               aria-label={t("labelMinHeight")}
               value={options.minHeight}
-              onChange={(val) => onChange({ ...latestOptionsRef.current, minHeight: Number(val) })}
+              onChange={(val) =>
+                onChange({
+                  ...latestOptionsRef.current,
+                  minHeight: Number(val),
+                })
+              }
               size="xs"
               w={60}
               variant="filled"
-              styles={{ input: { textAlign: "center", backgroundColor: "var(--mantine-color-dark-9)" } }}
+              styles={{
+                input: {
+                  textAlign: "center",
+                  backgroundColor: "var(--mantine-color-dark-9)",
+                },
+              }}
             />
           </Group>
 
@@ -243,12 +330,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
             ]}
             value={options.aspectRatio}
             onChange={(val) =>
-              onChange({ ...latestOptionsRef.current, aspectRatio: (val as AspectRatioType) || "all" })
+              onChange({
+                ...latestOptionsRef.current,
+                aspectRatio: (val as AspectRatioType) || "all",
+              })
             }
             portalNode={portalNode}
             size="xs"
             w={90}
-            styles={{ input: { backgroundColor: "var(--mantine-color-dark-9)" } }}
+            styles={{
+              input: { backgroundColor: "var(--mantine-color-dark-9)" },
+            }}
           />
         </Group>
 
@@ -262,20 +354,35 @@ const FilterBar: React.FC<FilterBarProps> = ({
             ]}
             value={options.sortBy}
             onChange={(val) =>
-              onChange({ ...latestOptionsRef.current, sortBy: (val as "order" | "size" | "resolution") || "order" })
+              onChange({
+                ...latestOptionsRef.current,
+                sortBy: (val as "order" | "size" | "resolution") || "order",
+              })
             }
             portalNode={portalNode}
             size="xs"
             w={100}
-            styles={{ input: { backgroundColor: "var(--mantine-color-dark-9)" } }}
+            styles={{
+              input: { backgroundColor: "var(--mantine-color-dark-9)" },
+            }}
           />
 
-          <Group gap={0} wrap="nowrap" style={{ border: "1px solid var(--mantine-color-dark-4)", borderRadius: "6px", overflow: "hidden" }}>
+          <Group
+            gap={0}
+            wrap="nowrap"
+            style={{
+              border: "1px solid var(--mantine-color-dark-4)",
+              borderRadius: "6px",
+              overflow: "hidden",
+            }}
+          >
             <ActionIcon
               variant={options.layout === "grid" ? "filled" : "subtle"}
               color={options.layout === "grid" ? "blue" : "gray"}
               size="sm"
-              onClick={() => onChange({ ...latestOptionsRef.current, layout: "grid" })}
+              onClick={() =>
+                onChange({ ...latestOptionsRef.current, layout: "grid" })
+              }
               radius={0}
               h={30}
               w={30}
@@ -286,11 +393,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
               variant={options.layout === "columns" ? "filled" : "subtle"}
               color={options.layout === "columns" ? "blue" : "gray"}
               size="sm"
-              onClick={() => onChange({ ...latestOptionsRef.current, layout: "columns" })}
+              onClick={() =>
+                onChange({ ...latestOptionsRef.current, layout: "columns" })
+              }
               radius={0}
               h={30}
               w={30}
-              style={{ borderLeft: "1px solid var(--mantine-color-dark-4)", borderRight: "1px solid var(--mantine-color-dark-4)" }}
+              style={{
+                borderLeft: "1px solid var(--mantine-color-dark-4)",
+                borderRight: "1px solid var(--mantine-color-dark-4)",
+              }}
             >
               <IconLayoutColumns size={14} />
             </ActionIcon>
@@ -298,7 +410,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
               variant={options.layout === "list" ? "filled" : "subtle"}
               color={options.layout === "list" ? "blue" : "gray"}
               size="sm"
-              onClick={() => onChange({ ...latestOptionsRef.current, layout: "list" })}
+              onClick={() =>
+                onChange({ ...latestOptionsRef.current, layout: "list" })
+              }
               radius={0}
               h={30}
               w={30}

@@ -172,7 +172,9 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
       >
         <Radio.Group
           value={settings.gifStrategy}
-          onChange={(val) => onUpdateGifStrategy(val as Settings["gifStrategy"])}
+          onChange={(val) =>
+            onUpdateGifStrategy(val as Settings["gifStrategy"])
+          }
         >
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
             {(["keep", "firstFrame", "skip"] as const).map((strategy) => (
@@ -206,8 +208,7 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
                   }
                   styles={{
                     label: {
-                      fontWeight:
-                        settings.gifStrategy === strategy ? 600 : 400,
+                      fontWeight: settings.gifStrategy === strategy ? 600 : 400,
                       cursor: "pointer",
                     },
                     radio: { cursor: "pointer" },

@@ -115,7 +115,8 @@ export default {
   secDownloadControl: { message: "다운로드 제어" },
   secFilterDefaults: { message: "기본 필터 설정" },
   descFilterDefaults: {
-    message: "확장 프로그램이 시작되거나 필터가 초기화될 때 우선적으로 사용되는 기본값입니다.",
+    message:
+      "확장 프로그램이 시작되거나 필터가 초기화될 때 우선적으로 사용되는 기본값입니다.",
   },
   prefDefaultMinWidth: { message: "기본 최소 너비" },
   prefDefaultMinHeight: { message: "기본 최소 높이" },

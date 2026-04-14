@@ -10,11 +10,7 @@ import {
   Transition,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
-import {
-  IconSettings,
-  IconRestore,
-  IconCheck,
-} from "@tabler/icons-react";
+import { IconSettings, IconRestore, IconCheck } from "@tabler/icons-react";
 import type { Settings } from "../../types";
 import { GeneralSection } from "./settings/sections/GeneralSection";
 import { FileSavingSection } from "./settings/sections/FileSavingSection";

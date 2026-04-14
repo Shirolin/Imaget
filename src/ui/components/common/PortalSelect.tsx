@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Select,
-  MultiSelect,
-} from "@mantine/core";
-import type {
-  SelectProps,
-  MultiSelectProps,
-} from "@mantine/core";
+import { Select, MultiSelect } from "@mantine/core";
+import type { SelectProps, MultiSelectProps } from "@mantine/core";
 
 interface PortalSelectProps extends SelectProps {
   portalNode: HTMLDivElement | null;
