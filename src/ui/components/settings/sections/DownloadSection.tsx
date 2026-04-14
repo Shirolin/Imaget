@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   Stack,
   Group,
@@ -30,13 +30,13 @@ interface DownloadSectionProps {
   portalNode: HTMLDivElement | null;
 }
 
-export const DownloadSection: React.FC<DownloadSectionProps> = ({
+export const DownloadSection = memo(({
   settings,
   onUpdateDownloadLogic,
   onUpdateDownloadControl,
   onUpdateGifStrategy,
   portalNode,
-}) => {
+}: DownloadSectionProps) => {
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -232,4 +232,4 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
       </SettingCard>
     </Stack>
   );
-};
+});

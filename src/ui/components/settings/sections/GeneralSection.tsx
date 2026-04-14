@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Stack, Group, Text, Divider, SimpleGrid } from "@mantine/core";
 import { IconLanguage } from "@tabler/icons-react";
 import { t } from "../../../../core/utils/i18n";
@@ -12,11 +12,11 @@ interface GeneralSectionProps {
   portalNode: HTMLDivElement | null;
 }
 
-export const GeneralSection: React.FC<GeneralSectionProps> = ({
+export const GeneralSection = memo(({
   settings,
   onUpdate,
   portalNode,
-}) => {
+}: GeneralSectionProps) => {
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -66,4 +66,4 @@ export const GeneralSection: React.FC<GeneralSectionProps> = ({
       </SimpleGrid>
     </Stack>
   );
-};
+});

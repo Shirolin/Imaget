@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Stack, Group, Text, Divider, SimpleGrid, Button } from "@mantine/core";
 import {
   IconHeart,
@@ -16,10 +16,10 @@ interface SupportSectionProps {
   onUpdateDebug: (updates: Partial<NonNullable<Settings["debug"]>>) => void;
 }
 
-export const SupportSection: React.FC<SupportSectionProps> = ({
+export const SupportSection = memo(({
   settings,
   onUpdateDebug,
-}) => {
+}: SupportSectionProps) => {
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -97,4 +97,4 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
       </SimpleGrid>
     </Stack>
   );
-};
+});

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   Stack,
   Group,
@@ -20,11 +20,11 @@ interface FilterDefaultsSectionProps {
   portalNode: HTMLDivElement | null;
 }
 
-export const FilterDefaultsSection: React.FC<FilterDefaultsSectionProps> = ({
+export const FilterDefaultsSection = memo(({
   settings,
   onUpdate,
   portalNode,
-}) => {
+}: FilterDefaultsSectionProps) => {
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -195,4 +195,4 @@ export const FilterDefaultsSection: React.FC<FilterDefaultsSectionProps> = ({
       </SimpleGrid>
     </Stack>
   );
-};
+});

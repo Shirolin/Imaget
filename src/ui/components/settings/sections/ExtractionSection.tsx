@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, memo } from "react";
 import {
   Stack,
   Group,
@@ -9,6 +9,7 @@ import {
   ActionIcon,
   Box,
   NumberInput,
+  Badge,
 } from "@mantine/core";
 import { IconAppWindow, IconBan, IconPlus, IconX } from "@tabler/icons-react";
 import { t } from "../../../../core/utils/i18n";
@@ -23,11 +24,11 @@ interface ExtractionSectionProps {
   portalNode: HTMLDivElement | null;
 }
 
-export const ExtractionSection: React.FC<ExtractionSectionProps> = ({
+export const ExtractionSection = memo(({
   settings,
   onUpdate,
   portalNode,
-}) => {
+}: ExtractionSectionProps) => {
   const [newDomain, setNewDomain] = useState("");
 
   const handleAddDomain = useCallback(() => {
@@ -209,6 +210,18 @@ export const ExtractionSection: React.FC<ExtractionSectionProps> = ({
                   color="dark.4"
                   size="sm"
                   pr={0}
+                  styles={{
+                    root: {
+                      maxWidth: "200px",
+                      textTransform: "none",
+                    },
+                    label: {
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    },
+                  }}
+                  title={domain}
                   rightSection={
                     <ActionIcon
                       size={16}
@@ -237,4 +250,4 @@ export const ExtractionSection: React.FC<ExtractionSectionProps> = ({
       </SimpleGrid>
     </Stack>
   );
-};
+});

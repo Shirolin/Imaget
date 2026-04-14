@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   Stack,
   Group,
@@ -23,11 +23,11 @@ interface FileSavingSectionProps {
   portalNode: HTMLDivElement | null;
 }
 
-export const FileSavingSection: React.FC<FileSavingSectionProps> = ({
+export const FileSavingSection = memo(({
   settings,
   onUpdate,
   portalNode,
-}) => {
+}: FileSavingSectionProps) => {
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -55,8 +55,12 @@ export const FileSavingSection: React.FC<FileSavingSectionProps> = ({
           />
           <TextInput
             label={t("prefFilename")}
+            description={t("prefFilenameHint", ["{origin}, {page_title}..."])}
             value={settings.filenameTemplate}
-            styles={{ input: { cursor: "text" } }}
+            styles={{
+              input: { cursor: "text" },
+              description: { marginBottom: "4px" },
+            }}
             onChange={(e) =>
               onUpdate({
                 filenameTemplate: e.currentTarget.value,
@@ -140,4 +144,4 @@ export const FileSavingSection: React.FC<FileSavingSectionProps> = ({
       </SimpleGrid>
     </Stack>
   );
-};
+});
