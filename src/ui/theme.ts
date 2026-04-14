@@ -38,5 +38,30 @@ export const theme = createTheme({
         backgroundOpacity: 0.65,
       },
     },
+    TextInput: {
+      defaultProps: {
+        variant: "filled",
+      },
+    },
+    Autocomplete: {
+      defaultProps: {
+        variant: "filled",
+      },
+    },
+    Select: {
+      defaultProps: {
+        variant: "filled",
+      },
+    },
+    MultiSelect: {
+      defaultProps: {
+        variant: "filled",
+      },
+    },
+    NumberInput: {
+      defaultProps: {
+        variant: "filled",
+      },
+    },
   },
 });
