@@ -120,8 +120,7 @@ export default {
   secDownloadControl: { message: "Download Control" },
   secFilterDefaults: { message: "Filter Defaults" },
   descFilterDefaults: {
-    message:
-      "The default values that will be used when the extension starts or when filters are reset.",
+    message: "These values are automatically applied on startup and restored when filters are reset. Changes take effect immediately.",
   },
   prefDefaultMinWidth: { message: "Default Min Width" },
   prefDefaultMinHeight: { message: "Default Min Height" },

@@ -213,6 +213,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             <Group gap="xs" wrap="nowrap">
               <IconSettings
                 size={22}
+                aria-hidden="true"
                 style={{
                   color: "var(--mantine-color-blue-filled)",
                   flexShrink: 0,
@@ -232,7 +233,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     variant="light"
                     color="green"
                     size="xs"
-                    leftSection={<IconCheck size={10} />}
+                    aria-live="polite"
+                    leftSection={<IconCheck size={10} aria-hidden="true" />}
                     style={{ ...styles, flexShrink: 0 }}
                   >
                     {t("statusSaved") || "已保存"}
@@ -618,15 +620,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
           {/* --- Section: Filter Defaults --- */}
           <Stack gap="md">
-            <Group gap="xs">
-              <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-                {t("secFilterDefaults") || "Filter Defaults"}
+            <Stack gap="xs">
+              <Group gap="xs">
+                <Text fw={700} size="sm" c="dimmed" tt="uppercase">
+                  {t("secFilterDefaults") || "Filter Defaults"}
+                </Text>
+                <Divider style={{ flex: 1 }} opacity={0.5} />
+              </Group>
+              <Text size="xs" c="dimmed">
+                {t("descFilterDefaults")}
               </Text>
-              <Divider style={{ flex: 1 }} opacity={0.5} />
-            </Group>
-            <Text size="xs" c="dimmed" mt={-10}>
-              {t("descFilterDefaults")}
-            </Text>
+            </Stack>
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
               <SettingCard
                 icon={<IconFilter />}

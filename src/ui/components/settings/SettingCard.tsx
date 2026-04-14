@@ -9,13 +9,12 @@ interface SettingCardProps {
 }
 
 const cardStyle = {
-  transition: "all 0.25s cubic-bezier(0.25, 1, 0.5, 1)", // ease-out-quart
+  transition: "all 0.2s ease",
   backgroundColor: "var(--mantine-color-dark-7)",
   "&:hover": {
     backgroundColor: "var(--mantine-color-dark-6)",
-    borderColor: "var(--mantine-color-dark-4)",
-    boxShadow: "var(--mantine-shadow-md)",
-    transform: "translateY(-1px)",
+    borderColor: "var(--mantine-color-blue-filled)",
+    boxShadow: "var(--mantine-shadow-sm)",
   },
 };
 
@@ -30,10 +29,15 @@ export const SettingCard: React.FC<SettingCardProps> = ({
       <Group mb="xs" gap="xs">
         {React.isValidElement(icon)
           ? React.cloneElement(
-              icon as React.ReactElement<{ size?: number; color?: string }>,
+              icon as React.ReactElement<{
+                size?: number;
+                color?: string;
+                "aria-hidden"?: string;
+              }>,
               {
                 size: 18,
                 color: iconColor || "inherit",
+                "aria-hidden": "true",
               },
             )
           : icon}
