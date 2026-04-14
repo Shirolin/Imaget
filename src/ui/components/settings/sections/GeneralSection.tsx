@@ -36,6 +36,7 @@ export const GeneralSection = memo(({
         >
           <PortalSelect
             label={t("prefLanguage")}
+            aria-label={t("prefLanguage")}
             placeholder={t("selectPlaceholder")}
             value={settings.language}
             portalNode={portalNode}

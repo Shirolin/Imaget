@@ -93,8 +93,14 @@ export const DownloadSection = memo(({
             <Slider
               value={settings.downloadLogic.quality}
               onChange={(val) => onUpdateDownloadLogic({ quality: val })}
-              label={null}
-              mb="sm"
+              label={(value) => `${value}%`}
+              marks={[
+                { value: 20, label: "20%" },
+                { value: 50, label: "50%" },
+                { value: 80, label: "80%" },
+                { value: 100, label: "100%" },
+              ]}
+              mb={35}
               aria-label={t("labelImageQuality")}
               styles={{
                 thumb: {
@@ -102,6 +108,7 @@ export const DownloadSection = memo(({
                   "&:active": { cursor: "grabbing" },
                 },
                 track: { cursor: "pointer" },
+                markLabel: { fontSize: "10px", marginTop: "4px" },
               }}
             />
           </Box>

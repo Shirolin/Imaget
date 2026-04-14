@@ -21,13 +21,14 @@ interface FileSavingSectionProps {
   settings: Settings["fileSaving"];
   onUpdate: (updates: Partial<Settings["fileSaving"]>) => void;
   portalNode: HTMLDivElement | null;
-}
-
 export const FileSavingSection = memo(({
   settings,
   onUpdate,
   portalNode,
 }: FileSavingSectionProps) => {
+  // 过滤 OS 不允许的非法文件名字符: \ / : * ? " < > |
+  const sanitizeFileName = (val: string) => val.replace(/[\\/:*?"<>|]/g, "");
+
   return (
     <Stack gap="md">
       <Stack gap="xs">
@@ -49,8 +50,13 @@ export const FileSavingSection = memo(({
             label={t("prefSubfolder")}
             description={t("prefSubfolderHint")}
             value={settings.subfolder}
-            styles={{ input: { cursor: "text" } }}
-            onChange={(e) => onUpdate({ subfolder: e.currentTarget.value })}
+            styles={{
+              input: { cursor: "text" },
+              description: { marginBottom: "4px" },
+            }}
+            onChange={(e) =>
+              onUpdate({ subfolder: sanitizeFileName(e.currentTarget.value) })
+            }
             placeholder={t("prefSubfolderPlaceholder")}
           />
           <TextInput
@@ -63,7 +69,7 @@ export const FileSavingSection = memo(({
             }}
             onChange={(e) =>
               onUpdate({
-                filenameTemplate: e.currentTarget.value,
+                filenameTemplate: sanitizeFileName(e.currentTarget.value),
               })
             }
             rightSection={
