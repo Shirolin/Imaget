@@ -9,6 +9,7 @@ import {
   Badge,
   Transition,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { t } from "../../core/utils/i18n";
 import { IconSettings, IconRestore, IconCheck } from "@tabler/icons-react";
 import type { Settings } from "../../types";
@@ -142,6 +143,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
     };
   }, [settings]);
 
+  const handleResetClick = () => {
+    modals.openConfirmModal({
+      title: t("warning"),
+      children: <Text size="sm">{t("warnResetAll")}</Text>,
+      labels: { confirm: t("confirm"), cancel: t("cancel") },
+      onConfirm: onReset,
+      centered: true,
+      portalProps: { target: portalNode || undefined },
+    });
+  };
+
   return (
     <ScrollArea
       h="100%"
@@ -212,7 +224,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             variant="subtle"
             color="red"
             leftSection={<IconRestore size={16} />}
-            onClick={onReset}
+            onClick={handleResetClick}
             size="xs"
           >
             {t("resetAllSettings")}

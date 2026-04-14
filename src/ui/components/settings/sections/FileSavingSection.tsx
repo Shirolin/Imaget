@@ -128,7 +128,19 @@ export const FileSavingSection = memo(({
                   variant="light"
                   color="blue"
                   size="sm"
-                  style={{ cursor: "pointer", textTransform: "none" }}
+                  styles={{
+                    root: {
+                      cursor: "pointer",
+                      textTransform: "none",
+                      transition: "transform 0.1s ease, background-color 0.2s ease",
+                      "&:hover": {
+                        backgroundColor: "var(--mantine-color-blue-light-hover)",
+                      },
+                      "&:active": {
+                        transform: "scale(0.92)",
+                      },
+                    },
+                  }}
                   onClick={() =>
                     onUpdate({
                       filenameTemplate: settings.filenameTemplate + variable,

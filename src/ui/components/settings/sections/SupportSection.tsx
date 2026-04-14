@@ -42,6 +42,7 @@ export const SupportSection = memo(({
               component="a"
               href="https://github.com/Shirolin/Imaget"
               target="_blank"
+              rel="noopener noreferrer"
               variant="light"
               color="gray"
               leftSection={<IconBrandGithub size={16} />}
@@ -55,6 +56,7 @@ export const SupportSection = memo(({
                 component="a"
                 href="https://ifdian.net/a/shirolin"
                 target="_blank"
+                rel="noopener noreferrer"
                 variant="light"
                 color="gray"
                 leftSection={<IconCoffee size={16} />}
@@ -66,6 +68,7 @@ export const SupportSection = memo(({
                 component="a"
                 href="https://ko-fi.com/shirolin"
                 target="_blank"
+                rel="noopener noreferrer"
                 variant="light"
                 color="gray"
                 leftSection={<IconHeart size={16} />}
