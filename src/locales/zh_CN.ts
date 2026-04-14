@@ -25,6 +25,7 @@ export default {
   filterSearch: { message: "搜索内容或链接" },
   filterExclude: { message: "排除词 (空格分隔)" },
   filterType: { message: "图片类型" },
+  filterExcludeType: { message: "排除格式" },
   filterLayout: { message: "宽高比" },
   layoutAny: { message: "全部" },
   layoutSquare: { message: "正方形" },

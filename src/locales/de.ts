@@ -30,6 +30,7 @@ export default {
   filterSearch: { message: "Suche" },
   filterExclude: { message: "Ausschluss-Keywords" },
   filterType: { message: "Bildtyp" },
+  filterExcludeType: { message: "Formate ausschließen" },
   filterLayout: { message: "Seitenverhältnis" },
   layoutAny: { message: "Alle" },
   layoutSquare: { message: "Quadratisch" },

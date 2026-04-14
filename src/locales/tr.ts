@@ -30,6 +30,7 @@ export default {
   filterSearch: { message: "Ara" },
   filterExclude: { message: "Hariç Tutulacak Kelimeler" },
   filterType: { message: "Resim Türü" },
+  filterExcludeType: { message: "Formatları hariç tut" },
   filterLayout: { message: "En Boy Oranı" },
   layoutAny: { message: "Tümü" },
   layoutSquare: { message: "Kare" },

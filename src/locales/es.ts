@@ -32,6 +32,7 @@ export default {
   filterSearch: { message: "Buscar" },
   filterExclude: { message: "Excluir Palabras" },
   filterType: { message: "Tipo de Imagen" },
+  filterExcludeType: { message: "Excluir formatos" },
   filterLayout: { message: "Relación de Aspecto" },
   layoutAny: { message: "Todo" },
   layoutSquare: { message: "Cuadrado" },

@@ -33,6 +33,7 @@ export interface FilterOptions {
   excludeKeywords: string;
   searchQuery: string;
   allowedFormats: ImageFormat[];
+  excludeFormats: ImageFormat[];
   aspectRatio: AspectRatioType;
   sortBy: "order" | "size" | "resolution";
   sortDirection: "asc" | "desc";

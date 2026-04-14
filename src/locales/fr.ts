@@ -30,6 +30,7 @@ export default {
   filterSearch: { message: "Rechercher" },
   filterExclude: { message: "Exclure Mots-clés" },
   filterType: { message: "Type d'Image" },
+  filterExcludeType: { message: "Exclure formats" },
   filterLayout: { message: "Ratio d'Aspect" },
   layoutAny: { message: "Tout" },
   layoutSquare: { message: "Carré" },

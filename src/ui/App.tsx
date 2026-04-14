@@ -33,6 +33,7 @@ const defaultFilters: FilterOptions = {
   excludeKeywords: "",
   searchQuery: "",
   allowedFormats: [],
+  excludeFormats: [],
   aspectRatio: "all",
   sortBy: "order",
   sortDirection: "desc",

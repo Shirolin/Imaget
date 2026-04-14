@@ -25,6 +25,12 @@ export function filterImages(
       )
         return false;
 
+      if (
+        options.excludeFormats.length > 0 &&
+        options.excludeFormats.includes(img.format)
+      )
+        return false;
+
       // 关键词过滤 (URL 或 文件名)
       const urlLower = img.url.toLowerCase();
 

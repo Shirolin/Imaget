@@ -29,6 +29,7 @@ export default {
   filterSearch: { message: "Search" },
   filterExclude: { message: "Exclude Keywords" },
   filterType: { message: "Image Type" },
+  filterExcludeType: { message: "Exclude Type" },
   filterLayout: { message: "Aspect Ratio" },
   layoutAny: { message: "All" },
   layoutSquare: { message: "Square" },

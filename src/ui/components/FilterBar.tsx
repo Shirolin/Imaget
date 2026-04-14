@@ -20,6 +20,8 @@ import {
   IconLayoutGrid,
   IconLayoutColumns,
   IconLayoutList,
+  IconPhoto,
+  IconPhotoOff,
 } from "@tabler/icons-react";
 import { FilterOptions, ImageFormat, AspectRatioType } from "../../types";
 import { PortalSelect, PortalMultiSelect } from "./common/PortalSelect";
@@ -120,7 +122,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           }
           aria-label={t("labelSearchImages")}
           size="xs"
-          flex={1.2}
+          flex={1.5}
           miw={{ base: "100%", xs: 150 }}
         />
         <TextInput
@@ -147,16 +149,34 @@ const FilterBar: React.FC<FilterBarProps> = ({
           aria-label={t("filterExclude")}
           size="xs"
           flex={1}
-          miw={{ base: "100%", xs: 150 }}
+          miw={{ base: "100%", xs: 120 }}
         />
         <PortalMultiSelect
           placeholder={t("filterType")}
+          leftSection={<IconPhoto size={14} />}
           data={formats}
           value={options.allowedFormats}
           onChange={(val) =>
             onChange({
               ...latestOptionsRef.current,
               allowedFormats: val as ImageFormat[],
+            })
+          }
+          clearable
+          portalNode={portalNode}
+          size="xs"
+          flex={1}
+          miw={{ base: "100%", xs: 100 }}
+        />
+        <PortalMultiSelect
+          placeholder={t("filterExcludeType")}
+          leftSection={<IconPhotoOff size={14} c="red" />}
+          data={formats}
+          value={options.excludeFormats}
+          onChange={(val) =>
+            onChange({
+              ...latestOptionsRef.current,
+              excludeFormats: val as ImageFormat[],
             })
           }
           clearable

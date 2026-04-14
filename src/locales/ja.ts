@@ -30,6 +30,7 @@ export default {
   filterSearch: { message: "検索" },
   filterExclude: { message: "除外キーワード" },
   filterType: { message: "画像形式" },
+  filterExcludeType: { message: "除外する形式" },
   filterLayout: { message: "アスペクト比" },
   layoutAny: { message: "すべて" },
   layoutSquare: { message: "正方形" },
