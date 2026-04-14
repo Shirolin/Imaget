@@ -3,7 +3,7 @@
  * Prevents loss of state on Service Worker restart and solves race conditions with ID callbacks.
  */
 import { t } from "../core/utils/i18n";
-import { Settings } from "../types";
+import type { Settings } from "../types";
 
 interface PendingDownloadConfig {
   filename: string;

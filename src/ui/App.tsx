@@ -25,7 +25,7 @@ import { filterImages } from "../core/filter";
 import { ImageProcessor } from "../core/processor";
 import { WebAdapter } from "../core/adapters/web";
 import { ExtensionAdapter } from "../core/adapters/extension";
-import { ImageItem, FilterOptions } from "../types";
+import type { ImageItem, FilterOptions } from "../types";
 
 const defaultFilters: FilterOptions = {
   minWidth: 200,

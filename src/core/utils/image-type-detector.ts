@@ -1,4 +1,4 @@
-import { ImageFormat } from "../../types";
+import type { ImageFormat } from "../../types";
 
 /**
  * ImageTypeDetector: 提供多维度的图片格式检测能力

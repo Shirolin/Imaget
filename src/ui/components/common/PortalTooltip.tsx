@@ -1,5 +1,6 @@
 import React from "react";
-import { Tooltip, TooltipProps } from "@mantine/core";
+import { Tooltip } from "@mantine/core";
+import type { TooltipProps } from "@mantine/core";
 
 interface PortalTooltipProps extends TooltipProps {
   portalNode: HTMLDivElement | null;

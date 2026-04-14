@@ -1,5 +1,5 @@
-import { IPlatformAdapter } from "./interface";
-import { Settings, defaultSettings } from "../../types";
+import type { IPlatformAdapter } from "./interface";
+import { type Settings, defaultSettings } from "../../types";
 
 export class WebAdapter implements IPlatformAdapter {
   env = "web" as const;

@@ -2,6 +2,8 @@ import React from "react";
 import {
   Select,
   MultiSelect,
+} from "@mantine/core";
+import type {
   SelectProps,
   MultiSelectProps,
 } from "@mantine/core";

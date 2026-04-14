@@ -1,4 +1,4 @@
-import { IUrlResolver } from "./interface";
+import type { IUrlResolver } from "./interface";
 
 export class PixivResolver implements IUrlResolver {
   readonly name = "Pixiv";

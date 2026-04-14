@@ -1,4 +1,4 @@
-import { Settings } from "../../types";
+import type { Settings } from "../../types";
 
 /**
  * 平台适配器接口

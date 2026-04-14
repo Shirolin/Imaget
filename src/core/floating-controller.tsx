@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
-import { Sniffer } from "./sniffer";
-import { ImageProcessor } from "./processor";
+import type { Sniffer } from "./sniffer";
+import type { ImageProcessor } from "./processor";
 import { FloatingButton } from "../ui/components/FloatingButton";
-import { Settings, defaultSettings, ImageItem } from "../types";
+import { type Settings, defaultSettings, type ImageItem } from "../types";
 import { UrlResolver } from "./utils/url-resolver";
 import mantineStyles from "@mantine/core/styles.css?inline";
 
@@ -40,10 +40,10 @@ export class FloatingController {
   private lastTarget: HTMLElement | null = null;
   private lastUrl: string = "";
 
-  constructor(
-    private sniffer: Sniffer,
-    private processor: ImageProcessor,
-  ) {
+  private processor: ImageProcessor;
+
+  constructor(_sniffer: Sniffer, processor: ImageProcessor) {
+    this.processor = processor;
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.loadSettings();

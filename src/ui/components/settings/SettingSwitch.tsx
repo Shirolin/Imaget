@@ -1,5 +1,6 @@
 import React from "react";
-import { Switch, SwitchProps, Stack, Text } from "@mantine/core";
+import { Switch, Stack, Text } from "@mantine/core";
+import type { SwitchProps } from "@mantine/core";
 
 type SettingSwitchProps = SwitchProps;
 

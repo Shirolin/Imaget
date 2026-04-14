@@ -1,5 +1,6 @@
 import React from "react";
-import { ActionIcon, ActionIconProps, TooltipProps } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
+import type { ActionIconProps, TooltipProps } from "@mantine/core";
 import { PortalTooltip } from "./PortalTooltip";
 
 interface GlassActionIconProps extends ActionIconProps {

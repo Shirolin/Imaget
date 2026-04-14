@@ -19,7 +19,7 @@ import {
   IconEye,
   IconCheck,
 } from "@tabler/icons-react";
-import { ImageItem } from "../../types";
+import type { ImageItem } from "../../types";
 import { PortalTooltip } from "./common/PortalTooltip";
 import { GlassActionIcon } from "./common/GlassActionIcon";
 

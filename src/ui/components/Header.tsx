@@ -156,15 +156,15 @@ const Header: React.FC<HeaderProps> = ({
         ]}
         radius="xl"
         size="xs"
-        bg="dark.6"
         styles={{
           root: {
+            backgroundColor: "var(--mantine-color-dark-9)",
             border: "1px solid var(--mantine-color-dark-4)",
             padding: 2,
           },
           indicator: {
             backgroundColor: "var(--mantine-color-dark-4)",
-            boxShadow: "var(--mantine-shadow-sm)",
+            boxShadow: "var(--mantine-shadow-md)",
           },
           control: {
             border: "none",
@@ -172,6 +172,9 @@ const Header: React.FC<HeaderProps> = ({
           label: {
             paddingTop: 4,
             paddingBottom: 4,
+            "&[data-active]": {
+              color: "var(--mantine-color-white)",
+            },
           },
         }}
       />

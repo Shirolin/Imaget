@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Settings, defaultSettings } from "../../types";
+import { type Settings, defaultSettings } from "../../types";
 export function useSettings() {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [loading, setLoading] = useState(true);

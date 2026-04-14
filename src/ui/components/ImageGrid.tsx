@@ -1,6 +1,6 @@
 import React from "react";
 import { SimpleGrid, ScrollArea, Stack } from "@mantine/core";
-import { ImageItem } from "../../types";
+import type { ImageItem } from "../../types";
 import { ImageCard } from "./ImageCard";
 
 interface ImageGridProps {

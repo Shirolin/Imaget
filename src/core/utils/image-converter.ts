@@ -1,4 +1,4 @@
-import { ImageItem, Settings } from "../../types";
+import type { ImageItem, Settings } from "../../types";
 
 /**
  * ImageConverter: Handles image format conversion using Canvas API

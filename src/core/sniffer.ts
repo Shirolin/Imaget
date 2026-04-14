@@ -1,4 +1,4 @@
-import { ImageItem, ImageFormat } from "../types";
+import { type ImageItem, type ImageFormat } from "../types";
 import { UrlResolver } from "./utils/url-resolver";
 import { ImageTypeDetector } from "./utils/image-type-detector";
 

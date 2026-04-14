@@ -9,8 +9,8 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { IconFilter, IconFileCode } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
-import { Settings, AspectRatioType, ImageFormat } from "../../../types";
+import { t } from "../../../../core/utils/i18n";
+import type { Settings, AspectRatioType, ImageFormat } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { PortalSelect, PortalMultiSelect } from "../../common/PortalSelect";
 

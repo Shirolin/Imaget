@@ -1,4 +1,4 @@
-import { ImageItem, FilterOptions } from "../types";
+import type { ImageItem, FilterOptions } from "../types";
 
 export function filterImages(
   images: ImageItem[],

@@ -14,8 +14,8 @@ import {
   IconAdjustmentsHorizontal,
   IconFileCode,
 } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
-import { Settings } from "../../../types";
+import { t } from "../../../../core/utils/i18n";
+import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { SettingSwitch } from "../SettingSwitch";
 import { PortalSelect } from "../../common/PortalSelect";

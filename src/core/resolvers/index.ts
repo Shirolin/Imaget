@@ -1,4 +1,4 @@
-import { IUrlResolver } from "./interface";
+import type { IUrlResolver } from "./interface";
 import { TwitterResolver } from "./twitter";
 import { RedditResolver } from "./reddit";
 import { TelegramResolver } from "./telegram";

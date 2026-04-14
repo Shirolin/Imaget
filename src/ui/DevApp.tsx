@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MantineProvider, ActionIcon, Box } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 

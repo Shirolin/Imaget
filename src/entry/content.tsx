@@ -4,7 +4,7 @@ import { MantineProvider } from "@mantine/core";
 import mantineStyles from "@mantine/core/styles.css?inline";
 import App from "../ui/App";
 import { FloatingController } from "../core/floating-controller";
-import { ImageFormat } from "../types";
+import type { ImageFormat } from "../types";
 import { Sniffer } from "../core/sniffer";
 import { ImageProcessor } from "../core/processor";
 import { ExtensionAdapter } from "../core/adapters/extension";
@@ -99,7 +99,7 @@ function init() {
 }
 
 // 监听消息触发
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.action === "toggle-sniffer") {
     init();
     sendResponse({ success: true });

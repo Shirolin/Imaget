@@ -1,4 +1,4 @@
-import { IUrlResolver } from "./interface";
+import type { IUrlResolver } from "./interface";
 
 export class WeiboResolver implements IUrlResolver {
   readonly name = "Weibo";

@@ -13,8 +13,8 @@ import {
   Badge,
 } from "@mantine/core";
 import { IconFolder, IconVariable } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
-import { Settings } from "../../../types";
+import { t } from "../../../../core/utils/i18n";
+import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 
 interface FileSavingSectionProps {

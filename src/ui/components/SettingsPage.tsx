@@ -15,7 +15,7 @@ import {
   IconRestore,
   IconCheck,
 } from "@tabler/icons-react";
-import { Settings } from "../../types";
+import type { Settings } from "../../types";
 import { GeneralSection } from "./settings/sections/GeneralSection";
 import { FileSavingSection } from "./settings/sections/FileSavingSection";
 import { ExtractionSection } from "./settings/sections/ExtractionSection";

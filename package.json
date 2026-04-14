@@ -25,7 +25,7 @@
     "@mantine/core": "^8.3.17",
     "@mantine/hooks": "^8.3.17",
     "@tabler/icons-react": "^3.40.0",
-    "@types/chrome": "^0.1.37",
+    "@types/chrome": "^0.1.40",
     "@types/jszip": "^3.4.0",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",

@@ -1,4 +1,4 @@
-import { ImageItem, Settings } from "../../types";
+import type { ImageItem, Settings } from "../../types";
 
 /**
  * 文件名生成器：100% 对齐旧项目逻辑

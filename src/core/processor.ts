@@ -1,6 +1,6 @@
 import JSZip from "jszip";
-import { ImageItem, Settings } from "../types";
-import { IPlatformAdapter } from "./adapters/interface";
+import { type ImageItem, type Settings } from "../types";
+import type { IPlatformAdapter } from "./adapters/interface";
 import { generateFilename } from "./utils/filename-generator";
 import { convertImage } from "./utils/image-converter";
 
@@ -9,7 +9,11 @@ import { convertImage } from "./utils/image-converter";
  * 处理并发、重试、文件名生成及下载分发
  */
 export class ImageProcessor {
-  constructor(private adapter: IPlatformAdapter) {}
+  private adapter: IPlatformAdapter;
+
+  constructor(adapter: IPlatformAdapter) {
+    this.adapter = adapter;
+  }
 
   /**
    * 批量下载图片 (100% 对齐旧项目并发队列与异常捕获)
