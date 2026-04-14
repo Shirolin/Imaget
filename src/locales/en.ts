@@ -28,7 +28,7 @@ export default {
   filterMinHeight: { message: "Min Height" },
   filterSearch: { message: "Search" },
   filterExclude: { message: "Exclude Keywords" },
-  filterType: { message: "Image Type" },
+  filterType: { message: "Type" },
   filterExcludeType: { message: "Exclude Type" },
   filterLayout: { message: "Aspect Ratio" },
   layoutAny: { message: "All" },

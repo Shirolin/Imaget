@@ -9,6 +9,7 @@ import {
   Tooltip,
   Badge,
   UnstyledButton,
+  Autocomplete,
 } from "@mantine/core";
 import { t } from "../../core/utils/i18n";
 import { useDebouncedValue } from "@mantine/hooks";
@@ -104,11 +105,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
       style={{ borderBottom: "1px solid var(--mantine-color-dark-4)" }}
     >
       <Group gap="xs" wrap="wrap">
-        <TextInput
+        <Autocomplete
           placeholder={t("filterSearch")}
           leftSection={<IconSearch size={14} />}
+          data={[
+            "avatar",
+            "background",
+            "banner",
+            "icon",
+            "logo",
+            "wallpaper",
+            "photo",
+            "header",
+            "footer",
+            "thumbnail",
+            "cover",
+          ]}
           value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
+          onChange={setSearch}
           rightSectionPointerEvents="all"
           rightSection={
             <CloseButton
@@ -125,7 +139,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           flex={1.5}
           miw={{ base: "100%", xs: 150 }}
         />
-        <TextInput
+        <Autocomplete
           placeholder={t("filterExclude")}
           leftSection={
             <IconSearchOff
@@ -133,8 +147,20 @@ const FilterBar: React.FC<FilterBarProps> = ({
               style={{ color: "var(--mantine-color-dimmed)" }}
             />
           }
+          data={[
+            "ads",
+            "pixel",
+            "spacer",
+            "tracking",
+            "spinner",
+            "loader",
+            "dot",
+            "line",
+            "blank",
+            "empty",
+          ]}
           value={exclude}
-          onChange={(e) => setExclude(e.currentTarget.value)}
+          onChange={setExclude}
           rightSectionPointerEvents="all"
           rightSection={
             <CloseButton
