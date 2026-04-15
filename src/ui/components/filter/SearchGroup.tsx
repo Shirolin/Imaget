@@ -1,5 +1,5 @@
 import React from "react";
-import { Autocomplete, CloseButton, Group } from "@mantine/core";
+import { Autocomplete, CloseButton, Group, Box } from "@mantine/core";
 import { IconSearch, IconSearchOff } from "@tabler/icons-react";
 import { t } from "../../../core/utils/i18n";
 
@@ -21,7 +21,14 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   onClearExclude,
 }) => {
   return (
-    <Group gap="xs" wrap="wrap">
+    <Group
+      gap={4}
+      p={4}
+      bg="dark.9"
+      style={{ borderRadius: "var(--mantine-radius-md)" }}
+      wrap="nowrap"
+      miw={{ base: "100%", sm: 300 }}
+    >
       <Autocomplete
         placeholder={t("filterSearch")}
         leftSection={
@@ -52,12 +59,22 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        w={{ base: "100%", xs: 160 }}
+        variant="filled"
+        flex={1}
+        styles={{
+          input: {
+            height: "30px",
+            minHeight: "30px",
+            backgroundColor: "transparent",
+            border: 0,
+          },
+        }}
       />
+      <Box w={1} h={20} bg="dark.4" opacity={0.3} />
       <Autocomplete
         placeholder={t("filterExclude")}
         leftSection={
-          <IconSearchOff size={14} color="var(--mantine-color-red-6)" />
+          <IconSearchOff size={14} color="var(--mantine-color-dimmed)" />
         }
         data={[
           "ads",
@@ -83,7 +100,16 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        w={{ base: "100%", xs: 120 }}
+        variant="filled"
+        flex={1}
+        styles={{
+          input: {
+            height: "30px",
+            minHeight: "30px",
+            backgroundColor: "transparent",
+            border: 0,
+          },
+        }}
       />
     </Group>
   );

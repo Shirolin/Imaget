@@ -47,93 +47,91 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   portalNode,
 }) => {
   return (
-    <>
+    <Group
+      gap={4}
+      p={4}
+      bg="dark.9"
+      style={{ borderRadius: "var(--mantine-radius-md)" }}
+      wrap="nowrap"
+    >
       {/* Format MultiSelects */}
-      <Group gap="xs" wrap="wrap">
-        <PortalMultiSelect
-          placeholder={t("filterType")}
-          leftSection={
-            <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
-          }
-          data={formats}
-          value={allowedFormats}
-          onChange={(val) =>
-            onChange({
-              allowedFormats: val as ImageFormat[],
-            })
-          }
-          clearable
-          portalNode={portalNode}
-          size="xs"
-          w={{ base: "100%", xs: 140 }}
-          maxValues={2}
-          styles={{
-            input: {
-              height: "30px",
-              minHeight: "30px",
-              maxHeight: "30px",
-              overflow: "hidden",
-              flexWrap: "nowrap",
-            },
-            pill: { height: "20px", fontSize: "10px" },
-          }}
-        />
+      <PortalMultiSelect
+        placeholder={t("filterType")}
+        leftSection={
+          <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
+        }
+        data={formats}
+        value={allowedFormats}
+        onChange={(val) =>
+          onChange({
+            allowedFormats: val as ImageFormat[],
+          })
+        }
+        clearable
+        portalNode={portalNode}
+        size="xs"
+        variant="filled"
+        w={{ base: "100%", xs: 120 }}
+        maxValues={1}
+        styles={{
+          input: {
+            height: "30px",
+            minHeight: "30px",
+            backgroundColor: "transparent",
+            border: 0,
+            paddingRight: "20px",
+          },
+          pill: { height: "20px", fontSize: "10px" },
+        }}
+      />
 
-        <PortalMultiSelect
-          placeholder={t("filterExcludeType")}
-          leftSection={
-            <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
-          }
-          data={formats}
-          value={excludeFormats}
-          onChange={(val) =>
-            onChange({
-              excludeFormats: val as ImageFormat[],
-            })
-          }
-          clearable
-          portalNode={portalNode}
-          size="xs"
-          w={{ base: "100%", xs: 140 }}
-          maxValues={2}
-          styles={{
-            input: {
-              height: "30px",
-              minHeight: "30px",
-              maxHeight: "30px",
-              overflow: "hidden",
-              flexWrap: "nowrap",
-            },
-            pill: { height: "20px", fontSize: "10px" },
-          }}
-        />
-      </Group>
+      <PortalMultiSelect
+        placeholder={t("filterExcludeType")}
+        leftSection={
+          <IconPhotoOff size={14} color="var(--mantine-color-dimmed)" />
+        }
+        data={formats}
+        value={excludeFormats}
+        onChange={(val) =>
+          onChange({
+            excludeFormats: val as ImageFormat[],
+          })
+        }
+        clearable
+        portalNode={portalNode}
+        size="xs"
+        variant="filled"
+        w={{ base: "100%", xs: 120 }}
+        maxValues={1}
+        styles={{
+          input: {
+            height: "30px",
+            minHeight: "30px",
+            backgroundColor: "transparent",
+            border: 0,
+            paddingRight: "20px",
+          },
+          pill: { height: "20px", fontSize: "10px" },
+        }}
+      />
 
-      <Box w={1} h={20} bg="dark.4" opacity={0.5} mx={2} visibleFrom="xs" />
+      <Box w={1} h={20} bg="dark.4" opacity={0.3} mx={2} visibleFrom="xs" />
 
       {/* Resolution Inputs */}
-      <Group
-        gap={0}
-        wrap="nowrap"
-        style={{
-          border: "1px solid var(--mantine-color-dark-4)",
-          borderRadius: "var(--mantine-radius-sm)",
-          overflow: "hidden",
-        }}
-      >
+      <Group gap={0} wrap="nowrap">
         <NumberInput
           aria-label={t("labelMinWidth")}
           value={minWidth}
           placeholder="W"
           onChange={(val) => onChange({ minWidth: Number(val) })}
           size="xs"
-          w={55}
+          w={45}
           variant="unstyled"
           styles={{
             input: {
               textAlign: "center",
               height: "30px",
-              backgroundColor: "var(--mantine-color-dark-6)",
+              backgroundColor: "transparent",
               fontSize: "11px",
               fontWeight: 500,
             },
@@ -154,20 +152,19 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                 resolutionMode: resolutionMode === "or" ? "and" : "or",
               })
             }
-            px={8}
-            h={30}
+            px={4}
+            h={22}
             bg={resolutionMode === "or" ? "blue.9" : "teal.9"}
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              borderLeft: "1px solid var(--mantine-color-dark-4)",
-              borderRight: "1px solid var(--mantine-color-dark-4)",
+              borderRadius: "4px",
               transition: "background-color 0.2s ease",
             }}
           >
             <Text
-              size="10px"
+              size="9px"
               fw={800}
               c="white"
               style={{ letterSpacing: "0.5px" }}
@@ -189,20 +186,20 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
             })
           }
           size="xs"
-          w={55}
+          w={45}
           variant="unstyled"
           styles={{
             input: {
               textAlign: "center",
               height: "30px",
-              backgroundColor: "var(--mantine-color-dark-6)",
+              backgroundColor: "transparent",
               fontSize: "11px",
               fontWeight: 500,
             },
           }}
         />
       </Group>
-    </>
+    </Group>
   );
 };
 

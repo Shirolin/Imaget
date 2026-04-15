@@ -64,7 +64,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <Group
-      p="md"
+      p="sm"
       gap="md"
       bg="dark.8"
       align="center"
@@ -75,31 +75,30 @@ const FilterBar: React.FC<FilterBarProps> = ({
         zIndex: 10,
       }}
     >
-      <Group gap="xs" wrap="wrap" align="center">
-        <SearchGroup
-          searchQuery={search}
-          onSearchChange={setSearch}
-          excludeKeywords={exclude}
-          onExcludeKeywordsChange={setExclude}
-          onClearSearch={() => {
-            setSearch("");
-            handleUpdate({ searchQuery: "" });
-          }}
-          onClearExclude={() => {
-            setExclude("");
-            handleUpdate({ excludeKeywords: "" });
-          }}
-        />
-        <FilterGroup
-          allowedFormats={options.allowedFormats}
-          excludeFormats={options.excludeFormats}
-          minWidth={options.minWidth}
-          minHeight={options.minHeight}
-          resolutionMode={options.resolutionMode}
-          onChange={handleUpdate}
-          portalNode={portalNode}
-        />
-      </Group>
+      <SearchGroup
+        searchQuery={search}
+        onSearchChange={setSearch}
+        excludeKeywords={exclude}
+        onExcludeKeywordsChange={setExclude}
+        onClearSearch={() => {
+          setSearch("");
+          handleUpdate({ searchQuery: "" });
+        }}
+        onClearExclude={() => {
+          setExclude("");
+          handleUpdate({ excludeKeywords: "" });
+        }}
+      />
+
+      <FilterGroup
+        allowedFormats={options.allowedFormats}
+        excludeFormats={options.excludeFormats}
+        minWidth={options.minWidth}
+        minHeight={options.minHeight}
+        resolutionMode={options.resolutionMode}
+        onChange={handleUpdate}
+        portalNode={portalNode}
+      />
 
       <SortLayoutGroup
         aspectRatio={options.aspectRatio}
