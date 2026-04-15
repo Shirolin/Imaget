@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, ActionIcon, Box } from "@mantine/core";
+import { Group, ActionIcon } from "@mantine/core";
 import {
   IconSortAscending,
   IconSortDescending,
@@ -29,7 +29,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
   portalNode,
 }) => {
   return (
-    <Group gap={0} wrap="nowrap">
+    <Group gap="xs" wrap="nowrap">
       <PortalSelect
         placeholder={t("filterLayout")}
         data={[
@@ -46,16 +46,8 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
         }
         portalNode={portalNode}
         size="xs"
-        variant="unstyled"
-        w={90}
-        styles={{
-          input: {
-            height: "30px",
-            minHeight: "30px",
-            fontSize: "12px",
-            textAlign: "center",
-          },
-        }}
+        variant="filled"
+        w={100}
       />
 
       <PortalSelect
@@ -73,64 +65,36 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
         }
         portalNode={portalNode}
         size="xs"
-        variant="unstyled"
+        variant="filled"
         w={100}
-        styles={{
-          input: {
-            height: "30px",
-            minHeight: "30px",
-            fontSize: "12px",
-            textAlign: "center",
-          },
-        }}
       />
 
-      <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={12} />
-
-      <Group gap={2} wrap="nowrap">
+      <Group gap={4} wrap="nowrap">
         <ActionIcon
-          variant={layout === "grid" ? "light" : "subtle"}
-          color={layout === "grid" ? "blue" : "gray"}
+          variant={layout === "grid" ? "filled" : "light"}
           size="sm"
           onClick={() => onChange({ layout: "grid" })}
-          h={28}
-          w={28}
-          radius="sm"
         >
           <IconLayoutGrid size={14} />
         </ActionIcon>
         <ActionIcon
-          variant={layout === "columns" ? "light" : "subtle"}
-          color={layout === "columns" ? "blue" : "gray"}
+          variant={layout === "columns" ? "filled" : "light"}
           size="sm"
           onClick={() => onChange({ layout: "columns" })}
-          h={28}
-          w={28}
-          radius="sm"
         >
           <IconLayoutColumns size={14} />
         </ActionIcon>
         <ActionIcon
-          variant={layout === "list" ? "light" : "subtle"}
-          color={layout === "list" ? "blue" : "gray"}
+          variant={layout === "list" ? "filled" : "light"}
           size="sm"
           onClick={() => onChange({ layout: "list" })}
-          h={28}
-          w={28}
-          radius="sm"
         >
           <IconLayoutList size={14} />
         </ActionIcon>
 
-        <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={8} />
-
         <ActionIcon
-          variant="subtle"
-          color="gray"
+          variant="light"
           size="sm"
-          h={28}
-          w={28}
-          radius="sm"
           onClick={() =>
             onChange({
               sortDirection: sortDirection === "asc" ? "desc" : "asc",

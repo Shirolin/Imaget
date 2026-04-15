@@ -1,5 +1,5 @@
 import React from "react";
-import { Autocomplete, CloseButton, Group, Box } from "@mantine/core";
+import { Autocomplete, CloseButton, Group } from "@mantine/core";
 import { IconSearch, IconSearchOff } from "@tabler/icons-react";
 import { t } from "../../../core/utils/i18n";
 
@@ -21,7 +21,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   onClearExclude,
 }) => {
   return (
-    <Group gap={0} wrap="nowrap">
+    <Group grow gap="xs">
       <Autocomplete
         placeholder={t("filterSearch")}
         leftSection={
@@ -52,18 +52,8 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        variant="unstyled"
-        w={180}
-        styles={{
-          input: {
-            height: "30px",
-            minHeight: "30px",
-            fontSize: "12px",
-            paddingLeft: "30px",
-          },
-        }}
+        variant="filled"
       />
-      <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={8} />
       <Autocomplete
         placeholder={t("filterExclude")}
         leftSection={
@@ -93,16 +83,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        variant="unstyled"
-        w={140}
-        styles={{
-          input: {
-            height: "30px",
-            minHeight: "30px",
-            fontSize: "12px",
-            paddingLeft: "30px",
-          },
-        }}
+        variant="filled"
       />
     </Group>
   );
