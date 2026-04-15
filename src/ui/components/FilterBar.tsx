@@ -1,5 +1,5 @@
 import React from "react";
-import { Group } from "@mantine/core";
+import { Group, Box } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import type { FilterOptions } from "../../types";
 import SearchGroup from "./filter/SearchGroup";
@@ -63,52 +63,65 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   return (
-    <Group
-      p="sm"
-      gap="md"
-      bg="dark.8"
-      align="flex-end"
-      justify="flex-start"
-      wrap="wrap"
-      style={{
-        borderBottom: "1px solid var(--mantine-color-dark-4)",
-        zIndex: 10,
-      }}
-    >
-      <SearchGroup
-        searchQuery={search}
-        onSearchChange={setSearch}
-        excludeKeywords={exclude}
-        onExcludeKeywordsChange={setExclude}
-        onClearSearch={() => {
-          setSearch("");
-          handleUpdate({ searchQuery: "" });
+    <Box p="sm" style={{ zIndex: 10 }}>
+      <Group
+        px="md"
+        py={4}
+        gap={0}
+        bg="dark.9"
+        align="center"
+        justify="flex-start"
+        wrap="nowrap"
+        style={{
+          borderRadius: "var(--mantine-radius-xl)",
+          border: "1px solid var(--mantine-color-dark-4)",
+          boxShadow: "var(--mantine-shadow-lg)",
+          minHeight: "40px",
+          width: "fit-content",
+          maxWidth: "100%",
+          overflowX: "auto",
+          scrollbarWidth: "none",
         }}
-        onClearExclude={() => {
-          setExclude("");
-          handleUpdate({ excludeKeywords: "" });
-        }}
-      />
+      >
+        <SearchGroup
+          searchQuery={search}
+          onSearchChange={setSearch}
+          excludeKeywords={exclude}
+          onExcludeKeywordsChange={setExclude}
+          onClearSearch={() => {
+            setSearch("");
+            handleUpdate({ searchQuery: "" });
+          }}
+          onClearExclude={() => {
+            setExclude("");
+            handleUpdate({ excludeKeywords: "" });
+          }}
+        />
 
-      <FilterGroup
-        allowedFormats={options.allowedFormats}
-        excludeFormats={options.excludeFormats}
-        minWidth={options.minWidth}
-        minHeight={options.minHeight}
-        resolutionMode={options.resolutionMode}
-        onChange={handleUpdate}
-        portalNode={portalNode}
-      />
+        <Box w={1} h={20} bg="dark.4" opacity={0.3} mx="md" visibleFrom="md" />
 
-      <SortLayoutGroup
-        aspectRatio={options.aspectRatio}
-        sortBy={options.sortBy}
-        sortDirection={options.sortDirection}
-        layout={options.layout}
-        onChange={handleUpdate}
-        portalNode={portalNode}
-      />
-    </Group>
+        <FilterGroup
+          allowedFormats={options.allowedFormats}
+          excludeFormats={options.excludeFormats}
+          minWidth={options.minWidth}
+          minHeight={options.minHeight}
+          resolutionMode={options.resolutionMode}
+          onChange={handleUpdate}
+          portalNode={portalNode}
+        />
+
+        <Box w={1} h={20} bg="dark.4" opacity={0.3} mx="md" visibleFrom="md" />
+
+        <SortLayoutGroup
+          aspectRatio={options.aspectRatio}
+          sortBy={options.sortBy}
+          sortDirection={options.sortDirection}
+          layout={options.layout}
+          onChange={handleUpdate}
+          portalNode={portalNode}
+        />
+      </Group>
+    </Box>
   );
 };
 

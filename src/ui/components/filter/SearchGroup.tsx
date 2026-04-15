@@ -21,14 +21,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   onClearExclude,
 }) => {
   return (
-    <Group
-      gap={4}
-      p={6}
-      bg="dark.9"
-      style={{ borderRadius: "var(--mantine-radius-md)" }}
-      wrap="nowrap"
-      miw={{ base: "100%", sm: 400 }}
-    >
+    <Group gap={0} wrap="nowrap">
       <Autocomplete
         placeholder={t("filterSearch")}
         leftSection={
@@ -59,19 +52,18 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        variant="filled"
-        flex={1}
+        variant="unstyled"
+        w={180}
         styles={{
           input: {
             height: "30px",
             minHeight: "30px",
-            backgroundColor: "transparent",
-            border: 0,
             fontSize: "12px",
+            paddingLeft: "30px",
           },
         }}
       />
-      <Box w={1} h={20} bg="dark.4" opacity={0.3} />
+      <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={8} />
       <Autocomplete
         placeholder={t("filterExclude")}
         leftSection={
@@ -101,15 +93,14 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
           />
         }
         size="xs"
-        variant="filled"
-        flex={1}
+        variant="unstyled"
+        w={140}
         styles={{
           input: {
             height: "30px",
             minHeight: "30px",
-            backgroundColor: "transparent",
-            border: 0,
             fontSize: "12px",
+            paddingLeft: "30px",
           },
         }}
       />

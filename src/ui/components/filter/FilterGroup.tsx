@@ -56,22 +56,17 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
     values: ImageFormat[],
     { value }: FormatPillProps,
   ) => {
+    // Only show the first item as a summary if multiple items are selected
     if (values[0] !== value) return null;
     return (
       <Text size="xs" fw={500} c="blue.4" style={{ whiteSpace: "nowrap" }}>
-        {values.length > 1 ? `${label}: ${values.length}` : value}
+        {values.length > 2 ? `${label}: ${values.length}` : values.join(", ")}
       </Text>
     );
   };
 
   return (
-    <Group
-      gap={4}
-      p={6}
-      bg="dark.9"
-      style={{ borderRadius: "var(--mantine-radius-md)" }}
-      wrap="nowrap"
-    >
+    <Group gap={0} wrap="nowrap">
       {/* Format MultiSelects */}
       <PortalMultiSelect
         placeholder={t("filterType")}
@@ -88,9 +83,9 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         clearable
         portalNode={portalNode}
         size="xs"
-        variant="filled"
-        w={{ base: "100%", xs: 130 }}
-        miw={100}
+        variant="unstyled"
+        miw={120}
+        maw={200}
         renderPill={(props: FormatPillProps) =>
           renderFormatPill(t("filterType"), allowedFormats, props)
         }
@@ -98,12 +93,15 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           input: {
             height: "30px",
             minHeight: "30px",
-            backgroundColor: "transparent",
-            border: 0,
             paddingRight: "24px",
+            paddingLeft: "30px",
+            display: "flex",
+            alignItems: "center",
           },
         }}
       />
+
+      <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={8} />
 
       <PortalMultiSelect
         placeholder={t("filterExcludeType")}
@@ -120,9 +118,9 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         clearable
         portalNode={portalNode}
         size="xs"
-        variant="filled"
-        w={{ base: "100%", xs: 130 }}
-        miw={100}
+        variant="unstyled"
+        miw={120}
+        maw={200}
         renderPill={(props: FormatPillProps) =>
           renderFormatPill(t("filterExcludeType"), excludeFormats, props)
         }
@@ -130,14 +128,15 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           input: {
             height: "30px",
             minHeight: "30px",
-            backgroundColor: "transparent",
-            border: 0,
             paddingRight: "24px",
+            paddingLeft: "30px",
+            display: "flex",
+            alignItems: "center",
           },
         }}
       />
 
-      <Box w={1} h={20} bg="dark.4" opacity={0.3} mx={2} visibleFrom="xs" />
+      <Box w={1} h={16} bg="dark.4" opacity={0.3} mx={12} />
 
       {/* Resolution Inputs */}
       <Group gap={0} wrap="nowrap">
@@ -153,7 +152,6 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
             input: {
               textAlign: "center",
               height: "30px",
-              backgroundColor: "transparent",
               fontSize: "12px",
               fontWeight: 500,
             },
@@ -175,21 +173,22 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
               })
             }
             px={4}
-            h={22}
-            bg={resolutionMode === "or" ? "blue.9" : "teal.9"}
+            h={16}
+            bg="dark.6"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               borderRadius: "4px",
-              transition: "background-color 0.2s ease",
+              border: "1px solid var(--mantine-color-dark-4)",
+              transition: "all 0.2s ease",
             }}
           >
             <Text
               size="9px"
               fw={800}
-              c="white"
-              style={{ letterSpacing: "0.5px" }}
+              c={resolutionMode === "or" ? "blue.4" : "teal.4"}
+              style={{ lineHeight: 1 }}
             >
               {resolutionMode === "or"
                 ? t("resModeOr").toUpperCase()
@@ -214,12 +213,14 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
             input: {
               textAlign: "center",
               height: "30px",
-              backgroundColor: "transparent",
               fontSize: "12px",
               fontWeight: 500,
             },
           }}
         />
+        <Text size="xs" c="dimmed" fw={500} ml={2}>
+          px
+        </Text>
       </Group>
     </Group>
   );
