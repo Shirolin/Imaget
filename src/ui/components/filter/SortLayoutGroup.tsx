@@ -29,7 +29,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
   portalNode,
 }) => {
   return (
-    <Group gap="xs" flex={1} justify="flex-end" wrap="wrap">
+    <Group gap="xs" justify="flex-end" wrap="wrap">
       <PortalSelect
         placeholder={t("filterLayout")}
         data={[

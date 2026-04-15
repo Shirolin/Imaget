@@ -49,7 +49,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   return (
     <>
       {/* Format MultiSelects */}
-      <Group gap="xs" grow flex={1} wrap="wrap">
+      <Group gap="xs" wrap="wrap">
         <PortalMultiSelect
           placeholder={t("filterType")}
           leftSection={
@@ -65,11 +65,15 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           clearable
           portalNode={portalNode}
           size="xs"
-          miw={{ base: "100%", xs: 140 }}
+          w={{ base: "100%", xs: 140 }}
           maxValues={2}
           styles={{
             input: {
+              height: "30px",
               minHeight: "30px",
+              maxHeight: "30px",
+              overflow: "hidden",
+              flexWrap: "nowrap",
             },
             pill: { height: "20px", fontSize: "10px" },
           }}
@@ -90,11 +94,15 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           clearable
           portalNode={portalNode}
           size="xs"
-          miw={{ base: "100%", xs: 140 }}
+          w={{ base: "100%", xs: 140 }}
           maxValues={2}
           styles={{
             input: {
+              height: "30px",
               minHeight: "30px",
+              maxHeight: "30px",
+              overflow: "hidden",
+              flexWrap: "nowrap",
             },
             pill: { height: "20px", fontSize: "10px" },
           }}

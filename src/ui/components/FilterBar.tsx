@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Group } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import type { FilterOptions } from "../../types";
 import SearchGroup from "./filter/SearchGroup";
@@ -63,16 +63,18 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   return (
-    <Stack
+    <Group
       p="md"
       gap="md"
       bg="dark.8"
+      align="center"
+      justify="space-between"
+      wrap="wrap"
       style={{
         borderBottom: "1px solid var(--mantine-color-dark-4)",
         zIndex: 10,
       }}
     >
-      {/* Search and Filters */}
       <Group gap="xs" wrap="wrap" align="center">
         <SearchGroup
           searchQuery={search}
@@ -99,7 +101,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
         />
       </Group>
 
-      {/* Layout and Sort */}
       <SortLayoutGroup
         aspectRatio={options.aspectRatio}
         sortBy={options.sortBy}
@@ -108,7 +109,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         onChange={handleUpdate}
         portalNode={portalNode}
       />
-    </Stack>
+    </Group>
   );
 };
 
