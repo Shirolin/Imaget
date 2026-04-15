@@ -23,11 +23,11 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   return (
     <Group
       gap={4}
-      p={4}
+      p={6}
       bg="dark.9"
       style={{ borderRadius: "var(--mantine-radius-md)" }}
       wrap="nowrap"
-      miw={{ base: "100%", sm: 300 }}
+      miw={{ base: "100%", sm: 400 }}
     >
       <Autocomplete
         placeholder={t("filterSearch")}
@@ -67,6 +67,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
+            fontSize: "12px",
           },
         }}
       />
@@ -108,6 +109,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
+            fontSize: "12px",
           },
         }}
       />

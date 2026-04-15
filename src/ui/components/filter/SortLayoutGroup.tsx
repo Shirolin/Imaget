@@ -31,7 +31,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
   return (
     <Group
       gap={4}
-      p={4}
+      p={6}
       bg="dark.9"
       style={{ borderRadius: "var(--mantine-radius-md)" }}
       wrap="nowrap"
@@ -60,6 +60,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
+            fontSize: "12px",
           },
         }}
       />
@@ -87,6 +88,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
+            fontSize: "12px",
           },
         }}
       />

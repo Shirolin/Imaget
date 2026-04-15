@@ -10,17 +10,18 @@ export const PortalSelect: React.FC<PortalSelectProps> = ({
   portalNode,
   ...props
 }) => {
+  const { comboboxProps, ...rest } = props;
   return (
     <Select
-      {...props}
+      {...rest}
       comboboxProps={{
         portalProps: { target: portalNode || undefined },
         styles: {
           dropdown: { pointerEvents: "auto" as const },
           option: { cursor: "pointer" },
-          ...props.comboboxProps?.styles,
+          ...comboboxProps?.styles,
         },
-        ...props.comboboxProps,
+        ...comboboxProps,
       }}
     />
   );
@@ -28,23 +29,25 @@ export const PortalSelect: React.FC<PortalSelectProps> = ({
 
 interface PortalMultiSelectProps extends MultiSelectProps {
   portalNode: HTMLDivElement | null;
+  [key: string]: unknown;
 }
 
 export const PortalMultiSelect: React.FC<PortalMultiSelectProps> = ({
   portalNode,
   ...props
 }) => {
+  const { comboboxProps, ...rest } = props;
   return (
     <MultiSelect
-      {...props}
+      {...rest}
       comboboxProps={{
         portalProps: { target: portalNode || undefined },
         styles: {
           dropdown: { pointerEvents: "auto" as const },
           option: { cursor: "pointer" },
-          ...props.comboboxProps?.styles,
+          ...comboboxProps?.styles,
         },
-        ...props.comboboxProps,
+        ...comboboxProps,
       }}
     />
   );

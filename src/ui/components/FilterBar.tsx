@@ -67,8 +67,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
       p="sm"
       gap="md"
       bg="dark.8"
-      align="center"
-      justify="space-between"
+      align="flex-end"
+      justify="flex-start"
       wrap="wrap"
       style={{
         borderBottom: "1px solid var(--mantine-color-dark-4)",

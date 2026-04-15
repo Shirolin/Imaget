@@ -22,6 +22,11 @@ interface FilterGroupProps {
   portalNode: HTMLDivElement | null;
 }
 
+interface FormatPillProps {
+  value: string;
+  onRemove: () => void;
+}
+
 const formats: ImageFormat[] = [
   "PNG",
   "JPG",
@@ -46,10 +51,23 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   onChange,
   portalNode,
 }) => {
+  const renderFormatPill = (
+    label: string,
+    values: ImageFormat[],
+    { value }: FormatPillProps,
+  ) => {
+    if (values[0] !== value) return null;
+    return (
+      <Text size="xs" fw={500} c="blue.4" style={{ whiteSpace: "nowrap" }}>
+        {values.length > 1 ? `${label}: ${values.length}` : value}
+      </Text>
+    );
+  };
+
   return (
     <Group
       gap={4}
-      p={4}
+      p={6}
       bg="dark.9"
       style={{ borderRadius: "var(--mantine-radius-md)" }}
       wrap="nowrap"
@@ -71,17 +89,19 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={{ base: "100%", xs: 120 }}
-        maxValues={1}
+        w={{ base: "100%", xs: 130 }}
+        miw={100}
+        renderPill={(props: FormatPillProps) =>
+          renderFormatPill(t("filterType"), allowedFormats, props)
+        }
         styles={{
           input: {
             height: "30px",
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
-            paddingRight: "20px",
+            paddingRight: "24px",
           },
-          pill: { height: "20px", fontSize: "10px" },
         }}
       />
 
@@ -101,17 +121,19 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={{ base: "100%", xs: 120 }}
-        maxValues={1}
+        w={{ base: "100%", xs: 130 }}
+        miw={100}
+        renderPill={(props: FormatPillProps) =>
+          renderFormatPill(t("filterExcludeType"), excludeFormats, props)
+        }
         styles={{
           input: {
             height: "30px",
             minHeight: "30px",
             backgroundColor: "transparent",
             border: 0,
-            paddingRight: "20px",
+            paddingRight: "24px",
           },
-          pill: { height: "20px", fontSize: "10px" },
         }}
       />
 
@@ -132,7 +154,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
               textAlign: "center",
               height: "30px",
               backgroundColor: "transparent",
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 500,
             },
           }}
@@ -193,7 +215,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
               textAlign: "center",
               height: "30px",
               backgroundColor: "transparent",
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 500,
             },
           }}
