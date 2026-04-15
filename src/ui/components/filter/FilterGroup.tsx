@@ -103,7 +103,8 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={140}
+        w={{ base: "100%", xs: 180 }}
+        flex={1}
         styles={multiSelectStyles}
         renderPill={(props: FormatPillProps) =>
           renderFormatPill(allowedFormats, props)
@@ -126,7 +127,8 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={140}
+        w={{ base: "100%", xs: 180 }}
+        flex={1}
         styles={multiSelectStyles}
         renderPill={(props: FormatPillProps) =>
           renderFormatPill(excludeFormats, props)
