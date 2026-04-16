@@ -28,6 +28,7 @@ interface FloatingInstance {
 export class FloatingController {
   private instances: Map<HTMLElement, FloatingInstance> = new Map();
   private isMuted: boolean = false;
+  private isTemporarilyDisabled: boolean = false; // 核心修复：记录当前页面周期的暂时关闭状态
   private settings: Settings = defaultSettings;
   private timer: number | null = null;
   private pendingTarget: HTMLElement | null = null;
@@ -103,7 +104,7 @@ export class FloatingController {
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
-    if (this.isMuted) return;
+    if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
     if (
       this.settings.interfaceBehavior.disabledDomains &&
@@ -447,7 +448,8 @@ export class FloatingController {
               this.instances.forEach((_, t) => this.removeInstance(t));
             }}
             onClose={() => {
-              this.removeInstance(instance.target);
+              this.isTemporarilyDisabled = true;
+              this.instances.forEach((_, t) => this.removeInstance(t));
             }}
           />
         </MantineProvider>
