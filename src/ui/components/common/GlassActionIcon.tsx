@@ -37,7 +37,8 @@ export const GlassActionIcon: React.FC<GlassActionIconProps> = ({
         styles={{
           root: {
             "&:hover": {
-              backgroundColor: "var(--mantine-color-dark-4)",
+              backgroundColor:
+                "color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
               transform: "scale(1.05)",
             },
             transition: "all 0.2s ease",

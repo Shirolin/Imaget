@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   Group,
   Title,
@@ -31,7 +31,7 @@ interface HeaderProps {
   portalNode: HTMLDivElement | null;
 }
 
-const Header: React.FC<HeaderProps> = ({
+const HeaderBase: React.FC<HeaderProps> = ({
   onClose,
   onRefresh,
   onDeepScan,
@@ -233,4 +233,5 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
+export const Header = memo(HeaderBase);
 export default Header;

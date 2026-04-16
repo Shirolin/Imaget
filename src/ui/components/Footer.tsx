@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import {
   Group,
   Button,
@@ -31,7 +32,7 @@ interface FooterProps {
   portalNode: HTMLDivElement | null;
 }
 
-const Footer: React.FC<FooterProps> = ({
+const FooterBase: React.FC<FooterProps> = ({
   selectedCount,
   filteredCount,
   totalCount,
@@ -44,11 +45,13 @@ const Footer: React.FC<FooterProps> = ({
 }) => {
   return (
     <Box p="xs" style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}>
-      <Group justify="space-between" gap="xs" wrap="wrap">
+      <Group justify="space-between" gap="sm" wrap="wrap">
+        {/* Left Section: Stats and Quick Selection */}
         <Group
           gap="xs"
-          w={{ base: "100%", sm: "auto" }}
+          flex={{ base: "1 0 100%", sm: "1" }}
           justify="space-between"
+          wrap="nowrap"
         >
           <Group gap="sm" style={{ cursor: "default" }}>
             <PortalTooltip
@@ -122,7 +125,7 @@ const Footer: React.FC<FooterProps> = ({
             </PortalTooltip>
           </Group>
 
-          <Group gap="xs">
+          <Group gap="xs" wrap="nowrap">
             <ActionIcon
               title={t("selectAll")}
               aria-label={t("labelSelectAll")}
@@ -145,9 +148,10 @@ const Footer: React.FC<FooterProps> = ({
           </Group>
         </Group>
 
+        {/* Right Section: Action Buttons */}
         <Flex
           gap="xs"
-          w={{ base: "100%", md: "auto" }}
+          flex={{ base: "1 0 100%", md: "none" }}
           wrap={{ base: "wrap", xs: "nowrap" }}
         >
           <Button
@@ -199,4 +203,5 @@ const Footer: React.FC<FooterProps> = ({
   );
 };
 
+export const Footer = memo(FooterBase);
 export default Footer;
