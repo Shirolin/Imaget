@@ -65,7 +65,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         ref={excludeRef}
         placeholder={t("filterExclude")}
         leftSection={
-          <IconSearchOff size={14} color="var(--mantine-color-dimmed)" />
+          <IconSearchOff size={14} color="var(--mantine-color-red-6)" />
         }
         data={[
           "ads",
