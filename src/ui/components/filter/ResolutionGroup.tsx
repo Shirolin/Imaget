@@ -19,31 +19,21 @@ const ResolutionGroupBase: React.FC<ResolutionGroupProps> = ({
   portalNode,
 }) => {
   return (
-    <Group
-      gap={4}
-      wrap="nowrap"
-      align="center"
-      px={8}
-      py={2}
-      bg="dark.9"
-      style={{
-        borderRadius: "var(--mantine-radius-md)",
-        border: "1px solid var(--mantine-color-dark-4)",
-      }}
-    >
+    <Group gap="xs" wrap="nowrap" align="center">
       <NumberInput
         aria-label={t("labelMinWidth")}
         value={minWidth}
         placeholder="W"
         onChange={(val) => onChange({ minWidth: Number(val) })}
         size="xs"
-        w={50}
+        w={70}
         min={0}
         max={9999}
         allowNegative={false}
-        variant="unstyled"
-        styles={{ input: { textAlign: "center", height: "24px" } }}
+        variant="filled"
+        styles={{ input: { textAlign: "center" } }}
       />
+
       <Tooltip
         label={`${
           resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")
@@ -61,28 +51,32 @@ const ResolutionGroupBase: React.FC<ResolutionGroupProps> = ({
           aria-label={`${t("resModeOr")}/${t("resModeAnd")}`}
           size="xs"
           variant="filled"
-          color={resolutionMode === "or" ? "blue.9" : "teal.9"}
-          px={4}
-          h={18}
+          color={resolutionMode === "or" ? "blue" : "teal"}
+          px={8}
+          h={30}
         >
-          <Text size="9px" fw={900}>
+          <Text size="10px" fw={900}>
             {resolutionMode.toUpperCase()}
           </Text>
         </Button>
       </Tooltip>
+
       <NumberInput
         placeholder="H"
         aria-label={t("labelMinHeight")}
         value={minHeight}
         onChange={(val) => onChange({ minHeight: Number(val) })}
         size="xs"
-        w={50}
+        w={70}
         min={0}
         max={9999}
         allowNegative={false}
-        variant="unstyled"
-        styles={{ input: { textAlign: "center", height: "24px" } }}
+        variant="filled"
+        styles={{ input: { textAlign: "center" } }}
       />
+      <Text size="xs" c="dimmed" fw={500} visibleFrom="xs">
+        px
+      </Text>
     </Group>
   );
 };
