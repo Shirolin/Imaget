@@ -1,16 +1,13 @@
 import React, { memo } from "react";
-import { Group, NumberInput, Tooltip, Button, Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import { IconPhoto, IconPhotoOff } from "@tabler/icons-react";
 import { t } from "../../../core/utils/i18n";
 import type { ImageFormat, FilterOptions } from "../../../types";
 import { PortalMultiSelect } from "../common/PortalSelect";
 
-interface FilterGroupProps {
+interface TypeFilterGroupProps {
   allowedFormats: ImageFormat[];
   excludeFormats: ImageFormat[];
-  minWidth: number;
-  minHeight: number;
-  resolutionMode: "or" | "and";
   onChange: (updates: Partial<FilterOptions>) => void;
   portalNode: HTMLDivElement | null;
 }
@@ -30,12 +27,9 @@ const formats: ImageFormat[] = [
   "DPG",
 ];
 
-const FilterGroupBase: React.FC<FilterGroupProps> = ({
+const TypeFilterGroupBase: React.FC<TypeFilterGroupProps> = ({
   allowedFormats,
   excludeFormats,
-  minWidth,
-  minHeight,
-  resolutionMode,
   onChange,
   portalNode,
 }) => {
@@ -79,7 +73,7 @@ const FilterGroupBase: React.FC<FilterGroupProps> = ({
   };
 
   const sharedProps = {
-    flex: { base: "1 0 100%", sm: 1 },
+    flex: 1,
     miw: 0,
     size: "xs" as const,
     variant: "filled" as const,
@@ -119,76 +113,9 @@ const FilterGroupBase: React.FC<FilterGroupProps> = ({
           renderFormatPill(excludeFormats, props)
         }
       />
-
-      {/* 这里的 Resolution Inputs 将在 FilterBar 中被显式移动或包裹 */}
-      <Group
-        gap={4}
-        wrap="nowrap"
-        align="center"
-        px={8}
-        py={2}
-        bg="dark.9"
-        style={{
-          borderRadius: "var(--mantine-radius-md)",
-          border: "1px solid var(--mantine-color-dark-4)",
-        }}
-      >
-        <NumberInput
-          aria-label={t("labelMinWidth")}
-          value={minWidth}
-          placeholder="W"
-          onChange={(val) => onChange({ minWidth: Number(val) })}
-          size="xs"
-          w={50}
-          min={0}
-          max={9999}
-          allowNegative={false}
-          variant="unstyled"
-          styles={{ input: { textAlign: "center", height: "24px" } }}
-        />
-        <Tooltip
-          label={`${
-            resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")
-          }: ${
-            resolutionMode === "or" ? t("resModeOrDesc") : t("resModeAndDesc")
-          }`}
-          portalProps={{ target: portalNode || undefined }}
-        >
-          <Button
-            onClick={() =>
-              onChange({
-                resolutionMode: resolutionMode === "or" ? "and" : "or",
-              })
-            }
-            aria-label={`${t("resModeOr")}/${t("resModeAnd")}`}
-            size="xs"
-            variant="filled"
-            color={resolutionMode === "or" ? "blue.9" : "teal.9"}
-            px={4}
-            h={18}
-          >
-            <Text size="9px" fw={900}>
-              {resolutionMode.toUpperCase()}
-            </Text>
-          </Button>
-        </Tooltip>
-        <NumberInput
-          placeholder="H"
-          aria-label={t("labelMinHeight")}
-          value={minHeight}
-          onChange={(val) => onChange({ minHeight: Number(val) })}
-          size="xs"
-          w={50}
-          min={0}
-          max={9999}
-          allowNegative={false}
-          variant="unstyled"
-          styles={{ input: { textAlign: "center", height: "24px" } }}
-        />
-      </Group>
     </>
   );
 };
 
-export const FilterGroup = memo(FilterGroupBase);
-export default FilterGroup;
+export const TypeFilterGroup = memo(TypeFilterGroupBase);
+export default TypeFilterGroup;

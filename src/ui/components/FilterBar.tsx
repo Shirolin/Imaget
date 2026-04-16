@@ -3,7 +3,8 @@ import { Group, Stack } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import type { FilterOptions } from "../../types";
 import SearchGroup from "./filter/SearchGroup";
-import FilterGroup from "./filter/FilterGroup";
+import TypeFilterGroup from "./filter/TypeFilterGroup";
+import ResolutionGroup from "./filter/ResolutionGroup";
 import SortLayoutGroup from "./filter/SortLayoutGroup";
 
 interface FilterBarProps {
@@ -64,7 +65,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <Stack
-      gap="xs"
+      gap="md"
       p="md"
       bg="dark.8"
       style={{
@@ -72,11 +73,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
         zIndex: 10,
       }}
     >
-      {/* 
-         核心重构：将 SearchGroup 和 FilterGroup 的输入框放在同一个 Group 中平铺
-         这样在窄屏下触发 100% 宽度时，它们的 Flex 表现完全一致。
-      */}
-      <Group gap="xs" wrap="wrap" align="center">
+      {/* Row 1: Search and Type Filters (4 inputs stretching evenly) */}
+      <Group gap="xs" wrap="wrap">
         <SearchGroup
           searchQuery={search}
           onSearchChange={setSearch}
@@ -91,27 +89,31 @@ const FilterBar: React.FC<FilterBarProps> = ({
             handleUpdate({ excludeKeywords: "" });
           }}
         />
-        <FilterGroup
+        <TypeFilterGroup
           allowedFormats={options.allowedFormats}
           excludeFormats={options.excludeFormats}
+          onChange={handleUpdate}
+          portalNode={portalNode}
+        />
+      </Group>
+
+      {/* Row 2: Resolution and Sort/Layout */}
+      <Group justify="space-between" align="center">
+        <ResolutionGroup
           minWidth={options.minWidth}
           minHeight={options.minHeight}
           resolutionMode={options.resolutionMode}
           onChange={handleUpdate}
           portalNode={portalNode}
         />
-
-        {/* 排序与布局组在空间不足时会自动换行 */}
-        <Group grow flex={{ base: "1 0 100%", md: "none" }} justify="flex-end">
-          <SortLayoutGroup
-            aspectRatio={options.aspectRatio}
-            sortBy={options.sortBy}
-            sortDirection={options.sortDirection}
-            layout={options.layout}
-            onChange={handleUpdate}
-            portalNode={portalNode}
-          />
-        </Group>
+        <SortLayoutGroup
+          aspectRatio={options.aspectRatio}
+          sortBy={options.sortBy}
+          sortDirection={options.sortDirection}
+          layout={options.layout}
+          onChange={handleUpdate}
+          portalNode={portalNode}
+        />
       </Group>
     </Stack>
   );

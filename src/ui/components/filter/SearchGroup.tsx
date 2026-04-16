@@ -25,7 +25,7 @@ const SearchGroupBase: React.FC<SearchGroupProps> = ({
 
   // 统一的响应式宽度和 flex 表现
   const inputProps = {
-    flex: { base: "1 0 100%", sm: 1 },
+    flex: 1,
     miw: 0, // 强制允许收缩，防止溢出
     size: "xs" as const,
     variant: "filled" as const,
