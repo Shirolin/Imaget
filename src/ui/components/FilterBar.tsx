@@ -2,9 +2,9 @@ import React from "react";
 import { Group, Stack } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import type { FilterOptions } from "../../types";
-import SearchGroup from "./filter/SearchGroup";
-import TypeFilterGroup from "./filter/TypeFilterGroup";
-import ResolutionGroup from "./filter/ResolutionGroup";
+import { SearchGroup } from "./filter/SearchGroup";
+import { TypeFilterGroup } from "./filter/TypeFilterGroup";
+import { ResolutionGroup } from "./filter/ResolutionGroup";
 import SortLayoutGroup from "./filter/SortLayoutGroup";
 
 interface FilterBarProps {
@@ -18,7 +18,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onChange,
   portalNode,
 }) => {
-  // 1. 本地搜索状态
   const [search, setSearch] = React.useState(options.searchQuery);
   const [exclude, setExclude] = React.useState(options.excludeKeywords);
 
@@ -27,11 +26,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
     latestOptionsRef.current = options;
   }, [options]);
 
-  // 2. 防抖处理
   const [debouncedSearch] = useDebouncedValue(search, 300);
   const [debouncedExclude] = useDebouncedValue(exclude, 300);
 
-  // 3. 同步到父组件
   React.useEffect(() => {
     if (debouncedSearch === search && debouncedSearch !== options.searchQuery) {
       onChange({ ...latestOptionsRef.current, searchQuery: debouncedSearch });
@@ -50,7 +47,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
     }
   }, [debouncedExclude, exclude, options.excludeKeywords, onChange]);
 
-  // 4. 从父组件同步回本地
   React.useEffect(() => {
     setSearch(options.searchQuery);
   }, [options.searchQuery]);
@@ -73,7 +69,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
         zIndex: 10,
       }}
     >
-      {/* Row 1: Search and Type Filters (4 inputs stretching evenly) */}
+      {/* 
+         第一行：核心过滤器。
+         核心修复：开启 wrap="wrap"，配合内部组件的阶梯响应 flex 属性。
+      */}
       <Group gap="xs" wrap="wrap">
         <SearchGroup
           searchQuery={search}
@@ -97,8 +96,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
         />
       </Group>
 
-      {/* Row 2: Resolution and Sort/Layout */}
-      <Group justify="space-between" align="center">
+      {/* 第二行：规格与视图控制 */}
+      <Group justify="space-between" align="center" wrap="wrap" gap="sm">
         <ResolutionGroup
           minWidth={options.minWidth}
           minHeight={options.minHeight}
@@ -106,6 +105,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           onChange={handleUpdate}
           portalNode={portalNode}
         />
+
         <SortLayoutGroup
           aspectRatio={options.aspectRatio}
           sortBy={options.sortBy}

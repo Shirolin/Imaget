@@ -23,10 +23,14 @@ const SearchGroupBase: React.FC<SearchGroupProps> = ({
   const searchRef = useRef<HTMLInputElement>(null);
   const excludeRef = useRef<HTMLInputElement>(null);
 
-  // 统一的响应式宽度和 flex 表现
+  // 核心修复：阶梯式响应宽度策略
   const inputProps = {
-    flex: 1,
-    miw: 0, // 强制允许收缩，防止溢出
+    flex: {
+      base: "1 0 100%", // 手机/侧边栏：单列垂直堆叠
+      xs: "1 0 calc(50% - 10px)", // 平板/中等宽度：两列展示 (2x2)
+      md: 1, // 桌面宽屏：四列平铺 (1x4)
+    },
+    miw: 0,
     size: "xs" as const,
     variant: "filled" as const,
   };

@@ -72,8 +72,13 @@ const TypeFilterGroupBase: React.FC<TypeFilterGroupProps> = ({
     pill: { height: "20px", maxWidth: "60px" },
   };
 
+  // 核心修复：阶梯式响应宽度策略
   const sharedProps = {
-    flex: 1,
+    flex: {
+      base: "1 0 100%", // 单列
+      xs: "1 0 calc(50% - 10px)", // 双列
+      md: 1, // 四列
+    },
     miw: 0,
     size: "xs" as const,
     variant: "filled" as const,
