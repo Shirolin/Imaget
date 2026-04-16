@@ -56,7 +56,7 @@ export const SupportSection = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="light"
-                  color="gray"
+                  color="blue"
                   leftSection={<IconCoffee size={16} />}
                   justify="flex-start"
                 >
@@ -68,7 +68,7 @@ export const SupportSection = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="light"
-                  color="gray"
+                  color="pink"
                   leftSection={<IconHeart size={16} />}
                   justify="flex-start"
                 >
