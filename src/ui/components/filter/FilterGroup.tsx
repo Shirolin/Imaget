@@ -87,7 +87,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   return (
     <Group gap="xs" wrap="wrap" align="center">
       {/* Format MultiSelects Group */}
-      <Group gap="xs" flex={{ base: "1 0 100%", sm: "1" }} wrap="nowrap">
+      <Group gap="xs" flex={{ base: "1 0 100%", sm: "1" }} wrap="wrap">
         <PortalMultiSelect
           placeholder={t("filterType")}
           leftSection={
@@ -104,8 +104,11 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           portalNode={portalNode}
           size="xs"
           variant="filled"
-          w={{ base: "50%", sm: 180 }}
-          flex={1}
+          flex={{
+            base: "1 0 100%",
+            xs: "1 0 calc(50% - 10px)",
+            sm: "0 0 180px",
+          }}
           styles={multiSelectStyles}
           renderPill={(props: FormatPillProps) =>
             renderFormatPill(allowedFormats, props)
@@ -128,8 +131,11 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           portalNode={portalNode}
           size="xs"
           variant="filled"
-          w={{ base: "50%", sm: 180 }}
-          flex={1}
+          flex={{
+            base: "1 0 100%",
+            xs: "1 0 calc(50% - 10px)",
+            sm: "0 0 180px",
+          }}
           styles={multiSelectStyles}
           renderPill={(props: FormatPillProps) =>
             renderFormatPill(excludeFormats, props)
@@ -142,7 +148,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
       {/* Resolution Inputs */}
       <Group
         gap={4}
-        wrap="nowrap"
+        wrap="wrap"
         align="center"
         flex={{ base: "1 0 100%", sm: "none" }}
         justify="center"

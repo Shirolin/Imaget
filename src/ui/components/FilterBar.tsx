@@ -87,7 +87,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         }}
       />
 
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" wrap="wrap" gap="sm">
         <FilterGroup
           allowedFormats={options.allowedFormats}
           excludeFormats={options.excludeFormats}

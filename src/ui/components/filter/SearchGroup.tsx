@@ -58,8 +58,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         }
         size="xs"
         variant="filled"
-        w={{ base: "100%", sm: 180 }}
-        flex={1}
+        flex={{ base: "1 0 100%", sm: "1" }}
       />
       <Autocomplete
         ref={excludeRef}
@@ -93,8 +92,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         }
         size="xs"
         variant="filled"
-        w={{ base: "100%", sm: 140 }}
-        flex={1}
+        flex={{ base: "1 0 100%", sm: "1" }}
       />
     </Group>
   );
