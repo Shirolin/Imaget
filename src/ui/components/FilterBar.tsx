@@ -72,22 +72,25 @@ const FilterBar: React.FC<FilterBarProps> = ({
         zIndex: 10,
       }}
     >
-      <SearchGroup
-        searchQuery={search}
-        onSearchChange={setSearch}
-        excludeKeywords={exclude}
-        onExcludeKeywordsChange={setExclude}
-        onClearSearch={() => {
-          setSearch("");
-          handleUpdate({ searchQuery: "" });
-        }}
-        onClearExclude={() => {
-          setExclude("");
-          handleUpdate({ excludeKeywords: "" });
-        }}
-      />
-
-      <Group justify="space-between" align="center" wrap="wrap" gap="sm">
+      {/* 
+         核心重构：将 SearchGroup 和 FilterGroup 的输入框放在同一个 Group 中平铺
+         这样在窄屏下触发 100% 宽度时，它们的 Flex 表现完全一致。
+      */}
+      <Group gap="xs" wrap="wrap" align="center">
+        <SearchGroup
+          searchQuery={search}
+          onSearchChange={setSearch}
+          excludeKeywords={exclude}
+          onExcludeKeywordsChange={setExclude}
+          onClearSearch={() => {
+            setSearch("");
+            handleUpdate({ searchQuery: "" });
+          }}
+          onClearExclude={() => {
+            setExclude("");
+            handleUpdate({ excludeKeywords: "" });
+          }}
+        />
         <FilterGroup
           allowedFormats={options.allowedFormats}
           excludeFormats={options.excludeFormats}
@@ -98,14 +101,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
           portalNode={portalNode}
         />
 
-        <SortLayoutGroup
-          aspectRatio={options.aspectRatio}
-          sortBy={options.sortBy}
-          sortDirection={options.sortDirection}
-          layout={options.layout}
-          onChange={handleUpdate}
-          portalNode={portalNode}
-        />
+        {/* 排序与布局组在空间不足时会自动换行 */}
+        <Group grow flex={{ base: "1 0 100%", md: "none" }} justify="flex-end">
+          <SortLayoutGroup
+            aspectRatio={options.aspectRatio}
+            sortBy={options.sortBy}
+            sortDirection={options.sortDirection}
+            layout={options.layout}
+            onChange={handleUpdate}
+            portalNode={portalNode}
+          />
+        </Group>
       </Group>
     </Stack>
   );

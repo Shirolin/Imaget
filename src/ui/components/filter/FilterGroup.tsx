@@ -1,5 +1,5 @@
-import React from "react";
-import { Group, NumberInput, Tooltip, Button, Text, Box } from "@mantine/core";
+import React, { memo } from "react";
+import { Group, NumberInput, Tooltip, Button, Text } from "@mantine/core";
 import { IconPhoto, IconPhotoOff } from "@tabler/icons-react";
 import { t } from "../../../core/utils/i18n";
 import type { ImageFormat, FilterOptions } from "../../../types";
@@ -30,7 +30,7 @@ const formats: ImageFormat[] = [
   "DPG",
 ];
 
-export const FilterGroup: React.FC<FilterGroupProps> = ({
+const FilterGroupBase: React.FC<FilterGroupProps> = ({
   allowedFormats,
   excludeFormats,
   minWidth,
@@ -39,13 +39,11 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   onChange,
   portalNode,
 }) => {
-  // 定义 Pill 的 Props 类型以通过 TS 检查
   interface FormatPillProps {
     value: string;
     onRemove: () => void;
   }
 
-  // 智能 Pill 渲染逻辑：只显示第一个 + 计数
   const renderFormatPill = (
     values: ImageFormat[],
     { value }: FormatPillProps,
@@ -65,8 +63,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
     );
   };
 
-  // 共享的单行样式，防止 MultiSelect 撑高
-  const multiSelectStyles = {
+  const inputStyles = {
     input: {
       height: "30px",
       minHeight: "30px",
@@ -78,81 +75,63 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
       maxHeight: "24px",
       overflow: "hidden",
     },
-    pill: {
-      height: "20px",
-      maxWidth: "60px",
-    },
+    pill: { height: "20px", maxWidth: "60px" },
+  };
+
+  const sharedProps = {
+    flex: { base: "1 0 100%", sm: 1 },
+    miw: 0,
+    size: "xs" as const,
+    variant: "filled" as const,
+    styles: inputStyles,
   };
 
   return (
-    <Group gap="xs" wrap="wrap" align="center">
-      {/* Format MultiSelects Group */}
-      <Group gap="xs" flex={{ base: "1 0 100%", sm: "1" }} wrap="wrap">
-        <PortalMultiSelect
-          placeholder={t("filterType")}
-          leftSection={
-            <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
-          }
-          data={formats}
-          value={allowedFormats}
-          onChange={(val) =>
-            onChange({
-              allowedFormats: val as ImageFormat[],
-            })
-          }
-          clearable
-          portalNode={portalNode}
-          size="xs"
-          variant="filled"
-          flex={{
-            base: "1 0 100%",
-            xs: "1 0 calc(50% - 10px)",
-            sm: "0 0 180px",
-          }}
-          styles={multiSelectStyles}
-          renderPill={(props: FormatPillProps) =>
-            renderFormatPill(allowedFormats, props)
-          }
-        />
+    <>
+      <PortalMultiSelect
+        {...sharedProps}
+        placeholder={t("filterType")}
+        leftSection={
+          <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
+        }
+        data={formats}
+        value={allowedFormats}
+        onChange={(val) => onChange({ allowedFormats: val as ImageFormat[] })}
+        clearable
+        portalNode={portalNode}
+        renderPill={(props: FormatPillProps) =>
+          renderFormatPill(allowedFormats, props)
+        }
+      />
 
-        <PortalMultiSelect
-          placeholder={t("filterExcludeType")}
-          leftSection={
-            <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
-          }
-          data={formats}
-          value={excludeFormats}
-          onChange={(val) =>
-            onChange({
-              excludeFormats: val as ImageFormat[],
-            })
-          }
-          clearable
-          portalNode={portalNode}
-          size="xs"
-          variant="filled"
-          flex={{
-            base: "1 0 100%",
-            xs: "1 0 calc(50% - 10px)",
-            sm: "0 0 180px",
-          }}
-          styles={multiSelectStyles}
-          renderPill={(props: FormatPillProps) =>
-            renderFormatPill(excludeFormats, props)
-          }
-        />
-      </Group>
+      <PortalMultiSelect
+        {...sharedProps}
+        placeholder={t("filterExcludeType")}
+        leftSection={
+          <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
+        }
+        data={formats}
+        value={excludeFormats}
+        onChange={(val) => onChange({ excludeFormats: val as ImageFormat[] })}
+        clearable
+        portalNode={portalNode}
+        renderPill={(props: FormatPillProps) =>
+          renderFormatPill(excludeFormats, props)
+        }
+      />
 
-      <Box w={1} h={16} bg="dark.4" opacity={0.5} mx={2} visibleFrom="sm" />
-
-      {/* Resolution Inputs */}
+      {/* 这里的 Resolution Inputs 将在 FilterBar 中被显式移动或包裹 */}
       <Group
         gap={4}
-        wrap="wrap"
+        wrap="nowrap"
         align="center"
-        flex={{ base: "1 0 100%", sm: "none" }}
-        justify="center"
-        mt={{ base: 4, sm: 0 }}
+        px={8}
+        py={2}
+        bg="dark.9"
+        style={{
+          borderRadius: "var(--mantine-radius-md)",
+          border: "1px solid var(--mantine-color-dark-4)",
+        }}
       >
         <NumberInput
           aria-label={t("labelMinWidth")}
@@ -160,14 +139,13 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
           placeholder="W"
           onChange={(val) => onChange({ minWidth: Number(val) })}
           size="xs"
-          w={60}
+          w={50}
           min={0}
           max={9999}
           allowNegative={false}
-          variant="filled"
-          styles={{ input: { textAlign: "center", height: "30px" } }}
+          variant="unstyled"
+          styles={{ input: { textAlign: "center", height: "24px" } }}
         />
-
         <Tooltip
           label={`${
             resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")
@@ -186,42 +164,31 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
             size="xs"
             variant="filled"
             color={resolutionMode === "or" ? "blue.9" : "teal.9"}
-            px={6}
-            h={30}
-            styles={{
-              root: {
-                borderWidth: "1px",
-                borderStyle: "solid",
-                borderColor: "var(--mantine-color-dark-4)",
-              },
-            }}
+            px={4}
+            h={18}
           >
-            <Text size="10px" fw={900} style={{ lineHeight: 1 }}>
+            <Text size="9px" fw={900}>
               {resolutionMode.toUpperCase()}
             </Text>
           </Button>
         </Tooltip>
-
         <NumberInput
           placeholder="H"
           aria-label={t("labelMinHeight")}
           value={minHeight}
-          onChange={(val) =>
-            onChange({
-              minHeight: Number(val),
-            })
-          }
+          onChange={(val) => onChange({ minHeight: Number(val) })}
           size="xs"
-          w={60}
+          w={50}
           min={0}
           max={9999}
           allowNegative={false}
-          variant="filled"
-          styles={{ input: { textAlign: "center", height: "30px" } }}
+          variant="unstyled"
+          styles={{ input: { textAlign: "center", height: "24px" } }}
         />
       </Group>
-    </Group>
+    </>
   );
 };
 
+export const FilterGroup = memo(FilterGroupBase);
 export default FilterGroup;
