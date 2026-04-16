@@ -85,60 +85,69 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
   };
 
   return (
-    <Group gap="xs" wrap="nowrap" align="center">
-      {/* Format MultiSelects */}
-      <PortalMultiSelect
-        placeholder={t("filterType")}
-        leftSection={
-          <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
-        }
-        data={formats}
-        value={allowedFormats}
-        onChange={(val) =>
-          onChange({
-            allowedFormats: val as ImageFormat[],
-          })
-        }
-        clearable
-        portalNode={portalNode}
-        size="xs"
-        variant="filled"
-        w={{ base: "100%", xs: 180 }}
-        flex={1}
-        styles={multiSelectStyles}
-        renderPill={(props: FormatPillProps) =>
-          renderFormatPill(allowedFormats, props)
-        }
-      />
+    <Group gap="xs" wrap="wrap" align="center">
+      {/* Format MultiSelects Group */}
+      <Group gap="xs" flex={{ base: "1 0 100%", sm: "1" }} wrap="nowrap">
+        <PortalMultiSelect
+          placeholder={t("filterType")}
+          leftSection={
+            <IconPhoto size={14} color="var(--mantine-color-dimmed)" />
+          }
+          data={formats}
+          value={allowedFormats}
+          onChange={(val) =>
+            onChange({
+              allowedFormats: val as ImageFormat[],
+            })
+          }
+          clearable
+          portalNode={portalNode}
+          size="xs"
+          variant="filled"
+          w={{ base: "50%", sm: 180 }}
+          flex={1}
+          styles={multiSelectStyles}
+          renderPill={(props: FormatPillProps) =>
+            renderFormatPill(allowedFormats, props)
+          }
+        />
 
-      <PortalMultiSelect
-        placeholder={t("filterExcludeType")}
-        leftSection={
-          <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
-        }
-        data={formats}
-        value={excludeFormats}
-        onChange={(val) =>
-          onChange({
-            excludeFormats: val as ImageFormat[],
-          })
-        }
-        clearable
-        portalNode={portalNode}
-        size="xs"
-        variant="filled"
-        w={{ base: "100%", xs: 180 }}
-        flex={1}
-        styles={multiSelectStyles}
-        renderPill={(props: FormatPillProps) =>
-          renderFormatPill(excludeFormats, props)
-        }
-      />
+        <PortalMultiSelect
+          placeholder={t("filterExcludeType")}
+          leftSection={
+            <IconPhotoOff size={14} color="var(--mantine-color-red-6)" />
+          }
+          data={formats}
+          value={excludeFormats}
+          onChange={(val) =>
+            onChange({
+              excludeFormats: val as ImageFormat[],
+            })
+          }
+          clearable
+          portalNode={portalNode}
+          size="xs"
+          variant="filled"
+          w={{ base: "50%", sm: 180 }}
+          flex={1}
+          styles={multiSelectStyles}
+          renderPill={(props: FormatPillProps) =>
+            renderFormatPill(excludeFormats, props)
+          }
+        />
+      </Group>
 
-      <Box w={1} h={16} bg="dark.4" opacity={0.5} mx={2} visibleFrom="xs" />
+      <Box w={1} h={16} bg="dark.4" opacity={0.5} mx={2} visibleFrom="sm" />
 
       {/* Resolution Inputs */}
-      <Group gap={4} wrap="nowrap" align="center">
+      <Group
+        gap={4}
+        wrap="nowrap"
+        align="center"
+        flex={{ base: "1 0 100%", sm: "none" }}
+        justify="center"
+        mt={{ base: 4, sm: 0 }}
+      >
         <NumberInput
           aria-label={t("labelMinWidth")}
           value={minWidth}

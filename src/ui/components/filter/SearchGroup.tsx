@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Autocomplete, CloseButton, Group } from "@mantine/core";
 import { IconSearch, IconSearchOff } from "@tabler/icons-react";
 import { t } from "../../../core/utils/i18n";
@@ -20,9 +20,13 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   onClearSearch,
   onClearExclude,
 }) => {
+  const searchRef = useRef<HTMLInputElement>(null);
+  const excludeRef = useRef<HTMLInputElement>(null);
+
   return (
-    <Group grow gap="xs">
+    <Group gap="xs" wrap="wrap" flex={1}>
       <Autocomplete
+        ref={searchRef}
         placeholder={t("filterSearch")}
         leftSection={
           <IconSearch size={14} color="var(--mantine-color-dimmed)" />
@@ -42,6 +46,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         ]}
         value={searchQuery}
         onChange={onSearchChange}
+        onOptionSubmit={() => searchRef.current?.focus()}
         rightSectionPointerEvents="all"
         rightSection={
           <CloseButton
@@ -53,8 +58,11 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         }
         size="xs"
         variant="filled"
+        w={{ base: "100%", sm: 180 }}
+        flex={1}
       />
       <Autocomplete
+        ref={excludeRef}
         placeholder={t("filterExclude")}
         leftSection={
           <IconSearchOff size={14} color="var(--mantine-color-dimmed)" />
@@ -73,6 +81,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         ]}
         value={excludeKeywords}
         onChange={onExcludeKeywordsChange}
+        onOptionSubmit={() => excludeRef.current?.focus()}
         rightSectionPointerEvents="all"
         rightSection={
           <CloseButton
@@ -84,6 +93,8 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         }
         size="xs"
         variant="filled"
+        w={{ base: "100%", sm: 140 }}
+        flex={1}
       />
     </Group>
   );
