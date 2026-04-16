@@ -163,9 +163,11 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
         />
 
         <Tooltip
-          label={
+          label={`${
+            resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")
+          }: ${
             resolutionMode === "or" ? t("resModeOrDesc") : t("resModeAndDesc")
-          }
+          }`}
           portalProps={{ target: portalNode || undefined }}
         >
           <Button
@@ -174,9 +176,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
                 resolutionMode: resolutionMode === "or" ? "and" : "or",
               })
             }
-            aria-label={
-              resolutionMode === "or" ? t("resModeOr") : t("resModeAnd")
-            }
+            aria-label={`${t("resModeOr")}/${t("resModeAnd")}`}
             size="xs"
             variant="filled"
             color={resolutionMode === "or" ? "blue.9" : "teal.9"}
@@ -190,7 +190,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
               },
             }}
           >
-            <Text size="10px" fw={900}>
+            <Text size="10px" fw={900} style={{ lineHeight: 1 }}>
               {resolutionMode.toUpperCase()}
             </Text>
           </Button>

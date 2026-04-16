@@ -1,5 +1,5 @@
-import React from "react";
-import { Group, ActionIcon } from "@mantine/core";
+import React, { memo } from "react";
+import { Group, ActionIcon, Tooltip } from "@mantine/core";
 import {
   IconSortAscending,
   IconSortDescending,
@@ -20,7 +20,7 @@ interface SortLayoutGroupProps {
   portalNode: HTMLDivElement | null;
 }
 
-const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
+const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
   aspectRatio,
   sortBy,
   sortDirection,
@@ -32,6 +32,7 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
     <Group gap="xs" wrap="nowrap">
       <PortalSelect
         placeholder={t("filterLayout")}
+        aria-label={t("filterLayout")}
         data={[
           { value: "all", label: t("layoutAny") },
           { value: "square", label: t("layoutSquare") },
@@ -47,11 +48,12 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={100}
+        w={90}
       />
 
       <PortalSelect
         placeholder={t("sortBy")}
+        aria-label={t("sortBy")}
         data={[
           { value: "order", label: t("sortOrder") },
           { value: "size", label: t("sortSize") },
@@ -66,50 +68,77 @@ const SortLayoutGroup: React.FC<SortLayoutGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={100}
+        w={90}
       />
 
       <Group gap={4} wrap="nowrap">
-        <ActionIcon
-          variant={layout === "grid" ? "filled" : "light"}
-          size="sm"
-          onClick={() => onChange({ layout: "grid" })}
+        <Tooltip
+          label={t("layoutGrid") || "Grid"}
+          portalProps={{ target: portalNode || undefined }}
         >
-          <IconLayoutGrid size={14} />
-        </ActionIcon>
-        <ActionIcon
-          variant={layout === "columns" ? "filled" : "light"}
-          size="sm"
-          onClick={() => onChange({ layout: "columns" })}
-        >
-          <IconLayoutColumns size={14} />
-        </ActionIcon>
-        <ActionIcon
-          variant={layout === "list" ? "filled" : "light"}
-          size="sm"
-          onClick={() => onChange({ layout: "list" })}
-        >
-          <IconLayoutList size={14} />
-        </ActionIcon>
+          <ActionIcon
+            variant={layout === "grid" ? "filled" : "light"}
+            size="sm"
+            onClick={() => onChange({ layout: "grid" })}
+            aria-label={t("layoutGrid") || "Grid"}
+          >
+            <IconLayoutGrid size={14} />
+          </ActionIcon>
+        </Tooltip>
 
-        <ActionIcon
-          variant="light"
-          size="sm"
-          onClick={() =>
-            onChange({
-              sortDirection: sortDirection === "asc" ? "desc" : "asc",
-            })
-          }
+        <Tooltip
+          label={t("layoutColumns") || "Columns"}
+          portalProps={{ target: portalNode || undefined }}
         >
-          {sortDirection === "asc" ? (
-            <IconSortAscending size={14} />
-          ) : (
-            <IconSortDescending size={14} />
-          )}
-        </ActionIcon>
+          <ActionIcon
+            variant={layout === "columns" ? "filled" : "light"}
+            size="sm"
+            onClick={() => onChange({ layout: "columns" })}
+            aria-label={t("layoutColumns") || "Columns"}
+          >
+            <IconLayoutColumns size={14} />
+          </ActionIcon>
+        </Tooltip>
+
+        <Tooltip
+          label={t("layoutList") || "List"}
+          portalProps={{ target: portalNode || undefined }}
+        >
+          <ActionIcon
+            variant={layout === "list" ? "filled" : "light"}
+            size="sm"
+            onClick={() => onChange({ layout: "list" })}
+            aria-label={t("layoutList") || "List"}
+          >
+            <IconLayoutList size={14} />
+          </ActionIcon>
+        </Tooltip>
+
+        <Tooltip
+          label={sortDirection === "asc" ? t("sortAsc") : t("sortDesc")}
+          portalProps={{ target: portalNode || undefined }}
+        >
+          <ActionIcon
+            variant="light"
+            size="sm"
+            onClick={() =>
+              onChange({
+                sortDirection: sortDirection === "asc" ? "desc" : "asc",
+              })
+            }
+            aria-label={sortDirection === "asc" ? t("sortAsc") : t("sortDesc")}
+          >
+            {sortDirection === "asc" ? (
+              <IconSortAscending size={14} />
+            ) : (
+              <IconSortDescending size={14} />
+            )}
+          </ActionIcon>
+        </Tooltip>
       </Group>
     </Group>
   );
 };
 
+export const SortLayoutGroup = memo(SortLayoutGroupBase);
 export default SortLayoutGroup;
