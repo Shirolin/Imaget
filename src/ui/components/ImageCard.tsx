@@ -11,7 +11,7 @@ import {
   Stack,
   ActionIcon,
 } from "@mantine/core";
-import { t } from "../../core/utils/i18n";
+import { useI18n } from "../hooks/useI18n";
 import {
   IconExternalLink,
   IconCopy,
@@ -40,6 +40,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
   onDownload,
   portalNode,
 }) => {
+  const { t } = useI18n();
   const [hovered, setHovered] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 

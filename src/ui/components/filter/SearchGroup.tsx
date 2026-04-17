@@ -1,7 +1,7 @@
 import React, { useRef, memo } from "react";
 import { Autocomplete, CloseButton } from "@mantine/core";
 import { IconSearch, IconSearchOff } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
+import { useI18n } from "../../hooks/useI18n";
 
 interface SearchGroupProps {
   searchQuery: string;
@@ -20,6 +20,7 @@ const SearchGroupBase: React.FC<SearchGroupProps> = ({
   onClearSearch,
   onClearExclude,
 }) => {
+  const { t } = useI18n();
   const searchRef = useRef<HTMLInputElement>(null);
   const excludeRef = useRef<HTMLInputElement>(null);
 

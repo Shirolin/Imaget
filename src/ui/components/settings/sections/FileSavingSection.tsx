@@ -13,7 +13,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { IconFolder, IconVariable } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 
@@ -24,6 +24,7 @@ interface FileSavingSectionProps {
 }
 export const FileSavingSection = memo(
   ({ settings, onUpdate, portalNode }: FileSavingSectionProps) => {
+    const { t } = useI18n();
     // 过滤 OS 不允许的非法文件名字符: \ / : * ? " < > |
     const sanitizeFileName = (val: string) => val.replace(/[\\/:*?"<>|]/g, "");
 

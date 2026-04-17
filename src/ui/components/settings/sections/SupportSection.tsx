@@ -6,7 +6,7 @@ import {
   IconCoffee,
   IconBug,
 } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { SettingSwitch } from "../SettingSwitch";
@@ -18,6 +18,7 @@ interface SupportSectionProps {
 
 export const SupportSection = memo(
   ({ settings, onUpdateDebug }: SupportSectionProps) => {
+    const { t } = useI18n();
     return (
       <Stack gap="md">
         <Stack gap="xs">

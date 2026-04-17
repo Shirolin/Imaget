@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Group, NumberInput, Tooltip, Button, Text } from "@mantine/core";
-import { t } from "../../../core/utils/i18n";
+import { useI18n } from "../../hooks/useI18n";
 import type { FilterOptions } from "../../../types";
 
 interface ResolutionGroupProps {
@@ -18,6 +18,7 @@ const ResolutionGroupBase: React.FC<ResolutionGroupProps> = ({
   onChange,
   portalNode,
 }) => {
+  const { t } = useI18n();
   return (
     <Group gap="xs" wrap="nowrap" align="center">
       <NumberInput

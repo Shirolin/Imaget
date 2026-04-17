@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Stack, Group, Text, Divider, SimpleGrid } from "@mantine/core";
 import { IconLanguage } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
 import { PortalSelect } from "../../common/PortalSelect";
 import { SettingCard } from "../SettingCard";
@@ -14,6 +14,7 @@ interface GeneralSectionProps {
 
 export const GeneralSection = memo(
   ({ settings, onUpdate, portalNode }: GeneralSectionProps) => {
+    const { t } = useI18n();
     return (
       <Stack gap="md">
         <Stack gap="xs">

@@ -9,7 +9,7 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { IconFilter, IconFileCode } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings, AspectRatioType, ImageFormat } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { PortalSelect, PortalMultiSelect } from "../../common/PortalSelect";
@@ -22,6 +22,7 @@ interface FilterDefaultsSectionProps {
 
 export const FilterDefaultsSection = memo(
   ({ settings, onUpdate, portalNode }: FilterDefaultsSectionProps) => {
+    const { t } = useI18n();
     return (
       <Stack gap="md">
         <Stack gap="xs">

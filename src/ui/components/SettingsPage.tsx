@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconSettings, IconRestore, IconCheck } from "@tabler/icons-react";
-import { useI18n } from "../contexts/I18nContext";
+import { useI18n } from "../hooks/useI18n";
 import type { Settings } from "../../types";
 import { GeneralSection } from "./settings/sections/GeneralSection";
 import { FileSavingSection } from "./settings/sections/FileSavingSection";

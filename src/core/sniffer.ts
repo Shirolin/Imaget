@@ -215,10 +215,13 @@ export class Sniffer {
               { action: "SNIFF_REQUEST", payload: { settings } },
               (response) => {
                 if (chrome.runtime.lastError || !response) {
-                  console.warn(
-                    "[SidePanel Sniffer] Error connecting to content script:",
-                    chrome.runtime.lastError,
-                  );
+                  const errMsg = chrome.runtime.lastError?.message || "";
+                  if (!errMsg.includes("Receiving end does not exist")) {
+                    console.warn(
+                      "[SidePanel Sniffer] Error connecting to content script:",
+                      chrome.runtime.lastError,
+                    );
+                  }
                   resolve([]);
                 } else {
                   resolve(response.results || []);

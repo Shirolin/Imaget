@@ -19,7 +19,7 @@ import {
   IconBrandGithub,
   IconCoffee,
 } from "@tabler/icons-react";
-import { useI18n } from "../contexts/I18nContext";
+import { useI18n } from "../hooks/useI18n";
 
 interface HeaderProps {
   onClose: () => void;

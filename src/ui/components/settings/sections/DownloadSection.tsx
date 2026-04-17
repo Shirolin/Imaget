@@ -14,7 +14,7 @@ import {
   IconAdjustmentsHorizontal,
   IconFileCode,
 } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { SettingSwitch } from "../SettingSwitch";
@@ -38,6 +38,7 @@ export const DownloadSection = memo(
     onUpdateGifStrategy,
     portalNode,
   }: DownloadSectionProps) => {
+    const { t } = useI18n();
     return (
       <Stack gap="md">
         <Stack gap="xs">

@@ -18,7 +18,7 @@ import Footer from "./components/Footer";
 import { ImagePreview } from "./components/ImagePreview";
 import SettingsPage from "./components/SettingsPage";
 import { useSettings } from "./hooks/useSettings";
-import { I18nProvider } from "./contexts/I18nContext";
+import { I18nProvider } from "./contexts/I18nProvider";
 
 import { Sniffer } from "../core/sniffer";
 import { filterImages } from "../core/filter";

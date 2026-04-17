@@ -2,7 +2,7 @@
  * Core: Align with legacy project, use storage to record pending downloads.
  * Prevents loss of state on Service Worker restart and solves race conditions with ID callbacks.
  */
-import { t } from "../core/utils/i18n";
+import { t, setLocale } from "../core/utils/i18n";
 import type { Settings } from "../types";
 
 interface PendingDownloadConfig {
@@ -150,6 +150,8 @@ function setupContextMenus() {
 
   // 先移除所有，防止重复
   chrome.contextMenus.removeAll(() => {
+    // 忽略可能存在的 "Cannot find menu item" 错误，净化控制台
+    void chrome.runtime.lastError;
     // 根菜单
     chrome.contextMenus.create(
       {
@@ -245,10 +247,13 @@ if (chrome.storage && chrome.sidePanel?.setPanelBehavior) {
   });
 }
 
-// 监听设置更改以动态更新图标点击行为
+// 监听设置更改以动态更新图标点击行为及右键菜单语言
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes["imaget_settings"]) {
     const newSettings = changes["imaget_settings"].newValue as Settings;
+    const oldSettings = changes["imaget_settings"].oldValue as Settings;
+
+    // 1. 行为更新
     if (newSettings?.interfaceBehavior?.showInSidebar !== undefined) {
       if (chrome.sidePanel?.setPanelBehavior) {
         chrome.sidePanel
@@ -257,6 +262,14 @@ chrome.storage.onChanged.addListener((changes, area) => {
           })
           .catch((err) => console.error(err));
       }
+    }
+
+    // 2. 语言热更新：如果语言改变，更新字典并重建右键菜单
+    const newLang = newSettings?.general?.language;
+    const oldLang = oldSettings?.general?.language;
+    if (newLang && newLang !== oldLang) {
+      setLocale(newLang);
+      setupContextMenus();
     }
   }
 });

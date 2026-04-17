@@ -7,7 +7,7 @@ import {
   IconLayoutColumns,
   IconLayoutList,
 } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
+import { useI18n } from "../../hooks/useI18n";
 import type { AspectRatioType, FilterOptions } from "../../../types";
 import { PortalSelect } from "../common/PortalSelect";
 
@@ -28,6 +28,7 @@ const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
   onChange,
   portalNode,
 }) => {
+  const { t } = useI18n();
   return (
     <Group gap="xs" wrap="nowrap">
       <PortalSelect

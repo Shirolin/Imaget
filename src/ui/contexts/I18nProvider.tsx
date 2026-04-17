@@ -1,12 +1,6 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import { t, getLocale } from "../../core/utils/i18n";
-
-interface I18nContextValue {
-  t: typeof t;
-  locale: string;
-}
-
-const I18nContext = createContext<I18nContextValue | null>(null);
+import { I18nContext } from "./I18nContext";
 
 export const I18nProvider: React.FC<{
   language: string;
@@ -22,13 +16,4 @@ export const I18nProvider: React.FC<{
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
-};
-
-export const useI18n = () => {
-  const context = useContext(I18nContext);
-  if (!context) {
-    // 降级处理，如果在 Provider 之外使用，依然返回静态 t
-    return { t, locale: getLocale() };
-  }
-  return context;
 };

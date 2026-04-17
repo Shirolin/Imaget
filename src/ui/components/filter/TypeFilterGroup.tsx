@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Group, Text } from "@mantine/core";
 import { IconPhoto, IconPhotoOff } from "@tabler/icons-react";
-import { t } from "../../../core/utils/i18n";
+import { useI18n } from "../../hooks/useI18n";
 import type { ImageFormat, FilterOptions } from "../../../types";
 import { PortalMultiSelect } from "../common/PortalSelect";
 
@@ -33,6 +33,7 @@ const TypeFilterGroupBase: React.FC<TypeFilterGroupProps> = ({
   onChange,
   portalNode,
 }) => {
+  const { t } = useI18n();
   interface FormatPillProps {
     value: string;
     onRemove: () => void;

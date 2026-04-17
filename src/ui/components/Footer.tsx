@@ -18,7 +18,7 @@ import {
   IconCircleCheck,
 } from "@tabler/icons-react";
 import { PortalTooltip } from "./common/PortalTooltip";
-import { useI18n } from "../contexts/I18nContext";
+import { useI18n } from "../hooks/useI18n";
 
 interface FooterProps {
   selectedCount: number;

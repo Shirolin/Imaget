@@ -7,7 +7,7 @@ import {
   IconBan,
   IconEyeOff,
 } from "@tabler/icons-react";
-import { t } from "../../core/utils/i18n";
+import { useI18n } from "../hooks/useI18n";
 
 // ==============================================
 // Types
@@ -187,108 +187,113 @@ const MainDownloadAction = ({
   progress: number;
   portalNode: HTMLDivElement | null;
   onClick: () => void;
-}) => (
-  <Tooltip
-    label={
-      status === "success"
-        ? t("labelFloatingSuccess")
-        : status === "error"
-          ? t("labelFloatingError")
-          : t("labelFloatingDownload")
-    }
-    position="left"
-    withArrow
-    transitionProps={{ transition: "fade", duration: 200 }}
-    portalProps={{ target: portalNode || undefined }}
-    styles={getTooltipStyles()}
-  >
-    <ActionIcon
-      className="imaget-glass-button"
-      variant="transparent"
-      size={40}
-      radius={12}
-      data-status={status}
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (status === "idle") onClick();
-      }}
-      style={
-        {
-          outline: "none",
-          color: "var(--mantine-color-white)",
-          "--imaget-progress": status === "success" ? "100%" : `${progress}%`,
-        } as React.CSSProperties & { [key: string]: string | number }
-      }
-      aria-label={
+}) => {
+  const { t } = useI18n();
+  return (
+    <Tooltip
+      label={
         status === "success"
           ? t("labelFloatingSuccess")
           : status === "error"
             ? t("labelFloatingError")
             : t("labelFloatingDownload")
       }
+      position="left"
+      withArrow
+      transitionProps={{ transition: "fade", duration: 200 }}
+      portalProps={{ target: portalNode || undefined }}
+      styles={getTooltipStyles()}
     >
-      <div
-        className="imaget-progress-fill"
-        style={{ opacity: status === "idle" || status === "error" ? 0 : 1 }}
-      />
-
-      <Box
-        style={{
-          zIndex: 1,
-          display: "flex",
-          position: "relative",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 22,
-          height: 22,
+      <ActionIcon
+        className="imaget-glass-button"
+        variant="transparent"
+        size={40}
+        radius={12}
+        data-status={status}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          if (status === "idle") onClick();
         }}
-      >
-        <IconCheck
-          size={22}
-          stroke={3.5}
-          style={{
-            position: "absolute",
+        style={
+          {
+            outline: "none",
             color: "var(--mantine-color-white)",
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
-            opacity: status === "success" ? 1 : 0,
-            transform:
-              status === "success" ? "scale(1)" : "scale(0.5) translateY(10px)",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-          }}
+            "--imaget-progress": status === "success" ? "100%" : `${progress}%`,
+          } as React.CSSProperties & { [key: string]: string | number }
+        }
+        aria-label={
+          status === "success"
+            ? t("labelFloatingSuccess")
+            : status === "error"
+              ? t("labelFloatingError")
+              : t("labelFloatingDownload")
+        }
+      >
+        <div
+          className="imaget-progress-fill"
+          style={{ opacity: status === "idle" || status === "error" ? 0 : 1 }}
         />
-        <IconX
-          size={22}
-          stroke={3}
+
+        <Box
           style={{
-            position: "absolute",
-            color: "var(--mantine-color-red-3)",
-            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))",
-            opacity: status === "error" ? 1 : 0,
-            transform:
-              status === "error" ? "scale(1)" : "scale(0.5) translateY(10px)",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            zIndex: 1,
+            display: "flex",
+            position: "relative",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 22,
+            height: 22,
           }}
-        />
-        <IconDownload
-          className="imaget-icon-inner"
-          size={22}
-          stroke={2.5}
-          style={{
-            position: "absolute",
-            opacity: status === "success" || status === "error" ? 0 : 1,
-            transform:
-              status === "success" || status === "error"
-                ? "scale(0.5) translateY(-10px)"
-                : "scale(1) translateY(0)",
-            filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
-            transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-          }}
-        />
-      </Box>
-    </ActionIcon>
-  </Tooltip>
-);
+        >
+          <IconCheck
+            size={22}
+            stroke={3.5}
+            style={{
+              position: "absolute",
+              color: "var(--mantine-color-white)",
+              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
+              opacity: status === "success" ? 1 : 0,
+              transform:
+                status === "success"
+                  ? "scale(1)"
+                  : "scale(0.5) translateY(10px)",
+              transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            }}
+          />
+          <IconX
+            size={22}
+            stroke={3}
+            style={{
+              position: "absolute",
+              color: "var(--mantine-color-red-3)",
+              filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))",
+              opacity: status === "error" ? 1 : 0,
+              transform:
+                status === "error" ? "scale(1)" : "scale(0.5) translateY(10px)",
+              transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            }}
+          />
+          <IconDownload
+            className="imaget-icon-inner"
+            size={22}
+            stroke={2.5}
+            style={{
+              position: "absolute",
+              opacity: status === "success" || status === "error" ? 0 : 1,
+              transform:
+                status === "success" || status === "error"
+                  ? "scale(0.5) translateY(-10px)"
+                  : "scale(1) translateY(0)",
+              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
+              transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            }}
+          />
+        </Box>
+      </ActionIcon>
+    </Tooltip>
+  );
+};
 
 const CloseAction = ({
   visible,
@@ -298,65 +303,69 @@ const CloseAction = ({
   visible: boolean;
   portalNode: HTMLDivElement | null;
   onClick: () => void;
-}) => (
-  <Transition
-    mounted={visible}
-    transition={{
-      in: { opacity: 1, transform: "translate(26px, 34px) scale(1)" },
-      out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
-      transitionProperty: "transform, opacity",
-    }}
-    duration={400}
-    timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
-  >
-    {(styles) => (
-      <Tooltip
-        label={t("labelFloatingClose")}
-        position="bottom"
-        withArrow
-        transitionProps={{ transition: "fade", duration: 200 }}
-        portalProps={{ target: portalNode || undefined }}
-        styles={getTooltipStyles("10px", "3px 8px")}
-      >
-        <ActionIcon
-          variant="subtle"
-          color="gray.5"
-          size={20}
-          radius="xl"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            onClick();
-          }}
-          style={{
-            ...styles,
-            position: "absolute",
-            top: 10,
-            left: 10,
-            backgroundColor: "rgba(0, 0, 0, 0.45)",
-            backdropFilter: "blur(8px)",
-            border:
-              "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-            zIndex: -1,
-            transition:
-              styles.transition +
-              ", background-color 0.2s ease, transform 0.2s ease",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform =
-              "translate(26px, 34px) scale(1.2)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "translate(26px, 34px) scale(1)")
-          }
+}) => {
+  const { t } = useI18n();
+  return (
+    <Transition
+      mounted={visible}
+      transition={{
+        in: { opacity: 1, transform: "translate(26px, 34px) scale(1)" },
+        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
+        transitionProperty: "transform, opacity",
+      }}
+      duration={400}
+      timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
+    >
+      {(styles) => (
+        <Tooltip
+          label={t("labelFloatingClose")}
+          position="bottom"
+          withArrow
+          transitionProps={{ transition: "fade", duration: 200 }}
+          portalProps={{ target: portalNode || undefined }}
+          styles={getTooltipStyles("10px", "3px 8px")}
         >
-          <IconX size={12} stroke={3} />
-        </ActionIcon>
-      </Tooltip>
-    )}
-  </Transition>
-);
+          <ActionIcon
+            variant="subtle"
+            color="gray.5"
+            size={20}
+            radius="xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onClick();
+            }}
+            style={{
+              ...styles,
+              position: "absolute",
+              top: 10,
+              left: 10,
+              backgroundColor: "rgba(0, 0, 0, 0.45)",
+              backdropFilter: "blur(8px)",
+              border:
+                "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              zIndex: -1,
+              transition:
+                styles.transition +
+                ", background-color 0.2s ease, transform 0.2s ease",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform =
+                "translate(26px, 34px) scale(1.2)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform =
+                "translate(26px, 34px) scale(1)")
+            }
+          >
+            <IconX size={12} stroke={3} />
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </Transition>
+  );
+};
 
 const DisableAction = ({
   visible,
@@ -367,6 +376,7 @@ const DisableAction = ({
   portalNode: HTMLDivElement | null;
   onClick?: () => void;
 }) => {
+  const { t } = useI18n();
   if (!onClick) return null;
   return (
     <Transition
@@ -446,6 +456,7 @@ const HidePermanentAction = ({
   portalNode: HTMLDivElement | null;
   onClick?: () => void;
 }) => {
+  const { t } = useI18n();
   if (!onClick) return null;
   return (
     <Transition

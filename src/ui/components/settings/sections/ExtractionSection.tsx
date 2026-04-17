@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconAppWindow, IconBan, IconPlus, IconX } from "@tabler/icons-react";
-import { t } from "../../../../core/utils/i18n";
+import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
 import { SettingCard } from "../SettingCard";
 import { SettingSwitch } from "../SettingSwitch";
@@ -26,6 +26,7 @@ interface ExtractionSectionProps {
 
 export const ExtractionSection = memo(
   ({ settings, onUpdate, portalNode }: ExtractionSectionProps) => {
+    const { t } = useI18n();
     const [newDomain, setNewDomain] = useState("");
 
     const handleAddDomain = useCallback(() => {
