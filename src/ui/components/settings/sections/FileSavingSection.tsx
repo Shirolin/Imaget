@@ -130,7 +130,7 @@ export const FileSavingSection = memo(
                   <Badge
                     key={variable}
                     variant="light"
-                    color="blue"
+                    color="brand"
                     size="sm"
                     styles={{
                       root: {
@@ -140,7 +140,7 @@ export const FileSavingSection = memo(
                           "transform 0.1s ease, background-color 0.2s ease",
                         "&:hover": {
                           backgroundColor:
-                            "var(--mantine-color-blue-light-hover)",
+                            "var(--mantine-color-brand-light-hover)",
                         },
                         "&:active": {
                           transform: "scale(0.92)",

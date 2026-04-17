@@ -68,7 +68,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         style={{
           cursor: "pointer",
           borderColor: item.isSelected
-            ? "var(--mantine-color-blue-filled)"
+            ? "var(--mantine-color-brand-filled)"
             : "var(--mantine-color-dark-4)",
           transition: "all 0.2s ease",
           backgroundColor: hovered
@@ -210,7 +210,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
                 checked={item.isSelected}
                 onChange={() => onSelect(item.id, false)}
                 size="xs"
-                color="blue"
+                color="brand"
                 aria-label={t("labelSelectImage", [item.filename || item.url])}
                 styles={{
                   input: {
@@ -226,7 +226,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
 
         {item.isSelected && (
           <Overlay
-            color="var(--mantine-color-blue-8)"
+            color="var(--mantine-color-brand-8)"
             backgroundOpacity={0.05}
             zIndex={1}
             style={{ pointerEvents: "none" }}
@@ -245,7 +245,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         cursor: "pointer",
         transform: hovered ? "translateY(-4px)" : "none",
         borderColor: item.isSelected
-          ? "var(--mantine-color-blue-filled)"
+          ? "var(--mantine-color-brand-filled)"
           : "var(--mantine-color-dark-4)",
         transition: "all 0.2s ease",
         overflow: "hidden",
@@ -390,7 +390,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
               checked={item.isSelected}
               onChange={() => onSelect(item.id, false)}
               size="sm"
-              color="blue"
+              color="brand"
               aria-label={t("labelSelectImage", [item.filename || item.url])}
               styles={{
                 input: {
@@ -399,7 +399,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
                   backdropFilter: "blur(4px)",
                   borderColor: "rgba(255, 255, 255, 0.2)",
                   boxShadow: item.isSelected
-                    ? "0 0 0 2px var(--mantine-color-blue-filled)"
+                    ? "0 0 0 2px var(--mantine-color-brand-filled)"
                     : "var(--mantine-shadow-sm)",
                 },
               }}
@@ -410,7 +410,7 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
 
       {item.isSelected && (
         <Overlay
-          color="var(--mantine-color-blue-8)"
+          color="var(--mantine-color-brand-8)"
           backgroundOpacity={0.1}
           zIndex={1}
           style={{ pointerEvents: "none" }}

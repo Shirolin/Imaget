@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, memo } from "react";
+import React, { useEffect, useRef, memo, useState } from "react";
 import {
   Title,
   Text,
@@ -26,31 +26,36 @@ interface GalleryItem {
   label: string;
 }
 
-const GENERATED_GALLERY: GalleryItem[] = [
-  // Huge High-Res (4K-ish)
-  { id: 10, width: 3840, height: 2160, label: "Mountains 4K" },
-  { id: 20, width: 2560, height: 1440, label: "Forest 2K" },
-  { id: 30, width: 1920, height: 1080, label: "River FHD" },
-  // Portraits
-  { id: 64, width: 800, height: 1200, label: "Portrait A" },
-  { id: 65, width: 1080, height: 1920, label: "Mobile Wallpaper" },
-  { id: 100, width: 600, height: 1000, label: "Tall Art" },
-  // Squares
-  { id: 237, width: 800, height: 800, label: "Puppy Square" },
-  { id: 240, width: 500, height: 500, label: "Stairs Square" },
-  { id: 250, width: 300, height: 300, label: "Avatar" },
-  // Landscapes
-  { id: 367, width: 1200, height: 600, label: "Sea View" },
-  { id: 400, width: 1600, height: 400, label: "Ultrawide Panorama" },
-  { id: 450, width: 1024, height: 768, label: "Retro Landscape" },
-  // Diverse IDs for variety
-  ...Array.from({ length: 24 }).map((_, i) => ({
-    id: i + 500,
-    width: 600 + (i % 3) * 200,
-    height: 400 + (i % 2) * 200,
-    label: `Exhibition Item ${i + 1}`,
-  })),
-];
+const generateRandomGallery = (): GalleryItem[] => {
+  const getRandomId = () => Math.floor(Math.random() * 1000) + 1;
+
+  const items: GalleryItem[] = [
+    // Huge High-Res
+    { id: getRandomId(), width: 3840, height: 2160, label: "Ultrawide 4K" },
+    { id: getRandomId(), width: 2560, height: 1440, label: "Cinema 2K" },
+    { id: getRandomId(), width: 1920, height: 1080, label: "Full HD" },
+    // Portraits
+    { id: getRandomId(), width: 800, height: 1200, label: "Fashion Portrait" },
+    {
+      id: getRandomId(),
+      width: 1080,
+      height: 1920,
+      label: "Vertical Mobile",
+    },
+    { id: getRandomId(), width: 600, height: 1000, label: "Studio Tall" },
+    // Squares
+    { id: getRandomId(), width: 800, height: 800, label: "Product Square" },
+    { id: getRandomId(), width: 500, height: 500, label: "Social Tile" },
+    // Diverse mix
+    ...Array.from({ length: 30 }).map((_, i) => ({
+      id: getRandomId(),
+      width: 600 + (i % 5) * 150,
+      height: 400 + (i % 3) * 150,
+      label: `Captured Moment ${i + 1}`,
+    })),
+  ];
+  return items;
+};
 
 // ==============================================
 // Sub-components
@@ -102,6 +107,10 @@ const SectionHeader = ({
 // ==============================================
 
 const TestPage: React.FC = () => {
+  // 使用状态初始化函数（Lazy Initializer）在首次渲染时生成随机数据，避免 useEffect 导致的级联渲染警告
+  const [gallery] = useState<GalleryItem[]>(() => generateRandomGallery());
+  const [heroId] = useState(() => Math.floor(Math.random() * 1000) + 1);
+
   return (
     <Box
       style={{
@@ -113,7 +122,7 @@ const TestPage: React.FC = () => {
       {/* Hero Section */}
       <Box style={{ position: "relative", height: 400, overflow: "hidden" }}>
         <Image
-          src="https://picsum.photos/id/1015/1920/600"
+          src={`https://picsum.photos/id/${heroId}/1920/600`}
           h={400}
           w="100%"
           fit="cover"
@@ -174,9 +183,9 @@ const TestPage: React.FC = () => {
               description="A diverse set of high-quality images from Picsum to test resolution and aspect ratio filtering."
             />
             <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 6 }} spacing="md">
-              {GENERATED_GALLERY.map((item) => (
+              {gallery.map((item, idx) => (
                 <Card
-                  key={item.id}
+                  key={`${item.id}-${idx}`}
                   padding="xs"
                   radius="md"
                   withBorder
@@ -197,6 +206,7 @@ const TestPage: React.FC = () => {
                         src={`https://picsum.photos/id/${item.id}/${Math.round(item.width / 4)}/${Math.round(item.height / 4)}`}
                         alt={item.label}
                         loading="lazy"
+                        fallbackSrc="https://placehold.co/600x400?text=Loading"
                       />
                     </AspectRatio>
                   </Card.Section>

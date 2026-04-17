@@ -51,7 +51,7 @@ const ResolutionGroupBase: React.FC<ResolutionGroupProps> = ({
           aria-label={`${t("resModeOr")}/${t("resModeAnd")}`}
           size="xs"
           variant="filled"
-          color={resolutionMode === "or" ? "blue" : "teal"}
+          color={resolutionMode === "or" ? "brand" : "teal"}
           px={8}
           h={30}
         >

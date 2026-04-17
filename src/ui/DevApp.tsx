@@ -23,7 +23,7 @@ const DevApp = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <ModalsProvider>
-        <Box pos="relative" w="100vw" h="100vh" style={{ overflow: "hidden" }}>
+        <Box pos="relative" w="100vw" h="100vh" style={{ overflowY: "auto" }}>
           <TestPage />
           {visible ? (
             <App />
@@ -32,7 +32,7 @@ const DevApp = () => {
               size="xl"
               radius="xl"
               variant="filled"
-              color="blue"
+              color="brand"
               style={{
                 position: "fixed",
                 bottom: 30,

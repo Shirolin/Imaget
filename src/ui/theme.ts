@@ -4,7 +4,21 @@ export const FONT_STACK = "Outfit, system-ui, -apple-system, sans-serif";
 
 export const theme = createTheme({
   fontFamily: FONT_STACK,
-  primaryColor: "blue",
+  primaryColor: "brand",
+  colors: {
+    brand: [
+      "#E0FBFF",
+      "#B0F2F7",
+      "#81E9F0",
+      "#51DFF8",
+      "#22D6F1",
+      "#04E6F9",
+      "#00C6D7",
+      "#00A6B5",
+      "#008693",
+      "#006671",
+    ],
+  },
   defaultRadius: "md",
   cursorType: "pointer",
   components: {

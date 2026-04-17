@@ -39,7 +39,7 @@ export const FilterDefaultsSection = memo(
           <SettingCard
             icon={<IconFilter />}
             title={t("secGeneral")}
-            iconColor="var(--mantine-color-blue-filled)"
+            iconColor="var(--mantine-color-brand-filled)"
           >
             <Stack gap="md">
               <TextInput

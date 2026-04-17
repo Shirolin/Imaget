@@ -187,7 +187,7 @@ export const ExtractionSection = memo(
                   <ActionIcon
                     size="sm"
                     variant="subtle"
-                    color="blue"
+                    color="brand"
                     onClick={handleAddDomain}
                     disabled={!newDomain.trim()}
                     aria-label={t("btnAddDomain") || "Add Domain"}

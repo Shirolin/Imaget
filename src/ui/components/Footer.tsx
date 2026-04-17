@@ -8,7 +8,6 @@ import {
   Divider,
   Flex,
 } from "@mantine/core";
-import { t } from "../../core/utils/i18n";
 import {
   IconDownload,
   IconArchive,
@@ -19,6 +18,7 @@ import {
   IconCircleCheck,
 } from "@tabler/icons-react";
 import { PortalTooltip } from "./common/PortalTooltip";
+import { useI18n } from "../contexts/I18nContext";
 
 interface FooterProps {
   selectedCount: number;
@@ -43,6 +43,7 @@ const FooterBase: React.FC<FooterProps> = ({
   loading,
   portalNode,
 }) => {
+  const { t } = useI18n();
   return (
     <Box p="xs" style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}>
       <Group justify="space-between" gap="sm" wrap="wrap">
@@ -61,7 +62,7 @@ const FooterBase: React.FC<FooterProps> = ({
             >
               <Group
                 gap={4}
-                c={selectedCount > 0 ? "blue" : "dimmed"}
+                c={selectedCount > 0 ? "brand" : "dimmed"}
                 aria-label={`${t("statSelected")}: ${selectedCount}`}
               >
                 <IconCircleCheck size={16} aria-hidden="true" />

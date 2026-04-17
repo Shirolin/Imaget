@@ -17,8 +17,8 @@ import ImageGrid from "./components/ImageGrid";
 import Footer from "./components/Footer";
 import { ImagePreview } from "./components/ImagePreview";
 import SettingsPage from "./components/SettingsPage";
-
 import { useSettings } from "./hooks/useSettings";
+import { I18nProvider } from "./contexts/I18nContext";
 
 import { Sniffer } from "../core/sniffer";
 import { filterImages } from "../core/filter";
@@ -379,171 +379,173 @@ const App: React.FC = () => {
         }}
       />
 
-      <ModalsProvider
-        modalProps={{
-          portalProps: { target: portalNode || undefined },
-          zIndex: 99999,
-          centered: true,
-        }}
-      >
-        <Overlay
-          color="var(--mantine-color-dark-9)"
-          backgroundOpacity={0.65}
-          onClick={handleClose}
-          zIndex={0}
-        />
-
-        <Box
-          w={{ base: "100vw", sm: "85vw" }}
-          h={{ base: "100vh", sm: "90vh" }}
-          maw={1200}
-          bg="dark.7"
-          style={{
-            borderRadius: "var(--mantine-radius-lg)",
-            boxShadow: "var(--mantine-shadow-xl)",
-            margin: 0,
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            border: "1px solid var(--mantine-color-dark-4)",
-            zIndex: 1,
-            transition: "all 0.2s ease",
+      <I18nProvider language={settings.general.language}>
+        <ModalsProvider
+          modalProps={{
+            portalProps: { target: portalNode || undefined },
+            zIndex: 99999,
+            centered: true,
           }}
         >
-          <Header
-            onClose={handleClose}
-            onRefresh={handleRefresh}
-            onDeepScan={handleDeepScan}
-            isScanning={loading}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            portalNode={portalNode}
+          <Overlay
+            color="var(--mantine-color-dark-9)"
+            backgroundOpacity={0.65}
+            onClick={handleClose}
+            zIndex={0}
           />
-          {progress > 0 && (
-            <Progress
-              value={progress}
-              size="xs"
-              radius={0}
-              color="blue"
-              animated
-              style={{ transition: "opacity 0.3s ease" }}
-            />
-          )}
 
-          <Box style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-            <Transition
-              mounted={activeTab === "images"}
-              transition="fade"
-              duration={150}
-              timingFunction="ease"
-              exitDuration={100}
-            >
-              {(styles) => (
-                <Box
-                  style={{
-                    ...styles,
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <FilterBar
-                    options={filters}
-                    onChange={setFilters}
-                    portalNode={portalNode}
-                  />
-
-                  <ImageGrid
-                    items={filteredImages}
-                    layout={filters.layout}
-                    onSelect={toggleSelect}
-                    onPreview={setPreviewId}
-                    onDownload={handleSingleDownload}
-                    portalNode={portalNode}
-                  />
-
-                  <Footer
-                    selectedCount={selectedCount}
-                    filteredCount={filteredImages.length}
-                    totalCount={images.length}
-                    onSelectAll={selectAll}
-                    onDeselectAll={deselectAll}
-                    onDownload={handleDownload}
-                    onZip={handleZip}
-                    loading={loading}
-                    portalNode={portalNode}
-                  />
-                </Box>
-              )}
-            </Transition>
-
-            <Transition
-              mounted={activeTab === "settings"}
-              transition="fade"
-              duration={150}
-              timingFunction="ease"
-              exitDuration={100}
-            >
-              {(styles) => (
-                <Box
-                  style={{
-                    ...styles,
-                    position: "absolute",
-                    inset: 0,
-                    overflowY: "auto",
-                  }}
-                >
-                  <SettingsPage
-                    settings={settings}
-                    onUpdate={updateSettings}
-                    onReset={resetSettings}
-                    portalNode={portalNode}
-                  />
-                </Box>
-              )}
-            </Transition>
-          </Box>
-        </Box>
-
-        <Modal
-          opened={!!previewId}
-          onClose={handleClosePreview}
-          withCloseButton={false}
-          padding={0}
-          fullScreen
-          portalProps={{ target: portalNode || undefined }}
-          transitionProps={{ transition: "fade", duration: 200 }}
-          styles={{
-            content: {
-              backgroundColor: "transparent",
-              boxShadow: "none",
-              pointerEvents: "auto",
-            },
-            body: {
-              padding: 0,
-              height: "100%",
+          <Box
+            w={{ base: "100vw", sm: "85vw" }}
+            h={{ base: "100vh", sm: "90vh" }}
+            maw={1200}
+            bg="dark.7"
+            style={{
+              borderRadius: "var(--mantine-radius-lg)",
+              boxShadow: "var(--mantine-shadow-xl)",
+              margin: 0,
               overflow: "hidden",
-            },
-          }}
-        >
-          {previewId && filteredImages[previewIndex] && (
-            <ImagePreview
-              item={filteredImages[previewIndex]}
-              onClose={handleClosePreview}
-              onNext={
-                previewIndex < filteredImages.length - 1
-                  ? handleNextPreview
-                  : undefined
-              }
-              onPrev={previewIndex > 0 ? handlePrevPreview : undefined}
-              total={filteredImages.length}
-              currentIndex={previewIndex}
+              display: "flex",
+              flexDirection: "column",
+              border: "1px solid var(--mantine-color-dark-4)",
+              zIndex: 1,
+              transition: "all 0.2s ease",
+            }}
+          >
+            <Header
+              onClose={handleClose}
+              onRefresh={handleRefresh}
+              onDeepScan={handleDeepScan}
+              isScanning={loading}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
               portalNode={portalNode}
             />
-          )}
-        </Modal>
-      </ModalsProvider>
+            {progress > 0 && (
+              <Progress
+                value={progress}
+                size="xs"
+                radius={0}
+                color="brand"
+                animated
+                style={{ transition: "opacity 0.3s ease" }}
+              />
+            )}
+
+            <Box style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+              <Transition
+                mounted={activeTab === "images"}
+                transition="fade"
+                duration={150}
+                timingFunction="ease"
+                exitDuration={100}
+              >
+                {(styles) => (
+                  <Box
+                    style={{
+                      ...styles,
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <FilterBar
+                      options={filters}
+                      onChange={setFilters}
+                      portalNode={portalNode}
+                    />
+
+                    <ImageGrid
+                      items={filteredImages}
+                      layout={filters.layout}
+                      onSelect={toggleSelect}
+                      onPreview={setPreviewId}
+                      onDownload={handleSingleDownload}
+                      portalNode={portalNode}
+                    />
+
+                    <Footer
+                      selectedCount={selectedCount}
+                      filteredCount={filteredImages.length}
+                      totalCount={images.length}
+                      onSelectAll={selectAll}
+                      onDeselectAll={deselectAll}
+                      onDownload={handleDownload}
+                      onZip={handleZip}
+                      loading={loading}
+                      portalNode={portalNode}
+                    />
+                  </Box>
+                )}
+              </Transition>
+
+              <Transition
+                mounted={activeTab === "settings"}
+                transition="fade"
+                duration={150}
+                timingFunction="ease"
+                exitDuration={100}
+              >
+                {(styles) => (
+                  <Box
+                    style={{
+                      ...styles,
+                      position: "absolute",
+                      inset: 0,
+                      overflowY: "auto",
+                    }}
+                  >
+                    <SettingsPage
+                      settings={settings}
+                      onUpdate={updateSettings}
+                      onReset={resetSettings}
+                      portalNode={portalNode}
+                    />
+                  </Box>
+                )}
+              </Transition>
+            </Box>
+          </Box>
+
+          <Modal
+            opened={!!previewId}
+            onClose={handleClosePreview}
+            withCloseButton={false}
+            padding={0}
+            fullScreen
+            portalProps={{ target: portalNode || undefined }}
+            transitionProps={{ transition: "fade", duration: 200 }}
+            styles={{
+              content: {
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                pointerEvents: "auto",
+              },
+              body: {
+                padding: 0,
+                height: "100%",
+                overflow: "hidden",
+              },
+            }}
+          >
+            {previewId && filteredImages[previewIndex] && (
+              <ImagePreview
+                item={filteredImages[previewIndex]}
+                onClose={handleClosePreview}
+                onNext={
+                  previewIndex < filteredImages.length - 1
+                    ? handleNextPreview
+                    : undefined
+                }
+                onPrev={previewIndex > 0 ? handlePrevPreview : undefined}
+                total={filteredImages.length}
+                currentIndex={previewIndex}
+                portalNode={portalNode}
+              />
+            )}
+          </Modal>
+        </ModalsProvider>
+      </I18nProvider>
     </Box>
   );
 };

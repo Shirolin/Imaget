@@ -56,7 +56,7 @@ export const SupportSection = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="light"
-                  color="blue"
+                  color="brand"
                   leftSection={<IconCoffee size={16} />}
                   justify="flex-start"
                 >

@@ -45,7 +45,7 @@ const TypeFilterGroupBase: React.FC<TypeFilterGroupProps> = ({
     if (values[0] !== value) return null;
     return (
       <Group gap={4} wrap="nowrap" align="center">
-        <Text size="xs" fw={600} c="blue.4">
+        <Text size="xs" fw={600} c="brand.4">
           {value}
         </Text>
         {values.length > 1 && (

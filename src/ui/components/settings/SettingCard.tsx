@@ -13,7 +13,7 @@ const cardStyle = {
   backgroundColor: "var(--mantine-color-dark-7)",
   "&:hover": {
     backgroundColor: "var(--mantine-color-dark-6)",
-    borderColor: "var(--mantine-color-blue-filled)",
+    borderColor: "var(--mantine-color-brand-filled)",
     boxShadow: "var(--mantine-shadow-sm)",
   },
 };

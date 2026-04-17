@@ -10,8 +10,8 @@ import {
   Transition,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { t } from "../../core/utils/i18n";
 import { IconSettings, IconRestore, IconCheck } from "@tabler/icons-react";
+import { useI18n } from "../contexts/I18nContext";
 import type { Settings } from "../../types";
 import { GeneralSection } from "./settings/sections/GeneralSection";
 import { FileSavingSection } from "./settings/sections/FileSavingSection";
@@ -35,6 +35,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   onReset,
   portalNode,
 }) => {
+  const { t } = useI18n();
   const [showSaved, setShowSaved] = useState(false);
   const isInitialMount = useRef(true);
 
@@ -179,7 +180,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 size={22}
                 aria-hidden="true"
                 style={{
-                  color: "var(--mantine-color-blue-filled)",
+                  color: "var(--mantine-color-brand-filled)",
                   flexShrink: 0,
                 }}
               />

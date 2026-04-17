@@ -87,7 +87,7 @@ export const DownloadSection = memo(
             <Box>
               <Group justify="space-between" mb="xs">
                 <Text size="sm">{t("prefQuality")}</Text>
-                <Text size="xs" c="blue" fw={700}>
+                <Text size="xs" c="brand" fw={700}>
                   {settings.downloadLogic.quality}%
                 </Text>
               </Group>
@@ -127,7 +127,7 @@ export const DownloadSection = memo(
           <SettingCard
             icon={<IconAdjustmentsHorizontal />}
             title={t("secDownloadControl")}
-            iconColor="var(--mantine-color-blue-filled)"
+            iconColor="var(--mantine-color-brand-filled)"
           >
             <PortalSelect
               label={t("prefConflictResolution")}
@@ -203,11 +203,11 @@ export const DownloadSection = memo(
                     borderRadius: "var(--mantine-radius-md)",
                     backgroundColor:
                       settings.gifStrategy === strategy
-                        ? "var(--mantine-color-blue-light)"
+                        ? "var(--mantine-color-brand-light)"
                         : "transparent",
                     border: `1px solid ${
                       settings.gifStrategy === strategy
-                        ? "var(--mantine-color-blue-filled)"
+                        ? "var(--mantine-color-brand-filled)"
                         : "var(--mantine-color-dark-4)"
                     }`,
                     transition: "all 0.2s ease",
