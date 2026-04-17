@@ -56,12 +56,17 @@ export const getLocale = () => {
   return "en";
 };
 
-export const t = (key: string, substitutions?: string | string[]): string => {
+export const t = (
+  key: string,
+  substitutions?: string | string[],
+  overrideLocale?: string,
+): string => {
   let message = "";
 
   // 1. Try Chrome i18n API
   if (
     !forcedLocale &&
+    !overrideLocale &&
     typeof chrome !== "undefined" &&
     chrome.i18n &&
     chrome.i18n.getMessage
@@ -71,7 +76,7 @@ export const t = (key: string, substitutions?: string | string[]): string => {
 
   // 2. Fallback to dictionary
   if (!message) {
-    const locale = getLocale();
+    const locale = overrideLocale || getLocale();
     const table = MESSAGES[locale] || MESSAGES.en;
     const entry = table[key] || MESSAGES.en[key];
 

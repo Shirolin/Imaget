@@ -8,7 +8,7 @@ import React, {
 import { Box, Overlay, Progress, Modal, Transition, Text } from "@mantine/core";
 import { modals, ModalsProvider } from "@mantine/modals";
 
-import { t, setLocale, getLocale } from "../core/utils/i18n";
+import { t, getLocale } from "../core/utils/i18n";
 import "@mantine/core/styles.css";
 
 import Header from "./components/Header";
@@ -116,11 +116,6 @@ const App: React.FC = () => {
     const lang = settings.general.language;
     if (lang === "auto") return getLocale();
     return lang.replace("_", "-"); // HTML lang attribute normalization (zh_CN -> zh-CN)
-  }, [settings.general.language]);
-
-  // 同步 UI 语言与 lang 属性
-  useEffect(() => {
-    setLocale(settings.general.language);
   }, [settings.general.language]);
 
   // 计算过滤后的列表
