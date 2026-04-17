@@ -51,7 +51,15 @@ const HeaderBase: React.FC<HeaderProps> = ({
     >
       <Group gap="md" visibleFrom="xs" wrap="nowrap">
         <Group gap="xs" wrap="nowrap">
-          <Image src={chrome.runtime.getURL("favicon.svg")} w={24} h={24} />
+          <Image
+            src={
+              typeof chrome !== "undefined" && chrome.runtime?.getURL
+                ? chrome.runtime.getURL("favicon.svg")
+                : "/favicon.svg"
+            }
+            w={24}
+            h={24}
+          />
           <Title order={4} c="blue" style={{ letterSpacing: 1 }}>
             IMAGET
           </Title>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import {
   Title,
   Text,
@@ -9,10 +9,54 @@ import {
   Box,
   Group,
   Container,
+  Overlay,
+  AspectRatio,
+  Divider,
 } from "@mantine/core";
+import { IconPhoto, IconDeviceLaptop, IconFlask } from "@tabler/icons-react";
 import { TEST_CASES } from "../core/test-cases";
 
-const ShadowBox: React.FC<{ url: string }> = ({ url }) => {
+// ==============================================
+// Gallery Data Definition
+// ==============================================
+interface GalleryItem {
+  id: number;
+  width: number;
+  height: number;
+  label: string;
+}
+
+const GENERATED_GALLERY: GalleryItem[] = [
+  // Huge High-Res (4K-ish)
+  { id: 10, width: 3840, height: 2160, label: "Mountains 4K" },
+  { id: 20, width: 2560, height: 1440, label: "Forest 2K" },
+  { id: 30, width: 1920, height: 1080, label: "River FHD" },
+  // Portraits
+  { id: 64, width: 800, height: 1200, label: "Portrait A" },
+  { id: 65, width: 1080, height: 1920, label: "Mobile Wallpaper" },
+  { id: 100, width: 600, height: 1000, label: "Tall Art" },
+  // Squares
+  { id: 237, width: 800, height: 800, label: "Puppy Square" },
+  { id: 240, width: 500, height: 500, label: "Stairs Square" },
+  { id: 250, width: 300, height: 300, label: "Avatar" },
+  // Landscapes
+  { id: 367, width: 1200, height: 600, label: "Sea View" },
+  { id: 400, width: 1600, height: 400, label: "Ultrawide Panorama" },
+  { id: 450, width: 1024, height: 768, label: "Retro Landscape" },
+  // Diverse IDs for variety
+  ...Array.from({ length: 24 }).map((_, i) => ({
+    id: i + 500,
+    width: 600 + (i % 3) * 200,
+    height: 400 + (i % 2) * 200,
+    label: `Exhibition Item ${i + 1}`,
+  })),
+];
+
+// ==============================================
+// Sub-components
+// ==============================================
+
+const ShadowBox = memo(({ url }: { url: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,210 +65,304 @@ const ShadowBox: React.FC<{ url: string }> = ({ url }) => {
       const img = document.createElement("img");
       img.src = url;
       img.style.width = "100%";
-      img.style.height = "150px";
+      img.style.height = "100%";
       img.style.objectFit = "cover";
+      img.style.borderRadius = "8px";
       shadow.appendChild(img);
     }
   }, [url]);
 
   return <Box ref={containerRef} h={150} />;
-};
+});
+
+const SectionHeader = ({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) => (
+  <Stack gap={4} mb="lg">
+    <Group gap="xs">
+      <Icon size={24} color="var(--mantine-color-blue-filled)" />
+      <Title order={2} style={{ letterSpacing: 0.5 }}>
+        {title}
+      </Title>
+    </Group>
+    <Text c="dimmed" size="sm">
+      {description}
+    </Text>
+  </Stack>
+);
+
+// ==============================================
+// Main Page
+// ==============================================
 
 const TestPage: React.FC = () => {
   return (
-    <Container
-      size="xl"
-      py="xl"
+    <Box
       style={{
         backgroundColor: "var(--mantine-color-dark-9)",
         minHeight: "100vh",
         color: "var(--mantine-color-dark-0)",
       }}
     >
-      <Stack gap="xl">
-        <Box>
-          <Title order={1}>Sniffer Test Bench</Title>
-          <Text c="dimmed">
-            This page contains various image integration scenarios for testing
-            the Sniffer engine.
-          </Text>
-        </Box>
-
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-          {TEST_CASES.map((tc) => (
-            <Card key={tc.id} withBorder shadow="sm" radius="md">
-              <Card.Section>
-                {tc.type === "img" && (
-                  <Image src={tc.url} height={150} alt={tc.title} fit="cover" />
-                )}
-                {tc.type === "background" && (
-                  <Box
-                    h={150}
-                    style={{
-                      backgroundImage: `url(${tc.url})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                )}
-                {tc.type === "picture" && (
-                  <picture>
-                    <source srcSet={tc.url} />
-                    <img
-                      src={tc.url}
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                        objectFit: "cover",
-                      }}
-                      alt={tc.title}
-                    />
-                  </picture>
-                )}
-                {tc.type === "shadow-dom" && <ShadowBox url={tc.url} />}
-                {tc.type === "svg" && (
-                  <Image
-                    src={tc.url}
-                    height={150}
-                    alt={tc.title}
-                    fit="contain"
-                    p="md"
-                  />
-                )}
-              </Card.Section>
-              <Stack gap={4} mt="sm">
-                <Text fw={500} size="sm">
-                  {tc.title}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {tc.type.toUpperCase()}
-                </Text>
-              </Stack>
-            </Card>
-          ))}
-        </SimpleGrid>
-
-        <Box py="xl" style={{ borderTop: "1px solid #ddd" }}>
-          <Title order={2} mb="md">
-            Complex Realistic Scenarios
-          </Title>
-          <Stack gap="xl">
-            {/* Deeply Nested Container */}
-            <Box
-              p="md"
-              bg="dark.8"
-              style={{
-                border: "1px dashed var(--mantine-color-dark-4)",
-                borderRadius: "var(--mantine-radius-md)",
-              }}
+      {/* Hero Section */}
+      <Box style={{ position: "relative", height: 400, overflow: "hidden" }}>
+        <Image
+          src="https://picsum.photos/id/1015/1920/600"
+          h={400}
+          w="100%"
+          fit="cover"
+        />
+        <Overlay
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%)"
+          opacity={1}
+          zIndex={1}
+        />
+        <Container
+          size="xl"
+          h="100%"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            paddingBottom: 60,
+          }}
+        >
+          <Stack gap={0}>
+            <Text
+              c="blue.4"
+              fw={800}
+              size="sm"
+              tt="uppercase"
+              style={{ letterSpacing: 2 }}
             >
-              <Text size="sm" mb="xs" fw={700} c="bright">
-                Deeply Nested Context
-              </Text>
-              <Box>
+              Exhibition Bench
+            </Text>
+            <Title
+              order={1}
+              size={48}
+              style={{ color: "#fff", lineHeight: 1.1, marginBottom: 12 }}
+            >
+              Sniffer Engine <br />
+              <span style={{ color: "var(--mantine-color-blue-4)" }}>
+                Laboratory
+              </span>
+            </Title>
+            <Text c="gray.4" maw={600}>
+              A comprehensive stress-test environment featuring various image
+              formats, resolutions, and complex DOM structures to verify the
+              Imaget sniffer performance and accuracy.
+            </Text>
+          </Stack>
+        </Container>
+      </Box>
+
+      <Container size="xl" py={60}>
+        <Stack gap={80}>
+          {/* Section 1: High-Res Gallery */}
+          <Box>
+            <SectionHeader
+              icon={IconPhoto}
+              title="High-Res Showcase"
+              description="A diverse set of high-quality images from Picsum to test resolution and aspect ratio filtering."
+            />
+            <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 6 }} spacing="md">
+              {GENERATED_GALLERY.map((item) => (
+                <Card
+                  key={item.id}
+                  padding="xs"
+                  radius="md"
+                  withBorder
+                  bg="dark.8"
+                  styles={{
+                    root: {
+                      transition: "transform 0.2s ease, border-color 0.2s ease",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                        borderColor: "var(--mantine-color-blue-filled)",
+                      },
+                    },
+                  }}
+                >
+                  <Card.Section>
+                    <AspectRatio ratio={item.width / item.height}>
+                      <Image
+                        src={`https://picsum.photos/id/${item.id}/${Math.round(item.width / 4)}/${Math.round(item.height / 4)}`}
+                        alt={item.label}
+                        loading="lazy"
+                      />
+                    </AspectRatio>
+                  </Card.Section>
+                  <Stack gap={2} mt="xs">
+                    <Text fw={700} size="xs" truncate>
+                      {item.label}
+                    </Text>
+                    <Text size="10px" c="dimmed">
+                      {item.width} × {item.height}
+                    </Text>
+                  </Stack>
+                </Card>
+              ))}
+            </SimpleGrid>
+          </Box>
+
+          {/* Section 2: Technical Test Cases */}
+          <Box>
+            <SectionHeader
+              icon={IconFlask}
+              title="Developer Lab"
+              description="Special integration scenarios including Shadow DOM, Background Images, and SVGs."
+            />
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+              {TEST_CASES.map((tc) => (
+                <Card
+                  key={tc.id}
+                  withBorder
+                  bg="dark.8"
+                  shadow="sm"
+                  radius="md"
+                  padding="md"
+                >
+                  <Card.Section>
+                    {tc.type === "img" && (
+                      <Image
+                        src={tc.url}
+                        height={150}
+                        alt={tc.title}
+                        fit="cover"
+                      />
+                    )}
+                    {tc.type === "background" && (
+                      <Box
+                        h={150}
+                        style={{
+                          backgroundImage: `url(${tc.url})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                      />
+                    )}
+                    {tc.type === "picture" && (
+                      <picture>
+                        <source srcSet={tc.url} />
+                        <img
+                          src={tc.url}
+                          style={{
+                            width: "100%",
+                            height: "150px",
+                            objectFit: "cover",
+                          }}
+                          alt={tc.title}
+                        />
+                      </picture>
+                    )}
+                    {tc.type === "shadow-dom" && <ShadowBox url={tc.url} />}
+                    {tc.type === "svg" && (
+                      <Image
+                        src={tc.url}
+                        height={150}
+                        alt={tc.title}
+                        fit="contain"
+                        p="md"
+                      />
+                    )}
+                  </Card.Section>
+                  <Stack gap={4} mt="sm">
+                    <Text fw={600} size="sm">
+                      {tc.title}
+                    </Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                      {tc.type}
+                    </Text>
+                  </Stack>
+                </Card>
+              ))}
+            </SimpleGrid>
+          </Box>
+
+          {/* Section 3: Deep Context Nesting */}
+          <Box>
+            <SectionHeader
+              icon={IconDeviceLaptop}
+              title="Structural Edge Cases"
+              description="Testing sniffer's ability to find images hidden deep within DOM hierarchies."
+            />
+            <Stack gap="xl">
+              <Box
+                p="xl"
+                bg="dark.8"
+                style={{
+                  border: "1px dashed var(--mantine-color-dark-4)",
+                  borderRadius: "var(--mantine-radius-md)",
+                }}
+              >
                 <Box component="section">
                   <Box component="article">
-                    <Box style={{ position: "relative" }}>
+                    <Group align="flex-start" gap="xl">
                       <img
-                        src="https://picsum.photos/id/15/300/200"
-                        alt="Nested"
-                        style={{ borderRadius: 8, display: "block" }}
+                        src="https://picsum.photos/id/15/600/400"
+                        alt="Deeply Nested"
+                        style={{
+                          borderRadius: 12,
+                          display: "block",
+                          maxWidth: "100%",
+                          height: "auto",
+                          boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+                        }}
                       />
-                      <Text size="xs" mt="xs" c="dimmed">
-                        This image is nested: Box (section) {" > "} Box
-                        (article) {" > "} Box {" > "} img
-                      </Text>
-                    </Box>
+                      <Stack gap="md" style={{ flex: 1 }}>
+                        <Title order={3}>The Nested Context</Title>
+                        <Text size="sm" c="dimmed">
+                          This image is intentionally buried deep inside Box,
+                          Section, and Article components to verify recursive
+                          DOM traversal.
+                        </Text>
+                        <Divider opacity={0.1} />
+                        <Text size="xs" ff="monospace">
+                          Path: Container {">"} Stack {">"} Section {">"}{" "}
+                          Article {">"} Group {">"} img
+                        </Text>
+                      </Stack>
+                    </Group>
                   </Box>
                 </Box>
               </Box>
-            </Box>
+            </Stack>
+          </Box>
+        </Stack>
+      </Container>
 
-            {/* Overlapping items */}
-            <Box
-              h={250}
-              bg="dark.8"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                border: "1px solid var(--mantine-color-dark-4)",
-                borderRadius: "var(--mantine-radius-md)",
-              }}
-            >
-              <Text size="sm" p="xs" fw={700} c="bright">
-                Absolute Positioning & Z-Index
+      {/* Page Footer */}
+      <Box
+        py={40}
+        bg="dark.8"
+        style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}
+      >
+        <Container size="xl">
+          <Group justify="space-between">
+            <Text size="xs" c="dimmed">
+              Imaget Sniffer Test Page &copy; 2026
+            </Text>
+            <Group gap="xs">
+              <Text size="xs" c="blue.4" fw={700}>
+                PICSUM
               </Text>
-              <img
-                src="https://picsum.photos/id/16/600/300"
-                style={{
-                  position: "absolute",
-                  top: 50,
-                  left: 20,
-                  width: 200,
-                  zIndex: 1,
-                }}
-                alt="Overlap 1"
-              />
-              <img
-                src="https://picsum.photos/id/17/600/300"
-                style={{
-                  position: "absolute",
-                  top: 80,
-                  left: 100,
-                  width: 200,
-                  zIndex: 2,
-                  border: "4px solid var(--mantine-color-dark-8)",
-                }}
-                alt="Overlap 2"
-              />
-            </Box>
-
-            {/* Hidden / Transparent Images */}
-            <Box p="md" bg="dark.8" style={{ borderRadius: 8 }}>
-              <Text size="sm" mb="xs" fw={700}>
-                Edge Cases (Hidden/Small/DataURL)
+              <Text size="xs" c="dimmed">
+                POWERED
               </Text>
-              <Group>
-                <Box>
-                  <Text size="xs" c="dimmed">
-                    Opacity 0.1
-                  </Text>
-                  <img
-                    src="https://picsum.photos/id/18/50/50"
-                    style={{ opacity: 0.1 }}
-                    alt="Ghost"
-                  />
-                </Box>
-                <Box>
-                  <Text size="xs" c="dimmed">
-                    Base64 PNG
-                  </Text>
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbUlEQVRYhe3XMQ6AIAwF0GfCBeT+R+T+ByS6uBgnE6MDSVv8D5v0SNoXpAbA99o8B8AzI8mMc85f670PAOC9p875mZnXAFhvIDUhNSGNCI0IDYmNCI0IDQlNCY0JDYnNCG1G6GfG98X4C0+8+AL8L5fW5AAAAABJRU5ErkJggg=="
-                    alt="Base64"
-                  />
-                </Box>
-                <Box>
-                  <Text size="xs" c="dimmed">
-                    0x0 hidden
-                  </Text>
-                  <div style={{ width: 0, height: 0, overflow: "hidden" }}>
-                    <img
-                      src="https://picsum.photos/id/20/800/800"
-                      alt="Hidden"
-                    />
-                  </div>
-                </Box>
-                <Text size="xs" c="dimmed" style={{ flex: 1 }}>
-                  Contains low-opacity, tiny (Base64), and zero-sized container
-                  images to test sniffer robustness.
-                </Text>
-              </Group>
-            </Box>
-          </Stack>
-        </Box>
-      </Stack>
-    </Container>
+            </Group>
+          </Group>
+        </Container>
+      </Box>
+    </Box>
   );
 };
-export default TestPage;
+
+export default memo(TestPage);

@@ -60,6 +60,34 @@ export class ImageTypeDetector {
         const tmMatch = url.match(/_(\d+x\d+)?\.(webp|jpg|png|gif)/i);
         if (tmMatch) return tmMatch[2].toUpperCase() as ImageFormat;
       }
+
+      // Unsplash (images.unsplash.com/...&fm=webp)
+      if (url.includes("unsplash.com")) {
+        const fm = params.get("fm")?.toLowerCase();
+        if (fm) {
+          if (fm === "jpg" || fm === "jpeg") return "JPG";
+          return fm.toUpperCase() as ImageFormat;
+        }
+        // 如果没有 fm 参数，Unsplash 默认通常是 JPG
+        return "JPG";
+      }
+
+      // Picsum (picsum.photos/id/...)
+      if (url.includes("picsum.photos")) {
+        return "JPG";
+      }
+
+      // 一般性规则：从查询参数中寻找 format, fm, ext 等字段
+      const commonFmtKeys = ["format", "fm", "ext", "mime"];
+      for (const key of commonFmtKeys) {
+        const val = params.get(key)?.toLowerCase();
+        if (val) {
+          if (val === "jpeg" || val === "jpg") return "JPG";
+          if (["png", "webp", "gif", "avif", "svg", "bmp"].includes(val)) {
+            return val.toUpperCase() as ImageFormat;
+          }
+        }
+      }
     } catch {
       // 容错处理
     }
