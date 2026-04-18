@@ -384,11 +384,11 @@ const App: React.FC = () => {
         >
           <Overlay
             color="var(--mantine-color-dark-9)"
-            backgroundOpacity={0.65}
+            backgroundOpacity={0.5}
+            blur={10}
             onClick={handleClose}
             zIndex={0}
           />
-
           <Box
             w={{ base: "100vw", sm: "85vw" }}
             h={{ base: "100vh", sm: "90vh" }}
