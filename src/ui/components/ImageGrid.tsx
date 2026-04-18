@@ -6,7 +6,10 @@ import {
   Box,
   Center,
   Loader,
+  Text,
 } from "@mantine/core";
+import { IconPhotoOff } from "@tabler/icons-react";
+import { t } from "../../core/utils/i18n";
 import type { ImageItem } from "../../types";
 import { ImageCard } from "./ImageCard";
 
@@ -31,7 +34,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   const [prevItems, setPrevItems] = useState(items);
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  // 当 items 改变（筛选）时，重置可见数量 (在渲染期间处理，避免 useEffect 级联渲染)
+  // 当 items 改变（筛选）时，重置可见数量
   if (items !== prevItems) {
     setPrevItems(items);
     setVisibleCount(40);
@@ -61,6 +64,39 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   }, [visibleCount, items.length]);
 
   const visibleItems = items.slice(0, visibleCount);
+
+  if (items.length === 0) {
+    return (
+      <Center style={{ flex: 1 }} p="xl">
+        <Stack align="center" gap="md" style={{ opacity: 0.6 }}>
+          <Box
+            p="xl"
+            style={{
+              borderRadius: "50%",
+              backgroundColor: "var(--mantine-color-dark-6)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <IconPhotoOff
+              size={48}
+              stroke={1.5}
+              color="var(--mantine-color-dark-3)"
+            />
+          </Box>
+          <Stack gap={4} align="center">
+            <Text fw={700} size="lg" c="bright">
+              {t("noImages")}
+            </Text>
+            <Text size="sm" c="dimmed" ta="center" maw={300}>
+              {t("noImagesHint")}
+            </Text>
+          </Stack>
+        </Stack>
+      </Center>
+    );
+  }
 
   const renderContent = () => {
     if (layout === "list") {
@@ -109,7 +145,30 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   };
 
   return (
-    <ScrollArea style={{ flex: 1 }} p="md" pt="lg" pb="xl">
+    <ScrollArea
+      style={{ flex: 1 }}
+      p="md"
+      pt="lg"
+      pb="xl"
+      scrollbarSize={6}
+      offsetScrollbars
+      styles={{
+        scrollbar: {
+          transition: "opacity 0.2s ease",
+          backgroundColor: "transparent",
+          '&[data-state="visible"]': { opacity: 1 },
+          "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.05)" },
+        },
+        thumb: {
+          backgroundColor: "var(--mantine-color-dark-4)",
+          transition: "background-color 0.2s ease",
+          "&:hover": { backgroundColor: "var(--mantine-color-dark-3)" },
+        },
+        viewport: {
+          paddingBottom: 40,
+        },
+      }}
+    >
       {renderContent()}
 
       {/* 滚动监听目标 */}
