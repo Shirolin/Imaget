@@ -388,7 +388,7 @@ const App: React.FC = () => {
             blur={10}
             onClick={handleClose}
             zIndex={0}
-          />
+          />{" "}
           <Box
             w={{ base: "100vw", sm: "85vw" }}
             h={{ base: "100vh", sm: "90vh" }}
@@ -501,7 +501,6 @@ const App: React.FC = () => {
               </Transition>
             </Box>
           </Box>
-
           <Modal
             opened={!!previewId}
             onClose={handleClosePreview}
