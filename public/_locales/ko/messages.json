@@ -1,56 +1,164 @@
 {
-  "extName": { "message": "Imaget - 스마트 이미지 스니퍼 및 다운로더" },
-  "extDesc": { "message": "웹페이지에서 이미지를 자동으로 감지하고 일괄 다운로드합니다." },
-  "btnDownload": { "message": "다운로드" },
-  "btnDeepScan": { "message": "심층 스캔" },
-  "btnClose": { "message": "닫기" },
-  "selectAll": { "message": "전체 선택" },
-  "deselectAll": { "message": "전체 해제" },
-  "downloadSelected": { "message": "선택 항목 다운로드 ($1)" },
-  "selectedCount": { "message": "$1 선택 / $2 필터" },
-  "noImages": { "message": "이미지를 찾을 수 없습니다" },
-  "noImagesHint": { "message": "필터 설정을 조정하거나 페이지를 새로고침 해보세요" },
-  "loading": { "message": "로딩 중..." },
-  "processing": { "message": "처리 중... ($1/$2)" },
-  "preparingZip": { "message": "ZIP 파일 준비 중..." },
-  "toastDownloadStarted": { "message": "$1 개의 이미지 다운로드를 시작했습니다" },
-  "toastNoSelection": { "message": "먼저 이미지를 선택하세요" },
-  "preview": { "message": "미리보기" },
-  "downloadZip": { "message": "ZIP 다운로드" },
-  "filterMinWidth": { "message": "최소 너비" },
-  "filterMinHeight": { "message": "최소 높이" },
-  "filterSearch": { "message": "검색" },
-  "filterExclude": { "message": "제외 키워드" },
-  "filterType": { "message": "유형" },
-  "filterLayout": { "message": "가로세로 비율" },
-  "layoutAny": { "message": "전체" },
-  "layoutSquare": { "message": "정사각형" },
-  "layoutWide": { "message": "가로형" },
-  "layoutTall": { "message": "세로형" },
-  "sortBy": { "message": "정렬 기준" },
-  "sortOrder": { "message": "순서" },
-  "sortSize": { "message": "크기" },
-  "sortAsc": { "message": "오름차순" },
-  "sortDesc": { "message": "내림차순" },
-  "tabImages": { "message": "이미지" },
-  "tabPreferences": { "message": "설정" },
-  "prefSubfolder": { "message": "하위 폴더" },
-  "prefFilename": { "message": "파일명 템플릿" },
-  "prefSave": { "message": "저장" },
-  "prefCancel": { "message": "취소" },
-  "prefConflictAction": { "message": "충돌 해결" },
-  "conflictUniquify": { "message": "이름 변경" },
-  "conflictOverwrite": { "message": "덮어쓰기" },
-  "conflictPrompt": { "message": "확인" },
-  "warnManyFiles": { "message": "$1 개의 이미지를 다운로드하시겠습니까?" },
-  "secFileSave": { message: "파일 저장" },
-  "secDownloadLogic": { message: "다운로드 로직" },
-  "secUiBehavior": { message: "UI 동작" },
-  "prefShowHoverBtn": { "message": "플로팅 버튼 표시" },
-  "formatOriginal": { "message": "원본" },
-  "resetDefault": { "message": "기본값으로 재설정" },
-  "menuSaveAsWebP": { "message": "WebP로 저장" },
-  "menuSaveAsPNG": { "message": "PNG로 저장" },
-  "menuSaveAsJPG": { "message": "JPG로 저장" },
-  "menuOpenDashboard": { "message": "Imaget 대시보드 열기" }
+  "extName": {
+    "message": "Imaget - 스마트 이미지 스니퍼 및 다운로더"
+  },
+  "extDesc": {
+    "message": "웹페이지에서 이미지를 자동으로 감지하고 일괄 다운로드합니다."
+  },
+  "btnDownload": {
+    "message": "다운로드"
+  },
+  "btnDeepScan": {
+    "message": "심층 스캔"
+  },
+  "btnClose": {
+    "message": "닫기"
+  },
+  "selectAll": {
+    "message": "전체 선택"
+  },
+  "deselectAll": {
+    "message": "전체 해제"
+  },
+  "downloadSelected": {
+    "message": "선택 항목 다운로드 ($1)"
+  },
+  "selectedCount": {
+    "message": "$1 선택 / $2 필터"
+  },
+  "noImages": {
+    "message": "이미지를 찾을 수 없습니다"
+  },
+  "noImagesHint": {
+    "message": "필터 설정을 조정하거나 페이지를 새로고침 해보세요"
+  },
+  "loading": {
+    "message": "로딩 중..."
+  },
+  "processing": {
+    "message": "처리 중... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "ZIP 파일 준비 중..."
+  },
+  "toastDownloadStarted": {
+    "message": "$1 개의 이미지 다운로드를 시작했습니다"
+  },
+  "toastNoSelection": {
+    "message": "먼저 이미지를 선택하세요"
+  },
+  "preview": {
+    "message": "미리보기"
+  },
+  "downloadZip": {
+    "message": "ZIP 다운로드"
+  },
+  "filterMinWidth": {
+    "message": "최소 너비"
+  },
+  "filterMinHeight": {
+    "message": "최소 높이"
+  },
+  "filterSearch": {
+    "message": "검색"
+  },
+  "filterExclude": {
+    "message": "제외 키워드"
+  },
+  "filterType": {
+    "message": "유형"
+  },
+  "filterLayout": {
+    "message": "가로세로 비율"
+  },
+  "layoutAny": {
+    "message": "전체"
+  },
+  "layoutSquare": {
+    "message": "정사각형"
+  },
+  "layoutWide": {
+    "message": "가로형"
+  },
+  "layoutTall": {
+    "message": "세로형"
+  },
+  "sortBy": {
+    "message": "정렬 기준"
+  },
+  "sortOrder": {
+    "message": "순서"
+  },
+  "sortSize": {
+    "message": "크기"
+  },
+  "sortAsc": {
+    "message": "오름차순"
+  },
+  "sortDesc": {
+    "message": "내림차순"
+  },
+  "tabImages": {
+    "message": "이미지"
+  },
+  "tabPreferences": {
+    "message": "설정"
+  },
+  "prefSubfolder": {
+    "message": "하위 폴더"
+  },
+  "prefFilename": {
+    "message": "파일명 템플릿"
+  },
+  "prefSave": {
+    "message": "저장"
+  },
+  "prefCancel": {
+    "message": "취소"
+  },
+  "prefConflictAction": {
+    "message": "충돌 해결"
+  },
+  "conflictUniquify": {
+    "message": "이름 변경"
+  },
+  "conflictOverwrite": {
+    "message": "덮어쓰기"
+  },
+  "conflictPrompt": {
+    "message": "확인"
+  },
+  "warnManyFiles": {
+    "message": "$1 개의 이미지를 다운로드하시겠습니까?"
+  },
+  "secFileSave": {
+    "message": "파일 저장"
+  },
+  "secDownloadLogic": {
+    "message": "다운로드 로직"
+  },
+  "secUiBehavior": {
+    "message": "UI 동작"
+  },
+  "prefShowHoverBtn": {
+    "message": "플로팅 버튼 표시"
+  },
+  "formatOriginal": {
+    "message": "원본"
+  },
+  "resetDefault": {
+    "message": "기본값으로 재설정"
+  },
+  "menuSaveAsWebP": {
+    "message": "WebP로 저장"
+  },
+  "menuSaveAsPNG": {
+    "message": "PNG로 저장"
+  },
+  "menuSaveAsJPG": {
+    "message": "JPG로 저장"
+  },
+  "menuOpenDashboard": {
+    "message": "Imaget 대시보드 열기"
+  }
 }

@@ -1,56 +1,164 @@
 {
-  "extName": { "message": "Imaget - Detector de Imágenes Inteligente y Descarga" },
-  "extDesc": { "message": "Detecta y descarga automáticamente imágenes de cualquier página web por lotes." },
-  "btnDownload": { "message": "Descargar" },
-  "btnDeepScan": { "message": "Escaneo Profundo" },
-  "btnClose": { "message": "Cerrar" },
-  "selectAll": { "message": "Seleccionar Todo" },
-  "deselectAll": { "message": "Deseleccionar Todo" },
-  "downloadSelected": { "message": "Descargar Selección ($1)" },
-  "selectedCount": { "message": "$1 selec. / $2 filtradas" },
-  "noImages": { "message": "No se encontraron imágenes" },
-  "noImagesHint": { "message": "Intente ajustar los filtros o actualizar la página" },
-  "loading": { "message": "Cargando..." },
-  "processing": { "message": "Procesando... ($1/$2)" },
-  "preparingZip": { "message": "Preparando ZIP..." },
-  "toastDownloadStarted": { "message": "Descarga de $1 imágenes iniciada" },
-  "toastNoSelection": { "message": "Por favor, seleccione imágenes primero" },
-  "preview": { "message": "Vista Previa" },
-  "downloadZip": { "message": "Descargar ZIP" },
-  "filterMinWidth": { "message": "Ancho Mín." },
-  "filterMinHeight": { "message": "Alto Mín." },
-  "filterSearch": { "message": "Buscar" },
-  "filterExclude": { "message": "Excluir Palabras" },
-  "filterType": { "message": "Tipo" },
-  "filterLayout": { "message": "Relación de Aspecto" },
-  "layoutAny": { "message": "Todo" },
-  "layoutSquare": { "message": "Cuadrado" },
-  "layoutWide": { "message": "Ancho" },
-  "layoutTall": { "message": "Alto" },
-  "sortBy": { "message": "Ordenar por" },
-  "sortOrder": { "message": "Orden" },
-  "sortSize": { "message": "Tamaño" },
-  "sortAsc": { "message": "Ascendente" },
-  "sortDesc": { "message": "Descendente" },
-  "tabImages": { "message": "Imágenes" },
-  "tabPreferences": { "message": "Ajustes" },
-  "prefSubfolder": { "message": "Subcarpeta" },
-  "prefFilename": { "message": "Plantilla de Nombre" },
-  "prefSave": { "message": "Guardar" },
-  "prefCancel": { "message": "Cancelar" },
-  "prefConflictAction": { "message": "Conflicto de Archivos" },
-  "conflictUniquify": { "message": "Renombrar" },
-  "conflictOverwrite": { "message": "Sobrescribir" },
-  "conflictPrompt": { "message": "Preguntar" },
-  "warnManyFiles": { "message": "Está a punto de descargar $1 imágenes, ¿continuar?" },
-  "secFileSave": { message: "Guardado de Archivos" },
-  "secDownloadLogic": { message: "Lógica de Descarga" },
-  "secUiBehavior": { message: "Comportamiento UI" },
-  "prefShowHoverBtn": { "message": "Mostrar Botón Flotante" },
-  "formatOriginal": { "message": "Original" },
-  "resetDefault": { "message": "Restablecer Valores" },
-  "menuSaveAsWebP": { "message": "Guardar como WebP" },
-  "menuSaveAsPNG": { "message": "Guardar como PNG" },
-  "menuSaveAsJPG": { "message": "Guardar como JPG" },
-  "menuOpenDashboard": { "message": "Abrir Panel de Imaget" }
+  "extName": {
+    "message": "Imaget - Detector de Imágenes Inteligente y Descarga"
+  },
+  "extDesc": {
+    "message": "Detecta y descarga automáticamente imágenes de cualquier página web por lotes."
+  },
+  "btnDownload": {
+    "message": "Descargar"
+  },
+  "btnDeepScan": {
+    "message": "Escaneo Profundo"
+  },
+  "btnClose": {
+    "message": "Cerrar"
+  },
+  "selectAll": {
+    "message": "Seleccionar Todo"
+  },
+  "deselectAll": {
+    "message": "Deseleccionar Todo"
+  },
+  "downloadSelected": {
+    "message": "Descargar Selección ($1)"
+  },
+  "selectedCount": {
+    "message": "$1 selec. / $2 filtradas"
+  },
+  "noImages": {
+    "message": "No se encontraron imágenes"
+  },
+  "noImagesHint": {
+    "message": "Intente ajustar los filtros o actualizar la página"
+  },
+  "loading": {
+    "message": "Cargando..."
+  },
+  "processing": {
+    "message": "Procesando... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "Preparando ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "Descarga de $1 imágenes iniciada"
+  },
+  "toastNoSelection": {
+    "message": "Por favor, seleccione imágenes primero"
+  },
+  "preview": {
+    "message": "Vista Previa"
+  },
+  "downloadZip": {
+    "message": "Descargar ZIP"
+  },
+  "filterMinWidth": {
+    "message": "Ancho Mín."
+  },
+  "filterMinHeight": {
+    "message": "Alto Mín."
+  },
+  "filterSearch": {
+    "message": "Buscar"
+  },
+  "filterExclude": {
+    "message": "Excluir Palabras"
+  },
+  "filterType": {
+    "message": "Tipo"
+  },
+  "filterLayout": {
+    "message": "Relación de Aspecto"
+  },
+  "layoutAny": {
+    "message": "Todo"
+  },
+  "layoutSquare": {
+    "message": "Cuadrado"
+  },
+  "layoutWide": {
+    "message": "Ancho"
+  },
+  "layoutTall": {
+    "message": "Alto"
+  },
+  "sortBy": {
+    "message": "Ordenar por"
+  },
+  "sortOrder": {
+    "message": "Orden"
+  },
+  "sortSize": {
+    "message": "Tamaño"
+  },
+  "sortAsc": {
+    "message": "Ascendente"
+  },
+  "sortDesc": {
+    "message": "Descendente"
+  },
+  "tabImages": {
+    "message": "Imágenes"
+  },
+  "tabPreferences": {
+    "message": "Ajustes"
+  },
+  "prefSubfolder": {
+    "message": "Subcarpeta"
+  },
+  "prefFilename": {
+    "message": "Plantilla de Nombre"
+  },
+  "prefSave": {
+    "message": "Guardar"
+  },
+  "prefCancel": {
+    "message": "Cancelar"
+  },
+  "prefConflictAction": {
+    "message": "Conflicto de Archivos"
+  },
+  "conflictUniquify": {
+    "message": "Renombrar"
+  },
+  "conflictOverwrite": {
+    "message": "Sobrescribir"
+  },
+  "conflictPrompt": {
+    "message": "Preguntar"
+  },
+  "warnManyFiles": {
+    "message": "Está a punto de descargar $1 imágenes, ¿continuar?"
+  },
+  "secFileSave": {
+    "message": "Guardado de Archivos"
+  },
+  "secDownloadLogic": {
+    "message": "Lógica de Descarga"
+  },
+  "secUiBehavior": {
+    "message": "Comportamiento UI"
+  },
+  "prefShowHoverBtn": {
+    "message": "Mostrar Botón Flotante"
+  },
+  "formatOriginal": {
+    "message": "Original"
+  },
+  "resetDefault": {
+    "message": "Restablecer Valores"
+  },
+  "menuSaveAsWebP": {
+    "message": "Guardar como WebP"
+  },
+  "menuSaveAsPNG": {
+    "message": "Guardar como PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "Guardar como JPG"
+  },
+  "menuOpenDashboard": {
+    "message": "Abrir Panel de Imaget"
+  }
 }
