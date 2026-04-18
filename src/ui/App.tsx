@@ -452,13 +452,13 @@ const App: React.FC = () => {
 
                     <ImageGrid
                       items={filteredImages}
+                      loading={loading}
                       layout={filters.layout}
                       onSelect={toggleSelect}
                       onPreview={setPreviewId}
                       onDownload={handleSingleDownload}
                       portalNode={portalNode}
                     />
-
                     <Footer
                       selectedCount={selectedCount}
                       filteredCount={filteredImages.length}

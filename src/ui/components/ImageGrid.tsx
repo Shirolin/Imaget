@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import {
   SimpleGrid,
   ScrollArea,
@@ -9,12 +9,13 @@ import {
   Text,
 } from "@mantine/core";
 import { IconPhotoOff } from "@tabler/icons-react";
-import { t } from "../../core/utils/i18n";
+import { useI18n } from "../hooks/useI18n";
 import type { ImageItem } from "../../types";
 import { ImageCard } from "./ImageCard";
 
 interface ImageGridProps {
   items: ImageItem[];
+  loading?: boolean;
   layout: "grid" | "columns" | "list";
   onSelect: (id: string, isShift?: boolean) => void;
   onPreview?: (id: string) => void;
@@ -22,25 +23,25 @@ interface ImageGridProps {
   portalNode: HTMLDivElement | null;
 }
 
-const ImageGrid: React.FC<ImageGridProps> = ({
+const ImageGridBase: React.FC<ImageGridProps> = ({
   items,
+  loading,
   layout,
   onSelect,
   onPreview,
   onDownload,
   portalNode,
 }) => {
+  const { t } = useI18n();
   const [visibleCount, setVisibleCount] = useState(40);
   const [prevItems, setPrevItems] = useState(items);
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  // 当 items 改变（筛选）时，重置可见数量
   if (items !== prevItems) {
     setPrevItems(items);
     setVisibleCount(40);
   }
 
-  // 监听滚动到底部
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -65,6 +66,26 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 
   const visibleItems = items.slice(0, visibleCount);
 
+  // 情况 A: 正在加载且列表为空 -> 显示全屏扫描中
+  if (loading && items.length === 0) {
+    return (
+      <Center style={{ flex: 1 }} p="xl">
+        <Stack align="center" gap="lg">
+          <Loader size={40} variant="bars" color="blue" />
+          <Stack gap={4} align="center">
+            <Text fw={700} size="md" c="bright">
+              {t("loading")}
+            </Text>
+            <Text size="xs" c="dimmed">
+              探索网页中的图片中...
+            </Text>
+          </Stack>
+        </Stack>
+      </Center>
+    );
+  }
+
+  // 情况 B: 加载完成且依然无图 -> 显示空状态
   if (items.length === 0) {
     return (
       <Center style={{ flex: 1 }} p="xl">
@@ -117,7 +138,6 @@ const ImageGrid: React.FC<ImageGridProps> = ({
       );
     }
 
-    // Grid or Columns
     const cols =
       layout === "columns"
         ? { base: 2, xs: 2, sm: 2 }
@@ -171,7 +191,6 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     >
       {renderContent()}
 
-      {/* 滚动监听目标 */}
       <Box ref={observerTarget} h={20} mt="md">
         {visibleCount < items.length && (
           <Center>
@@ -183,4 +202,5 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   );
 };
 
+export const ImageGrid = memo(ImageGridBase);
 export default ImageGrid;
