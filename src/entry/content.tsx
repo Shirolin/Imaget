@@ -23,14 +23,17 @@ function init() {
     // 如果已经存在，直接切回显示状态
     if (rootContainer.style.display === "none") {
       rootContainer.style.display = "block";
+      floatingController.setMuted(true); // 核心修复：仪表盘显示时，静默悬浮按钮
     } else {
       rootContainer.style.display = "none"; // 再次点击图标可以切换关闭 (对齐常见插件行为)
+      floatingController.setMuted(false); // 核心修复：仪表盘关闭时，恢复悬浮按钮
     }
     return;
   }
 
   rootContainer = document.createElement("div");
   rootContainer.id = ROOT_ID;
+  floatingController.setMuted(true); // 核心修复：初次初始化即静默功能
 
   // 1. 创建最外层宿主 (Shadow Host)
   const shadow = rootContainer.attachShadow({ mode: "open" });
@@ -79,6 +82,7 @@ function init() {
   window.addEventListener("message", (event) => {
     if (event.data.type === "IMAGET_CLOSE") {
       if (rootContainer) rootContainer.style.display = "none";
+      floatingController.setMuted(false); // 核心修复：仪表盘关闭后恢复悬浮按钮功能
     }
   });
 

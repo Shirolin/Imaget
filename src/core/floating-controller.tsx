@@ -63,6 +63,14 @@ export class FloatingController {
     }
   }
 
+  public setMuted(muted: boolean) {
+    this.isMuted = muted;
+    if (muted) {
+      // 立即清理现有所有悬浮按钮
+      this.instances.forEach((_, t) => this.removeInstance(t));
+    }
+  }
+
   public init() {
     document.addEventListener("pointerover", this.handleMouseOver, true);
     document.addEventListener("pointerout", this.handleMouseOut, true);
