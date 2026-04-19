@@ -2,18 +2,14 @@ import React from "react";
 import { Select, MultiSelect } from "@mantine/core";
 import type { SelectProps, MultiSelectProps } from "@mantine/core";
 
-interface PortalSelectProps extends SelectProps {
-  portalNode: HTMLDivElement | null;
-}
-
-export const PortalSelect: React.FC<PortalSelectProps> = ({
+export const PortalSelect = ({
   portalNode,
+  comboboxProps,
   ...props
-}) => {
-  const { comboboxProps, ...rest } = props;
+}: SelectProps & { portalNode: HTMLDivElement | null }) => {
   return (
     <Select
-      {...rest}
+      {...props}
       comboboxProps={{
         portalProps: { target: portalNode || undefined },
         styles: {
@@ -27,19 +23,20 @@ export const PortalSelect: React.FC<PortalSelectProps> = ({
   );
 };
 
-interface PortalMultiSelectProps extends MultiSelectProps {
-  portalNode: HTMLDivElement | null;
-  [key: string]: unknown;
-}
-
-export const PortalMultiSelect: React.FC<PortalMultiSelectProps> = ({
+export const PortalMultiSelect = ({
   portalNode,
+  comboboxProps,
   ...props
+}: MultiSelectProps & {
+  portalNode: HTMLDivElement | null;
+  renderPill?: (props: {
+    value: string;
+    onRemove: () => void;
+  }) => React.ReactNode;
 }) => {
-  const { comboboxProps, ...rest } = props;
   return (
     <MultiSelect
-      {...rest}
+      {...props}
       comboboxProps={{
         portalProps: { target: portalNode || undefined },
         styles: {

@@ -33,8 +33,8 @@ export const TEST_CASES: TestCase[] = [
   {
     id: "t5",
     type: "img",
-    url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJqZ3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4JmVwPT12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMGpxx6rG9M0Cc/giphy.gif",
-    title: "Animated GIF (Giphy)",
+    url: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_(large).gif",
+    title: "Animated GIF (Rotating Earth)",
   },
   {
     id: "t6",

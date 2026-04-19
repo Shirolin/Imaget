@@ -66,7 +66,6 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
 
   const visibleItems = items.slice(0, visibleCount);
 
-  // 情况 A: 正在加载且列表为空 -> 显示全屏扫描中
   if (loading && items.length === 0) {
     return (
       <Center style={{ flex: 1 }} p="xl">
@@ -85,7 +84,6 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
     );
   }
 
-  // 情况 B: 加载完成且依然无图 -> 显示空状态
   if (items.length === 0) {
     return (
       <Center style={{ flex: 1 }} p="xl">
@@ -176,13 +174,10 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
         scrollbar: {
           transition: "opacity 0.2s ease",
           backgroundColor: "transparent",
-          '&[data-state="visible"]': { opacity: 1 },
-          "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.05)" },
         },
         thumb: {
           backgroundColor: "var(--mantine-color-dark-4)",
           transition: "background-color 0.2s ease",
-          "&:hover": { backgroundColor: "var(--mantine-color-dark-3)" },
         },
         viewport: {
           paddingBottom: 40,
