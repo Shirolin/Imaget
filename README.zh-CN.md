@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="public/icon-128.png" width="120" height="120" alt="Icon" />
+  <img src="public/icon-128.png" width="120" height="120" alt="Imaget Icon" />
 
   <h1>Imaget</h1>
   <p>
-    <b>智能图片嗅探与批量下载工具扩展</b>
+    <b>新一代智能图片嗅探与一键批量下载器</b>
   </p>
 
   <p>
@@ -11,42 +11,63 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square" alt="License" />
-    <img src="https://img.shields.io/badge/platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
+    <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square" alt="License" />
+    <img src="https://img.shields.io/badge/Platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
-    <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine" />
+    <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine v8" />
+    <img src="https://img.shields.io/badge/i18n-10%20Languages-green?style=flat-square" alt="i18n Support" />
   </p>
 </div>
 
 ---
 
-## ✨ 核心亮点
+## 🚀 项目概述
 
-Imaget 是一款功能强大的浏览器扩展，主要用于智能嗅探网页图片、深度扫描、图片过滤分类以及一键批量下载与格式转换。无论是搜集参考素材，还是整理网页图库，Imaget 都能为你提供极速流畅的操作体验。
+**Imaget** 是一款专为现代 Web 设计的专业级浏览器扩展，旨在提供精准、流畅的网页图片资源采集体验。无论您是寻找灵感的设计师，还是整理资料的研究员，Imaget 都能提供工业级的工具链，助您完成图片的嗅探、筛选、转换与批量下载。
 
-#### 🔍 智能嗅探与高级过滤
-- **全方位嗅探**: 支持识别网页中所有的图片元素，包括隐藏的 `iframe` 以及 CSS 背景图片 (`Background Images`)。
-- **深度扫描 (Deep Scan)**: 提供更深度的页面解析机制，能突破常见的懒加载限制抓取真实图片源。
-- **多维度筛选**: 支持按 **最小宽度 / 高度**、**图片类型 (格式)**、**图片宽高比 (横图/竖图/方形)** 进行快速筛选分类。
-- **精确搜索与排除**: 支持通过关键词对图片链接或 `alt` 标签进行搜索，同时提供排除词 (空格分隔) 功能过滤无关素材。
-
-#### ⚡ 快捷交互与极速下载
-- **悬浮下载按钮**: 光标悬停即可在网页图片上显示 Imaget 的快捷下载按钮，实现真正的“预览即下载”体验，并附带直观的下载成功反馈机制。
-- **右键菜单集成**: 提供强大的全局右键菜单，支持将网页图片快速导出为 **WebP、PNG、JPG** 格式，或者直接打开批量下载控制台。
-- **内置相册级预览**: 在批量控制台即可使用高质量的图片预览组件，支持 **鼠标滚轮缩放**、**拖拽平移**、**旋转** 和 **1:1 原尺寸适配**。
-- **批量与 ZIP 打包**: 选择一堆图片后，可以批量下载到本地，也可以选择 **打包为 ZIP** 以保持系统下载夹整洁。
-
-#### ⚙️ 深度定制与格式处理
-- **自定义命名引擎**: 支持利用变量 (如图片序号、原名称等) 定义自己的“子文件夹”以及“文件名模板”。
-- **文件冲突策略**: 遇到同名文件时，可灵活选择 **自动重命名 (Uniquify)**、**直接覆盖 (Overwrite)** 或 **每次询问 (Prompt)**。
-- **格式与画质转换**: 内置强大的前端图片处理逻辑，支持下载时强行改变输出格式 (JPG/PNG/WebP)，并且支持 **调整转换质量**。
-- **GIF 专属处理**: 对于动态 GIF 图像，可以选择 **保留原动图**、**提取第一帧** 或 **整体忽略跳过**。
+基于 **React 19** 和 **Mantine v8** 构建，采用 **Shadow DOM** 隔离架构，确保 UI 样式在任何网站上都能完美呈现，不受原网页样式干扰。
 
 ---
 
-## 📦 安装指南
+## ✨ 核心特性
 
-### 从源码构建
+#### 🔍 工业级嗅探引擎
+- **Shadow DOM 穿透**：深入解析复杂的 Web Components，挖掘隐藏的图片资产。
+- **全格式识别**：支持 `<img>`、`srcset`、CSS `background-image`、内联 SVG 以及 Canvas。
+- **深度扫描模式**：通过自动化滚动和 DOM 递归分析，绕过懒加载限制，获取真实原图。
+- **预检元数据**：下载前即可实时获取图片的分辨率、比例及预估文件大小。
+
+#### 🛠️ 专业级过滤与搜索
+- **多维度筛选**：支持按 **最小分辨率**、**宽高比**（正方形、横图、竖图）以及 **文件格式** 即时过滤。
+- **智能匹配逻辑**：支持分辨率的 `且/或` 复杂逻辑匹配。
+- **精准搜索**：支持对 URL 和 Alt 标签进行关键词检索及排除过滤。
+
+#### ⚡ 极致的操作流
+- **画廊级预览**：高品质预览组件，支持 **鼠标滚轮缩放**、**自由拖拽**、**旋转** 及 **1:1 像素对齐**。
+- **批量操作增强**：支持一键全选及 **Shift+Click** 区间多选，极大地提升了筛选效率。
+- **灵活导出**：支持直接下载为独立文件或打包为 **ZIP 压缩包**，保持下载目录整洁。
+- **即时转换**：内置图片处理逻辑，支持在下载时自动转为 **WebP** 或 **JPG** 格式并调整质量。
+
+#### 🌍 全球化与无障碍
+- **原生多语言**：完整适配 **10 国语言** (中、英、日、韩、德、法、西、葡、土)。
+- **A11y 优先**：完善的 ARIA 标签体系，支持全键盘导航操作。
+- **隐私保护**：100% 本地处理，不收集任何用户数据，不进行云端上传。
+
+---
+
+## 🛠️ 技术栈
+
+- **框架**: [React 19](https://react.dev/) + TypeScript
+- **设计系统**: [Mantine v8](https://mantine.dev/) (全深色模式)
+- **架构**: Shadow DOM 样式隔离技术。
+- **构建工具**: [Vite](https://vitejs.dev/)
+- **自动化**: GitHub Actions 自动发布与文档同步体系。
+
+---
+
+## 📦 快速开始
+
+### 开发环境
 
 ```bash
 # 1. 克隆仓库
@@ -56,35 +77,32 @@ cd New-Imaget
 # 2. 安装依赖
 npm install
 
-# 3. 构建项目
-npm run build
+# 3. 启动开发服务器（含测试页）
+npm run dev
 
-# 4. 在 Chrome 中加载
-# 1. 打开 chrome://extensions/
-# 2. 启用 “开发者模式”
-# 3. 点击 “加载已解压的扩展程序” 并选择 `dist` 目录。
+# 4. 访问沙盒
+# 打开 http://localhost:5173/ 访问内置的高质量摄影画廊测试页。
 ```
 
-### 打包与发布
+### 构建与发布
 
-- `npm run build`: 构建生产版本并自动在 `releases/` 目录下生成 ZIP 打包文件。
-- `npm run release`: 使用 `bumpp` 自动更新版本号、提交 Git Tag，并触发本地构建。
+- `npm run build`: 生成生产环境产物，并自动同步 Manifest 版本号。
+- `npm run release`: 使用 `bumpp` 进行语义化版本更新并触发本地构建。
+- **CI/CD**: 推送 `v*` 格式的标签至 GitHub 即可触发 [自动化发布流程](.github/workflows/release.yml)。
 
-当推送 `v*` 格式的标签到 GitHub 时，将自动触发 [Release 工作流](.github/workflows/release.yml) 并发布新版本。
+---
 
-## 🛠️ 技术栈
+## 🤝 支持与贡献
 
-- **核心**: [React 19](https://react.dev/) + TypeScript
-- **构建工具**: [Vite](https://vitejs.dev/)
-- **UI 框架**: [Mantine v8](https://mantine.dev/)
-- **样式**: Vanilla CSS & Shadow DOM 隔离。
-- **图标**: [Tabler Icons](https://tabler-icons.io/)
+如果您觉得 Imaget 对您有帮助，欢迎支持开发者：
 
-## 🤝 支持
-
-- **爱发电**: [https://ifdian.net/a/shirolin](https://ifdian.net/a/shirolin)
+- **爱发电 (Afdian)**: [https://ifdian.net/a/shirolin](https://ifdian.net/a/shirolin)
 - **Ko-fi**: [https://ko-fi.com/shirolin](https://ko-fi.com/shirolin)
+
+欢迎提交 Pull Request 参与贡献！
+
+---
 
 ## 📄 开源协议
 
-本项目基于 [GPL-3.0](./LICENSE) 协议开源 © 2026 shirolin
+基于 [GPL-3.0](./LICENSE) 协议开源 © 2026 shirolin.

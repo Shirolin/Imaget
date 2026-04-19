@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="public/icon-128.png" width="120" height="120" alt="Icon" />
+  <img src="public/icon-128.png" width="120" height="120" alt="Imaget Icon" />
 
   <h1>Imaget</h1>
   <p>
-    <b>Intelligent Image Sniffer & Batch Downloader Extension</b>
+    <b>Intelligent Image Sniffer & Batch Downloader for the Modern Web</b>
   </p>
 
   <p>
@@ -11,80 +11,98 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square" alt="License" />
-    <img src="https://img.shields.io/badge/platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
+    <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square" alt="License" />
+    <img src="https://img.shields.io/badge/Platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
-    <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine" />
+    <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine v8" />
+    <img src="https://img.shields.io/badge/i18n-10%20Languages-green?style=flat-square" alt="i18n Support" />
   </p>
 </div>
 
 ---
 
-## ✨ Highlights
+## 🚀 Overview
 
-Imaget is a powerful browser extension for sniffing web images, deep scanning, filtering, and one-click batch downloading with format conversion. It provides a smooth experience for collecting reference materials or organizing web galleries.
+**Imaget** is a professional-grade browser extension designed to capture web image assets with precision and ease. Whether you are a designer collecting inspiration or a researcher organizing data, Imaget provides an industrial-strength toolkit to sniff, filter, convert, and download images in bulk.
 
-#### 🔍 Smart Sniff & Filter
-- **Full Sniffing**: Detects all images in a page, including those inside `iframes` and CSS `Background Images`.
-- **Deep Scan**: Advanced parsing mechanism to bypass common lazy-loading restrictions and fetch real image sources.
-- **Multi-dimensional Filtering**: Quickly filter by **min width/height**, **image format**, and **aspect ratio** (landscape/portrait/square).
-- **Precise Search**: Search by keywords in image URLs or `alt` tags, with support for exclusion keywords.
-
-#### ⚡ Fast Interaction & Download
-- **Floating Button**: Hover over an image to display a quick download button, enabling a "preview then download" experience with visual feedback.
-- **ContextMenu Integration**: Global right-click menu support to export images as **WebP, PNG, or JPG**, or open the batch download console.
-- **Album-level Preview**: High-quality preview component supporting **mouse wheel zoom**, **dragging**, **rotation**, and **1:1 original size fitting**.
-- **Batch & ZIP**: Download images in bulk or pack them into a **ZIP archive** to keep your downloads folder organized.
-
-#### ⚙️ Deep Customization & Format Control
-- **Naming Engine**: Define your own subfolders and filename templates using variables like index and original name.
-- **Conflict Strategy**: Choose between **Uniquify**, **Overwrite**, or **Prompt** when encountering files with the same name.
-- **Format & Quality Conversion**: Built-in image processing logic to force change output format and **adjust conversion quality**.
-- **GIF Handling**: Options to **keep original**, **extract first frame**, or **skip/ignore** dynamic GIF images.
+Built with **React 19** and **Mantine v8**, it features a sophisticated UI isolated within a **Shadow DOM**, ensuring perfect rendering on any website without style conflicts.
 
 ---
 
-## 📦 Installation
+## ✨ Key Features
 
-### Build from source
+#### 🔍 Industrial Sniffing Engine
+- **Shadow DOM Penetration**: Traverses deep into complex web components to find hidden assets.
+- **Dynamic Resource Detection**: Identifies `<img>`, `srcset`, CSS `background-image`, and inline SVGs.
+- **Deep Scan Mode**: Bypasses lazy-loading restrictions via automated scrolling and DOM analysis.
+- **Advanced Metadata**: Real-time calculation of dimensions and file sizes before downloading.
+
+#### 🛠️ Professional Filtering & Search
+- **Multi-dimensional Filters**: Instantly filter by **Minimum Resolution**, **Aspect Ratio** (Square, Landscape, Portrait), and **File Format**.
+- **Smart Logic**: Supports complex `AND/OR` resolution matching.
+- **Precision Search**: Keyword-based search and exclusion filtering for URLs and Alt tags.
+
+#### ⚡ Streamlined Workflow
+- **Pill-style Command Bar**: A compact, efficient UI for rapid filtering without obstructing content.
+- **Batch Operations**: One-click selection with **Shift+Click** support for range selection.
+- **Flexible Export**: Download as individual files or a consolidated **ZIP archive**.
+- **On-the-fly Conversion**: Auto-convert images to **WebP** or **JPG** with adjustable quality.
+
+#### 🌍 Global & Accessible
+- **Native Localization**: Fully localized in **10 languages** (EN, ZH, JA, KO, DE, FR, ES, PT, TR).
+- **A11y First**: Full keyboard navigation support and ARIA-compliant components.
+- **Privacy Centric**: 100% local processing. No data collection, no cloud uploads.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [React 19](https://react.dev/) + TypeScript
+- **Design System**: [Mantine v8](https://mantine.dev/) (Full Dark Mode)
+- **Architecture**: Shadow DOM for zero-collision styling.
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Automation**: GitHub Actions for automated release and documentation sync.
+
+---
+
+## 📦 Getting Started
+
+### Development
 
 ```bash
-# 1. Clone repo
+# 1. Clone the repository
 git clone https://github.com/Shirolin/New-Imaget.git
 cd New-Imaget
 
-# 2. Install
+# 2. Install dependencies
 npm install
 
-# 3. Build
-npm run build
+# 3. Start dev server with Test Page
+npm run dev
 
-# 4. Load in Chrome
-# 1. Open chrome://extensions/
-# 2. Enable "Developer mode"
-# 3. Click "Load unpacked" and select the `dist` directory.
+# 4. Access the Sandbox
+# Open http://localhost:5173/ to view the Photography Gallery test page.
 ```
 
 ### Build & Release
 
-- `npm run build`: Build production version and automatically generate a ZIP package in the `releases/` directory.
-- `npm run release`: Use `bumpp` to automatically update the version number, commit Git Tag, and trigger local build.
+- `npm run build`: Production build with automatic manifest version syncing.
+- `npm run release`: Semantic versioning via `bumpp` and local build trigger.
+- **CI/CD**: Push tags starting with `v*` to trigger the automated [GitHub Release Workflow](.github/workflows/release.yml).
 
-When pushing tags in `v*` format to GitHub, the [Release Workflow](.github/workflows/release.yml) will be automatically triggered to publish a new version.
+---
 
-## 🛠️ Tech Stack
+## 🤝 Support & Contribution
 
-- **Core**: [React 19](https://react.dev/) + TypeScript
-- **Bundler**: [Vite](https://vitejs.dev/)
-- **UI Framework**: [Mantine v8](https://mantine.dev/)
-- **Styling**: Vanilla CSS & Shadow DOM isolation.
-- **Icons**: [Tabler Icons](https://tabler-icons.io/)
+If you find Imaget helpful, consider supporting the developer:
 
-## 🤝 Support
-
-- **Afdian**: [https://ifdian.net/a/shirolin](https://ifdian.net/a/shirolin)
+- **Afdian (爱发电)**: [https://ifdian.net/a/shirolin](https://ifdian.net/a/shirolin)
 - **Ko-fi**: [https://ko-fi.com/shirolin](https://ko-fi.com/shirolin)
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
 
 ## 📄 License
 
-This project is licensed under the [GPL-3.0](./LICENSE) License © 2026 shirolin
+Licensed under the [GPL-3.0](./LICENSE) License © 2026 shirolin.
