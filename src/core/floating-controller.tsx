@@ -15,7 +15,7 @@ interface FloatingInstance {
   host: HTMLElement;
   root: ReactDOM.Root;
   rootElement: HTMLElement;
-  target: HTMLElement;
+  target: HTMLElement; // 这里的 target 是解析出的 candidateEl
   url: string;
   status: "idle" | "downloading" | "success" | "error";
   progress: number;
@@ -34,9 +34,12 @@ export class FloatingController {
   private isMuted: boolean = false;
   private isTemporarilyDisabled: boolean = false;
   private settings: Settings = defaultSettings;
-  private timer: number | null = null;
-  private lastProcessedTarget: HTMLElement | null = null;
-  private graceTimer: number | null = null;
+
+  // 状态机变量
+  private hoverTimer: number | null = null;
+  private pendingTarget: HTMLElement | null = null;
+  private lastMouseX: number = 0;
+  private lastMouseY: number = 0;
 
   constructor(
     _sniffer: Sniffer,
@@ -64,6 +67,8 @@ export class FloatingController {
     this.isMuted = muted;
     if (muted) {
       this.instances.forEach((_, t) => this.removeInstance(t));
+      if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
+      this.pendingTarget = null;
     }
   }
 
@@ -76,6 +81,7 @@ export class FloatingController {
     document.removeEventListener("pointerover", this.handleMouseOver, true);
     document.removeEventListener("pointerout", this.handleMouseOut, true);
     this.instances.forEach((_, target) => this.removeInstance(target));
+    if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
   }
 
   private async handleMouseOver(e: MouseEvent) {
@@ -85,7 +91,7 @@ export class FloatingController {
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
-    // 1. 检查是否进入 UI
+    // 1. 检查是否进入我们的 UI
     const isOverOurUI = path.some(
       (el) =>
         el instanceof HTMLElement &&
@@ -94,29 +100,21 @@ export class FloatingController {
     );
 
     if (isOverOurUI) {
+      // 交互中：冻结所有追踪
       this.instances.forEach((inst) => (inst.isFrozen = true));
       return;
     }
 
-    this.instances.forEach((inst) => {
-      if (!inst.host.contains(target)) inst.isFrozen = false;
-    });
-
-    if (!target || !(target instanceof HTMLElement)) return;
-    if (this.lastProcessedTarget === target) return;
-    this.lastProcessedTarget = target;
-
-    // 2. 深度寻找有效的图片 URL
+    // 2. 解析出实际的图片实体 (candidateEl)
     let candidateUrl = UrlResolver.resolveBestUrl(target);
     let candidateEl = target;
 
-    // 增强：如果当前节点不是图片，尝试向内找
     if (
-      (!candidateUrl &&
-        ["A", "DIV", "PICTURE", "SECTION", "ARTICLE", "CARD"].includes(
-          target.tagName,
-        )) ||
-      target.className.includes("card")
+      !candidateUrl &&
+      (["A", "DIV", "PICTURE", "SECTION", "ARTICLE", "CARD"].includes(
+        target.tagName,
+      ) ||
+        target.className.includes("card"))
     ) {
       const imgInside = target.querySelector("img");
       if (imgInside) {
@@ -125,43 +123,58 @@ export class FloatingController {
       }
     }
 
-    if (!candidateUrl || candidateUrl.startsWith("data:")) return;
-
-    const minSize = this.settings.interfaceBehavior.minImageSize;
-    const rect = candidateEl.getBoundingClientRect();
+    if (!candidateUrl || candidateUrl.startsWith("data:")) {
+      return;
+    }
 
     // 3. 尺寸判定
-    if (rect.width >= minSize - 10 || rect.height >= minSize - 10) {
-      const inst = this.instances.get(target);
-      if (inst) {
-        inst.isHovering = true;
-        if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
-        this.updateInstanceRect(inst);
-      } else {
-        // 瞬间触发，不再等待 setTimeout
-        this.createInstance(target, candidateUrl!);
-      }
+    const minSize = this.settings.interfaceBehavior.minImageSize;
+    const rect = candidateEl.getBoundingClientRect();
+    if (rect.width < minSize - 10 && rect.height < minSize - 10) {
+      return;
     }
+
+    // 4. 核心：稳定状态机逻辑
+    // 如果已经在追踪或显示该图片，直接 return，不要重置定时器！
+    if (this.pendingTarget === candidateEl) return;
+
+    // 发现新目标
+    if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
+    this.pendingTarget = candidateEl;
+
+    // 检查是否已有实例（仅需要激活）
+    const existing = this.instances.get(candidateEl);
+    if (existing) {
+      existing.isHovering = true;
+      existing.isFrozen = false;
+      if (existing.hideTimer) window.clearTimeout(existing.hideTimer);
+      return;
+    }
+
+    // 启动 300ms 延迟
+    this.hoverTimer = window.setTimeout(() => {
+      if (this.pendingTarget === candidateEl) {
+        this.createInstance(candidateEl, candidateUrl!);
+      }
+      this.hoverTimer = null;
+    }, 300);
   }
 
   private handleMouseOut(e: MouseEvent) {
-    if (this.graceTimer) window.clearTimeout(this.graceTimer);
-    this.graceTimer = window.setTimeout(() => {
-      this.lastProcessedTarget = null;
-      this.graceTimer = null;
-    }, 50);
+    const related = e.relatedTarget as Node;
 
+    // 检查是否真的离开了图片及其关联的所有 UI
     for (const [target, inst] of this.instances.entries()) {
-      if (
-        e.relatedTarget &&
-        (inst.host.contains(e.relatedTarget as Node) ||
-          target === e.relatedTarget)
-      ) {
+      const movedToUI = related && inst.host.contains(related);
+      const movedToTarget = related === target;
+
+      if (movedToUI || movedToTarget) {
         inst.isHovering = true;
         if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
         continue;
       }
 
+      // 真的离开了
       inst.isHovering = false;
       if (inst.status !== "idle") continue;
 
@@ -171,6 +184,17 @@ export class FloatingController {
           this.removeInstance(target);
         }
       }, 400);
+    }
+
+    // 清理 pending 状态
+    if (this.pendingTarget && e.target === this.pendingTarget) {
+      // 50ms 宽限期，防止在卡片内部移动时丢失 pending
+      window.setTimeout(() => {
+        if (this.pendingTarget === e.target) {
+          if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
+          this.pendingTarget = null;
+        }
+      }, 50);
     }
   }
 
@@ -218,6 +242,7 @@ export class FloatingController {
     this.instances.set(target, instance);
     this.setupVisibilityObserver(instance);
     this.startTracking(instance);
+    this.setupObserver(instance);
     this.renderInstance(instance);
   }
 
@@ -260,11 +285,31 @@ export class FloatingController {
     const targetLeft = Math.round(rect.left + window.scrollX);
     const targetTop = Math.round(rect.top + window.scrollY);
 
-    Object.assign(instance.host.style, {
-      left: `${targetLeft}px`,
-      top: `${targetTop}px`,
-      width: `${Math.round(rect.width)}px`,
-      height: `${Math.round(rect.height)}px`,
+    // 性能优化：只有在位移超过 0.5px 时更新
+    const curL = parseFloat(instance.host.style.left) || 0;
+    const curT = parseFloat(instance.host.style.top) || 0;
+
+    if (Math.abs(curL - targetLeft) > 0.5 || Math.abs(curT - targetTop) > 0.5) {
+      Object.assign(instance.host.style, {
+        left: `${targetLeft}px`,
+        top: `${targetTop}px`,
+        width: `${Math.round(rect.width)}px`,
+        height: `${Math.round(rect.height)}px`,
+      });
+    }
+  }
+
+  private setupObserver(instance: FloatingInstance) {
+    instance.observer = new MutationObserver(() => {
+      const newUrl = UrlResolver.resolveBestUrl(instance.target);
+      if (newUrl && newUrl !== instance.url) {
+        instance.url = newUrl;
+        this.renderInstance(instance);
+      }
+    });
+    instance.observer.observe(instance.target, {
+      attributes: true,
+      attributeFilter: ["src", "srcset"],
     });
   }
 
