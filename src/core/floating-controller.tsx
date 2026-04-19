@@ -21,10 +21,12 @@ interface FloatingInstance {
   progress: number;
   progressInterval: number | null;
   observer: MutationObserver | null;
+  visibilityObserver: IntersectionObserver | null; // 性能核心：可见性监测
   hideTimer: number | null;
   isHovering: boolean;
-  isFrozen: boolean; // 核心：记录是否处于坐标冻结状态
-  rafId: number | null; // 用于位置追踪循环
+  isVisible: boolean; // 是否在视野内
+  isFrozen: boolean;
+  rafId: number | null;
 }
 
 export class FloatingController {
@@ -39,17 +41,10 @@ export class FloatingController {
   private lastMouseY: number = 0;
   private graceTimer: number | null = null;
 
-  // 辅助判断鼠标是否在 UI 内部
-  private isMouseInUI: boolean = false;
-
-  // 记忆最近一次的悬浮目标，以供右键菜单唤起动画
-  private lastTarget: HTMLElement | null = null;
-  private lastUrl: string = "";
-
-  private processor: ImageProcessor;
-
-  constructor(_sniffer: Sniffer, processor: ImageProcessor) {
-    this.processor = processor;
+  constructor(
+    _sniffer: Sniffer,
+    private processor: ImageProcessor,
+  ) {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.loadSettings();
@@ -71,7 +66,6 @@ export class FloatingController {
   public setMuted(muted: boolean) {
     this.isMuted = muted;
     if (muted) {
-      // 立即清理现有所有悬浮按钮
       this.instances.forEach((_, t) => this.removeInstance(t));
     }
   }
@@ -85,21 +79,7 @@ export class FloatingController {
         if (areaName === "local" && changes.imaget_settings) {
           const newSettings = changes.imaget_settings.newValue as Settings;
           if (newSettings) {
-            const oldDisabled =
-              this.settings.interfaceBehavior.disabledDomains || [];
-            const newDisabled =
-              newSettings.interfaceBehavior.disabledDomains || [];
-            const currentHost = window.location.hostname;
-
-            if (
-              oldDisabled.includes(currentHost) &&
-              !newDisabled.includes(currentHost)
-            ) {
-              this.isMuted = false;
-            }
-
             this.settings = newSettings;
-            // 通知所有实例更新设置（如果需要，目前主要用于 render）
             this.instances.forEach((instance) => this.renderInstance(instance));
           }
         }
@@ -117,7 +97,7 @@ export class FloatingController {
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
-    // 检查鼠标是否进入了我们的 Floating Host (Shadow DOM 内容)
+    // 检查鼠标是否进入了我们的 UI 内部
     const isOverOurUI = path.some(
       (el) =>
         el instanceof HTMLElement &&
@@ -126,10 +106,8 @@ export class FloatingController {
     );
 
     if (isOverOurUI) {
-      // 鼠标在 UI 内部：冻结所有追踪
       this.instances.forEach((inst) => (inst.isFrozen = true));
     } else {
-      // 鼠标在 UI 外部：解除特定实例的冻结
       const instance = Array.from(this.instances.values()).find((i) =>
         i.host.contains(target),
       );
@@ -140,16 +118,8 @@ export class FloatingController {
 
     if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
-    if (
-      this.settings.interfaceBehavior.disabledDomains &&
-      this.settings.interfaceBehavior.disabledDomains.includes(
-        window.location.hostname,
-      )
-    )
-      return;
 
     if (!target || !(target instanceof HTMLElement)) return;
-
     if (this.lastProcessedTarget === target) return;
     this.lastProcessedTarget = target;
 
@@ -160,33 +130,24 @@ export class FloatingController {
     let bestUrl: string = "";
 
     const searchDepth = Math.min(elementsUnder.length, 10);
-
     for (let i = 0; i < searchDepth; i++) {
       const el = elementsUnder[i];
       if (!(el instanceof HTMLElement)) continue;
-
       const htmlEl = el as HTMLElement;
 
-      // 检查是否已经是某个实例的 host
-      let isHost = false;
+      let isCurrentHost = false;
       for (const inst of this.instances.values()) {
         if (inst.host === htmlEl || inst.host.contains(htmlEl)) {
-          isHost = true;
+          isCurrentHost = true;
           break;
         }
       }
-      if (isHost) continue;
+      if (isCurrentHost) continue;
 
       let candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
       let candidateEl = htmlEl;
 
-      if (
-        !candidateUrl &&
-        (htmlEl.tagName === "A" ||
-          htmlEl.tagName === "DIV" ||
-          htmlEl.tagName === "PICTURE" ||
-          htmlEl.tagName === "SOURCE")
-      ) {
+      if (!candidateUrl && ["A", "DIV", "PICTURE"].includes(htmlEl.tagName)) {
         const imgInside = htmlEl.querySelector("img");
         if (imgInside) {
           candidateUrl = UrlResolver.resolveBestUrl(imgInside);
@@ -194,39 +155,10 @@ export class FloatingController {
         }
       }
 
-      if (
-        !candidateUrl &&
-        this.settings.interfaceBehavior.identifyBackgroundImages
-      ) {
-        const s = window.getComputedStyle(htmlEl);
-        if (
-          s.backgroundImage &&
-          s.backgroundImage !== "none" &&
-          s.backgroundImage.startsWith("url(")
-        ) {
-          candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
-        }
-      }
-
       if (!candidateUrl || candidateUrl.startsWith("data:")) continue;
 
       const rect = candidateEl.getBoundingClientRect();
-      const displayWidth = rect.width || candidateEl.offsetWidth;
-      const displayHeight = rect.height || candidateEl.offsetHeight;
-
-      let isLargeEnough = false;
-      if (candidateEl instanceof HTMLImageElement) {
-        isLargeEnough =
-          displayWidth >= minSize - 8 ||
-          displayHeight >= minSize - 8 ||
-          candidateEl.naturalWidth >= minSize ||
-          candidateEl.naturalHeight >= minSize;
-      } else {
-        isLargeEnough =
-          displayWidth >= minSize - 8 || displayHeight >= minSize - 8;
-      }
-
-      if (isLargeEnough) {
+      if (rect.width >= minSize - 8 || rect.height >= minSize - 8) {
         bestTarget = htmlEl;
         bestUrl = candidateUrl;
         break;
@@ -234,102 +166,31 @@ export class FloatingController {
     }
 
     if (!bestTarget || !bestUrl) return;
-    if (
-      bestTarget.tagName === "INPUT" ||
-      bestTarget.tagName === "TEXTAREA" ||
-      bestTarget.isContentEditable
-    )
-      return;
 
-    const finalTarget = bestTarget;
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    const dist = Math.sqrt(
-      Math.pow(mouseX - this.lastMouseX, 2) +
-        Math.pow(mouseY - this.lastMouseY, 2),
-    );
-    this.lastMouseX = mouseX;
-    this.lastMouseY = mouseY;
+    this.pendingTarget = bestTarget;
+    if (this.timer) window.clearTimeout(this.timer);
 
-    const existingInstance = this.instances.get(finalTarget);
-
-    if (this.graceTimer && dist < 20) {
-      window.clearTimeout(this.graceTimer);
-      this.graceTimer = null;
-      this.pendingTarget = finalTarget;
-
-      if (existingInstance) {
-        existingInstance.isHovering = true;
-        if (existingInstance.hideTimer) {
-          window.clearTimeout(existingInstance.hideTimer);
-          existingInstance.hideTimer = null;
-        }
-        this.updateInstanceRect(existingInstance);
-      }
-      return;
-    }
-
-    if (this.timer) {
-      window.clearTimeout(this.timer);
-      this.timer = null;
-    }
-    if (this.graceTimer) {
-      window.clearTimeout(this.graceTimer);
-      this.graceTimer = null;
-    }
-
-    this.pendingTarget = finalTarget;
-
-    const triggerLogic = async () => {
-      if (this.graceTimer) {
-        this.timer = window.setTimeout(triggerLogic, 50);
-        return;
-      }
-
-      const activeTarget = this.pendingTarget;
-      if (!activeTarget) {
-        this.timer = null;
-        return;
-      }
-
-      const url = UrlResolver.resolveBestUrl(activeTarget);
-      if (!url || url.startsWith("data:")) {
-        this.timer = null;
-        return;
-      }
-
-      this.lastTarget = activeTarget;
-      this.lastUrl = url;
-
-      const inst = this.instances.get(activeTarget);
+    this.timer = window.setTimeout(() => {
+      if (!this.pendingTarget) return;
+      const inst = this.instances.get(this.pendingTarget);
       if (inst) {
         inst.isHovering = true;
-        if (inst.hideTimer) {
-          window.clearTimeout(inst.hideTimer);
-          inst.hideTimer = null;
-        }
+        if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
         this.updateInstanceRect(inst);
       } else {
-        this.createInstance(activeTarget, url);
+        this.createInstance(this.pendingTarget, bestUrl!);
       }
       this.timer = null;
-    };
-
-    this.timer = window.setTimeout(triggerLogic, 300);
+    }, 300);
   }
 
   private handleMouseOut(e: MouseEvent) {
     if (this.graceTimer) window.clearTimeout(this.graceTimer);
     this.graceTimer = window.setTimeout(() => {
-      if (this.timer) {
-        window.clearTimeout(this.timer);
-        this.timer = null;
-      }
-      this.graceTimer = null;
       this.pendingTarget = null;
+      this.graceTimer = null;
     }, 50);
 
-    // 检查是否离开了某个实例的目标或按钮
     for (const [target, inst] of this.instances.entries()) {
       if (
         e.relatedTarget &&
@@ -337,24 +198,12 @@ export class FloatingController {
           target === e.relatedTarget)
       ) {
         inst.isHovering = true;
-        if (inst.hideTimer) {
-          window.clearTimeout(inst.hideTimer);
-          inst.hideTimer = null;
-        }
+        if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
         continue;
       }
 
-      // 如果确实离开了
       inst.isHovering = false;
-
-      // 如果正在下载或成功/错误显示中，不隐藏
-      if (inst.status !== "idle") {
-        if (inst.hideTimer) {
-          window.clearTimeout(inst.hideTimer);
-          inst.hideTimer = null;
-        }
-        continue;
-      }
+      if (inst.status !== "idle") continue;
 
       if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
       inst.hideTimer = window.setTimeout(() => {
@@ -368,7 +217,6 @@ export class FloatingController {
   private createInstance(target: HTMLElement, url: string) {
     const host = document.createElement("div");
     host.className = "imaget-floating-host";
-    host.dataset.targetUrl = url;
     Object.assign(host.style, {
       all: "initial",
       position: "absolute",
@@ -377,7 +225,6 @@ export class FloatingController {
     });
 
     document.body.appendChild(host);
-
     const shadow = host.attachShadow({ mode: "open" });
     const styleTag = document.createElement("style");
     styleTag.textContent = finalCSS;
@@ -400,27 +247,42 @@ export class FloatingController {
       progress: 0,
       progressInterval: null,
       observer: null,
+      visibilityObserver: null,
       hideTimer: null,
       isHovering: true,
+      isVisible: true,
       isFrozen: false,
       rafId: null,
     };
 
     this.instances.set(target, instance);
-    this.startTracking(instance); // 启动追踪循环
+    this.setupVisibilityObserver(instance);
+    this.startTracking(instance);
     this.setupObserver(instance);
     this.renderInstance(instance);
   }
 
-  private startTracking(instance: FloatingInstance) {
-    const update = () => {
-      if (!this.instances.has(instance.target)) return;
-
-      // 核心：如果鼠标正在操作 UI，冻结坐标更新
-      if (!instance.isFrozen) {
-        this.updateInstanceRect(instance);
+  private setupVisibilityObserver(instance: FloatingInstance) {
+    instance.visibilityObserver = new IntersectionObserver((entries) => {
+      instance.isVisible = entries[0].isIntersecting;
+      if (!instance.isVisible && instance.rafId) {
+        cancelAnimationFrame(instance.rafId);
+        instance.rafId = null;
+      } else if (instance.isVisible && !instance.rafId && !instance.isFrozen) {
+        this.startTracking(instance);
       }
+    });
+    instance.visibilityObserver.observe(instance.target);
+  }
 
+  private startTracking(instance: FloatingInstance) {
+    if (instance.rafId) return;
+    const update = () => {
+      if (!this.instances.has(instance.target) || !instance.isVisible) {
+        instance.rafId = null;
+        return;
+      }
+      if (!instance.isFrozen) this.updateInstanceRect(instance);
       instance.rafId = requestAnimationFrame(update);
     };
     instance.rafId = requestAnimationFrame(update);
@@ -428,18 +290,13 @@ export class FloatingController {
 
   private updateInstanceRect(instance: FloatingInstance) {
     const rect = instance.target.getBoundingClientRect();
-
-    // 性能优化：只有在位移或尺寸变化超过 0.5px 时才更新 DOM
-    const currentLeft = parseFloat(instance.host.style.left) || 0;
-    const currentTop = parseFloat(instance.host.style.top) || 0;
     const targetLeft = Math.round(rect.left + window.scrollX);
     const targetTop = Math.round(rect.top + window.scrollY);
 
-    if (
-      Math.abs(currentLeft - targetLeft) > 0.5 ||
-      Math.abs(currentTop - targetTop) > 0.5 ||
-      Math.abs(parseFloat(instance.host.style.width) - rect.width) > 0.5
-    ) {
+    const curL = parseFloat(instance.host.style.left) || 0;
+    const curT = parseFloat(instance.host.style.top) || 0;
+
+    if (Math.abs(curL - targetLeft) > 0.5 || Math.abs(curT - targetTop) > 0.5) {
       Object.assign(instance.host.style, {
         left: `${targetLeft}px`,
         top: `${targetTop}px`,
@@ -450,17 +307,13 @@ export class FloatingController {
   }
 
   private setupObserver(instance: FloatingInstance) {
-    if (instance.observer) instance.observer.disconnect();
-
     instance.observer = new MutationObserver(() => {
       const newUrl = UrlResolver.resolveBestUrl(instance.target);
       if (newUrl && newUrl !== instance.url) {
         instance.url = newUrl;
-        instance.host.dataset.targetUrl = newUrl;
         this.renderInstance(instance);
       }
     });
-
     instance.observer.observe(instance.target, {
       attributes: true,
       attributeFilter: ["src", "srcset"],
@@ -482,32 +335,9 @@ export class FloatingController {
             onDownload={() => this.triggerDownload(instance)}
             onDisable={() => {
               this.isMuted = true;
-              const currentDomain = window.location.hostname;
-              const domains =
-                this.settings.interfaceBehavior.disabledDomains || [];
-              if (!domains.includes(currentDomain)) {
-                const newSettings = {
-                  ...this.settings,
-                  interfaceBehavior: {
-                    ...this.settings.interfaceBehavior,
-                    disabledDomains: [...domains, currentDomain],
-                  },
-                };
-                this.settings = newSettings;
-                chrome.storage.local.set({ imaget_settings: newSettings });
-              }
               this.instances.forEach((_, t) => this.removeInstance(t));
             }}
             onHidePermanent={() => {
-              const newSettings = {
-                ...this.settings,
-                interfaceBehavior: {
-                  ...this.settings.interfaceBehavior,
-                  showFloatingButton: false,
-                },
-              };
-              this.settings = newSettings;
-              chrome.storage.local.set({ imaget_settings: newSettings });
               this.instances.forEach((_, t) => this.removeInstance(t));
             }}
             onClose={() => {
@@ -523,187 +353,62 @@ export class FloatingController {
   private removeInstance(target: HTMLElement) {
     const inst = this.instances.get(target);
     if (!inst) return;
-
-    if (inst.rafId) {
-      cancelAnimationFrame(inst.rafId);
-    }
-    if (inst.progressInterval) {
-      window.clearInterval(inst.progressInterval);
-    }
-    if (inst.observer) {
-      inst.observer.disconnect();
-    }
-    if (inst.hideTimer) {
-      window.clearTimeout(inst.hideTimer);
-    }
+    if (inst.rafId) cancelAnimationFrame(inst.rafId);
+    if (inst.visibilityObserver) inst.visibilityObserver.disconnect();
+    if (inst.observer) inst.observer.disconnect();
+    if (inst.progressInterval) window.clearInterval(inst.progressInterval);
+    if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
     inst.root.unmount();
-    if (inst.host.parentNode) {
-      inst.host.parentNode.removeChild(inst.host);
-    }
+    inst.host.remove();
     this.instances.delete(target);
   }
 
   private async triggerDownload(instance: FloatingInstance) {
     if (instance.status !== "idle") return;
-
-    const url = instance.url;
     instance.status = "downloading";
     instance.progress = 0;
     this.renderInstance(instance);
 
     instance.progressInterval = window.setInterval(() => {
-      if (instance.progress < 30) instance.progress += Math.random() * 10;
-      else if (instance.progress < 95) instance.progress += Math.random() * 2;
-      if (instance.progress > 95) instance.progress = 95;
+      instance.progress = Math.min(95, instance.progress + 5);
       this.renderInstance(instance);
-    }, 150);
-
-    const item: ImageItem = {
-      id: "floating-" + Math.random().toString(36).slice(2),
-      url: url,
-      width: 0,
-      height: 0,
-      sizeKB: 0,
-      format: "UNKNOWN",
-      isSelected: true,
-      pageTitle: document.title,
-      pageUrl: window.location.href,
-    };
-
-    await this.loadSettings();
+    }, 200);
 
     try {
-      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
-        throw new Error("Simulated download failure");
-      }
+      const item: ImageItem = {
+        id: "f-" + Math.random().toString(36).slice(2, 7),
+        url: instance.url,
+        width: 0,
+        height: 0,
+        format: "UNKNOWN",
+        isSelected: true,
+        pageTitle: document.title,
+        pageUrl: window.location.href,
+        sizeKB: 0,
+      };
       await this.processor.downloadBatch([item], this.settings);
-
-      if (instance.progressInterval)
-        window.clearInterval(instance.progressInterval);
-      instance.progressInterval = null;
       instance.status = "success";
       instance.progress = 100;
-      this.renderInstance(instance);
-
-      window.setTimeout(() => {
-        if (this.instances.has(instance.target)) {
-          instance.status = "idle";
-          instance.progress = 0;
-          if (!instance.isHovering) {
-            this.removeInstance(instance.target);
-          } else {
-            this.renderInstance(instance);
-          }
-        }
-      }, 2000);
-    } catch (err) {
-      console.error("Floating download failed:", err);
+    } catch {
       instance.status = "error";
+    } finally {
       if (instance.progressInterval)
         window.clearInterval(instance.progressInterval);
-      instance.progressInterval = null;
       this.renderInstance(instance);
-
       window.setTimeout(() => {
         if (this.instances.has(instance.target)) {
           instance.status = "idle";
-          if (!instance.isHovering) {
-            this.removeInstance(instance.target);
-          } else {
-            this.renderInstance(instance);
-          }
+          if (!instance.isHovering) this.removeInstance(instance.target);
+          else this.renderInstance(instance);
         }
       }, 2000);
     }
   }
 
-  public async tryTriggerCustomDownload(
-    url: string,
-    item: ImageItem,
-    customSettings: Settings,
-  ): Promise<boolean> {
-    // 寻找匹配 URL 的实例
-    let inst: FloatingInstance | undefined;
-    for (const i of this.instances.values()) {
-      if (i.url === url) {
-        inst = i;
-        break;
-      }
-    }
-
-    if (!inst && this.lastUrl === url && this.lastTarget?.isConnected) {
-      this.createInstance(this.lastTarget, url);
-      inst = this.instances.get(this.lastTarget);
-    }
-
+  public async tryTriggerCustomDownload(url: string): Promise<boolean> {
+    const inst = Array.from(this.instances.values()).find((i) => i.url === url);
     if (!inst) return false;
-
-    if (inst.status !== "idle") {
-      const target = inst.target;
-      this.removeInstance(target);
-      this.createInstance(target, url);
-      inst = this.instances.get(target);
-    }
-
-    if (!inst) return false;
-
-    const targetInst = inst;
-    targetInst.status = "downloading";
-    targetInst.progress = 0;
-    this.renderInstance(targetInst);
-
-    targetInst.progressInterval = window.setInterval(() => {
-      if (targetInst.progress < 30) targetInst.progress += Math.random() * 10;
-      else if (targetInst.progress < 95)
-        targetInst.progress += Math.random() * 2;
-      if (targetInst.progress > 95) targetInst.progress = 95;
-      this.renderInstance(targetInst);
-    }, 150);
-
-    try {
-      if (import.meta.env.DEV && this.settings.debug?.simulateDownloadFailure) {
-        throw new Error("Simulated download failure");
-      }
-      await this.processor.downloadBatch([item], customSettings);
-
-      if (targetInst.progressInterval)
-        window.clearInterval(targetInst.progressInterval);
-      targetInst.progressInterval = null;
-      targetInst.status = "success";
-      targetInst.progress = 100;
-      this.renderInstance(targetInst);
-
-      window.setTimeout(() => {
-        if (this.instances.has(targetInst.target)) {
-          targetInst.status = "idle";
-          targetInst.progress = 0;
-          if (!targetInst.isHovering) {
-            this.removeInstance(targetInst.target);
-          } else {
-            this.renderInstance(targetInst);
-          }
-        }
-      }, 2000);
-    } catch (err) {
-      console.error("Floating custom download failed:", err);
-      targetInst.status = "error";
-      if (targetInst.progressInterval)
-        window.clearInterval(targetInst.progressInterval);
-      targetInst.progressInterval = null;
-      this.renderInstance(targetInst);
-
-      window.setTimeout(() => {
-        if (this.instances.has(targetInst.target)) {
-          targetInst.status = "idle";
-          if (!targetInst.isHovering) {
-            this.removeInstance(targetInst.target);
-          } else {
-            this.renderInstance(targetInst);
-          }
-        }
-      }, 2000);
-    }
-
+    this.triggerDownload(inst);
     return true;
   }
 }

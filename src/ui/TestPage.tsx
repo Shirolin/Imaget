@@ -4,13 +4,13 @@ import {
   Text,
   Stack,
   SimpleGrid,
+  Badge,
   Card,
   Image,
   Box,
   Group,
   Container,
   Overlay,
-  AspectRatio,
   Divider,
 } from "@mantine/core";
 import { IconPhoto, IconDeviceLaptop, IconFlask } from "@tabler/icons-react";
@@ -26,35 +26,26 @@ interface GalleryItem {
   label: string;
 }
 
-const generateRandomGallery = (): GalleryItem[] => {
+const generateInitialGallery = (): GalleryItem[] => {
   const getRandomId = () => Math.floor(Math.random() * 1000) + 1;
-
-  const items: GalleryItem[] = [
-    // Huge High-Res
-    { id: getRandomId(), width: 3840, height: 2160, label: "Ultrawide 4K" },
-    { id: getRandomId(), width: 2560, height: 1440, label: "Cinema 2K" },
-    { id: getRandomId(), width: 1920, height: 1080, label: "Full HD" },
-    // Portraits
-    { id: getRandomId(), width: 800, height: 1200, label: "Fashion Portrait" },
-    {
-      id: getRandomId(),
-      width: 1080,
-      height: 1920,
-      label: "Vertical Mobile",
-    },
-    { id: getRandomId(), width: 600, height: 1000, label: "Studio Tall" },
-    // Squares
-    { id: getRandomId(), width: 800, height: 800, label: "Product Square" },
-    { id: getRandomId(), width: 500, height: 500, label: "Social Tile" },
-    // Diverse mix
-    ...Array.from({ length: 30 }).map((_, i) => ({
-      id: getRandomId(),
-      width: 600 + (i % 5) * 150,
-      height: 400 + (i % 3) * 150,
-      label: `Captured Moment ${i + 1}`,
-    })),
+  return [
+    // Mixed aspect ratios to showcase Masonry
+    { id: getRandomId(), width: 1920, height: 1080, label: "Golden Coast" },
+    { id: getRandomId(), width: 1080, height: 1920, label: "Urban Vertical" },
+    { id: getRandomId(), width: 800, height: 800, label: "Studio Square" },
+    { id: getRandomId(), width: 3840, height: 2160, label: "Alpine 4K" },
+    { id: getRandomId(), width: 600, height: 1200, label: "Narrow Tower" },
+    { id: getRandomId(), width: 1200, height: 600, label: "Wide Horizon" },
+    ...Array.from({ length: 30 }).map((_, i) => {
+      const isPortrait = Math.random() > 0.6;
+      return {
+        id: getRandomId(),
+        width: isPortrait ? 600 : 800,
+        height: isPortrait ? 900 : 600,
+        label: `Moment #${i + 1}`,
+      };
+    }),
   ];
-  return items;
 };
 
 // ==============================================
@@ -63,21 +54,20 @@ const generateRandomGallery = (): GalleryItem[] => {
 
 const ShadowBox = memo(({ url }: { url: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    if (containerRef.current && !containerRef.current.shadowRoot) {
-      const shadow = containerRef.current.attachShadow({ mode: "open" });
+    const currentContainer = containerRef.current;
+    if (currentContainer && !currentContainer.shadowRoot) {
+      const shadow = currentContainer.attachShadow({ mode: "open" });
       const img = document.createElement("img");
       img.src = url;
       img.style.width = "100%";
       img.style.height = "100%";
       img.style.objectFit = "cover";
-      img.style.borderRadius = "8px";
+      img.style.borderRadius = "12px";
       shadow.appendChild(img);
     }
   }, [url]);
-
-  return <Box ref={containerRef} h={150} />;
+  return <Box ref={containerRef} h={180} />;
 });
 
 const SectionHeader = ({
@@ -89,14 +79,14 @@ const SectionHeader = ({
   title: string;
   description: string;
 }) => (
-  <Stack gap={4} mb="lg">
+  <Stack gap={4} mb="xl">
     <Group gap="xs">
-      <Icon size={24} color="var(--mantine-color-blue-filled)" />
-      <Title order={2} style={{ letterSpacing: 0.5 }}>
+      <Icon size={28} color="var(--mantine-color-blue-4)" />
+      <Title order={2} fw={800} style={{ letterSpacing: -0.5 }}>
         {title}
       </Title>
     </Group>
-    <Text c="dimmed" size="sm">
+    <Text c="dimmed" size="sm" maw={500}>
       {description}
     </Text>
   </Stack>
@@ -107,28 +97,27 @@ const SectionHeader = ({
 // ==============================================
 
 const TestPage: React.FC = () => {
-  // 使用状态初始化函数（Lazy Initializer）在首次渲染时生成随机数据，避免 useEffect 导致的级联渲染警告
-  const [gallery] = useState<GalleryItem[]>(() => generateRandomGallery());
+  const [gallery] = useState<GalleryItem[]>(generateInitialGallery);
   const [heroId] = useState(() => Math.floor(Math.random() * 1000) + 1);
 
   return (
     <Box
       style={{
-        backgroundColor: "var(--mantine-color-dark-9)",
+        backgroundColor: "#050505", // Deeper black for high contrast
         minHeight: "100vh",
-        color: "var(--mantine-color-dark-0)",
+        color: "#eee",
       }}
     >
       {/* Hero Section */}
-      <Box style={{ position: "relative", height: 400, overflow: "hidden" }}>
+      <Box style={{ position: "relative", height: 500, overflow: "hidden" }}>
         <Image
-          src={`https://picsum.photos/id/${heroId}/1920/600`}
-          h={400}
+          src={`https://picsum.photos/id/${heroId}/2560/800`}
+          h={500}
           w="100%"
           fit="cover"
         />
         <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%)"
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(5, 5, 5, 1) 100%)"
           opacity={1}
           zIndex={1}
         />
@@ -140,118 +129,137 @@ const TestPage: React.FC = () => {
             zIndex: 2,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
-            paddingBottom: 60,
+            justifyContent: "center",
           }}
         >
-          <Stack gap={0}>
+          <Stack gap="xs">
             <Text
               c="blue.4"
-              fw={800}
-              size="sm"
+              fw={900}
+              size="xs"
               tt="uppercase"
-              style={{ letterSpacing: 2 }}
+              style={{ letterSpacing: 4 }}
             >
-              Exhibition Bench
+              Imaget Engine v2.0
             </Text>
             <Title
               order={1}
-              size={48}
-              style={{ color: "#fff", lineHeight: 1.1, marginBottom: 12 }}
+              size={64}
+              fw={900}
+              style={{ color: "#fff", lineHeight: 1, marginBottom: 16 }}
             >
-              Sniffer Engine <br />
-              <span style={{ color: "var(--mantine-color-blue-4)" }}>
-                Laboratory
-              </span>
+              High-Precision <br />
+              Sniffer Sandbox
             </Title>
-            <Text c="gray.4" maw={600}>
-              A comprehensive stress-test environment featuring various image
-              formats, resolutions, and complex DOM structures to verify the
-              Imaget sniffer performance and accuracy.
+            <Text c="gray.5" size="lg" maw={550} style={{ lineHeight: 1.6 }}>
+              A premium exhibition environment designed to stress-test recursive
+              DOM traversal and multi-dimensional image filtering.
             </Text>
           </Stack>
         </Container>
       </Box>
 
-      <Container size="xl" py={60}>
-        <Stack gap={80}>
-          {/* Section 1: High-Res Gallery */}
+      <Container size="xl" py={100}>
+        <Stack gap={120}>
+          {/* Section 1: Masonry Gallery */}
           <Box>
             <SectionHeader
               icon={IconPhoto}
-              title="High-Res Showcase"
-              description="A diverse set of high-quality images from Picsum to test resolution and aspect ratio filtering."
+              title="Dynamic Masonry"
+              description="A mixed-ratio gallery to verify that the sniffer handles various aspect ratios (16:9, 9:16, 1:1) correctly without distortion."
             />
-            <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 6 }} spacing="md">
+
+            {/* Native CSS Masonry using columns */}
+            <Box
+              style={{
+                columnCount: 4,
+                columnGap: "20px",
+                // Responsive columns via style (since standard CSS is used)
+              }}
+            >
               {gallery.map((item, idx) => (
                 <Card
                   key={`${item.id}-${idx}`}
-                  padding="xs"
-                  radius="md"
-                  withBorder
-                  bg="dark.8"
-                  styles={{
-                    root: {
-                      transition: "transform 0.2s ease, border-color 0.2s ease",
-                      "&:hover": {
-                        transform: "translateY(-4px)",
-                        borderColor: "var(--mantine-color-blue-filled)",
-                      },
-                    },
+                  padding={0}
+                  radius="lg"
+                  bg="#111"
+                  style={{
+                    breakInside: "avoid",
+                    marginBottom: "20px",
+                    border: "1px solid #222",
+                    overflow: "hidden",
+                    cursor: "zoom-in",
+                    transition: "transform 0.3s ease, border-color 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "scale(1.02)";
+                    e.currentTarget.style.borderColor =
+                      "var(--mantine-color-blue-7)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.borderColor = "#222";
                   }}
                 >
-                  <Card.Section>
-                    <AspectRatio ratio={item.width / item.height}>
-                      <Image
-                        src={`https://picsum.photos/id/${item.id}/${Math.round(item.width / 4)}/${Math.round(item.height / 4)}`}
-                        alt={item.label}
-                        loading="lazy"
-                        fallbackSrc="https://placehold.co/600x400?text=Loading"
-                      />
-                    </AspectRatio>
-                  </Card.Section>
-                  <Stack gap={2} mt="xs">
-                    <Text fw={700} size="xs" truncate>
-                      {item.label}
-                    </Text>
-                    <Text size="10px" c="dimmed">
-                      {item.width} × {item.height}
-                    </Text>
-                  </Stack>
+                  <Box style={{ position: "relative" }}>
+                    <Image
+                      src={`https://picsum.photos/id/${item.id}/${Math.round(item.width / 4)}/${Math.round(item.height / 4)}`}
+                      alt={item.label}
+                      loading="lazy"
+                    />
+
+                    {/* Bottom Info Overlay on Card */}
+                    <Box
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        padding: "12px",
+                        background:
+                          "linear-gradient(transparent, rgba(0,0,0,0.8))",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <Text fw={700} size="xs" c="white" truncate>
+                        {item.label}
+                      </Text>
+                      <Text size="10px" c="blue.2" fw={500}>
+                        {item.width} × {item.height}
+                      </Text>
+                    </Box>
+                  </Box>
                 </Card>
               ))}
-            </SimpleGrid>
+            </Box>
           </Box>
 
           {/* Section 2: Technical Test Cases */}
           <Box>
             <SectionHeader
               icon={IconFlask}
-              title="Developer Lab"
-              description="Special integration scenarios including Shadow DOM, Background Images, and SVGs."
+              title="Industrial Scenarios"
+              description="Verifying detection across complex web implementations like Picture tags, Backgrounds, and Shadow DOM."
             />
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
               {TEST_CASES.map((tc) => (
                 <Card
                   key={tc.id}
-                  withBorder
-                  bg="dark.8"
-                  shadow="sm"
-                  radius="md"
-                  padding="md"
+                  padding={0}
+                  radius="lg"
+                  bg="#111"
+                  style={{ border: "1px solid #222" }}
                 >
-                  <Card.Section>
+                  <Box
+                    h={200}
+                    style={{ position: "relative", overflow: "hidden" }}
+                  >
                     {tc.type === "img" && (
-                      <Image
-                        src={tc.url}
-                        height={150}
-                        alt={tc.title}
-                        fit="cover"
-                      />
+                      <Image src={tc.url} h="100%" fit="cover" />
                     )}
                     {tc.type === "background" && (
                       <Box
-                        h={150}
+                        h="100%"
                         style={{
                           backgroundImage: `url(${tc.url})`,
                           backgroundSize: "cover",
@@ -266,7 +274,7 @@ const TestPage: React.FC = () => {
                           src={tc.url}
                           style={{
                             width: "100%",
-                            height: "150px",
+                            height: "200px",
                             objectFit: "cover",
                           }}
                           alt={tc.title}
@@ -275,23 +283,25 @@ const TestPage: React.FC = () => {
                     )}
                     {tc.type === "shadow-dom" && <ShadowBox url={tc.url} />}
                     {tc.type === "svg" && (
-                      <Image
-                        src={tc.url}
-                        height={150}
-                        alt={tc.title}
-                        fit="contain"
-                        p="md"
-                      />
+                      <Image src={tc.url} h="100%" fit="contain" p="xl" />
                     )}
-                  </Card.Section>
-                  <Stack gap={4} mt="sm">
-                    <Text fw={600} size="sm">
+                    <Badge
+                      variant="filled"
+                      color="dark"
+                      size="xs"
+                      pos="absolute"
+                      top={10}
+                      right={10}
+                      style={{ zIndex: 5 }}
+                    >
+                      {tc.type.toUpperCase()}
+                    </Badge>
+                  </Box>
+                  <Box p="md">
+                    <Text fw={700} size="sm" c="white">
                       {tc.title}
                     </Text>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                      {tc.type}
-                    </Text>
-                  </Stack>
+                  </Box>
                 </Card>
               ))}
             </SimpleGrid>
@@ -301,73 +311,62 @@ const TestPage: React.FC = () => {
           <Box>
             <SectionHeader
               icon={IconDeviceLaptop}
-              title="Structural Edge Cases"
-              description="Testing sniffer's ability to find images hidden deep within DOM hierarchies."
+              title="Nested Contexts"
+              description="Stress-testing the recursive sniffer with multi-level DOM hierarchies."
             />
-            <Stack gap="xl">
-              <Box
-                p="xl"
-                bg="dark.8"
-                style={{
-                  border: "1px dashed var(--mantine-color-dark-4)",
-                  borderRadius: "var(--mantine-radius-md)",
-                }}
-              >
-                <Box component="section">
-                  <Box component="article">
-                    <Group align="flex-start" gap="xl">
-                      <img
-                        src="https://picsum.photos/id/15/600/400"
-                        alt="Deeply Nested"
-                        style={{
-                          borderRadius: 12,
-                          display: "block",
-                          maxWidth: "100%",
-                          height: "auto",
-                          boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-                        }}
-                      />
-                      <Stack gap="md" style={{ flex: 1 }}>
-                        <Title order={3}>The Nested Context</Title>
-                        <Text size="sm" c="dimmed">
-                          This image is intentionally buried deep inside Box,
-                          Section, and Article components to verify recursive
-                          DOM traversal.
-                        </Text>
-                        <Divider opacity={0.1} />
-                        <Text size="xs" ff="monospace">
-                          Path: Container {">"} Stack {">"} Section {">"}{" "}
-                          Article {">"} Group {">"} img
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </Box>
-                </Box>
-              </Box>
-            </Stack>
+            <Box
+              p={40}
+              style={{
+                background: "#080808",
+                border: "1px dashed #333",
+                borderRadius: "20px",
+              }}
+            >
+              <section>
+                <article>
+                  <Group align="flex-start" gap={40}>
+                    <Image
+                      src="https://picsum.photos/id/15/600/400"
+                      w={300}
+                      radius="lg"
+                      style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}
+                    />
+                    <Stack gap="md" style={{ flex: 1 }}>
+                      <Title order={3} fw={900}>
+                        Recursive Traversal
+                      </Title>
+                      <Text size="sm" c="dimmed" style={{ lineHeight: 1.6 }}>
+                        This image is buried deep inside nested Section and
+                        Article tags. It validates that Imaget doesn't stop at
+                        top-level nodes and correctly reaches every leaf of the
+                        DOM tree.
+                      </Text>
+                      <Divider color="#222" />
+                      <Text size="xs" ff="monospace" c="blue.4">
+                        Status: Searchable & Capture-ready
+                      </Text>
+                    </Stack>
+                  </Group>
+                </article>
+              </section>
+            </Box>
           </Box>
         </Stack>
       </Container>
 
       {/* Page Footer */}
       <Box
-        py={40}
-        bg="dark.8"
-        style={{ borderTop: "1px solid var(--mantine-color-dark-4)" }}
+        py={60}
+        style={{ borderTop: "1px solid #222", background: "#050505" }}
       >
         <Container size="xl">
           <Group justify="space-between">
-            <Text size="xs" c="dimmed">
-              Imaget Sniffer Test Page &copy; 2026
+            <Text size="xs" c="dimmed" fw={500}>
+              &copy; 2026 IMAGET LABORATORY. ALL ASSETS POWERED BY PICSUM.
             </Text>
-            <Group gap="xs">
-              <Text size="xs" c="blue.4" fw={700}>
-                PICSUM
-              </Text>
-              <Text size="xs" c="dimmed">
-                POWERED
-              </Text>
-            </Group>
+            <Badge variant="outline" color="blue" size="sm">
+              DEV MODE ACTIVE
+            </Badge>
           </Group>
         </Container>
       </Box>

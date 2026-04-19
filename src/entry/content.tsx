@@ -181,8 +181,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
           const started = await floatingController.tryTriggerCustomDownload(
             target.url,
-            target,
-            tempSettings,
           );
           if (!started) {
             // 如果无法运用悬浮动画（比如页面没滚动到对应图片或者没hover过），回退到静默下载

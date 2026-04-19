@@ -32,6 +32,13 @@ interface ImageCardProps {
   portalNode: HTMLDivElement | null;
 }
 
+const badgeStyle: React.CSSProperties = {
+  backgroundColor:
+    "color-mix(in srgb, var(--mantine-color-black), transparent 55%)",
+  border:
+    "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
+};
+
 const ImageCardBase: React.FC<ImageCardProps> = ({
   item,
   layout = "grid",
@@ -49,13 +56,6 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
     navigator.clipboard.writeText(item.url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const badgeStyle: React.CSSProperties = {
-    backgroundColor:
-      "color-mix(in srgb, var(--mantine-color-black), transparent 55%)",
-    border:
-      "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
   };
 
   const isSvg = item.format === "SVG";
