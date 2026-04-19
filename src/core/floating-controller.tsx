@@ -263,6 +263,12 @@ export class FloatingController {
   private setupVisibilityObserver(instance: FloatingInstance) {
     instance.visibilityObserver = new IntersectionObserver(
       (entries) => {
+        // 🚀 核心加固：如果目标图片已被原网页从 DOM 中彻底移除，立即销毁实例释放内存
+        if (!document.contains(instance.target)) {
+          this.removeInstance(instance.target);
+          return;
+        }
+
         instance.isVisible = entries[0].isIntersecting;
         if (!instance.isVisible && instance.rafId) {
           cancelAnimationFrame(instance.rafId);
@@ -369,6 +375,7 @@ export class FloatingController {
     if (!inst) return;
     if (inst.rafId) cancelAnimationFrame(inst.rafId);
     if (inst.visibilityObserver) inst.visibilityObserver.disconnect();
+    if (inst.observer) inst.observer.disconnect(); // 🚀 补齐：断开属性监听器
     if (inst.progressInterval) window.clearInterval(inst.progressInterval);
     if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
     inst.root.unmount();
