@@ -23,12 +23,14 @@ interface FloatingInstance {
   observer: MutationObserver | null;
   hideTimer: number | null;
   isHovering: boolean;
+  isFrozen: boolean; // 核心：记录是否处于坐标冻结状态
+  rafId: number | null; // 用于位置追踪循环
 }
 
 export class FloatingController {
   private instances: Map<HTMLElement, FloatingInstance> = new Map();
   private isMuted: boolean = false;
-  private isTemporarilyDisabled: boolean = false; // 核心修复：记录当前页面周期的暂时关闭状态
+  private isTemporarilyDisabled: boolean = false;
   private settings: Settings = defaultSettings;
   private timer: number | null = null;
   private pendingTarget: HTMLElement | null = null;
@@ -36,6 +38,9 @@ export class FloatingController {
   private lastMouseX: number = 0;
   private lastMouseY: number = 0;
   private graceTimer: number | null = null;
+
+  // 辅助判断鼠标是否在 UI 内部
+  private isMouseInUI: boolean = false;
 
   // 记忆最近一次的悬浮目标，以供右键菜单唤起动画
   private lastTarget: HTMLElement | null = null;
@@ -111,6 +116,27 @@ export class FloatingController {
   private async handleMouseOver(e: MouseEvent) {
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
+
+    // 检查鼠标是否进入了我们的 Floating Host (Shadow DOM 内容)
+    const isOverOurUI = path.some(
+      (el) =>
+        el instanceof HTMLElement &&
+        (el.classList.contains("imaget-floating-host") ||
+          el.classList.contains("imaget-floating-container")),
+    );
+
+    if (isOverOurUI) {
+      // 鼠标在 UI 内部：冻结所有追踪
+      this.instances.forEach((inst) => (inst.isFrozen = true));
+    } else {
+      // 鼠标在 UI 外部：解除特定实例的冻结
+      const instance = Array.from(this.instances.values()).find((i) =>
+        i.host.contains(target),
+      );
+      if (!instance) {
+        this.instances.forEach((inst) => (inst.isFrozen = false));
+      }
+    }
 
     if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
@@ -376,22 +402,51 @@ export class FloatingController {
       observer: null,
       hideTimer: null,
       isHovering: true,
+      isFrozen: false,
+      rafId: null,
     };
 
     this.instances.set(target, instance);
-    this.updateInstanceRect(instance);
+    this.startTracking(instance); // 启动追踪循环
     this.setupObserver(instance);
     this.renderInstance(instance);
   }
 
+  private startTracking(instance: FloatingInstance) {
+    const update = () => {
+      if (!this.instances.has(instance.target)) return;
+
+      // 核心：如果鼠标正在操作 UI，冻结坐标更新
+      if (!instance.isFrozen) {
+        this.updateInstanceRect(instance);
+      }
+
+      instance.rafId = requestAnimationFrame(update);
+    };
+    instance.rafId = requestAnimationFrame(update);
+  }
+
   private updateInstanceRect(instance: FloatingInstance) {
     const rect = instance.target.getBoundingClientRect();
-    Object.assign(instance.host.style, {
-      left: `${Math.round(rect.left + window.scrollX)}px`,
-      top: `${Math.round(rect.top + window.scrollY)}px`,
-      width: `${Math.round(rect.width)}px`,
-      height: `${Math.round(rect.height)}px`,
-    });
+
+    // 性能优化：只有在位移或尺寸变化超过 0.5px 时才更新 DOM
+    const currentLeft = parseFloat(instance.host.style.left) || 0;
+    const currentTop = parseFloat(instance.host.style.top) || 0;
+    const targetLeft = Math.round(rect.left + window.scrollX);
+    const targetTop = Math.round(rect.top + window.scrollY);
+
+    if (
+      Math.abs(currentLeft - targetLeft) > 0.5 ||
+      Math.abs(currentTop - targetTop) > 0.5 ||
+      Math.abs(parseFloat(instance.host.style.width) - rect.width) > 0.5
+    ) {
+      Object.assign(instance.host.style, {
+        left: `${targetLeft}px`,
+        top: `${targetTop}px`,
+        width: `${Math.round(rect.width)}px`,
+        height: `${Math.round(rect.height)}px`,
+      });
+    }
   }
 
   private setupObserver(instance: FloatingInstance) {
@@ -469,6 +524,9 @@ export class FloatingController {
     const inst = this.instances.get(target);
     if (!inst) return;
 
+    if (inst.rafId) {
+      cancelAnimationFrame(inst.rafId);
+    }
     if (inst.progressInterval) {
       window.clearInterval(inst.progressInterval);
     }
