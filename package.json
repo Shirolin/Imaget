@@ -6,10 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sync-version": "tsx scripts/sync-version.ts",
+    "build:docs": "tsx scripts/build-docs.ts",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
     "lint": "eslint .",
     "type-check": "tsc -b",
-    "build": "npm run format && npm run lint && npm run type-check && vite build",
+    "build": "npm run sync-version && npm run build:docs && npm run format && npm run lint && npm run type-check && vite build",
     "release": "bumpp && npm run build",
     "watch": "vite build --watch",
     "preview": "vite preview"
@@ -39,6 +41,7 @@
     "globals": "^17.4.0",
     "jszip": "^3.10.1",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.0.0"
