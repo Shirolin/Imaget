@@ -47,6 +47,42 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     return false;
   }
 
+  if (message.type === "FETCH_BLOB") {
+    const { url, referer } = message.payload;
+    fetch(url, {
+      headers: referer ? { Referer: referer } : undefined,
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            sendResponse({ success: true, dataUrl: reader.result });
+          } catch (e) {
+            console.error("sendResponse failed (payload too large?):", e);
+            // Catching it doesn't help send it to the content script if the port closed,
+            // but at least it won't crash the background worker silently.
+          }
+        };
+        reader.onerror = () => {
+          try {
+            sendResponse({ success: false, error: "Failed to read blob" });
+          } catch {
+            /* ignore */
+          }
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch((err) => {
+        try {
+          sendResponse({ success: false, error: err.message || String(err) });
+        } catch {
+          /* ignore */
+        }
+      });
+    return true; // 保持异步
+  }
+
   if (message.type === "DOWNLOAD_REQUEST") {
     const { url, filename, conflictAction } = message.payload;
     chrome.downloads.download(

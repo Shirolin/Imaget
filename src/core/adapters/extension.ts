@@ -20,21 +20,28 @@ export class ExtensionAdapter implements IPlatformAdapter {
 
     // 远程资源通过后台代理
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage(
-        {
-          type: "FETCH_BLOB",
-          payload: { url, referer },
-        },
-        async (response) => {
-          if (chrome.runtime.lastError) return reject(chrome.runtime.lastError);
-          if (response?.success && response.dataUrl) {
-            const res = await fetch(response.dataUrl);
-            resolve(await res.blob());
-          } else {
-            reject(new Error(response?.error || "Fetch failed in background"));
-          }
-        },
-      );
+      try {
+        chrome.runtime.sendMessage(
+          {
+            type: "FETCH_BLOB",
+            payload: { url, referer },
+          },
+          async (response) => {
+            if (chrome.runtime.lastError)
+              return reject(chrome.runtime.lastError);
+            if (response?.success && response.dataUrl) {
+              const res = await fetch(response.dataUrl);
+              resolve(await res.blob());
+            } else {
+              reject(
+                new Error(response?.error || "Fetch failed in background"),
+              );
+            }
+          },
+        );
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -67,27 +74,31 @@ export class ExtensionAdapter implements IPlatformAdapter {
       const reader = new FileReader();
       reader.onerror = () => reject(new Error("FileReader failed"));
       reader.onload = () => {
-        const dataUrl = reader.result as string;
-        // 注意：我们通过消息发送 DataURL，并在 payload 中带上完整路径
-        chrome.runtime.sendMessage(
-          {
-            type: "DOWNLOAD",
-            payload: {
-              url: dataUrl,
-              filename,
-              conflictAction: conflictAction || "uniquify",
+        try {
+          const dataUrl = reader.result as string;
+          // 注意：我们通过消息发送 DataURL，并在 payload 中带上完整路径
+          chrome.runtime.sendMessage(
+            {
+              type: "DOWNLOAD_REQUEST",
+              payload: {
+                url: dataUrl,
+                filename,
+                conflictAction: conflictAction || "uniquify",
+              },
             },
-          },
-          (response) => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-            } else if (response && !response.success) {
-              reject(new Error(response.error));
-            } else {
-              resolve();
-            }
-          },
-        );
+            (response) => {
+              if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+              } else if (response && !response.success) {
+                reject(new Error(response.error));
+              } else {
+                resolve();
+              }
+            },
+          );
+        } catch (err) {
+          reject(err);
+        }
       };
       reader.readAsDataURL(blob);
     });

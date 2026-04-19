@@ -25,6 +25,15 @@
       "128": "icon-128.png"
     }
   },
+  "commands": {
+    "toggle-sniffer": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Toggle Imaget Panel"
+    }
+  },
   "background": {
     "service_worker": "background.js",
     "type": "module"

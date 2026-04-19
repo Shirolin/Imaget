@@ -32,6 +32,7 @@ export class ImageProcessor {
           : 5;
     let currentIndex = 0;
     let completed = 0;
+    let failCount = 0;
 
     const worker = async () => {
       while (currentIndex < total) {
@@ -116,6 +117,7 @@ export class ImageProcessor {
 
           await this.adapter.download(blob, finalPath, conflictAction);
         } catch (err) {
+          failCount++;
           console.error(
             `[Processor] Failed at index ${index} (${img.url}):`,
             err,
@@ -132,6 +134,10 @@ export class ImageProcessor {
       .fill(null)
       .map(() => worker());
     await Promise.all(workers);
+
+    if (total > 0 && failCount === total) {
+      throw new Error(`All ${total} downloads failed`);
+    }
   }
 
   /**
@@ -152,6 +158,7 @@ export class ImageProcessor {
           : 5;
     let currentIndex = 0;
     let completed = 0;
+    let failCount = 0;
 
     const worker = async () => {
       while (currentIndex < total) {
@@ -199,6 +206,7 @@ export class ImageProcessor {
           // 写入 ZIP (JSZip 会根据 filename 中的 / 自动创建层级)
           zip.file(filename, blob);
         } catch (err) {
+          failCount++;
           console.error(
             `[Processor] ZIP resource fetch failed (${img.url}):`,
             err,
@@ -214,6 +222,10 @@ export class ImageProcessor {
       .fill(null)
       .map(() => worker());
     await Promise.all(workers);
+
+    if (total > 0 && failCount === total) {
+      throw new Error(`All ${total} resources failed to fetch for ZIP`);
+    }
 
     // 生成 ZIP Blob
     const content = await zip.generateAsync({ type: "blob" });

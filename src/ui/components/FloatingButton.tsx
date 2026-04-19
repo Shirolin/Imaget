@@ -20,6 +20,8 @@ interface FloatingButtonProps {
   onClose: () => void;
   onDisable?: () => void;
   onHidePermanent?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 // ==============================================
@@ -539,6 +541,8 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
   onClose,
   onDisable,
   onHidePermanent,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -576,8 +580,14 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
       <div
         className="imaget-glass-wrapper"
         style={{ pointerEvents: "auto" }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={() => {
+          setHovered(true);
+          onMouseEnter?.();
+        }}
+        onMouseLeave={() => {
+          setHovered(false);
+          onMouseLeave?.();
+        }}
       >
         <MainDownloadAction
           status={status}
