@@ -38,8 +38,7 @@ export class FloatingController {
   // 状态机变量
   private hoverTimer: number | null = null;
   private pendingTarget: HTMLElement | null = null;
-  private lastMouseX: number = 0;
-  private lastMouseY: number = 0;
+  private graceTimer: number | null = null;
 
   constructor(
     _sniffer: Sniffer,
@@ -82,9 +81,17 @@ export class FloatingController {
     document.removeEventListener("pointerout", this.handleMouseOut, true);
     this.instances.forEach((_, target) => this.removeInstance(target));
     if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
+    if (this.graceTimer) window.clearTimeout(this.graceTimer);
   }
 
   private async handleMouseOver(e: MouseEvent) {
+    // 🚀 核心逻辑加固：只要触发 mouseover，立即拦截并取消任何来自 mouseout 的清理延时
+    // 这解决了用户在同一个图片容器内的子元素之间移动导致计时器被错误清理的问题
+    if (this.graceTimer) {
+      window.clearTimeout(this.graceTimer);
+      this.graceTimer = null;
+    }
+
     if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
 
@@ -100,7 +107,7 @@ export class FloatingController {
     );
 
     if (isOverOurUI) {
-      // 交互中：冻结所有追踪
+      // 交互中：冻结所有追踪循环，确保点击位置绝对稳定
       this.instances.forEach((inst) => (inst.isFrozen = true));
       return;
     }
@@ -134,15 +141,21 @@ export class FloatingController {
       return;
     }
 
-    // 4. 核心：稳定状态机逻辑
-    // 如果已经在追踪或显示该图片，直接 return，不要重置定时器！
+    // 4. 解除冻结（仅针对不在当前鼠标下且处于闲置状态的实例）
+    this.instances.forEach((inst) => {
+      if (inst.target !== candidateEl && inst.status === "idle") {
+        inst.isFrozen = false;
+      }
+    });
+
+    // 5. 稳定状态机逻辑：如果目标未变，直接 return，保持原有 hoverTimer
     if (this.pendingTarget === candidateEl) return;
 
-    // 发现新目标
+    // 发现真正的新图片目标
     if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
     this.pendingTarget = candidateEl;
 
-    // 检查是否已有实例（仅需要激活）
+    // 如果已经有实例了，只需恢复其 hover 状态
     const existing = this.instances.get(candidateEl);
     if (existing) {
       existing.isHovering = true;
@@ -151,7 +164,7 @@ export class FloatingController {
       return;
     }
 
-    // 启动 300ms 延迟
+    // 启动 300ms 延迟触发
     this.hoverTimer = window.setTimeout(() => {
       if (this.pendingTarget === candidateEl) {
         this.createInstance(candidateEl, candidateUrl!);
@@ -186,16 +199,17 @@ export class FloatingController {
       }, 400);
     }
 
-    // 清理 pending 状态
-    if (this.pendingTarget && e.target === this.pendingTarget) {
-      // 50ms 宽限期，防止在卡片内部移动时丢失 pending
-      window.setTimeout(() => {
-        if (this.pendingTarget === e.target) {
-          if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
-          this.pendingTarget = null;
-        }
-      }, 50);
-    }
+    // 🚀 核心逻辑加固：延缓清理 pendingTarget。
+    // 这给 handleMouseOver 留出了 50ms 时间来执行取消动作（如果鼠标只是移动到了子元素上）
+    if (this.graceTimer) window.clearTimeout(this.graceTimer);
+    this.graceTimer = window.setTimeout(() => {
+      this.pendingTarget = null;
+      if (this.hoverTimer) {
+        window.clearTimeout(this.hoverTimer);
+        this.hoverTimer = null;
+      }
+      this.graceTimer = null;
+    }, 50);
   }
 
   private createInstance(target: HTMLElement, url: string) {
@@ -285,11 +299,18 @@ export class FloatingController {
     const targetLeft = Math.round(rect.left + window.scrollX);
     const targetTop = Math.round(rect.top + window.scrollY);
 
-    // 性能优化：只有在位移超过 0.5px 时更新
+    // 🚀 核心加固：同时监控宽高变化，确保缩放动效也能被实时同步
     const curL = parseFloat(instance.host.style.left) || 0;
     const curT = parseFloat(instance.host.style.top) || 0;
+    const curW = parseFloat(instance.host.style.width) || 0;
+    const curH = parseFloat(instance.host.style.height) || 0;
 
-    if (Math.abs(curL - targetLeft) > 0.5 || Math.abs(curT - targetTop) > 0.5) {
+    if (
+      Math.abs(curL - targetLeft) > 0.5 ||
+      Math.abs(curT - targetTop) > 0.5 ||
+      Math.abs(curW - rect.width) > 0.5 ||
+      Math.abs(curH - rect.height) > 0.5
+    ) {
       Object.assign(instance.host.style, {
         left: `${targetLeft}px`,
         top: `${targetTop}px`,
