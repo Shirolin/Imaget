@@ -21,10 +21,10 @@ interface FloatingInstance {
   progress: number;
   progressInterval: number | null;
   observer: MutationObserver | null;
-  visibilityObserver: IntersectionObserver | null; // 性能核心：可见性监测
+  visibilityObserver: IntersectionObserver | null;
   hideTimer: number | null;
   isHovering: boolean;
-  isVisible: boolean; // 是否在视野内
+  isVisible: boolean;
   isFrozen: boolean;
   rafId: number | null;
 }
@@ -97,7 +97,7 @@ export class FloatingController {
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
 
-    // 检查鼠标是否进入了我们的 UI 内部
+    // 1. 核心修复：检查鼠标是否进入了我们的 UI 内部
     const isOverOurUI = path.some(
       (el) =>
         el instanceof HTMLElement &&
@@ -107,14 +107,13 @@ export class FloatingController {
 
     if (isOverOurUI) {
       this.instances.forEach((inst) => (inst.isFrozen = true));
-    } else {
-      const instance = Array.from(this.instances.values()).find((i) =>
-        i.host.contains(target),
-      );
-      if (!instance) {
-        this.instances.forEach((inst) => (inst.isFrozen = false));
-      }
+      return; // 鼠标在 UI 内部时，不需要再寻找新图片
     }
+
+    // 解除所有实例的冻结（如果鼠标回到了背景页面）
+    this.instances.forEach((inst) => {
+      if (!inst.host.contains(target)) inst.isFrozen = false;
+    });
 
     if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
@@ -124,64 +123,42 @@ export class FloatingController {
     this.lastProcessedTarget = target;
 
     const minSize = this.settings.interfaceBehavior.minImageSize;
-    const elementsUnder = document.elementsFromPoint(e.clientX, e.clientY);
 
-    let bestTarget: HTMLElement | null = null;
-    let bestUrl: string = "";
+    // 简化寻找图片逻辑，提高稳定性
+    let candidateUrl = UrlResolver.resolveBestUrl(target);
+    let candidateEl = target;
 
-    const searchDepth = Math.min(elementsUnder.length, 10);
-    for (let i = 0; i < searchDepth; i++) {
-      const el = elementsUnder[i];
-      if (!(el instanceof HTMLElement)) continue;
-      const htmlEl = el as HTMLElement;
-
-      let isCurrentHost = false;
-      for (const inst of this.instances.values()) {
-        if (inst.host === htmlEl || inst.host.contains(htmlEl)) {
-          isCurrentHost = true;
-          break;
-        }
-      }
-      if (isCurrentHost) continue;
-
-      let candidateUrl = UrlResolver.resolveBestUrl(htmlEl);
-      let candidateEl = htmlEl;
-
-      if (!candidateUrl && ["A", "DIV", "PICTURE"].includes(htmlEl.tagName)) {
-        const imgInside = htmlEl.querySelector("img");
-        if (imgInside) {
-          candidateUrl = UrlResolver.resolveBestUrl(imgInside);
-          candidateEl = imgInside;
-        }
-      }
-
-      if (!candidateUrl || candidateUrl.startsWith("data:")) continue;
-
-      const rect = candidateEl.getBoundingClientRect();
-      if (rect.width >= minSize - 8 || rect.height >= minSize - 8) {
-        bestTarget = htmlEl;
-        bestUrl = candidateUrl;
-        break;
+    if (
+      !candidateUrl &&
+      ["A", "DIV", "PICTURE", "SECTION", "ARTICLE"].includes(target.tagName)
+    ) {
+      const imgInside = target.querySelector("img");
+      if (imgInside) {
+        candidateUrl = UrlResolver.resolveBestUrl(imgInside);
+        candidateEl = imgInside;
       }
     }
 
-    if (!bestTarget || !bestUrl) return;
+    if (!candidateUrl || candidateUrl.startsWith("data:")) return;
 
-    this.pendingTarget = bestTarget;
-    if (this.timer) window.clearTimeout(this.timer);
+    const rect = candidateEl.getBoundingClientRect();
+    if (rect.width >= minSize - 8 || rect.height >= minSize - 8) {
+      this.pendingTarget = target;
+      if (this.timer) window.clearTimeout(this.timer);
 
-    this.timer = window.setTimeout(() => {
-      if (!this.pendingTarget) return;
-      const inst = this.instances.get(this.pendingTarget);
-      if (inst) {
-        inst.isHovering = true;
-        if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
-        this.updateInstanceRect(inst);
-      } else {
-        this.createInstance(this.pendingTarget, bestUrl!);
-      }
-      this.timer = null;
-    }, 300);
+      this.timer = window.setTimeout(() => {
+        if (!this.pendingTarget) return;
+        const inst = this.instances.get(this.pendingTarget);
+        if (inst) {
+          inst.isHovering = true;
+          if (inst.hideTimer) window.clearTimeout(inst.hideTimer);
+          this.updateInstanceRect(inst);
+        } else {
+          this.createInstance(this.pendingTarget, candidateUrl!);
+        }
+        this.timer = null;
+      }, 300);
+    }
   }
 
   private handleMouseOut(e: MouseEvent) {
@@ -265,10 +242,11 @@ export class FloatingController {
   private setupVisibilityObserver(instance: FloatingInstance) {
     instance.visibilityObserver = new IntersectionObserver((entries) => {
       instance.isVisible = entries[0].isIntersecting;
+      // 仅在出视野且已存在循环时停止
       if (!instance.isVisible && instance.rafId) {
         cancelAnimationFrame(instance.rafId);
         instance.rafId = null;
-      } else if (instance.isVisible && !instance.rafId && !instance.isFrozen) {
+      } else if (instance.isVisible && !instance.rafId) {
         this.startTracking(instance);
       }
     });
@@ -278,10 +256,14 @@ export class FloatingController {
   private startTracking(instance: FloatingInstance) {
     if (instance.rafId) return;
     const update = () => {
-      if (!this.instances.has(instance.target) || !instance.isVisible) {
+      if (!this.instances.has(instance.target)) return;
+
+      // 如果不可见，静默等待下一次 observer 激活
+      if (!instance.isVisible) {
         instance.rafId = null;
         return;
       }
+
       if (!instance.isFrozen) this.updateInstanceRect(instance);
       instance.rafId = requestAnimationFrame(update);
     };
