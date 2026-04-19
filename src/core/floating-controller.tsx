@@ -141,9 +141,9 @@ export class FloatingController {
       return;
     }
 
-    // 4. 解除冻结（仅针对不在当前鼠标下且处于闲置状态的实例）
+    // 4. 解除冻结（闲置状态的实例恢复追踪）
     this.instances.forEach((inst) => {
-      if (inst.target !== candidateEl && inst.status === "idle") {
+      if (inst.status === "idle") {
         inst.isFrozen = false;
       }
     });
