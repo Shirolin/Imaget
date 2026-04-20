@@ -27,3 +27,6 @@ key.pem
 
 # agent
 .agents/
+
+# vfox
+.vfox/
