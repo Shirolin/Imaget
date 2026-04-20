@@ -29,6 +29,19 @@
 
 ---
 
+## 📸 效果展示
+
+#### 弹窗主界面
+![主界面](marketing/screenshots/图片列表-截图.png)
+
+#### 插件设置页面
+![设置页面](marketing/screenshots/设置页面-截图.png)
+
+#### 悬浮按钮快速下载
+![快速下载](marketing/screenshots/Imaget-Quick-DL.gif)
+
+---
+
 ## ✨ 核心特性
 
 #### 🔍 工业级嗅探引擎

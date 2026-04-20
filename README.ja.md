@@ -29,6 +29,19 @@
 
 ---
 
+## 📸 プレビュー
+
+#### メインインターフェース
+![メインインターフェース](marketing/screenshots/图片列表-截图.png)
+
+#### 設定ページ
+![設定ページ](marketing/screenshots/设置页面-截图.png)
+
+#### 浮遊ボタンによるクイックダウンロード
+![クイックダウンロード](marketing/screenshots/Imaget-Quick-DL.gif)
+
+---
+
 ## ✨ 主な機能
 
 #### 🔍 高性能スニッフィングエンジン

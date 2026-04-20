@@ -29,6 +29,19 @@ Built with **React 19** and **Mantine v8**, it features a sophisticated UI isola
 
 ---
 
+## 📸 Preview
+
+#### Main Interface
+![Main Interface](marketing/screenshots/图片列表-截图.png)
+
+#### Settings Page
+![Settings Page](marketing/screenshots/设置页面-截图.png)
+
+#### Floating Button Quick Download
+![Quick Download](marketing/screenshots/Imaget-Quick-DL.gif)
+
+---
+
 ## ✨ Key Features
 
 #### 🔍 Industrial Sniffing Engine
