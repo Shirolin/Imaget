@@ -27,6 +27,9 @@ key.pem
 
 # agent
 .agents/
+.claude/
+.gemini/
+.agent/
 
 # vfox
 .vfox/
