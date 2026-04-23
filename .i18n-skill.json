@@ -1,0 +1,27 @@
+{
+  "source_dirs": [
+    "src"
+  ],
+  "ignore_dirs": [
+    "node_modules",
+    "dist",
+    "build",
+    "tests"
+  ],
+  "locales_dir": "src/locales",
+  "enabled_langs": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "ja",
+    "ko",
+    "pt_BR",
+    "tr",
+    "zh_CN",
+    "zh_TW"
+  ],
+  "privacy_level": "basic",
+  "protected_lang_key_patterns": [],
+  "ignored_keys": []
+}

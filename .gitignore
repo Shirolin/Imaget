@@ -30,6 +30,12 @@ key.pem
 .claude/
 .gemini/
 .agent/
+# i18n-agent-skill runtime files
+.i18n-cache.json
+.i18n-proposals/
+.i18n-snapshots.json
+.i18n-prefs.json
+!.i18n-skill.json
 
 # vfox
 .vfox/
