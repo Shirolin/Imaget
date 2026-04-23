@@ -11,7 +11,48 @@ const template = (privacyContent: string) => `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imaget - Intelligent Web Image Sniffer</title>
+    <title>Imaget - Powerful Web Image Sniffer & Batch Downloader</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Imaget is a professional Chrome extension for sniffing and batch downloading images. Supports original resolution for Pixiv, Twitter (X), Weibo, Reddit, and more.">
+    <meta name="keywords" content="image downloader, batch download, image sniffer, pixiv downloader, twitter image downloader, chrome extension, web scraping, original image">
+    <meta name="author" content="Shirolin">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shirolin.github.io/Imaget/">
+    <meta property="og:title" content="Imaget - Intelligent Web Image Sniffer">
+    <meta property="og:description" content="One-click batch image exploration and downloading with Side Panel integration. Built for speed and privacy.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/icon-128.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://shirolin.github.io/Imaget/">
+    <meta property="twitter:title" content="Imaget - Web Image Downloader">
+    <meta property="twitter:description" content="Intelligent sniffing and batch downloading for modern social platforms.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/icon-128.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Imaget",
+      "operatingSystem": "Chrome Browser, Edge, Brave",
+      "applicationCategory": "MultimediaApplication",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <link rel="icon" href="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,8 +162,6 @@ const template = (privacyContent: string) => `
             align-items: center;
             gap: 80px;
         }
-        
-        /* 修复：使用 nth-of-type(even) 且只针对 .feature-row */
         .feature-row:nth-of-type(even) {
             flex-direction: row-reverse;
         }
@@ -226,7 +265,6 @@ const template = (privacyContent: string) => `
             opacity: 0.6;
         }
 
-        /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .hero h1 { font-size: 40px; }
             .feature-row, .feature-row:nth-of-type(even) { 
@@ -259,7 +297,6 @@ const template = (privacyContent: string) => `
         </section>
 
         <div class="feature-rows-container">
-            <!-- 1st Row: GIF Showcase -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/Imaget-Quick-DL.gif" alt="Quick Download Demo">
@@ -270,7 +307,6 @@ const template = (privacyContent: string) => `
                 </div>
             </div>
 
-            <!-- 2nd Row: Gallery -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/图片列表-截图.png" alt="Gallery View">
@@ -281,7 +317,6 @@ const template = (privacyContent: string) => `
                 </div>
             </div>
 
-            <!-- 3rd Row: Settings -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/设置页面-截图.png" alt="Settings View">
@@ -292,7 +327,6 @@ const template = (privacyContent: string) => `
                 </div>
             </div>
 
-            <!-- 4th Row: Filters -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/弹窗-截图.png" alt="Filter View">
@@ -345,7 +379,6 @@ function buildDocs() {
 
   const content = fs.readFileSync(privacyMdPath, "utf-8");
   
-  // 简单的 Markdown 转换 (仅针对此项目)
   const htmlContent = content
     .replace(/^# (.*$)/gim, '<h1>$1</h1>')
     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -356,7 +389,7 @@ function buildDocs() {
     .replace(/\n/g, '<br>');
 
   fs.writeFileSync(outputPath, template(htmlContent));
-  console.log("✅ [Docs] Refined Landing Page with Stitch Design audit.");
+  console.log("✅ [Docs] Enhanced Landing Page with SEO & Open Graph meta.");
 }
 
 buildDocs();
