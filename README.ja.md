@@ -82,7 +82,7 @@
 
 ```bash
 # 1. リポジトリをクローン
-git clone https://github.com/Shirolin/New-Imaget.git
+git clone https://github.com/Shirolin/Imaget.git
 cd New-Imaget
 
 # 2. 依存関係のインストール

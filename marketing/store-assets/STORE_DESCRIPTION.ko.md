@@ -19,4 +19,4 @@ Imaget은 웹 이미지의 식별, 미리보기 및 다운로드 프로세스를
 
 ---
 
-**소스 코드**: https://github.com/Shirolin/New-Imaget
+**소스 코드**: https://github.com/Shirolin/Imaget

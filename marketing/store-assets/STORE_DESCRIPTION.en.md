@@ -20,4 +20,4 @@ Imaget is a Chrome extension designed to streamline the process of identifying, 
 
 ---
 
-**Source Code**: https://github.com/Shirolin/New-Imaget
+**Source Code**: https://github.com/Shirolin/Imaget

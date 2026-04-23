@@ -19,4 +19,4 @@ Imagetは、ウェブ画像の識別、プレビュー、ダウンロードプ�
 
 ---
 
-**ソースコード**: https://github.com/Shirolin/New-Imaget
+**ソースコード**: https://github.com/Shirolin/Imaget

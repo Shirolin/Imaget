@@ -19,4 +19,4 @@ Imaget es una extensión de Chrome diseñada para simplificar el proceso de iden
 
 ---
 
-**Código fuente**: https://github.com/Shirolin/New-Imaget
+**Código fuente**: https://github.com/Shirolin/Imaget

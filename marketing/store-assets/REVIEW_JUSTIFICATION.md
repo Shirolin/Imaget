@@ -32,4 +32,4 @@ This document provides detailed justification for the permissions requested by *
 *   **Manifest V3**: This extension fully adheres to Manifest V3 standards.
 *   **No Remote Code**: No external scripts or remote code are fetched or executed. All logic is bundled locally within the extension package.
 *   **No Data Collection**: The extension does not collect, store, or transmit any user data, personal information, or browsing history. All processing occurs locally on the user's machine.
-*   **Open Source**: The project is open-source for transparency: https://github.com/Shirolin/New-Imaget
+*   **Open Source**: The project is open-source for transparency: https://github.com/Shirolin/Imaget

@@ -19,4 +19,4 @@ Imaget 是一款為 Chrome 瀏覽器設計的圖片提取工具，旨在簡化�
 
 ---
 
-**源碼託管**: https://github.com/Shirolin/New-Imaget
+**源碼託管**: https://github.com/Shirolin/Imaget

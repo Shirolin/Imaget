@@ -82,7 +82,7 @@ Built with **React 19** and **Mantine v8**, it features a sophisticated UI isola
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Shirolin/New-Imaget.git
+git clone https://github.com/Shirolin/Imaget.git
 cd New-Imaget
 
 # 2. Install dependencies

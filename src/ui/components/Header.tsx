@@ -80,7 +80,7 @@ const HeaderBase: React.FC<HeaderProps> = ({
               variant="subtle"
               color="gray"
               onClick={() =>
-                window.open("https://github.com/Shirolin/New-Imaget", "_blank")
+                window.open("https://github.com/Shirolin/Imaget", "_blank")
               }
               size="sm"
               aria-label={t("labelGithub") || "GitHub"}

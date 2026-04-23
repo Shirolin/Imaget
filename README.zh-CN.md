@@ -82,7 +82,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/Shirolin/New-Imaget.git
+git clone https://github.com/Shirolin/Imaget.git
 cd New-Imaget
 
 # 2. 安装依赖

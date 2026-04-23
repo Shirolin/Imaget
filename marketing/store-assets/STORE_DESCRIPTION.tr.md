@@ -19,4 +19,4 @@ Imaget, web üzerindeki resimleri tanımlama, önizleme ve indirme sürecini kol
 
 ---
 
-**Kaynak Kod**: https://github.com/Shirolin/New-Imaget
+**Kaynak Kod**: https://github.com/Shirolin/Imaget

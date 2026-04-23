@@ -30,4 +30,4 @@ is done entirely on your computer. No images or data are uploaded to any server.
 We may update our Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.
 
 ## 6. Contact Us
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through our [GitHub Repository](https://github.com/Shirolin/New-Imaget).
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through our [GitHub Repository](https://github.com/Shirolin/Imaget).

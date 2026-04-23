@@ -19,4 +19,4 @@ Imaget ist eine Chrome-Erweiterung, die entwickelt wurde, um den Prozess der Ide
 
 ---
 
-**Quellcode**: https://github.com/Shirolin/New-Imaget
+**Quellcode**: https://github.com/Shirolin/Imaget
