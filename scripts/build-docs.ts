@@ -23,6 +23,7 @@ const template = (privacyContent: string) => `
             --text-color: #C1C2C5;
             --text-bright: #FFFFFF;
             --border-color: #373A40;
+            --radius: 12px;
         }
 
         * { box-sizing: border-box; }
@@ -36,7 +37,7 @@ const template = (privacyContent: string) => `
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -72,107 +73,168 @@ const template = (privacyContent: string) => `
 
         /* --- Hero --- */
         .hero {
-            padding: 100px 0 60px;
+            padding: 120px 0 80px;
             text-align: center;
         }
         .hero h1 {
-            font-size: 48px;
+            font-size: 56px;
             font-weight: 800;
             color: var(--text-bright);
             margin-bottom: 16px;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to bottom right, #fff, #999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .hero p {
             font-size: 20px;
-            max-width: 600px;
-            margin: 0 auto 32px;
+            max-width: 650px;
+            margin: 0 auto 40px;
             color: var(--text-color);
         }
         .cta-button {
             display: inline-block;
             background-color: var(--primary-color);
             color: white;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 700;
             font-size: 16px;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(51, 154, 240, 0.3);
         }
         .cta-button:hover {
             transform: translateY(-2px);
             background-color: #228be6;
+            box-shadow: 0 6px 20px rgba(51, 154, 240, 0.4);
         }
 
-        /* --- Showcase --- */
-        .showcase {
-            padding: 60px 0;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 40px;
+        /* --- Feature Rows --- */
+        .feature-rows-container {
+            padding: 40px 0;
+        }
+        .feature-row {
+            padding: 100px 0;
+            display: flex;
             align-items: center;
+            gap: 80px;
         }
-        .showcase-media {
+        
+        /* 修复：使用 nth-of-type(even) 且只针对 .feature-row */
+        .feature-row:nth-of-type(even) {
+            flex-direction: row-reverse;
+        }
+
+        .feature-image {
+            flex: 1.4;
             background: var(--surface-color);
-            padding: 12px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
-        .showcase-media img {
+        .feature-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .feature-image:hover {
+            transform: scale(1.03) translateY(-5px);
+        }
+        .feature-image img {
             width: 100%;
+            height: auto;
             border-radius: 6px;
             display: block;
         }
+        
+        .feature-info {
+            flex: 1;
+        }
+        .feature-info h3 {
+            color: var(--text-bright);
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+        .feature-info p {
+            font-size: 17px;
+            line-height: 1.8;
+            margin: 0;
+        }
 
-        /* --- Features --- */
-        .features {
-            padding: 80px 0;
+        /* --- Features Grid (Bottom) --- */
+        .features-grid {
+            padding: 100px 0;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            border-top: 1px solid var(--border-color);
         }
         .feature-card {
             background: var(--surface-color);
-            padding: 32px;
-            border-radius: 12px;
+            padding: 40px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-color);
+            transition: border-color 0.2s;
+        }
+        .feature-card:hover {
+            border-color: var(--primary-color);
         }
         .feature-card h3 {
             color: var(--text-bright);
             margin-top: 0;
-            font-size: 20px;
+            font-size: 22px;
+            margin-bottom: 12px;
         }
         .feature-card p {
             margin-bottom: 0;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         /* --- Privacy --- */
         .privacy-section {
-            padding: 80px 0;
+            padding: 100px 0;
             border-top: 1px solid var(--border-color);
         }
         .privacy-content {
             background: var(--surface-color);
-            padding: 40px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 50px;
+            border-radius: var(--radius);
+            font-size: 15px;
+            max-width: 900px;
+            margin: 0 auto;
         }
-        .privacy-content h1, .privacy-content h2 { color: var(--text-bright); }
+        .privacy-content h1, .privacy-content h2 { color: var(--text-bright); margin-top: 32px; }
+        .privacy-content h1:first-child { margin-top: 0; }
         .privacy-content strong { color: var(--primary-color); }
 
         footer {
-            padding: 40px 0;
+            padding: 60px 0;
             text-align: center;
             border-top: 1px solid var(--border-color);
-            font-size: 13px;
+            font-size: 14px;
+            opacity: 0.6;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .showcase { grid-template-columns: 1fr; }
-            .hero { padding: 60px 0; }
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 40px; }
+            .feature-row, .feature-row:nth-of-type(even) { 
+                flex-direction: column !important; 
+                text-align: center;
+                gap: 40px;
+                padding: 60px 0;
+            }
+            .feature-image { width: 100%; max-width: 600px; }
         }
     </style>
 </head>
@@ -195,20 +257,19 @@ const template = (privacyContent: string) => `
             <a href="https://github.com/Shirolin/Imaget/releases" class="cta-button">Download Extension</a>
         </section>
 
-        <section class="showcase">
-            <div class="showcase-media">
-                <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/Imaget-Quick-DL.gif" alt="Quick Download Demo">
+        <div class="feature-rows-container">
+            <!-- 1st Row: GIF Showcase -->
+            <div class="feature-row">
+                <div class="feature-image">
+                    <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/Imaget-Quick-DL.gif" alt="Quick Download Demo">
+                </div>
+                <div class="feature-info">
+                    <h3>Seamless Extraction</h3>
+                    <p>Use the <strong>Side Panel</strong> to browse images without leaving your tab. Our <strong>Quick-Extract Floating Buttons</strong> allow you to capture images from any corner of the page instantly.</p>
+                </div>
             </div>
-            <div>
-                <h2 style="color: var(--text-bright); font-size: 28px;">Seamless Extraction</h2>
-                <p>Use the <strong>Side Panel</strong> to browse images without leaving your tab. Our <strong>Quick-Extract Floating Buttons</strong> allow you to capture images from any corner of the page instantly.</p>
-                <p>Supports deep sniffing for <strong>Pixiv, Twitter, Weibo</strong>, and more.</p>
-            </div>
-        </section>
 
-        <section class="screenshots-section">
-            <h2 style="color: var(--text-bright); text-align: center; font-size: 36px; margin-bottom: 40px;">Deep Dive into Imaget</h2>
-            
+            <!-- 2nd Row: Gallery -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/图片列表-截图.png" alt="Gallery View">
@@ -219,6 +280,7 @@ const template = (privacyContent: string) => `
                 </div>
             </div>
 
+            <!-- 3rd Row: Settings -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/设置页面-截图.png" alt="Settings View">
@@ -229,6 +291,7 @@ const template = (privacyContent: string) => `
                 </div>
             </div>
 
+            <!-- 4th Row: Filters -->
             <div class="feature-row">
                 <div class="feature-image">
                     <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/弹窗-截图.png" alt="Filter View">
@@ -238,7 +301,7 @@ const template = (privacyContent: string) => `
                     <p>Never dig through clutter again. Our smart filters let you isolate images by exact dimensions, aspect ratios, or specific file formats in real-time.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
         <section class="features-grid">
             <div class="feature-card">
@@ -256,7 +319,7 @@ const template = (privacyContent: string) => `
         </section>
 
         <section id="privacy" class="privacy-section">
-            <h2 style="color: var(--text-bright); margin-bottom: 24px;">Privacy Policy</h2>
+            <h2 style="color: var(--text-bright); margin-bottom: 32px; text-align: center; font-size: 32px;">Privacy Policy</h2>
             <div class="privacy-content">
                 ${privacyContent}
             </div>
@@ -292,7 +355,7 @@ function buildDocs() {
     .replace(/\n/g, '<br>');
 
   fs.writeFileSync(outputPath, template(htmlContent));
-  console.log("✅ [Docs] Generated professional Landing Page in docs/index.html");
+  console.log("✅ [Docs] Refined Landing Page with Stitch Design audit.");
 }
 
 buildDocs();
