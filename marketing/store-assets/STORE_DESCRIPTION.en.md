@@ -1,6 +1,6 @@
 # Imaget: Web Image Sniffer & Batch Downloader
 
-Imaget is a Chrome extension designed to streamline the process of identifying, previewing, and downloading images from the web. It provides a structured view within the browser's side panel and includes specialized resolvers for major platforms to fetch original image sources.
+Imaget is a Chrome extension designed to streamline the process of identifying, previewing, and downloading images from the web. It provides a structured view within the browser's side panel and includes specialized universal sniffing for any website with deep resolvers for original high-res images.
 
 ### Key Features
 
