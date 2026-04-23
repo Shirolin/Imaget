@@ -207,33 +207,40 @@ const template = (privacyContent: string) => `
         </section>
 
         <section class="screenshots-section">
-            <h2 style="color: var(--text-bright); text-align: center; font-size: 32px;">Product Tour</h2>
-            <div class="screenshots-grid">
-                <div class="screenshot-item">
-                    <div class="screenshot-wrapper">
-                        <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/图片列表-截图.png" alt="Gallery View">
-                    </div>
-                    <h4>Organized Gallery</h4>
-                    <p>Structured grid view with real-time resolution and metadata preview.</p>
+            <h2 style="color: var(--text-bright); text-align: center; font-size: 36px; margin-bottom: 40px;">Deep Dive into Imaget</h2>
+            
+            <div class="feature-row">
+                <div class="feature-image">
+                    <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/图片列表-截图.png" alt="Gallery View">
                 </div>
-                <div class="screenshot-item">
-                    <div class="screenshot-wrapper">
-                        <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/设置页面-截图.png" alt="Settings View">
-                    </div>
-                    <h4>Full Control</h4>
-                    <p>Customize extraction depth, auto-conversion formats, and saving paths.</p>
+                <div class="feature-info">
+                    <h3>Organized Gallery View</h3>
+                    <p>Experience a high-performance grid layout that handles thousands of images effortlessly. Get real-time previews of resolutions, file types, and metadata at a glance.</p>
                 </div>
-                <div class="screenshot-item">
-                    <div class="screenshot-wrapper">
-                        <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/弹窗-截图.png" alt="Filter View">
-                    </div>
-                    <h4>Precision Filters</h4>
-                    <p>Filter by dimensions, format, or name to find exactly what you need.</p>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image">
+                    <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/设置页面-截图.png" alt="Settings View">
+                </div>
+                <div class="feature-info">
+                    <h3>Powerful Customization</h3>
+                    <p>Tailor the extension to your workflow. Configure auto-conversion rules (WebP/JPG), set extraction depths, and manage download sub-directories with precision.</p>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image">
+                    <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/弹窗-截图.png" alt="Filter View">
+                </div>
+                <div class="feature-info">
+                    <h3>Intelligent Filtering</h3>
+                    <p>Never dig through clutter again. Our smart filters let you isolate images by exact dimensions, aspect ratios, or specific file formats in real-time.</p>
                 </div>
             </div>
         </section>
 
-        <section class="features">
+        <section class="features-grid">
             <div class="feature-card">
                 <h3>🔍 Smart Sniffing</h3>
                 <p>Automatically detects high-res images, background assets, and hidden elements across any webpage.</p>
