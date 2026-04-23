@@ -19,9 +19,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 // 处理图标点击
 chrome.action.onClicked.addListener((tab) => {
   if (tab.id) {
-    chrome.tabs.sendMessage(tab.id, { action: "toggle-sniffer" }).catch(() => {
-      // 容错：如果 tab 还没加载好，静默
-    });
+    chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
   }
 });
 

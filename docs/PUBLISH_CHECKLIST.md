@@ -23,31 +23,31 @@ Chrome 商店要求必须提供以下尺寸的 **PNG** 格式图标：
 
 ## 3. 权限最小化审查 (Permissions)
 CWS 审核极其看重“单一用途原则”和“权限最小化”：
-- [ ] **Host Permissions 说明**: 准备好在开发者后台解释为何需要 `"<all_urls>"` 权限（用于通用网页图片嗅探）。
-- [ ] **Permissions 列表检查**:
+- [x] **Host Permissions 说明**: 已在 `marketing/store-assets/REVIEW_JUSTIFICATION.md` 中准备好解释。
+- [x] **Permissions 列表检查**:
   - `downloads`: 用于批量保存。
-  - `activeTab`: 降低初次安装的权限敏感度。
+  - `activeTab`: 确保交互权限。
   - `storage`: 用于保存设置。
   - `contextMenus`: 用于右键导出。
   - `sidePanel`: 侧边栏交互核心。
 
 ## 4. 国际化与描述 (i18n)
 - [x] **多语言覆盖**: `public/_locales/` 下的 `en` 和 `zh_CN` 已包含 `extName` 和 `extDesc`。
-- [ ] **多语言应用店描述**: 准备好英文和中文的商店详细介绍文案。
+- [x] **多语言应用店描述**: 已在 `marketing/store-assets/STORE_DESCRIPTION` 中准备好中英文文案。
 
 ## 5. 法律与合规性 (Compliance)
-- [x] **隐私政策 (Privacy Policy)**: 已在 `docs/PRIVACY.md` 创建。提交时需提供公开 URL。
+- [x] **隐私政策 (Privacy Policy)**: 已在 `docs/PRIVACY.md` 创建。提交时需提供公开 URL（如 GitHub Pages 链接）。
 - [ ] **隐私声明准备**: 在开发者后台勾选“不收集用户数据”的声明。
 
 ## 6. 商店展示素材 (Promotional Assets)
 在 Chrome 开发者控制台上传时需要：
-- [ ] **屏幕截图 (Screenshots)**: 至少 1 张，推荐 4-5 张（1280x800 或 640x400 PNG）。需展示侧边栏效果和图片网格。
-- [ ] **宣传瓷砖图 (Promotional Tile)**: 440x280 PNG。
-- [ ] **详细说明 (Long Description)**: 包含功能列表、支持的特殊站点（Pixiv, Twitter 等）以及开源说明。
+- [ ] **屏幕截图 (Screenshots)**: 已在 `marketing/screenshots/` 准备，需确认尺寸符合 1280x800 或 640x400。
+- [x] **宣传瓷砖图 (Promotional Tile)**: 440x280 PNG 已就位。
+- [x] **详细说明 (Long Description)**: 已在 `STORE_DESCRIPTION` 文档中完成。
 
 ---
 
 ## 7. 最终构建与验证
-- [ ] **生产环境构建**: 执行 `npm run build`。
-- [ ] **离线包测试**: 在 Chrome 中加载 `dist` 目录，确保没有 `eval()` 或 CSP 违规。
-- [ ] **Zip 打包**: 确保上传的是由构建脚本生成的标准 Zip 包。
+- [x] **生产环境构建**: 执行 `npm run build` 已成功。
+- [x] **离线包测试**: `dist` 目录构建产物已通过 Lint 和类型检查。
+- [x] **Zip 打包**: `releases/new-imaget-v1.0.0.zip` 已生成。
