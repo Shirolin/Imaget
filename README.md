@@ -46,24 +46,22 @@ Built with **React 19** and **Mantine v8**, it features a sophisticated UI isola
 
 #### 🔍 Industrial Sniffing Engine
 - **Shadow DOM Penetration**: Traverses deep into complex web components to find hidden assets.
+- **Site-Specific Adapters**: Includes built-in logic for **Pixiv**, **Twitter (X)**, **Weibo**, **Reddit**, and **Telegram** to map detected thumbnails to original high-resolution sources.
 - **Dynamic Resource Detection**: Identifies `<img>`, `srcset`, CSS `background-image`, and inline SVGs.
-- **Deep Scan Mode**: Bypasses lazy-loading restrictions via automated scrolling and DOM analysis.
 - **Advanced Metadata**: Real-time calculation of dimensions and file sizes before downloading.
 
 #### 🛠️ Professional Filtering & Search
 - **Multi-dimensional Filters**: Instantly filter by **Minimum Resolution**, **Aspect Ratio** (Square, Landscape, Portrait), and **File Format**.
-- **Smart Logic**: Supports complex `AND/OR` resolution matching.
-- **Precision Search**: Keyword-based search and exclusion filtering for URLs and Alt tags.
+- **Smart Search**: Keyword-based search and filtering for URLs and filenames.
 
 #### ⚡ Streamlined Workflow
-- **Pill-style Command Bar**: A compact, efficient UI for rapid filtering without obstructing content.
+- **Integrated Side Panel**: Utilizes the Chrome Side Panel API for a persistent workspace that doesn't obscure webpage content.
+- **Context Menu Support**: Quick-save any image as JPG, WebP, or PNG via the right-click menu, or launch the side panel instantly.
 - **Batch Operations**: One-click selection with **Shift+Click** support for range selection.
-- **Flexible Export**: Download as individual files or a consolidated **ZIP archive**.
 - **On-the-fly Conversion**: Auto-convert images to **WebP** or **JPG** with adjustable quality.
 
 #### 🌍 Global & Accessible
 - **Native Localization**: Fully localized in **10 languages** (EN, ZH, JA, KO, DE, FR, ES, PT, TR).
-- **A11y First**: Full keyboard navigation support and ARIA-compliant components.
 - **Privacy Centric**: 100% local processing. No data collection, no cloud uploads.
 
 ---

@@ -25,20 +25,6 @@ chrome.action.onClicked.addListener((tab) => {
   }
 });
 
-// 处理快捷键 (Command+Shift+S 等)
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "toggle-sniffer") {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab?.id) {
-        chrome.tabs
-          .sendMessage(activeTab.id, { action: "toggle-sniffer" })
-          .catch(() => {});
-      }
-    });
-  }
-});
-
 // 消息转发中心
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   // 处理调试日志同步（仅开发模式下由 Content 发送）
@@ -174,9 +160,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!tab?.id) return;
 
   if (info.menuItemId === "open-dashboard") {
-    chrome.tabs
-      .sendMessage(tab.id, { action: "toggle-sniffer" })
-      .catch(() => {});
+    chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
     return;
   }
 
