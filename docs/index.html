@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imaget - Powerful Web Image Sniffer & Batch Downloader</title>
     
-    <!-- SEO Meta Tags -->
+    <!-- SEO & GEO Meta Tags -->
     <meta name="description" content="Imaget is a professional Chrome extension for sniffing and batch downloading images. Supports original resolution for Pixiv, Twitter (X), Weibo, Reddit, and more.">
     <meta name="keywords" content="image downloader, batch download, image sniffer, pixiv downloader, twitter image downloader, chrome extension, web scraping, original image">
     <meta name="author" content="Shirolin">
@@ -18,32 +18,47 @@
     <meta property="og:description" content="One-click batch image exploration and downloading with Side Panel integration. Built for speed and privacy.">
     <meta property="og:image" content="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/icon-128.png">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="https://shirolin.github.io/Imaget/">
-    <meta property="twitter:title" content="Imaget - Web Image Downloader">
-    <meta property="twitter:description" content="Intelligent sniffing and batch downloading for modern social platforms.">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/icon-128.png">
-
-    <!-- Structured Data (JSON-LD) -->
+    <!-- JSON-LD for GEO (Generative Engine Optimization) -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Imaget",
-      "operatingSystem": "Chrome Browser, Edge, Brave",
-      "applicationCategory": "MultimediaApplication",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "1"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Imaget",
+        "description": "Powerful web image sniffer and batch downloader with Side Panel integration. Supports high-resolution extraction for Pixiv, Twitter, and Weibo.",
+        "operatingSystem": "Chrome, Edge, Brave",
+        "applicationCategory": "MultimediaApplication",
+        "license": "https://opensource.org/licenses/GPL-3.0",
+        "softwareVersion": "1.0.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
       },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I download original images from Pixiv using Imaget?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Open Imaget's side panel on any Pixiv page. The extension's built-in resolver will automatically detect illustrations and map them to their original high-resolution source URLs for batch downloading."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Imaget protect my privacy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Imaget performs all image sniffing and processing locally in your browser. No user data, browsing history, or images are ever uploaded to any server."
+            }
+          }
+        ]
       }
-    }
+    ]
     </script>
 
     <link rel="icon" href="https://raw.githubusercontent.com/Shirolin/Imaget/main/public/favicon.svg" type="image/svg+xml">
@@ -204,6 +219,27 @@
             margin: 0;
         }
 
+        /* --- FAQ Section --- */
+        .faq-section {
+            padding: 100px 0;
+            border-top: 1px solid var(--border-color);
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .faq-item h4 {
+            color: var(--text-bright);
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .faq-item p {
+            font-size: 15px;
+            margin: 0;
+        }
+
         /* --- Features Grid (Bottom) --- */
         .features-grid {
             padding: 100px 0;
@@ -219,19 +255,9 @@
             border: 1px solid var(--border-color);
             transition: border-color 0.2s;
         }
-        .feature-card:hover {
-            border-color: var(--primary-color);
-        }
-        .feature-card h3 {
-            color: var(--text-bright);
-            margin-top: 0;
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-        .feature-card p {
-            margin-bottom: 0;
-            font-size: 16px;
-        }
+        .feature-card:hover { border-color: var(--primary-color); }
+        .feature-card h3 { color: var(--text-bright); margin-top: 0; font-size: 22px; margin-bottom: 12px; }
+        .feature-card p { margin-bottom: 0; font-size: 16px; }
 
         /* --- Privacy --- */
         .privacy-section {
@@ -267,6 +293,7 @@
                 padding: 60px 0;
             }
             .feature-image { width: 100%; max-width: 600px; }
+            .faq-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -279,13 +306,14 @@
             </a>
             <nav>
                 <a href="https://github.com/Shirolin/Imaget">GitHub</a>
+                <a href="#faq">FAQ</a>
                 <a href="#privacy">Privacy</a>
             </nav>
         </header>
 
         <section class="hero">
             <h1>Powerful Image Sniffing</h1>
-            <p>The modern browser extension for batch image exploration and downloading. Built for speed, privacy, and precision.</p>
+            <p>The modern browser extension for batch image exploration and downloading. Built with React 19 and Mantine v8 for speed, privacy, and precision.</p>
             <a href="https://github.com/Shirolin/Imaget/releases" class="cta-button">Download Extension</a>
         </section>
 
@@ -319,30 +347,42 @@
                     <p>Tailor the extension to your workflow. Configure auto-conversion rules (WebP/JPG), set extraction depths, and manage download sub-directories with precision.</p>
                 </div>
             </div>
+        </div>
 
-            <div class="feature-row">
-                <div class="feature-image">
-                    <img src="https://raw.githubusercontent.com/Shirolin/Imaget/main/marketing/screenshots/弹窗-截图.png" alt="Filter View">
+        <section id="faq" class="faq-section">
+            <h2 style="color: var(--text-bright); text-align: center; font-size: 32px;">Common Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Which platforms are supported?</h4>
+                    <p>Imaget includes built-in adapters for <strong>Pixiv, Twitter (X), Weibo, Reddit, and Telegram</strong>, allowing you to fetch original high-resolution images that are otherwise hidden.</p>
                 </div>
-                <div class="feature-info">
-                    <h3>Intelligent Filtering</h3>
-                    <p>Never dig through clutter again. Our smart filters let you isolate images by exact dimensions, aspect ratios, or specific file formats in real-time.</p>
+                <div class="faq-item">
+                    <h4>Is it free and open-source?</h4>
+                    <p>Yes. Imaget is fully open-source under the GPL-3.0 license. You can audit the source code on our GitHub repository anytime.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How does it handle my data?</h4>
+                    <p>Imaget follows a <strong>Privacy-First</strong> philosophy. All sniffing, filtering, and processing happen locally in your browser. We never collect or transmit your browsing history.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I filter images by size?</h4>
+                    <p>Absolutely. Imaget provides an intelligent filtering system where you can set minimum width, height, or specific file formats like WebP and SVG in real-time.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <section class="features-grid">
             <div class="feature-card">
                 <h3>🔍 Smart Sniffing</h3>
-                <p>Automatically detects high-res images, background assets, and hidden elements across any webpage.</p>
+                <p>Traverses Shadow DOM and iframes to find every image asset.</p>
             </div>
             <div class="feature-card">
-                <h3>⚡ Batch Process</h3>
-                <p>Filter by dimensions, format, or name. Select hundreds of images and save them in one click.</p>
+                <h3>⚡ Manifest V3</h3>
+                <p>Fully compliant with the latest Chrome extension standards for better security.</p>
             </div>
             <div class="feature-card">
-                <h3>🛡️ Privacy First</h3>
-                <p>No tracking. No servers. All processing happens locally in your browser. Fully open-source.</p>
+                <h3>🛡️ 100% Local</h3>
+                <p>No account required. No cloud processing. Your data stays yours.</p>
             </div>
         </section>
 
