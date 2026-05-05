@@ -153,12 +153,15 @@
     "message": "WebP olarak kaydet"
   },
   "menuSaveAsPNG": {
-    "message": "PNG olarak kaydet"
+    "message": "Orijinal/PNG"
   },
   "menuSaveAsJPG": {
     "message": "JPG olarak kaydet"
   },
   "menuOpenDashboard": {
-    "message": "Imaget Kontrol Panelini Aç"
+    "message": "Imaget Panelini Aç"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: Akıllı Kaydet"
   }
 }

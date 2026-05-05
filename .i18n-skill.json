@@ -22,6 +22,12 @@
     "zh_TW"
   ],
   "privacy_level": "basic",
+  "persona": {
+    "domain": "Browser Extension for Image Scraping",
+    "audience": "Photographers, Designers, Web Developers",
+    "tone": "Professional and modern",
+    "custom_guidelines": []
+  },
   "protected_lang_key_patterns": [],
   "ignored_keys": []
 }

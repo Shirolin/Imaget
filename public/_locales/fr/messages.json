@@ -153,12 +153,15 @@
     "message": "Enregistrer en WebP"
   },
   "menuSaveAsPNG": {
-    "message": "Enregistrer en PNG"
+    "message": "Original/PNG"
   },
   "menuSaveAsJPG": {
     "message": "Enregistrer en JPG"
   },
   "menuOpenDashboard": {
-    "message": "Ouvrir le Tableau de Bord"
+    "message": "Ouvrir le tableau de bord"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: Enregistrement intelligent"
   }
 }

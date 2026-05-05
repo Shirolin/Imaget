@@ -153,12 +153,15 @@
     "message": "Salvar como WebP"
   },
   "menuSaveAsPNG": {
-    "message": "Salvar como PNG"
+    "message": "Original/PNG"
   },
   "menuSaveAsJPG": {
     "message": "Salvar como JPG"
   },
   "menuOpenDashboard": {
     "message": "Abrir Painel do Imaget"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: Salvamento Inteligente"
   }
 }

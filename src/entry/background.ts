@@ -113,28 +113,28 @@ function setupContextMenus() {
     // 1. 一键下载当前图片
     chrome.contextMenus.create({
       id: "save-image-smart",
-      title: "Imaget: 一键保存图片",
+      title: chrome.i18n.getMessage("menuSaveImageSmart"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-webp",
       parentId: "save-image-smart",
-      title: "存为 WebP",
+      title: chrome.i18n.getMessage("menuSaveAsWebP"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-jpg",
       parentId: "save-image-smart",
-      title: "存为 JPG",
+      title: chrome.i18n.getMessage("menuSaveAsJPG"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-png",
       parentId: "save-image-smart",
-      title: "原格式/PNG",
+      title: chrome.i18n.getMessage("menuSaveAsPNG"),
       contexts: ["image"],
     });
 
@@ -147,7 +147,7 @@ function setupContextMenus() {
     // 2. 打开控制台
     chrome.contextMenus.create({
       id: "open-dashboard",
-      title: "打开 Imaget 控制台",
+      title: chrome.i18n.getMessage("menuOpenDashboard"),
       contexts: ["all"],
     });
   });

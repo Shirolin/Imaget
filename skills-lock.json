@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "i18n-agent-skill": {
+      "source": "Shirolin/i18n-agent-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "022f81ba554871c724e1494de81323fb7341cf0717e1091e805437844baaac5a"
+    }
+  }
+}

@@ -150,15 +150,18 @@
     "message": "Auf Standard zurücksetzen"
   },
   "menuSaveAsWebP": {
-    "message": "Als WebP exportieren"
+    "message": "Als WebP speichern"
   },
   "menuSaveAsPNG": {
-    "message": "Als PNG exportieren"
+    "message": "Original/PNG"
   },
   "menuSaveAsJPG": {
-    "message": "Als JPG exportieren"
+    "message": "Als JPG speichern"
   },
   "menuOpenDashboard": {
     "message": "Imaget Dashboard öffnen"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: Intelligentes Speichern"
   }
 }

@@ -153,12 +153,15 @@
     "message": "WebP로 저장"
   },
   "menuSaveAsPNG": {
-    "message": "PNG로 저장"
+    "message": "원본/PNG"
   },
   "menuSaveAsJPG": {
     "message": "JPG로 저장"
   },
   "menuOpenDashboard": {
     "message": "Imaget 대시보드 열기"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: 스마트 저장"
   }
 }

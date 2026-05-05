@@ -153,12 +153,15 @@
     "message": "WebPとして保存"
   },
   "menuSaveAsPNG": {
-    "message": "PNGとして保存"
+    "message": "元の形式/PNG"
   },
   "menuSaveAsJPG": {
     "message": "JPGとして保存"
   },
   "menuOpenDashboard": {
-    "message": "Imaget ダッシュボードを開く"
+    "message": "Imagetダッシュボードを開く"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: スマート保存"
   }
 }

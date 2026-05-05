@@ -150,15 +150,18 @@
     "message": "Reset to Default"
   },
   "menuSaveAsWebP": {
-    "message": "Export as WebP"
+    "message": "Save as WebP"
   },
   "menuSaveAsPNG": {
-    "message": "Export as PNG"
+    "message": "Original/PNG"
   },
   "menuSaveAsJPG": {
-    "message": "Export as JPG"
+    "message": "Save as JPG"
   },
   "menuOpenDashboard": {
     "message": "Open Imaget Dashboard"
+  },
+  "menuSaveImageSmart": {
+    "message": "Imaget: Smart Save Image"
   }
 }
