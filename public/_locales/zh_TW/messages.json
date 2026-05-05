@@ -150,18 +150,21 @@
     "message": "恢復默認"
   },
   "menuSaveAsWebP": {
-    "message": "存為 WebP"
+    "message": "WebP 格式"
   },
   "menuSaveAsPNG": {
-    "message": "原格式/PNG"
+    "message": "原格式 / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "存為 JPG"
+    "message": "JPG 格式"
   },
   "menuOpenDashboard": {
-    "message": "打開 Imaget 控制台"
+    "message": "批量下載圖片..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: 一鍵保存圖片"
+    "message": "智能保存圖片"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

@@ -150,18 +150,21 @@
     "message": "デフォルトに戻す"
   },
   "menuSaveAsWebP": {
-    "message": "WebPとして保存"
+    "message": "WebP形式"
   },
   "menuSaveAsPNG": {
-    "message": "元の形式/PNG"
+    "message": "元の形式 / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "JPGとして保存"
+    "message": "JPG形式"
   },
   "menuOpenDashboard": {
-    "message": "Imagetダッシュボードを開く"
+    "message": "一括ダウンロード..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: スマート保存"
+    "message": "画像をスマート保存"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

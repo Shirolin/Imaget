@@ -150,18 +150,21 @@
     "message": "Réinitialiser"
   },
   "menuSaveAsWebP": {
-    "message": "Enregistrer en WebP"
+    "message": "WebP Format"
   },
   "menuSaveAsPNG": {
-    "message": "Original/PNG"
+    "message": "Original / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "Enregistrer en JPG"
+    "message": "JPG Format"
   },
   "menuOpenDashboard": {
-    "message": "Ouvrir le tableau de bord"
+    "message": "Batch Download..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: Enregistrement intelligent"
+    "message": "Smart Save Image"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

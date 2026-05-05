@@ -150,18 +150,21 @@
     "message": "기본값으로 재설정"
   },
   "menuSaveAsWebP": {
-    "message": "WebP로 저장"
+    "message": "WebP 형식"
   },
   "menuSaveAsPNG": {
-    "message": "원본/PNG"
+    "message": "원본 / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "JPG로 저장"
+    "message": "JPG 형식"
   },
   "menuOpenDashboard": {
-    "message": "Imaget 대시보드 열기"
+    "message": "일괄 다운로드..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: 스마트 저장"
+    "message": "이미지 스마트 저장"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

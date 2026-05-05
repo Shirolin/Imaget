@@ -150,18 +150,21 @@
     "message": "Restaurar Padrões"
   },
   "menuSaveAsWebP": {
-    "message": "Salvar como WebP"
+    "message": "WebP Format"
   },
   "menuSaveAsPNG": {
-    "message": "Original/PNG"
+    "message": "Original / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "Salvar como JPG"
+    "message": "JPG Format"
   },
   "menuOpenDashboard": {
-    "message": "Abrir Painel do Imaget"
+    "message": "Batch Download..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: Salvamento Inteligente"
+    "message": "Smart Save Image"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

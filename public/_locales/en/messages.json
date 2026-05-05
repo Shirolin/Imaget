@@ -3,7 +3,7 @@
     "message": "Imaget - Smart Image Sniffer & Downloader"
   },
   "extDesc": {
-    "message": "Automatically sniff and batch download images from any webpage."
+    "message": "Smart image sniffer for web images. Support batch download and format conversion."
   },
   "btnDownload": {
     "message": "Download"
@@ -21,7 +21,7 @@
     "message": "Deselect All"
   },
   "downloadSelected": {
-    "message": "Download ($1)"
+    "message": "Download Selected ($1)"
   },
   "selectedCount": {
     "message": "Selected $1 / $2"
@@ -30,7 +30,7 @@
     "message": "No images found"
   },
   "noImagesHint": {
-    "message": "Try adjusting filter options or refreshing the page"
+    "message": "Try adjusting filter options or refresh page to scan again"
   },
   "loading": {
     "message": "Loading..."
@@ -60,10 +60,10 @@
     "message": "Min Height"
   },
   "filterSearch": {
-    "message": "Search"
+    "message": "Search content or URL"
   },
   "filterExclude": {
-    "message": "Exclude Keywords"
+    "message": "Exclude words (space separated)"
   },
   "filterType": {
     "message": "Image Type"
@@ -72,7 +72,7 @@
     "message": "Aspect Ratio"
   },
   "layoutAny": {
-    "message": "All"
+    "message": "Any"
   },
   "layoutSquare": {
     "message": "Square"
@@ -105,7 +105,7 @@
     "message": "Settings"
   },
   "prefSubfolder": {
-    "message": "Subfolder"
+    "message": "Subfolder Name"
   },
   "prefFilename": {
     "message": "Filename Template"
@@ -117,19 +117,19 @@
     "message": "Cancel"
   },
   "prefConflictAction": {
-    "message": "Conflict Handling"
+    "message": "Conflict Action"
   },
   "conflictUniquify": {
-    "message": "Rename"
+    "message": "Auto Rename"
   },
   "conflictOverwrite": {
     "message": "Overwrite"
   },
   "conflictPrompt": {
-    "message": "Prompt"
+    "message": "Prompt Me"
   },
   "warnManyFiles": {
-    "message": "You are about to download $1 images, continue?"
+    "message": "You are about to download $1 images, are you sure?"
   },
   "secFileSave": {
     "message": "File Saving"
@@ -141,7 +141,7 @@
     "message": "UI Behavior"
   },
   "prefShowHoverBtn": {
-    "message": "Show Floating Button"
+    "message": "Show Hover Button"
   },
   "formatOriginal": {
     "message": "Original"
@@ -150,18 +150,21 @@
     "message": "Reset to Default"
   },
   "menuSaveAsWebP": {
-    "message": "Save as WebP"
+    "message": "WebP Format"
   },
   "menuSaveAsPNG": {
-    "message": "Original/PNG"
+    "message": "Original / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "Save as JPG"
+    "message": "JPG Format"
   },
   "menuOpenDashboard": {
-    "message": "Open Imaget Dashboard"
+    "message": "Batch Download..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: Smart Save Image"
+    "message": "Smart Save Image"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

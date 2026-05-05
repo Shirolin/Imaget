@@ -150,18 +150,21 @@
     "message": "Varsayılana Sıfırla"
   },
   "menuSaveAsWebP": {
-    "message": "WebP olarak kaydet"
+    "message": "WebP Format"
   },
   "menuSaveAsPNG": {
-    "message": "Orijinal/PNG"
+    "message": "Original / PNG"
   },
   "menuSaveAsJPG": {
-    "message": "JPG olarak kaydet"
+    "message": "JPG Format"
   },
   "menuOpenDashboard": {
-    "message": "Imaget Panelini Aç"
+    "message": "Batch Download..."
   },
   "menuSaveImageSmart": {
-    "message": "Imaget: Akıllı Kaydet"
+    "message": "Smart Save Image"
+  },
+  "menuRoot": {
+    "message": "Imaget"
   }
 }

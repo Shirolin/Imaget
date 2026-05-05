@@ -110,9 +110,17 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
  */
 function setupContextMenus() {
   chrome.contextMenus.removeAll(() => {
+    // 根菜单
+    chrome.contextMenus.create({
+      id: "imaget-root",
+      title: chrome.i18n.getMessage("menuRoot"),
+      contexts: ["all"],
+    });
+
     // 1. 一键下载当前图片
     chrome.contextMenus.create({
       id: "save-image-smart",
+      parentId: "imaget-root",
       title: chrome.i18n.getMessage("menuSaveImageSmart"),
       contexts: ["image"],
     });
@@ -140,6 +148,7 @@ function setupContextMenus() {
 
     chrome.contextMenus.create({
       id: "sep1",
+      parentId: "imaget-root",
       type: "separator",
       contexts: ["all"],
     });
@@ -147,6 +156,7 @@ function setupContextMenus() {
     // 2. 打开控制台
     chrome.contextMenus.create({
       id: "open-dashboard",
+      parentId: "imaget-root",
       title: chrome.i18n.getMessage("menuOpenDashboard"),
       contexts: ["all"],
     });
