@@ -23,9 +23,9 @@
   ],
   "privacy_level": "basic",
   "persona": {
-    "domain": "Browser Extension for Image Scraping",
-    "audience": "Photographers, Designers, Web Developers",
-    "tone": "Professional and modern",
+    "domain": "Efficiency Tools",
+    "audience": "Designers & Power Users",
+    "tone": "Professional & Efficient",
     "custom_guidelines": []
   },
   "protected_lang_key_patterns": [],
