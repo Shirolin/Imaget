@@ -1,11 +1,11 @@
 {
   "version": 1,
   "skills": {
-    "i18n-agent-skill": {
-      "source": "Shirolin/i18n-agent-skill",
+    "context7-mcp": {
+      "source": "upstash/context7",
       "sourceType": "github",
-      "skillPath": "SKILL.md",
-      "computedHash": "022f81ba554871c724e1494de81323fb7341cf0717e1091e805437844baaac5a"
+      "skillPath": "skills/context7-mcp/SKILL.md",
+      "computedHash": "bce41b8f466edc10be7d47ebdb4ea8b9bb281adee288b12f40a4c36890c48825"
     }
   }
 }

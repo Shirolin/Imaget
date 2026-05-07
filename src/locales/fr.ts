@@ -111,11 +111,8 @@ export default {
   infoExtensionEnvironment: {
     message: "Extension détectée.",
   },
-  selectPlaceholder: { message: "Veuillez choisir" },
-  langAuto: { message: "Auto" },
-  langChinese: { message: "Chinois" },
-  langEnglish: { message: "Anglais" },
-  prefSubfolderPlaceholder: { message: "ex. Imaget" },
+  selectPlaceholder: { message: "Veuillez sélectionner" },
+  prefSubfolderPlaceholder: { message: "ex: Imaget" },
   viewVariables: { message: "Voir les variables" },
   secGifHandling: { message: "Gestion des GIF" },
   secDownloadControl: { message: "Contrôle de Téléchargement" },

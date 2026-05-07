@@ -105,10 +105,7 @@ export default {
     message:
       "확장 프로그램 환경 감지: 모든 설정이 백그라운드 스크립트를 통해 적용됩니다.",
   },
-  selectPlaceholder: { message: "선택하세요" },
-  langAuto: { message: "자동" },
-  langChinese: { message: "중국어" },
-  langEnglish: { message: "영어" },
+  selectPlaceholder: { message: "선택해주세요" },
   prefSubfolderPlaceholder: { message: "예: Imaget" },
   viewVariables: { message: "사용 가능한 변수 보기" },
   secGifHandling: { message: "GIF 처리 설정" },
