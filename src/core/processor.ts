@@ -79,6 +79,10 @@ export class ImageProcessor {
             blob = converted.blob;
             extension = converted.extension;
           } catch (convErr) {
+            if (convErr instanceof Error && convErr.message === "SKIP_GIF") {
+              console.log(`[Processor] Skipping GIF after fetch: ${img.url}`);
+              continue;
+            }
             console.warn(
               `[Processor] Format conversion failed, using original:`,
               convErr,
@@ -189,6 +193,10 @@ export class ImageProcessor {
             blob = converted.blob;
             extension = converted.extension;
           } catch (convErr) {
+            if (convErr instanceof Error && convErr.message === "SKIP_GIF") {
+              console.log(`[Processor] ZIP: Skipping GIF after fetch: ${img.url}`);
+              continue;
+            }
             console.warn(`[Processor] ZIP conversion failed:`, convErr);
           }
 

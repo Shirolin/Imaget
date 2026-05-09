@@ -13,9 +13,11 @@ export async function convertImage(
   const quality = (settings.downloadLogic?.quality || 85) / 100;
 
   const originalFormat = img.format.toLowerCase();
+  const actualMimeType = blob.type.toLowerCase();
 
   // 1. Check if conversion is needed
-  const isGif = originalFormat === "gif";
+  // Use both metadata and actual blob type for robustness
+  const isGif = originalFormat === "gif" || actualMimeType === "image/gif";
 
   let shouldConvert = false;
 
@@ -25,24 +27,32 @@ export async function convertImage(
     extension = originalFormat !== "unknown" ? originalFormat : "png";
   } else {
     const urlExt = img.url.split(".").pop()?.split(/[?#]/)[0]?.toLowerCase();
-    extension =
-      urlExt && urlExt.length <= 5
-        ? urlExt
-        : originalFormat !== "unknown"
-          ? originalFormat
-          : "png";
+    // Prioritize original format if it's known and consistent with blob
+    if (originalFormat !== "unknown" && originalFormat.length <= 5) {
+      extension = originalFormat;
+    } else {
+      extension = urlExt && urlExt.length <= 5 ? urlExt : "png";
+    }
   }
+
+  // Final extension cleanup
   if (extension === "jpeg") extension = "jpg";
 
+  // GIF Special Handling: This should take PRECEDENCE over targetFormat
   if (isGif) {
-    if (gifStrategy === "firstFrame") {
+    if (gifStrategy === "keep") {
+      // Force .gif extension for kept GIFs
+      return { blob, extension: "gif" };
+    } else if (gifStrategy === "firstFrame") {
       shouldConvert = true;
-    } else if (gifStrategy === "keep") {
-      return { blob, extension };
+    } else if (gifStrategy === "skip") {
+      // If we somehow reached here with skip strategy (e.g. processor sniffer failure)
+      // we throw to allow processor to catch and skip
+      throw new Error("SKIP_GIF");
     }
-    // "skip" is handled in processor
   }
 
+  // Global format conversion (only if not already handled by gifStrategy or if it's a non-GIF)
   if (targetFormat !== "original") {
     // If target format is different from original, or if it's a GIF being flattened
     if (targetFormat !== originalFormat || isGif) {
