@@ -18,7 +18,10 @@ describe("thumbnail state", () => {
   it("marks a thumbnail as loaded after image decode", async () => {
     const { container, image } = createThumbnail();
     const decode = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(image, "decode", { configurable: true, value: decode });
+    Object.defineProperty(image, "decode", {
+      configurable: true,
+      value: decode,
+    });
 
     await revealThumbnailImage(image);
 

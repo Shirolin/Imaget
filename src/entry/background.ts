@@ -1,3 +1,4 @@
+/* global FileReader */
 import { defaultSettings, type Settings } from "../types";
 import { t } from "../core/utils/i18n";
 

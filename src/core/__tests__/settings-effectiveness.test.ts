@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it, vi } from "vitest";
 import { ImageProcessor } from "../processor";
 import { convertImage } from "../utils/image-converter";
@@ -38,29 +39,35 @@ describe("Settings Effectiveness (Vitest)", () => {
     it("respects maxConcurrency setting by limiting parallel downloads", async () => {
       const adapter = makeAdapter();
       const processor = new ImageProcessor(adapter);
-      
+
       let activeCount = 0;
       let maxActiveCount = 0;
-      
+
       // Mock download to track concurrency
       adapter.download = vi.fn(async () => {
         activeCount++;
         maxActiveCount = Math.max(maxActiveCount, activeCount);
-        await new Promise(resolve => setTimeout(resolve, 10)); // Simulate work
+        await new Promise((resolve) => setTimeout(resolve, 10)); // Simulate work
         activeCount--;
       });
 
       const images = [
-        makeImage("1.png"), makeImage("2.png"), makeImage("3.png"), makeImage("4.png")
+        makeImage("1.png"),
+        makeImage("2.png"),
+        makeImage("3.png"),
+        makeImage("4.png"),
       ];
-      
+
       const settings = {
         ...defaultSettings,
-        downloadControl: { ...defaultSettings.downloadControl, maxConcurrency: 2 }
+        downloadControl: {
+          ...defaultSettings.downloadControl,
+          maxConcurrency: 2,
+        },
       };
 
       await processor.downloadBatch(images, settings);
-      
+
       expect(maxActiveCount).toBeLessThanOrEqual(2);
       expect(adapter.download).toHaveBeenCalledTimes(4);
     });
@@ -70,22 +77,22 @@ describe("Settings Effectiveness (Vitest)", () => {
     it("skips GIF when gifStrategy is 'skip'", async () => {
       const adapter = makeAdapter();
       const processor = new ImageProcessor(adapter);
-      
-      const images = [
-        makeImage("1.png", "PNG"),
-        makeImage("2.gif", "GIF")
-      ];
-      
+
+      const images = [makeImage("1.png", "PNG"), makeImage("2.gif", "GIF")];
+
       const settings = {
         ...defaultSettings,
-        gifStrategy: "skip" as const
+        gifStrategy: "skip" as const,
       };
 
       await processor.downloadBatch(images, settings);
-      
+
       expect(adapter.download).toHaveBeenCalledTimes(1);
       // Ensure the GIF was not fetched or downloaded
-      expect(adapter.fetchBlob).not.toHaveBeenCalledWith("2.gif", expect.any(String));
+      expect(adapter.fetchBlob).not.toHaveBeenCalledWith(
+        "2.gif",
+        expect.any(String),
+      );
     });
   });
 
@@ -98,27 +105,38 @@ describe("Settings Effectiveness (Vitest)", () => {
         downloadLogic: {
           ...defaultSettings.downloadLogic,
           targetFormat: "jpg" as const,
-          quality: 42
-        }
+          quality: 42,
+        },
       };
 
       // Mock Canvas and related APIs
       const mockCanvas = {
         getContext: vi.fn(() => ({ drawImage: vi.fn() })),
-        toBlob: vi.fn((callback) => callback(new Blob(["jpg"], { type: "image/jpeg" }))),
+        toBlob: vi.fn((callback) =>
+          callback(new Blob(["jpg"], { type: "image/jpeg" })),
+        ),
         width: 0,
         height: 0,
       };
-      vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-        if (tagName === "canvas") return mockCanvas as any;
-        return {} as any;
-      });
-      vi.stubGlobal("createImageBitmap", vi.fn(async () => ({ width: 100, height: 100, close: vi.fn() })));
+      vi.spyOn(document, "createElement").mockImplementation(
+        (tagName: string) => {
+          if (tagName === "canvas") return mockCanvas as any;
+          return {} as any;
+        },
+      );
+      vi.stubGlobal(
+        "createImageBitmap",
+        vi.fn(async () => ({ width: 100, height: 100, close: vi.fn() })),
+      );
 
       await convertImage(blob, img, settings);
 
-      expect(mockCanvas.toBlob).toHaveBeenCalledWith(expect.any(Function), "image/jpeg", 0.42);
-      
+      expect(mockCanvas.toBlob).toHaveBeenCalledWith(
+        expect.any(Function),
+        "image/jpeg",
+        0.42,
+      );
+
       vi.restoreAllMocks();
       vi.unstubAllGlobals();
     });

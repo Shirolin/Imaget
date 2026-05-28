@@ -126,8 +126,8 @@ function isScrollableContainer(element: HTMLElement): boolean {
 function isImagetUiElement(element: HTMLElement): boolean {
   return Boolean(
     element.closest("#imaget-reborn-root") ||
-      element.closest(".imaget-extension-container") ||
-      element.closest(".imaget-floating-host"),
+    element.closest(".imaget-extension-container") ||
+    element.closest(".imaget-floating-host"),
   );
 }
 

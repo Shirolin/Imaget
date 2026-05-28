@@ -349,18 +349,14 @@ describe("Sniffer", () => {
     });
     vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
 
-    const result = await new Sniffer().autoScroll(
-      defaultSettings,
-      undefined,
-      {
-        maxSteps: 10,
-        settleMs: 0,
-        idleRounds: 4,
-        maxDurationMs: 30000,
-        minStepPx: 900,
-        maxStepPx: 900,
-      },
-    );
+    const result = await new Sniffer().autoScroll(defaultSettings, undefined, {
+      maxSteps: 10,
+      settleMs: 0,
+      idleRounds: 4,
+      maxDurationMs: 30000,
+      minStepPx: 900,
+      maxStepPx: 900,
+    });
 
     expect(result.reason).toBe("completed");
     expect(result.steps).toBeGreaterThan(4);

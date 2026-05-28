@@ -111,7 +111,8 @@ describe("settings policy helpers", () => {
   it("enables follow scan by default but keeps it out of sniffer settings", () => {
     expect(defaultSettings.interfaceBehavior.followScanEnabled).toBe(true);
     expect(
-      "followScanEnabled" in getSnifferSettings(defaultSettings).interfaceBehavior,
+      "followScanEnabled" in
+        getSnifferSettings(defaultSettings).interfaceBehavior,
     ).toBe(false);
   });
 });

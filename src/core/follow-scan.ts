@@ -28,7 +28,10 @@ export class FollowScanController {
   private readonly scrollDebounceMs: number;
   private readonly mutationDebounceMs: number;
   private readonly batchLimit: number;
-  private readonly onCandidates: (sessionId: string, items: ImageItem[]) => void;
+  private readonly onCandidates: (
+    sessionId: string,
+    items: ImageItem[],
+  ) => void;
 
   constructor({
     onCandidates,

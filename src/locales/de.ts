@@ -1,533 +1,539 @@
 export default {
-  "btnAddDomain": {
-    "message": "Domain hinzufügen"
+  btnAddDomain: {
+    message: "Domain hinzufügen",
   },
-  "btnClose": {
-    "message": "Schließen"
+  btnClose: {
+    message: "Schließen",
   },
-  "btnDeepScan": {
-    "message": "Scroll-Scan"
+  btnDeepScan: {
+    message: "Scroll-Scan",
   },
-  "btnDownload": {
-    "message": "Download"
+  btnDownload: {
+    message: "Download",
   },
-  "btnRemoveDomain": {
-    "message": "Entfernen"
+  btnRemoveDomain: {
+    message: "Entfernen",
   },
-  "cancel": {
-    "message": "Abbrechen"
+  cancel: {
+    message: "Abbrechen",
   },
-  "concurrencyRecommended": {
-    "message": "3 (Empfohlen)"
+  concurrencyRecommended: {
+    message: "3 (Empfohlen)",
   },
-  "concurrencySingle": {
-    "message": "1 (Einzelthread)"
+  concurrencySingle: {
+    message: "1 (Einzelthread)",
   },
-  "concurrencyUnlimited": {
-    "message": "Unbegrenzt"
+  concurrencyUnlimited: {
+    message: "Unbegrenzt",
   },
-  "confirm": {
-    "message": "Bestätigen"
+  confirm: {
+    message: "Bestätigen",
   },
-  "conflictOverwrite": {
-    "message": "Überschreiben"
+  conflictOverwrite: {
+    message: "Überschreiben",
   },
-  "conflictPrompt": {
-    "message": "Nachfragen"
+  conflictPrompt: {
+    message: "Nachfragen",
   },
-  "conflictUniquify": {
-    "message": "Umbenennen"
+  conflictUniquify: {
+    message: "Umbenennen",
   },
-  "descDisabledDomains": {
-    "message": "Der schwebende Button wird auf diesen Websites nicht angezeigt"
+  descDisabledDomains: {
+    message: "Der schwebende Button wird auf diesen Websites nicht angezeigt",
   },
-  "descFilterDefaults": {
-    "message": "Die Standardwerte, die beim Start der Erweiterung oder beim Zurücksetzen der Filter verwendet werden."
+  descFilterDefaults: {
+    message:
+      "Die Standardwerte, die beim Start der Erweiterung oder beim Zurücksetzen der Filter verwendet werden.",
   },
-  "deselectAll": {
-    "message": "Auswahl aufheben"
+  deselectAll: {
+    message: "Auswahl aufheben",
   },
-  "downloadSelected": {
-    "message": "Ausgewählte herunterladen ($1)"
+  downloadSelected: {
+    message: "Ausgewählte herunterladen ($1)",
   },
-  "downloadZip": {
-    "message": "ZIP herunterladen"
+  downloadZip: {
+    message: "ZIP herunterladen",
   },
-  "exploringImages": {
-    "message": "Bilder auf der Seite werden durchsucht..."
+  exploringImages: {
+    message: "Bilder auf der Seite werden durchsucht...",
   },
-  "extDesc": {
-    "message": "Bilder von jeder Webseite automatisch finden und im Batch herunterladen."
+  extDesc: {
+    message:
+      "Bilder von jeder Webseite automatisch finden und im Batch herunterladen.",
   },
-  "extName": {
-    "message": "Imaget - Intelligenter Bild-Sniffer & Downloader"
+  extName: {
+    message: "Imaget - Intelligenter Bild-Sniffer & Downloader",
   },
-  "filterExclude": {
-    "message": "Ausschluss-Keywords"
+  filterExclude: {
+    message: "Ausschluss-Keywords",
   },
-  "filterExcludeType": {
-    "message": "Ausschluss-Typ"
+  filterExcludeType: {
+    message: "Ausschluss-Typ",
   },
-  "filterLayout": {
-    "message": "Seitenverhältnis"
+  filterLayout: {
+    message: "Seitenverhältnis",
   },
-  "filterMinHeight": {
-    "message": "Min. Höhe"
+  filterMinHeight: {
+    message: "Min. Höhe",
   },
-  "filterMinWidth": {
-    "message": "Min. Breite"
+  filterMinWidth: {
+    message: "Min. Breite",
   },
-  "filterSearch": {
-    "message": "Suche"
+  filterSearch: {
+    message: "Suche",
   },
-  "filterType": {
-    "message": "Typ"
+  filterType: {
+    message: "Typ",
   },
-  "formatOriginal": {
-    "message": "Original"
+  formatOriginal: {
+    message: "Original",
   },
-  "gifExtract": {
-    "message": "Ersten Frame extrahieren"
+  gifExtract: {
+    message: "Ersten Frame extrahieren",
   },
-  "gifOriginal": {
-    "message": "Original behalten"
+  gifOriginal: {
+    message: "Original behalten",
   },
-  "gifSkip": {
-    "message": "GIF überspringen"
+  gifSkip: {
+    message: "GIF überspringen",
   },
-  "hintClick": {
-    "message": "Hintergrund klicken: Vorschau schließen"
+  hintClick: {
+    message: "Hintergrund klicken: Vorschau schließen",
   },
-  "hintDrag": {
-    "message": "Linksklick & Ziehen: Verschieben"
+  hintDrag: {
+    message: "Linksklick & Ziehen: Verschieben",
   },
-  "hintWheel": {
-    "message": "Rad: Zoomen"
+  hintWheel: {
+    message: "Rad: Zoomen",
   },
-  "imgAlt": {
-    "message": "Gescanntes Bild"
+  imgAlt: {
+    message: "Gescanntes Bild",
   },
-  "imgLoadError": {
-    "message": "Ladefehler"
+  imgLoadError: {
+    message: "Ladefehler",
   },
-  "infoExtensionEnvironment": {
-    "message": "Browser-Erweiterung erkannt."
+  infoExtensionEnvironment: {
+    message: "Browser-Erweiterung erkannt.",
   },
-  "labelAfdian": {
-    "message": "Afdian"
+  labelAfdian: {
+    message: "Afdian",
   },
-  "labelClearExclude": {
-    "message": "Ausschluss löschen"
+  labelClearExclude: {
+    message: "Ausschluss löschen",
   },
-  "labelClearSearch": {
-    "message": "Suche löschen"
+  labelClearSearch: {
+    message: "Suche löschen",
   },
-  "labelCloseEsc": {
-    "message": "Schließen (Esc)"
+  labelCloseEsc: {
+    message: "Schließen (Esc)",
   },
-  "labelCopied": {
-    "message": "Kopiert!"
+  labelCopied: {
+    message: "Kopiert!",
   },
-  "labelCopyLink": {
-    "message": "Link kopieren"
+  labelCopyLink: {
+    message: "Link kopieren",
   },
-  "labelDeepScan": {
-    "message": "Scroll-Scan"
+  labelDeepScan: {
+    message: "Scroll-Scan",
   },
-  "labelDeselectAll": {
-    "message": "Alle abwählen"
+  labelDeselectAll: {
+    message: "Alle abwählen",
   },
-  "labelDonate": {
-    "message": "Spenden & Unterstützung"
+  labelDonate: {
+    message: "Spenden & Unterstützung",
   },
-  "labelFit": {
-    "message": "An Fenster anpassen"
+  labelFit: {
+    message: "An Fenster anpassen",
   },
-  "labelFloatingClose": {
-    "message": "Button vorübergehend ausblenden"
+  labelFloatingClose: {
+    message: "Button vorübergehend ausblenden",
   },
-  "labelFloatingDisable": {
-    "message": "Auf dieser Website deaktivieren"
+  labelFloatingDisable: {
+    message: "Auf dieser Website deaktivieren",
   },
-  "labelFloatingDownload": {
-    "message": "Bild herunterladen"
+  labelFloatingDownload: {
+    message: "Bild herunterladen",
   },
-  "labelFloatingError": {
-    "message": "Download fehlgeschlagen"
+  labelFloatingError: {
+    message: "Download fehlgeschlagen",
   },
-  "labelFloatingHidePermanent": {
-    "message": "Schwebendes Button-Feature dauerhaft deaktivieren"
+  labelFloatingHidePermanent: {
+    message: "Schwebendes Button-Feature dauerhaft deaktivieren",
   },
-  "labelFloatingSuccess": {
-    "message": "Erfolgreich heruntergeladen"
+  labelFloatingSuccess: {
+    message: "Erfolgreich heruntergeladen",
   },
-  "labelFollowScanOff": {
-    "message": "Folge-Scan ist deaktiviert"
+  labelFollowScanOff: {
+    message: "Folge-Scan ist deaktiviert",
   },
-  "labelFollowScanOn": {
-    "message": "Folge-Scan ist aktiviert"
+  labelFollowScanOn: {
+    message: "Folge-Scan ist aktiviert",
   },
-  "labelGithub": {
-    "message": "GitHub-Repository"
+  labelGithub: {
+    message: "GitHub-Repository",
   },
-  "labelImageQuality": {
-    "message": "Bilderqualität"
+  labelImageQuality: {
+    message: "Bilderqualität",
   },
-  "labelKofi": {
-    "message": "Ko-fi"
+  labelKofi: {
+    message: "Ko-fi",
   },
-  "labelMinHeight": {
-    "message": "Minimale Höhe"
+  labelMinHeight: {
+    message: "Minimale Höhe",
   },
-  "labelMinWidth": {
-    "message": "Minimale Breite"
+  labelMinWidth: {
+    message: "Minimale Breite",
   },
-  "labelOpenLink": {
-    "message": "Link öffnen"
+  labelOpenLink: {
+    message: "Link öffnen",
   },
-  "labelOriginalSize": {
-    "message": "1:1 Originalgröße"
+  labelOriginalSize: {
+    message: "1:1 Originalgröße",
   },
-  "labelPreview": {
-    "message": "Vorschau"
+  labelPreview: {
+    message: "Vorschau",
   },
-  "labelRefresh": {
-    "message": "Aktualisieren"
+  labelRefresh: {
+    message: "Aktualisieren",
   },
-  "labelRotate": {
-    "message": "90° drehen"
+  labelRotate: {
+    message: "90° drehen",
   },
-  "labelSaveFile": {
-    "message": "Datei speichern"
+  labelSaveFile: {
+    message: "Datei speichern",
   },
-  "labelSearchImages": {
-    "message": "Bilder suchen"
+  labelSearchImages: {
+    message: "Bilder suchen",
   },
-  "labelSelectAll": {
-    "message": "Alle auswählen"
+  labelSelectAll: {
+    message: "Alle auswählen",
   },
-  "labelSelectImage": {
-    "message": "Bild auswählen: $1"
+  labelSelectImage: {
+    message: "Bild auswählen: $1",
   },
-  "labelStopDeepScan": {
-    "message": "Scrollen stoppen"
+  labelStopDeepScan: {
+    message: "Scrollen stoppen",
   },
-  "labelZoomIn": {
-    "message": "Vergrößern"
+  labelZoomIn: {
+    message: "Vergrößern",
   },
-  "labelZoomOut": {
-    "message": "Verkleinern"
+  labelZoomOut: {
+    message: "Verkleinern",
   },
-  "layoutAny": {
-    "message": "Alle"
+  layoutAny: {
+    message: "Alle",
   },
-  "layoutColumns": {
-    "message": "Spalten"
+  layoutColumns: {
+    message: "Spalten",
   },
-  "layoutGrid": {
-    "message": "Raster"
+  layoutGrid: {
+    message: "Raster",
   },
-  "layoutList": {
-    "message": "Liste"
+  layoutList: {
+    message: "Liste",
   },
-  "layoutSquare": {
-    "message": "Quadratisch"
+  layoutSquare: {
+    message: "Quadratisch",
   },
-  "layoutTall": {
-    "message": "Hoch"
+  layoutTall: {
+    message: "Hoch",
   },
-  "layoutWide": {
-    "message": "Breit"
+  layoutWide: {
+    message: "Breit",
   },
-  "loading": {
-    "message": "Laden..."
+  loading: {
+    message: "Laden...",
   },
-  "menuOpenDashboard": {
-    "message": "Imaget Dashboard öffnen"
+  menuOpenDashboard: {
+    message: "Imaget Dashboard öffnen",
   },
-  "menuRoot": {
-    "message": "Imaget"
+  menuRoot: {
+    message: "Imaget",
   },
-  "menuSaveAsJPG": {
-    "message": "Als JPG exportieren"
+  menuSaveAsJPG: {
+    message: "Als JPG exportieren",
   },
-  "menuSaveAsPNG": {
-    "message": "Als PNG exportieren"
+  menuSaveAsPNG: {
+    message: "Als PNG exportieren",
   },
-  "menuSaveAsWebP": {
-    "message": "Als WebP exportieren"
+  menuSaveAsWebP: {
+    message: "Als WebP exportieren",
   },
-  "menuSaveImageSmart": {
-    "message": "Smart Save Image"
+  menuSaveImageSmart: {
+    message: "Smart Save Image",
   },
-  "noDisabledDomains": {
-    "message": "Keine deaktivierten Websites"
+  noDisabledDomains: {
+    message: "Keine deaktivierten Websites",
   },
-  "noImages": {
-    "message": "Keine Bilder gefunden"
+  noImages: {
+    message: "Keine Bilder gefunden",
   },
-  "noImagesHint": {
-    "message": "Versuchen Sie, die Filter anzupassen oder die Seite neu zu laden"
+  noImagesHint: {
+    message: "Versuchen Sie, die Filter anzupassen oder die Seite neu zu laden",
   },
-  "prefCancel": {
-    "message": "Abbrechen"
+  prefCancel: {
+    message: "Abbrechen",
   },
-  "prefConflictAction": {
-    "message": "Konfliktlösung"
+  prefConflictAction: {
+    message: "Konfliktlösung",
   },
-  "prefConflictOverwrite": {
-    "message": "Überschreiben"
+  prefConflictOverwrite: {
+    message: "Überschreiben",
   },
-  "prefConflictPrompt": {
-    "message": "Nachfragen"
+  prefConflictPrompt: {
+    message: "Nachfragen",
   },
-  "prefConflictResolution": {
-    "message": "Konfliktauflösung"
+  prefConflictResolution: {
+    message: "Konfliktauflösung",
   },
-  "prefConflictUniquify": {
-    "message": "Auto-Umbenennen"
+  prefConflictUniquify: {
+    message: "Auto-Umbenennen",
   },
-  "prefCustomSize": {
-    "message": "Benutzerdefiniert"
+  prefCustomSize: {
+    message: "Benutzerdefiniert",
   },
-  "prefDefaultAllowedFormats": {
-    "message": "Standardmäßig erlaubte Formate"
+  prefDefaultAllowedFormats: {
+    message: "Standardmäßig erlaubte Formate",
   },
-  "prefDefaultAspectRatio": {
-    "message": "Standard-Seitenverhältnis"
+  prefDefaultAspectRatio: {
+    message: "Standard-Seitenverhältnis",
   },
-  "prefDefaultExcludeFormats": {
-    "message": "Standardmäßig ausgeschlossene Formate"
+  prefDefaultExcludeFormats: {
+    message: "Standardmäßig ausgeschlossene Formate",
   },
-  "prefDefaultExcludeKeywords": {
-    "message": "Standard-Ausschluss-Keywords"
+  prefDefaultExcludeKeywords: {
+    message: "Standard-Ausschluss-Keywords",
   },
-  "prefDefaultMinHeight": {
-    "message": "Standard-Mindesthöhe"
+  prefDefaultMinHeight: {
+    message: "Standard-Mindesthöhe",
   },
-  "prefDefaultMinWidth": {
-    "message": "Standard-Mindestbreite"
+  prefDefaultMinWidth: {
+    message: "Standard-Mindestbreite",
   },
-  "prefDefaultResolutionMode": {
-    "message": "Standard-Auflösungsmodus"
+  prefDefaultResolutionMode: {
+    message: "Standard-Auflösungsmodus",
   },
-  "prefDefaultSearchQuery": {
-    "message": "Standard-Suchanfrage"
+  prefDefaultSearchQuery: {
+    message: "Standard-Suchanfrage",
   },
-  "prefFilename": {
-    "message": "Dateinamenvorlage"
+  prefFilename: {
+    message: "Dateinamenvorlage",
   },
-  "prefFilenameHint": {
-    "message": "Verfügbare Variablen: $1"
+  prefFilenameHint: {
+    message: "Verfügbare Variablen: $1",
   },
-  "prefFollowScan": {
-    "message": "Folge-Scan"
+  prefFollowScan: {
+    message: "Folge-Scan",
   },
-  "prefFollowScanHint": {
-    "message": "Fügt neu geladene Bilder automatisch zur Liste hinzu, solange das Plugin-Fenster geöffnet ist"
+  prefFollowScanHint: {
+    message:
+      "Fügt neu geladene Bilder automatisch zur Liste hinzu, solange das Plugin-Fenster geöffnet ist",
   },
-  "prefGifHandling": {
-    "message": "GIF-Strategie"
+  prefGifHandling: {
+    message: "GIF-Strategie",
   },
-  "prefHideDownloadWarning": {
-    "message": "In-App-Bestätigung für Batch-Downloads überspringen"
+  prefHideDownloadWarning: {
+    message: "In-App-Bestätigung für Batch-Downloads überspringen",
   },
-  "prefHideDownloadWarningHint": {
-    "message": "Downloads starten direkt, wenn mehr als 30 Bilder ausgewählt sind. Browser-Abfragen zur Berechtigung für mehrere Downloads sind davon nicht betroffen."
+  prefHideDownloadWarningHint: {
+    message:
+      "Downloads starten direkt, wenn mehr als 30 Bilder ausgewählt sind. Browser-Abfragen zur Berechtigung für mehrere Downloads sind davon nicht betroffen.",
   },
-  "prefIdentifyBackgroundImages": {
-    "message": "Hintergrundbilder erkennen"
+  prefIdentifyBackgroundImages: {
+    message: "Hintergrundbilder erkennen",
   },
-  "prefIdentifyBlobImages": {
-    "message": "Blob-Ressourcen identifizieren (für Telegram, Discord etc.)"
+  prefIdentifyBlobImages: {
+    message: "Blob-Ressourcen identifizieren (für Telegram, Discord etc.)",
   },
-  "prefLanguage": {
-    "message": "Sprache der Benutzeroberfläche"
+  prefLanguage: {
+    message: "Sprache der Benutzeroberfläche",
   },
-  "prefMaxConcurrency": {
-    "message": "Download-Limit"
+  prefMaxConcurrency: {
+    message: "Download-Limit",
   },
-  "prefMinImageSize": {
-    "message": "Min. Größe für Floating Button"
+  prefMinImageSize: {
+    message: "Min. Größe für Floating Button",
   },
-  "prefQuality": {
-    "message": "Qualität"
+  prefQuality: {
+    message: "Qualität",
   },
-  "prefReEncodeWebp": {
-    "message": "WebP neu codieren erzwingen"
+  prefReEncodeWebp: {
+    message: "WebP neu codieren erzwingen",
   },
-  "prefSave": {
-    "message": "Speichern"
+  prefSave: {
+    message: "Speichern",
   },
-  "prefSearchAllFrames": {
-    "message": "Alle Frames durchsuchen"
+  prefSearchAllFrames: {
+    message: "Alle Frames durchsuchen",
   },
-  "prefShowHoverBtn": {
-    "message": "Floating Button anzeigen"
+  prefShowHoverBtn: {
+    message: "Floating Button anzeigen",
   },
-  "prefShowInSidebar": {
-    "message": "In Sidebar anzeigen"
+  prefShowInSidebar: {
+    message: "In Sidebar anzeigen",
   },
-  "prefShowInSidebarHint": {
-    "message": "Erfordert das Schließen und erneute Öffnen der Erweiterung, um wirksam zu werden"
+  prefShowInSidebarHint: {
+    message:
+      "Erfordert das Schließen und erneute Öffnen der Erweiterung, um wirksam zu werden",
   },
-  "prefSimulateDownloadFailure": {
-    "message": "Download-Fehler simulieren"
+  prefSimulateDownloadFailure: {
+    message: "Download-Fehler simulieren",
   },
-  "prefSubfolder": {
-    "message": "Unterordner"
+  prefSubfolder: {
+    message: "Unterordner",
   },
-  "prefSubfolderHint": {
-    "message": "Dateien werden in diesem Unterordner gespeichert"
+  prefSubfolderHint: {
+    message: "Dateien werden in diesem Unterordner gespeichert",
   },
-  "prefSubfolderPlaceholder": {
-    "message": "z.B. Imaget"
+  prefSubfolderPlaceholder: {
+    message: "z.B. Imaget",
   },
-  "prefTargetFormat": {
-    "message": "Zielformat"
+  prefTargetFormat: {
+    message: "Zielformat",
   },
-  "preparingZip": {
-    "message": "ZIP wird vorbereitet..."
+  preparingZip: {
+    message: "ZIP wird vorbereitet...",
   },
-  "presetIndexOriginal": {
-    "message": "Index + Original"
+  presetIndexOriginal: {
+    message: "Index + Original",
   },
-  "preview": {
-    "message": "Vorschau"
+  preview: {
+    message: "Vorschau",
   },
-  "processing": {
-    "message": "Verarbeitung... ($1/$2)"
+  processing: {
+    message: "Verarbeitung... ($1/$2)",
   },
-  "resModeAnd": {
-    "message": "UND"
+  resModeAnd: {
+    message: "UND",
   },
-  "resModeAndDesc": {
-    "message": "Sowohl Breite als auch Höhe müssen Schwellenwert erreichen"
+  resModeAndDesc: {
+    message: "Sowohl Breite als auch Höhe müssen Schwellenwert erreichen",
   },
-  "resModeOr": {
-    "message": "ODER"
+  resModeOr: {
+    message: "ODER",
   },
-  "resModeOrDesc": {
-    "message": "Breite oder Höhe muss Schwellenwert erreichen"
+  resModeOrDesc: {
+    message: "Breite oder Höhe muss Schwellenwert erreichen",
   },
-  "resetAllSettings": {
-    "message": "Alle Einstellungen zurücksetzen"
+  resetAllSettings: {
+    message: "Alle Einstellungen zurücksetzen",
   },
-  "resetDefault": {
-    "message": "Auf Standard zurücksetzen"
+  resetDefault: {
+    message: "Auf Standard zurücksetzen",
   },
-  "secDebug": {
-    "message": "Debug (Nur zum Testen)"
+  secDebug: {
+    message: "Debug (Nur zum Testen)",
   },
-  "secDisabledDomains": {
-    "message": "Deaktivierte Websites"
+  secDisabledDomains: {
+    message: "Deaktivierte Websites",
   },
-  "secDownload": {
-    "message": "Download"
+  secDownload: {
+    message: "Download",
   },
-  "secDownloadControl": {
-    "message": "Download-Kontrolle"
+  secDownloadControl: {
+    message: "Download-Kontrolle",
   },
-  "secDownloadLogic": {
-    "message": "Download-Logik"
+  secDownloadLogic: {
+    message: "Download-Logik",
   },
-  "secExtraction": {
-    "message": "Extraktion"
+  secExtraction: {
+    message: "Extraktion",
   },
-  "secFileSave": {
-    "message": "Dateispeicherung"
+  secFileSave: {
+    message: "Dateispeicherung",
   },
-  "secFilterDefaults": {
-    "message": "Standard-Filtereinstellungen"
+  secFilterDefaults: {
+    message: "Standard-Filtereinstellungen",
   },
-  "secGeneral": {
-    "message": "Allgemein"
+  secGeneral: {
+    message: "Allgemein",
   },
-  "secGifHandling": {
-    "message": "GIF-Behandlung"
+  secGifHandling: {
+    message: "GIF-Behandlung",
   },
-  "secLanguage": {
-    "message": "Sprache"
+  secLanguage: {
+    message: "Sprache",
   },
-  "secSupport": {
-    "message": "Support & Über"
+  secSupport: {
+    message: "Support & Über",
   },
-  "secUiBehavior": {
-    "message": "UI-Verhalten"
+  secUiBehavior: {
+    message: "UI-Verhalten",
   },
-  "selectAll": {
-    "message": "Alle auswählen"
+  selectAll: {
+    message: "Alle auswählen",
   },
-  "selectPlaceholder": {
-    "message": "Bitte wählen"
+  selectPlaceholder: {
+    message: "Bitte wählen",
   },
-  "selectedCount": {
-    "message": "$1 ausgewählt / $2 gefiltert / $3 gesamt"
+  selectedCount: {
+    message: "$1 ausgewählt / $2 gefiltert / $3 gesamt",
   },
-  "sizeAlways": {
-    "message": "Immer anzeigen"
+  sizeAlways: {
+    message: "Immer anzeigen",
   },
-  "sortAsc": {
-    "message": "Aufsteigend"
+  sortAsc: {
+    message: "Aufsteigend",
   },
-  "sortBy": {
-    "message": "Sortieren nach"
+  sortBy: {
+    message: "Sortieren nach",
   },
-  "sortDesc": {
-    "message": "Absteigend"
+  sortDesc: {
+    message: "Absteigend",
   },
-  "sortOrder": {
-    "message": "Reihenfolge"
+  sortOrder: {
+    message: "Reihenfolge",
   },
-  "sortResolution": {
-    "message": "Auflösung"
+  sortResolution: {
+    message: "Auflösung",
   },
-  "sortSize": {
-    "message": "Größe"
+  sortSize: {
+    message: "Größe",
   },
-  "statFilter": {
-    "message": "Gefiltert"
+  statFilter: {
+    message: "Gefiltert",
   },
-  "statSelected": {
-    "message": "Ausgewählt"
+  statSelected: {
+    message: "Ausgewählt",
   },
-  "statTotal": {
-    "message": "Gesamt entdeckt"
+  statTotal: {
+    message: "Gesamt entdeckt",
   },
-  "statusSaved": {
-    "message": "Gespeichert"
+  statusSaved: {
+    message: "Gespeichert",
   },
-  "tabImages": {
-    "message": "Bilder"
+  tabImages: {
+    message: "Bilder",
   },
-  "tabPreferences": {
-    "message": "Einstellungen"
+  tabPreferences: {
+    message: "Einstellungen",
   },
-  "toastDownloadStarted": {
-    "message": "Download von $1 Bildern gestartet"
+  toastDownloadStarted: {
+    message: "Download von $1 Bildern gestartet",
   },
-  "toastNoSelection": {
-    "message": "Bitte wählen Sie zuerst Bilder aus"
+  toastNoSelection: {
+    message: "Bitte wählen Sie zuerst Bilder aus",
   },
-  "unitPixel": {
-    "message": "$1px+"
+  unitPixel: {
+    message: "$1px+",
   },
-  "useOriginal": {
-    "message": "Originalnamen verwenden"
+  useOriginal: {
+    message: "Originalnamen verwenden",
   },
-  "viewVariables": {
-    "message": "Variablen anzeigen"
+  viewVariables: {
+    message: "Variablen anzeigen",
   },
-  "warnManyFiles": {
-    "message": "Sie möchten $1 Bilder herunterladen, fortfahren?"
+  warnManyFiles: {
+    message: "Sie möchten $1 Bilder herunterladen, fortfahren?",
   },
-  "warnResetAll": {
-    "message": "Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten?"
+  warnResetAll: {
+    message:
+      "Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten?",
   },
-  "warning": {
-    "message": "Warnung"
+  warning: {
+    message: "Warnung",
   },
-  "warningWebEnvironment": {
-    "message": "Hinweis: Web-Umgebung. Funktionen können eingeschränkt sein."
-  }
+  warningWebEnvironment: {
+    message: "Hinweis: Web-Umgebung. Funktionen können eingeschränkt sein.",
+  },
 };

@@ -46,15 +46,14 @@ describe("image state", () => {
   });
 
   it("appends newly discovered images without replacing the current list", () => {
-    const existing = [
-      item({ id: "a", url: "https://cdn.example.com/a.jpg" }),
-    ];
-    const incoming = [
-      item({ id: "b", url: "https://cdn.example.com/b.jpg" }),
-    ];
+    const existing = [item({ id: "a", url: "https://cdn.example.com/a.jpg" })];
+    const incoming = [item({ id: "b", url: "https://cdn.example.com/b.jpg" })];
 
-    expect(upsertImageItems(existing, incoming).map((image) => image.url)).toEqual(
-      ["https://cdn.example.com/a.jpg", "https://cdn.example.com/b.jpg"],
-    );
+    expect(
+      upsertImageItems(existing, incoming).map((image) => image.url),
+    ).toEqual([
+      "https://cdn.example.com/a.jpg",
+      "https://cdn.example.com/b.jpg",
+    ]);
   });
 });

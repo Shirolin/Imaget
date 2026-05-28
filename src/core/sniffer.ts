@@ -70,21 +70,33 @@ export class Sniffer {
     sessionId?: string,
     targetTabId?: number | null,
   ): Promise<void> {
-    await this.sendFollowScanCommand(FOLLOW_SCAN_STOP, { sessionId }, targetTabId);
+    await this.sendFollowScanCommand(
+      FOLLOW_SCAN_STOP,
+      { sessionId },
+      targetTabId,
+    );
   }
 
   public async pauseFollowScan(
     sessionId?: string,
     targetTabId?: number | null,
   ): Promise<void> {
-    await this.sendFollowScanCommand(FOLLOW_SCAN_PAUSE, { sessionId }, targetTabId);
+    await this.sendFollowScanCommand(
+      FOLLOW_SCAN_PAUSE,
+      { sessionId },
+      targetTabId,
+    );
   }
 
   public async resumeFollowScan(
     sessionId?: string,
     targetTabId?: number | null,
   ): Promise<void> {
-    await this.sendFollowScanCommand(FOLLOW_SCAN_RESUME, { sessionId }, targetTabId);
+    await this.sendFollowScanCommand(
+      FOLLOW_SCAN_RESUME,
+      { sessionId },
+      targetTabId,
+    );
   }
 
   private async sendFollowScanCommand(

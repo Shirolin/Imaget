@@ -1,533 +1,538 @@
 export default {
-  "btnAddDomain": {
-    "message": "Etki alanı ekle"
+  btnAddDomain: {
+    message: "Etki alanı ekle",
   },
-  "btnClose": {
-    "message": "Kapat"
+  btnClose: {
+    message: "Kapat",
   },
-  "btnDeepScan": {
-    "message": "Kaydırarak tara"
+  btnDeepScan: {
+    message: "Kaydırarak tara",
   },
-  "btnDownload": {
-    "message": "İndir"
+  btnDownload: {
+    message: "İndir",
   },
-  "btnRemoveDomain": {
-    "message": "Kaldır"
+  btnRemoveDomain: {
+    message: "Kaldır",
   },
-  "cancel": {
-    "message": "İptal"
+  cancel: {
+    message: "İptal",
   },
-  "concurrencyRecommended": {
-    "message": "3 (Önerilen)"
+  concurrencyRecommended: {
+    message: "3 (Önerilen)",
   },
-  "concurrencySingle": {
-    "message": "1 (Tek İş Parçacığı)"
+  concurrencySingle: {
+    message: "1 (Tek İş Parçacığı)",
   },
-  "concurrencyUnlimited": {
-    "message": "Sınırsız"
+  concurrencyUnlimited: {
+    message: "Sınırsız",
   },
-  "confirm": {
-    "message": "Onayla"
+  confirm: {
+    message: "Onayla",
   },
-  "conflictOverwrite": {
-    "message": "Üzerine Yaz"
+  conflictOverwrite: {
+    message: "Üzerine Yaz",
   },
-  "conflictPrompt": {
-    "message": "Sor"
+  conflictPrompt: {
+    message: "Sor",
   },
-  "conflictUniquify": {
-    "message": "Yeniden Adlandır"
+  conflictUniquify: {
+    message: "Yeniden Adlandır",
   },
-  "descDisabledDomains": {
-    "message": "Kayan düğme bu web sitelerinde gösterilmeyecektir"
+  descDisabledDomains: {
+    message: "Kayan düğme bu web sitelerinde gösterilmeyecektir",
   },
-  "descFilterDefaults": {
-    "message": "Uzantı başlatıldığında veya filtreler sıfırlandığında kullanılacak varsayılan değerler."
+  descFilterDefaults: {
+    message:
+      "Uzantı başlatıldığında veya filtreler sıfırlandığında kullanılacak varsayılan değerler.",
   },
-  "deselectAll": {
-    "message": "Seçimi Kaldır"
+  deselectAll: {
+    message: "Seçimi Kaldır",
   },
-  "downloadSelected": {
-    "message": "Seçilenleri İndir ($1)"
+  downloadSelected: {
+    message: "Seçilenleri İndir ($1)",
   },
-  "downloadZip": {
-    "message": "ZIP Olarak İndir"
+  downloadZip: {
+    message: "ZIP Olarak İndir",
   },
-  "exploringImages": {
-    "message": "Sayfadaki görseller taranıyor..."
+  exploringImages: {
+    message: "Sayfadaki görseller taranıyor...",
   },
-  "extDesc": {
-    "message": "Herhangi bir web sayfasından resimleri otomatik olarak bulur ve topluca indirir."
+  extDesc: {
+    message:
+      "Herhangi bir web sayfasından resimleri otomatik olarak bulur ve topluca indirir.",
   },
-  "extName": {
-    "message": "Imaget - Akıllı Resim Bulucu ve İndirici"
+  extName: {
+    message: "Imaget - Akıllı Resim Bulucu ve İndirici",
   },
-  "filterExclude": {
-    "message": "Hariç Tutulacak Kelimeler"
+  filterExclude: {
+    message: "Hariç Tutulacak Kelimeler",
   },
-  "filterExcludeType": {
-    "message": "Dışlama Türü"
+  filterExcludeType: {
+    message: "Dışlama Türü",
   },
-  "filterLayout": {
-    "message": "En Boy Oranı"
+  filterLayout: {
+    message: "En Boy Oranı",
   },
-  "filterMinHeight": {
-    "message": "Min Yükseklik"
+  filterMinHeight: {
+    message: "Min Yükseklik",
   },
-  "filterMinWidth": {
-    "message": "Min Genişlik"
+  filterMinWidth: {
+    message: "Min Genişlik",
   },
-  "filterSearch": {
-    "message": "Ara"
+  filterSearch: {
+    message: "Ara",
   },
-  "filterType": {
-    "message": "Tür"
+  filterType: {
+    message: "Tür",
   },
-  "formatOriginal": {
-    "message": "Orijinal"
+  formatOriginal: {
+    message: "Orijinal",
   },
-  "gifExtract": {
-    "message": "İlk Kareyi Çıkar"
+  gifExtract: {
+    message: "İlk Kareyi Çıkar",
   },
-  "gifOriginal": {
-    "message": "Orijinali Koru"
+  gifOriginal: {
+    message: "Orijinali Koru",
   },
-  "gifSkip": {
-    "message": "GIF'i Atla"
+  gifSkip: {
+    message: "GIF'i Atla",
   },
-  "hintClick": {
-    "message": "Arka plana tıkla: Kapat"
+  hintClick: {
+    message: "Arka plana tıkla: Kapat",
   },
-  "hintDrag": {
-    "message": "Sol Tık + Sürükle: Kaydır"
+  hintDrag: {
+    message: "Sol Tık + Sürükle: Kaydır",
   },
-  "hintWheel": {
-    "message": "Tekerlek: Yakınlaştır/Uzaklaştır"
+  hintWheel: {
+    message: "Tekerlek: Yakınlaştır/Uzaklaştır",
   },
-  "imgAlt": {
-    "message": "Algılanan Resim"
+  imgAlt: {
+    message: "Algılanan Resim",
   },
-  "imgLoadError": {
-    "message": "Yükleme Hatası"
+  imgLoadError: {
+    message: "Yükleme Hatası",
   },
-  "infoExtensionEnvironment": {
-    "message": "Eklenti ortamı algılandı."
+  infoExtensionEnvironment: {
+    message: "Eklenti ortamı algılandı.",
   },
-  "labelAfdian": {
-    "message": "Afdian"
+  labelAfdian: {
+    message: "Afdian",
   },
-  "labelClearExclude": {
-    "message": "Hariç tutulanları temizle"
+  labelClearExclude: {
+    message: "Hariç tutulanları temizle",
   },
-  "labelClearSearch": {
-    "message": "Aramayı temizle"
+  labelClearSearch: {
+    message: "Aramayı temizle",
   },
-  "labelCloseEsc": {
-    "message": "Kapat (Esc)"
+  labelCloseEsc: {
+    message: "Kapat (Esc)",
   },
-  "labelCopied": {
-    "message": "Kopyalandı!"
+  labelCopied: {
+    message: "Kopyalandı!",
   },
-  "labelCopyLink": {
-    "message": "Bağlantıyı Kopyala"
+  labelCopyLink: {
+    message: "Bağlantıyı Kopyala",
   },
-  "labelDeepScan": {
-    "message": "Kaydırarak tara"
+  labelDeepScan: {
+    message: "Kaydırarak tara",
   },
-  "labelDeselectAll": {
-    "message": "Seçimi bırak"
+  labelDeselectAll: {
+    message: "Seçimi bırak",
   },
-  "labelDonate": {
-    "message": "Destekle ve Bağış Yap"
+  labelDonate: {
+    message: "Destekle ve Bağış Yap",
   },
-  "labelFit": {
-    "message": "Pencereye Sığdır"
+  labelFit: {
+    message: "Pencereye Sığdır",
   },
-  "labelFloatingClose": {
-    "message": "Geçici olarak gizle"
+  labelFloatingClose: {
+    message: "Geçici olarak gizle",
   },
-  "labelFloatingDisable": {
-    "message": "Bu sitede devre dışı bırak"
+  labelFloatingDisable: {
+    message: "Bu sitede devre dışı bırak",
   },
-  "labelFloatingDownload": {
-    "message": "Resmi İndir"
+  labelFloatingDownload: {
+    message: "Resmi İndir",
   },
-  "labelFloatingError": {
-    "message": "İndirme başarısız"
+  labelFloatingError: {
+    message: "İndirme başarısız",
   },
-  "labelFloatingHidePermanent": {
-    "message": "Kalıcı olarak gizle (Özelliği kapat)"
+  labelFloatingHidePermanent: {
+    message: "Kalıcı olarak gizle (Özelliği kapat)",
   },
-  "labelFloatingSuccess": {
-    "message": "Başarıyla İndirildi"
+  labelFloatingSuccess: {
+    message: "Başarıyla İndirildi",
   },
-  "labelFollowScanOff": {
-    "message": "Takip taraması kapalı"
+  labelFollowScanOff: {
+    message: "Takip taraması kapalı",
   },
-  "labelFollowScanOn": {
-    "message": "Takip taraması açık"
+  labelFollowScanOn: {
+    message: "Takip taraması açık",
   },
-  "labelGithub": {
-    "message": "GitHub Deposu"
+  labelGithub: {
+    message: "GitHub Deposu",
   },
-  "labelImageQuality": {
-    "message": "Resim kalitesi"
+  labelImageQuality: {
+    message: "Resim kalitesi",
   },
-  "labelKofi": {
-    "message": "Ko-fi"
+  labelKofi: {
+    message: "Ko-fi",
   },
-  "labelMinHeight": {
-    "message": "Minimum yükseklik"
+  labelMinHeight: {
+    message: "Minimum yükseklik",
   },
-  "labelMinWidth": {
-    "message": "Minimum genişlik"
+  labelMinWidth: {
+    message: "Minimum genişlik",
   },
-  "labelOpenLink": {
-    "message": "Bağlantıyı Aç"
+  labelOpenLink: {
+    message: "Bağlantıyı Aç",
   },
-  "labelOriginalSize": {
-    "message": "1:1 Orijinal Boyut"
+  labelOriginalSize: {
+    message: "1:1 Orijinal Boyut",
   },
-  "labelPreview": {
-    "message": "Önizleme"
+  labelPreview: {
+    message: "Önizleme",
   },
-  "labelRefresh": {
-    "message": "Yenile"
+  labelRefresh: {
+    message: "Yenile",
   },
-  "labelRotate": {
-    "message": "90° Döndür"
+  labelRotate: {
+    message: "90° Döndür",
   },
-  "labelSaveFile": {
-    "message": "Dosyayı Kaydet"
+  labelSaveFile: {
+    message: "Dosyayı Kaydet",
   },
-  "labelSearchImages": {
-    "message": "Resimleri ara"
+  labelSearchImages: {
+    message: "Resimleri ara",
   },
-  "labelSelectAll": {
-    "message": "Tümünü seç"
+  labelSelectAll: {
+    message: "Tümünü seç",
   },
-  "labelSelectImage": {
-    "message": "Resmi seç: $1"
+  labelSelectImage: {
+    message: "Resmi seç: $1",
   },
-  "labelStopDeepScan": {
-    "message": "Kaydırmayı durdur"
+  labelStopDeepScan: {
+    message: "Kaydırmayı durdur",
   },
-  "labelZoomIn": {
-    "message": "Yakınlaştır"
+  labelZoomIn: {
+    message: "Yakınlaştır",
   },
-  "labelZoomOut": {
-    "message": "Uzaklaştır"
+  labelZoomOut: {
+    message: "Uzaklaştır",
   },
-  "layoutAny": {
-    "message": "Tümü"
+  layoutAny: {
+    message: "Tümü",
   },
-  "layoutColumns": {
-    "message": "Sütunlar"
+  layoutColumns: {
+    message: "Sütunlar",
   },
-  "layoutGrid": {
-    "message": "Izgara"
+  layoutGrid: {
+    message: "Izgara",
   },
-  "layoutList": {
-    "message": "Liste"
+  layoutList: {
+    message: "Liste",
   },
-  "layoutSquare": {
-    "message": "Kare"
+  layoutSquare: {
+    message: "Kare",
   },
-  "layoutTall": {
-    "message": "Dikey"
+  layoutTall: {
+    message: "Dikey",
   },
-  "layoutWide": {
-    "message": "Geniş"
+  layoutWide: {
+    message: "Geniş",
   },
-  "loading": {
-    "message": "Yükleniyor..."
+  loading: {
+    message: "Yükleniyor...",
   },
-  "menuOpenDashboard": {
-    "message": "Imaget Kontrol Panelini Aç"
+  menuOpenDashboard: {
+    message: "Imaget Kontrol Panelini Aç",
   },
-  "menuRoot": {
-    "message": "Imaget"
+  menuRoot: {
+    message: "Imaget",
   },
-  "menuSaveAsJPG": {
-    "message": "JPG olarak kaydet"
+  menuSaveAsJPG: {
+    message: "JPG olarak kaydet",
   },
-  "menuSaveAsPNG": {
-    "message": "PNG olarak kaydet"
+  menuSaveAsPNG: {
+    message: "PNG olarak kaydet",
   },
-  "menuSaveAsWebP": {
-    "message": "WebP olarak kaydet"
+  menuSaveAsWebP: {
+    message: "WebP olarak kaydet",
   },
-  "menuSaveImageSmart": {
-    "message": "Smart Save Image"
+  menuSaveImageSmart: {
+    message: "Smart Save Image",
   },
-  "noDisabledDomains": {
-    "message": "Devre dışı bırakılmış web sitesi yok"
+  noDisabledDomains: {
+    message: "Devre dışı bırakılmış web sitesi yok",
   },
-  "noImages": {
-    "message": "Resim bulunamadı"
+  noImages: {
+    message: "Resim bulunamadı",
   },
-  "noImagesHint": {
-    "message": "Filtre seçeneklerini ayarlamayı veya sayfayı yenilemeyi deneyin"
+  noImagesHint: {
+    message: "Filtre seçeneklerini ayarlamayı veya sayfayı yenilemeyi deneyin",
   },
-  "prefCancel": {
-    "message": "İptal"
+  prefCancel: {
+    message: "İptal",
   },
-  "prefConflictAction": {
-    "message": "Dosya Çakışması"
+  prefConflictAction: {
+    message: "Dosya Çakışması",
   },
-  "prefConflictOverwrite": {
-    "message": "Üzerine Yaz"
+  prefConflictOverwrite: {
+    message: "Üzerine Yaz",
   },
-  "prefConflictPrompt": {
-    "message": "Bana Sor"
+  prefConflictPrompt: {
+    message: "Bana Sor",
   },
-  "prefConflictResolution": {
-    "message": "Çakışma Çözümü"
+  prefConflictResolution: {
+    message: "Çakışma Çözümü",
   },
-  "prefConflictUniquify": {
-    "message": "Otomatik Yeniden Adlandır"
+  prefConflictUniquify: {
+    message: "Otomatik Yeniden Adlandır",
   },
-  "prefCustomSize": {
-    "message": "Özel"
+  prefCustomSize: {
+    message: "Özel",
   },
-  "prefDefaultAllowedFormats": {
-    "message": "Varsayılan İzin Verilen Formatlar"
+  prefDefaultAllowedFormats: {
+    message: "Varsayılan İzin Verilen Formatlar",
   },
-  "prefDefaultAspectRatio": {
-    "message": "Varsayılan En Boy Oranı"
+  prefDefaultAspectRatio: {
+    message: "Varsayılan En Boy Oranı",
   },
-  "prefDefaultExcludeFormats": {
-    "message": "Varsayılan Hariç Tutulan Formatlar"
+  prefDefaultExcludeFormats: {
+    message: "Varsayılan Hariç Tutulan Formatlar",
   },
-  "prefDefaultExcludeKeywords": {
-    "message": "Varsayılan Hariç Tutulan Anahtar Kelimeler"
+  prefDefaultExcludeKeywords: {
+    message: "Varsayılan Hariç Tutulan Anahtar Kelimeler",
   },
-  "prefDefaultMinHeight": {
-    "message": "Varsayılan Minimum Yükseklik"
+  prefDefaultMinHeight: {
+    message: "Varsayılan Minimum Yükseklik",
   },
-  "prefDefaultMinWidth": {
-    "message": "Varsayılan Minimum Genişlik"
+  prefDefaultMinWidth: {
+    message: "Varsayılan Minimum Genişlik",
   },
-  "prefDefaultResolutionMode": {
-    "message": "Varsayılan Çözünürlük Modu"
+  prefDefaultResolutionMode: {
+    message: "Varsayılan Çözünürlük Modu",
   },
-  "prefDefaultSearchQuery": {
-    "message": "Varsayılan Arama Sorgusu"
+  prefDefaultSearchQuery: {
+    message: "Varsayılan Arama Sorgusu",
   },
-  "prefFilename": {
-    "message": "Dosya Adı Şablonu"
+  prefFilename: {
+    message: "Dosya Adı Şablonu",
   },
-  "prefFilenameHint": {
-    "message": "Kullanılabilir değişkenler: $1"
+  prefFilenameHint: {
+    message: "Kullanılabilir değişkenler: $1",
   },
-  "prefFollowScan": {
-    "message": "Takip taraması"
+  prefFollowScan: {
+    message: "Takip taraması",
   },
-  "prefFollowScanHint": {
-    "message": "Eklenti penceresi açıkken yeni yüklenen görselleri otomatik olarak listeye ekler"
+  prefFollowScanHint: {
+    message:
+      "Eklenti penceresi açıkken yeni yüklenen görselleri otomatik olarak listeye ekler",
   },
-  "prefGifHandling": {
-    "message": "GIF Stratejisi"
+  prefGifHandling: {
+    message: "GIF Stratejisi",
   },
-  "prefHideDownloadWarning": {
-    "message": "Uygulama içi toplu indirme onayını atla"
+  prefHideDownloadWarning: {
+    message: "Uygulama içi toplu indirme onayını atla",
   },
-  "prefHideDownloadWarningHint": {
-    "message": "30'dan fazla görsel seçildiğinde indirmeler doğrudan başlar. Tarayıcının çoklu indirme izin uyarıları bu ayardan etkilenmez."
+  prefHideDownloadWarningHint: {
+    message:
+      "30'dan fazla görsel seçildiğinde indirmeler doğrudan başlar. Tarayıcının çoklu indirme izin uyarıları bu ayardan etkilenmez.",
   },
-  "prefIdentifyBackgroundImages": {
-    "message": "Arka Plan Resimlerini Tanımla"
+  prefIdentifyBackgroundImages: {
+    message: "Arka Plan Resimlerini Tanımla",
   },
-  "prefIdentifyBlobImages": {
-    "message": "Blob Kaynaklarını Tanımla (Telegram, Discord vb. için)"
+  prefIdentifyBlobImages: {
+    message: "Blob Kaynaklarını Tanımla (Telegram, Discord vb. için)",
   },
-  "prefLanguage": {
-    "message": "Arayüz Dili"
+  prefLanguage: {
+    message: "Arayüz Dili",
   },
-  "prefMaxConcurrency": {
-    "message": "Eşzamanlı İndirme Sınırı"
+  prefMaxConcurrency: {
+    message: "Eşzamanlı İndirme Sınırı",
   },
-  "prefMinImageSize": {
-    "message": "Yüzer Buton İçin Min. Resim Boyutu"
+  prefMinImageSize: {
+    message: "Yüzer Buton İçin Min. Resim Boyutu",
   },
-  "prefQuality": {
-    "message": "Kalite"
+  prefQuality: {
+    message: "Kalite",
   },
-  "prefReEncodeWebp": {
-    "message": "WebP'yi Yeniden Kodlamaya Zorla"
+  prefReEncodeWebp: {
+    message: "WebP'yi Yeniden Kodlamaya Zorla",
   },
-  "prefSave": {
-    "message": "Kaydet"
+  prefSave: {
+    message: "Kaydet",
   },
-  "prefSearchAllFrames": {
-    "message": "Tüm Çerçeveleri Tara (iFrame)"
+  prefSearchAllFrames: {
+    message: "Tüm Çerçeveleri Tara (iFrame)",
   },
-  "prefShowHoverBtn": {
-    "message": "Yüzen Butonu Göster"
+  prefShowHoverBtn: {
+    message: "Yüzen Butonu Göster",
   },
-  "prefShowInSidebar": {
-    "message": "Yan Panelde Göster"
+  prefShowInSidebar: {
+    message: "Yan Panelde Göster",
   },
-  "prefShowInSidebarHint": {
-    "message": "Değişikliklerin etkili olması için uzantıyı kapatıp yeniden açmanız gerekir"
+  prefShowInSidebarHint: {
+    message:
+      "Değişikliklerin etkili olması için uzantıyı kapatıp yeniden açmanız gerekir",
   },
-  "prefSimulateDownloadFailure": {
-    "message": "İndirme Hatasını Simüle Et"
+  prefSimulateDownloadFailure: {
+    message: "İndirme Hatasını Simüle Et",
   },
-  "prefSubfolder": {
-    "message": "Alt Klasör"
+  prefSubfolder: {
+    message: "Alt Klasör",
   },
-  "prefSubfolderHint": {
-    "message": "Dosyalar indirilenler klasörünüzdeki bu alt klasöre kaydedilecek"
+  prefSubfolderHint: {
+    message: "Dosyalar indirilenler klasörünüzdeki bu alt klasöre kaydedilecek",
   },
-  "prefSubfolderPlaceholder": {
-    "message": "örn: Imaget"
+  prefSubfolderPlaceholder: {
+    message: "örn: Imaget",
   },
-  "prefTargetFormat": {
-    "message": "Hedef Format"
+  prefTargetFormat: {
+    message: "Hedef Format",
   },
-  "preparingZip": {
-    "message": "ZIP hazırlanıyor..."
+  preparingZip: {
+    message: "ZIP hazırlanıyor...",
   },
-  "presetIndexOriginal": {
-    "message": "Sıra No + Orijinal Ad"
+  presetIndexOriginal: {
+    message: "Sıra No + Orijinal Ad",
   },
-  "preview": {
-    "message": "Önizleme"
+  preview: {
+    message: "Önizleme",
   },
-  "processing": {
-    "message": "İşleniyor... ($1/$2)"
+  processing: {
+    message: "İşleniyor... ($1/$2)",
   },
-  "resModeAnd": {
-    "message": "VE"
+  resModeAnd: {
+    message: "VE",
   },
-  "resModeAndDesc": {
-    "message": "Hem genişlik hem de yükseklik eşleşmeli"
+  resModeAndDesc: {
+    message: "Hem genişlik hem de yükseklik eşleşmeli",
   },
-  "resModeOr": {
-    "message": "VEYA"
+  resModeOr: {
+    message: "VEYA",
   },
-  "resModeOrDesc": {
-    "message": "Genişlik veya yükseklik eşleşmeli"
+  resModeOrDesc: {
+    message: "Genişlik veya yükseklik eşleşmeli",
   },
-  "resetAllSettings": {
-    "message": "Tüm Ayarları Sıfırla"
+  resetAllSettings: {
+    message: "Tüm Ayarları Sıfırla",
   },
-  "resetDefault": {
-    "message": "Varsayılana Sıfırla"
+  resetDefault: {
+    message: "Varsayılana Sıfırla",
   },
-  "secDebug": {
-    "message": "Hata Ayıklama (Yalnızca test)"
+  secDebug: {
+    message: "Hata Ayıklama (Yalnızca test)",
   },
-  "secDisabledDomains": {
-    "message": "Devre dışı bırakılan web siteleri"
+  secDisabledDomains: {
+    message: "Devre dışı bırakılan web siteleri",
   },
-  "secDownload": {
-    "message": "İndir"
+  secDownload: {
+    message: "İndir",
   },
-  "secDownloadControl": {
-    "message": "İndirme Kontrolü"
+  secDownloadControl: {
+    message: "İndirme Kontrolü",
   },
-  "secDownloadLogic": {
-    "message": "İndirme Mantığı"
+  secDownloadLogic: {
+    message: "İndirme Mantığı",
   },
-  "secExtraction": {
-    "message": "Çıkarma"
+  secExtraction: {
+    message: "Çıkarma",
   },
-  "secFileSave": {
-    "message": "Dosya Kaydetme"
+  secFileSave: {
+    message: "Dosya Kaydetme",
   },
-  "secFilterDefaults": {
-    "message": "Varsayılan Filtreler"
+  secFilterDefaults: {
+    message: "Varsayılan Filtreler",
   },
-  "secGeneral": {
-    "message": "Genel"
+  secGeneral: {
+    message: "Genel",
   },
-  "secGifHandling": {
-    "message": "GIF Yönetimi"
+  secGifHandling: {
+    message: "GIF Yönetimi",
   },
-  "secLanguage": {
-    "message": "Dil"
+  secLanguage: {
+    message: "Dil",
   },
-  "secSupport": {
-    "message": "Destek ve Hakkında"
+  secSupport: {
+    message: "Destek ve Hakkında",
   },
-  "secUiBehavior": {
-    "message": "Arayüz Davranışı"
+  secUiBehavior: {
+    message: "Arayüz Davranışı",
   },
-  "selectAll": {
-    "message": "Tümünü Seç"
+  selectAll: {
+    message: "Tümünü Seç",
   },
-  "selectPlaceholder": {
-    "message": "Lütfen seçin"
+  selectPlaceholder: {
+    message: "Lütfen seçin",
   },
-  "selectedCount": {
-    "message": "$1 seçili / $2 filtreli / $3 toplam"
+  selectedCount: {
+    message: "$1 seçili / $2 filtreli / $3 toplam",
   },
-  "sizeAlways": {
-    "message": "Her Zaman Göster"
+  sizeAlways: {
+    message: "Her Zaman Göster",
   },
-  "sortAsc": {
-    "message": "Artan"
+  sortAsc: {
+    message: "Artan",
   },
-  "sortBy": {
-    "message": "Sırala"
+  sortBy: {
+    message: "Sırala",
   },
-  "sortDesc": {
-    "message": "Azalan"
+  sortDesc: {
+    message: "Azalan",
   },
-  "sortOrder": {
-    "message": "Sıralama"
+  sortOrder: {
+    message: "Sıralama",
   },
-  "sortResolution": {
-    "message": "Çözünürlük"
+  sortResolution: {
+    message: "Çözünürlük",
   },
-  "sortSize": {
-    "message": "Boyut"
+  sortSize: {
+    message: "Boyut",
   },
-  "statFilter": {
-    "message": "Filtrelendi"
+  statFilter: {
+    message: "Filtrelendi",
   },
-  "statSelected": {
-    "message": "Seçildi"
+  statSelected: {
+    message: "Seçildi",
   },
-  "statTotal": {
-    "message": "Toplam keşfedilen"
+  statTotal: {
+    message: "Toplam keşfedilen",
   },
-  "statusSaved": {
-    "message": "Kaydedildi"
+  statusSaved: {
+    message: "Kaydedildi",
   },
-  "tabImages": {
-    "message": "Resimler"
+  tabImages: {
+    message: "Resimler",
   },
-  "tabPreferences": {
-    "message": "Ayarlar"
+  tabPreferences: {
+    message: "Ayarlar",
   },
-  "toastDownloadStarted": {
-    "message": "$1 resim indirilmeye başlandı"
+  toastDownloadStarted: {
+    message: "$1 resim indirilmeye başlandı",
   },
-  "toastNoSelection": {
-    "message": "Lütfen önce resimleri seçin"
+  toastNoSelection: {
+    message: "Lütfen önce resimleri seçin",
   },
-  "unitPixel": {
-    "message": "$1px+"
+  unitPixel: {
+    message: "$1px+",
   },
-  "useOriginal": {
-    "message": "Orijinal Adı Kullan"
+  useOriginal: {
+    message: "Orijinal Adı Kullan",
   },
-  "viewVariables": {
-    "message": "Değişkenleri görüntüle"
+  viewVariables: {
+    message: "Değişkenleri görüntüle",
   },
-  "warnManyFiles": {
-    "message": "$1 resmi indirmek üzeresiniz, devam edilsin mi?"
+  warnManyFiles: {
+    message: "$1 resmi indirmek üzeresiniz, devam edilsin mi?",
   },
-  "warnResetAll": {
-    "message": "Tüm ayarları sıfırlamak istediğinizden emin misiniz?"
+  warnResetAll: {
+    message: "Tüm ayarları sıfırlamak istediğinizden emin misiniz?",
   },
-  "warning": {
-    "message": "Uyarı"
+  warning: {
+    message: "Uyarı",
   },
-  "warningWebEnvironment": {
-    "message": "Not: Web ortamı. Bazı özellikler sınırlı olabilir."
-  }
+  warningWebEnvironment: {
+    message: "Not: Web ortamı. Bazı özellikler sınırlı olabilir.",
+  },
 };

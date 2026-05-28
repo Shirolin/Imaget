@@ -5,11 +5,7 @@ import {
   resolveAutoScrollPolicy,
 } from "../utils/auto-scroll-policy";
 
-function defineNumberProp(
-  target: object,
-  key: string,
-  value: number,
-): void {
+function defineNumberProp(target: object, key: string, value: number): void {
   Object.defineProperty(target, key, {
     configurable: true,
     value,

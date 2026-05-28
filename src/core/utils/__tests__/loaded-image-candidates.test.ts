@@ -2,11 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { defaultSettings } from "../../../types";
 import { collectLoadedImageItems } from "../loaded-image-candidates";
 
-function loadedImage(
-  url: string,
-  width = 640,
-  height = 480,
-): HTMLImageElement {
+function loadedImage(url: string, width = 640, height = 480): HTMLImageElement {
   const img = document.createElement("img");
   img.src = url;
   Object.defineProperty(img, "complete", { configurable: true, value: true });
@@ -88,9 +84,10 @@ describe("loaded image candidates", () => {
     document.body.appendChild(loadedImage("https://cdn.example.com/two.jpg"));
 
     expect(
-      collectLoadedImageItems({ root: document, settings: defaultSettings }).map(
-        (item) => item.url,
-      ),
+      collectLoadedImageItems({
+        root: document,
+        settings: defaultSettings,
+      }).map((item) => item.url),
     ).toEqual(["https://cdn.example.com/two.jpg"]);
 
     expect(

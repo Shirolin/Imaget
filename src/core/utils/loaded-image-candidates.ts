@@ -56,7 +56,8 @@ export function collectLoadedImageItems({
     if (url.startsWith("data:")) continue;
 
     const allowBlob =
-      settings?.interfaceBehavior?.identifyBlobImages && url.startsWith("blob:");
+      settings?.interfaceBehavior?.identifyBlobImages &&
+      url.startsWith("blob:");
     if (!url.startsWith("http") && !allowBlob) continue;
 
     localSeen.add(url);

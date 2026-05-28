@@ -207,20 +207,27 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
         autoScrollControllers.set(requestId, controller);
       }
       sniffer
-        .autoScroll(message.payload?.settings, (progress) => {
-          if (!requestId || typeof chrome === "undefined") return;
-          chrome.runtime
-            ?.sendMessage({
-              type: "AUTOSCROLL_PROGRESS",
-              payload: { requestId, progress },
-            })
-            .catch(() => {
-              // 忽略临时通道错误
-            });
-        }, undefined, undefined, controller.signal, {
-          onSettledStep: () => followScanController.scanNow(),
-          onBeforeRestore: () => followScanController.scanNow(),
-        })
+        .autoScroll(
+          message.payload?.settings,
+          (progress) => {
+            if (!requestId || typeof chrome === "undefined") return;
+            chrome.runtime
+              ?.sendMessage({
+                type: "AUTOSCROLL_PROGRESS",
+                payload: { requestId, progress },
+              })
+              .catch(() => {
+                // 忽略临时通道错误
+              });
+          },
+          undefined,
+          undefined,
+          controller.signal,
+          {
+            onSettledStep: () => followScanController.scanNow(),
+            onBeforeRestore: () => followScanController.scanNow(),
+          },
+        )
         .then((result) => {
           sendResponse({ success: true, result });
         })

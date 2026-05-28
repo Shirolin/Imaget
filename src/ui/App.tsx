@@ -128,7 +128,8 @@ const App: React.FC = () => {
     }),
     [snifferSettingsKey],
   );
-  const followScanEnabled = settings.interfaceBehavior.followScanEnabled ?? true;
+  const followScanEnabled =
+    settings.interfaceBehavior.followScanEnabled ?? true;
 
   const processor = useMemo(() => {
     const isExtension = typeof chrome !== "undefined" && !!chrome.runtime?.id;
@@ -141,42 +142,52 @@ const App: React.FC = () => {
   imagesRef.current = images;
   const isDeepScanningRef = useRef(isDeepScanning);
   isDeepScanningRef.current = isDeepScanning;
-  const runSniffer = useCallback(async (resetList = false) => {
-    const requestId = createScanRequestId();
-    activeScanRequestId.current = requestId;
-    if (resetList) {
-      setImages([]);
-    }
-
-    try {
-      const applyItems = (items: ImageItem[]) => {
-        if (activeScanRequestId.current !== requestId || items.length === 0) {
-          return;
-        }
-        setImages((prev) => upsertImageItems(prev, items));
-      };
-
-      const results = await sniffer.sniffAll(snifferSettings, imagesRef.current, {
-        requestId,
-        onCandidates: applyItems,
-      });
-      applyItems(results);
-    } finally {
-      if (activeScanRequestId.current === requestId) {
-        activeScanRequestId.current = null;
+  const runSniffer = useCallback(
+    async (resetList = false) => {
+      const requestId = createScanRequestId();
+      activeScanRequestId.current = requestId;
+      if (resetList) {
+        setImages([]);
       }
-    }
-  }, [sniffer, snifferSettings]);
 
-  const applyFollowCandidates = useCallback((sessionId: string, items: ImageItem[]) => {
-    if (
-      activeFollowScanSessionId.current !== sessionId ||
-      items.length === 0
-    ) {
-      return;
-    }
-    setImages((prev) => upsertImageItems(prev, items));
-  }, []);
+      try {
+        const applyItems = (items: ImageItem[]) => {
+          if (activeScanRequestId.current !== requestId || items.length === 0) {
+            return;
+          }
+          setImages((prev) => upsertImageItems(prev, items));
+        };
+
+        const results = await sniffer.sniffAll(
+          snifferSettings,
+          imagesRef.current,
+          {
+            requestId,
+            onCandidates: applyItems,
+          },
+        );
+        applyItems(results);
+      } finally {
+        if (activeScanRequestId.current === requestId) {
+          activeScanRequestId.current = null;
+        }
+      }
+    },
+    [sniffer, snifferSettings],
+  );
+
+  const applyFollowCandidates = useCallback(
+    (sessionId: string, items: ImageItem[]) => {
+      if (
+        activeFollowScanSessionId.current !== sessionId ||
+        items.length === 0
+      ) {
+        return;
+      }
+      setImages((prev) => upsertImageItems(prev, items));
+    },
+    [],
+  );
 
   const stopFollowScan = useCallback(async () => {
     const sessionId = activeFollowScanSessionId.current;
@@ -287,10 +298,7 @@ const App: React.FC = () => {
         payload?: { sessionId?: string; items?: ImageItem[] };
       };
       if (message.type !== FOLLOW_SCAN_CANDIDATES) return;
-      if (
-        message.payload?.sessionId &&
-        Array.isArray(message.payload.items)
-      ) {
+      if (message.payload?.sessionId && Array.isArray(message.payload.items)) {
         applyFollowCandidates(message.payload.sessionId, message.payload.items);
       }
     };
@@ -329,7 +337,8 @@ const App: React.FC = () => {
       if (typedMessage.type === "AUTOSCROLL_PROGRESS") {
         if (
           typedMessage.payload?.requestId &&
-          typedMessage.payload.requestId === activeAutoScrollRequestId.current &&
+          typedMessage.payload.requestId ===
+            activeAutoScrollRequestId.current &&
           typeof typedMessage.payload.progress === "number"
         ) {
           setProgress(

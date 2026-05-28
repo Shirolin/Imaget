@@ -1,533 +1,537 @@
 export default {
-  "btnAddDomain": {
-    "message": "Adicionar domínio"
+  btnAddDomain: {
+    message: "Adicionar domínio",
   },
-  "btnClose": {
-    "message": "Fechar"
+  btnClose: {
+    message: "Fechar",
   },
-  "btnDeepScan": {
-    "message": "Varredura com rolagem"
+  btnDeepScan: {
+    message: "Varredura com rolagem",
   },
-  "btnDownload": {
-    "message": "Baixar"
+  btnDownload: {
+    message: "Baixar",
   },
-  "btnRemoveDomain": {
-    "message": "Remover"
+  btnRemoveDomain: {
+    message: "Remover",
   },
-  "cancel": {
-    "message": "Cancelar"
+  cancel: {
+    message: "Cancelar",
   },
-  "concurrencyRecommended": {
-    "message": "3 (Recomendado)"
+  concurrencyRecommended: {
+    message: "3 (Recomendado)",
   },
-  "concurrencySingle": {
-    "message": "1 (Thread única)"
+  concurrencySingle: {
+    message: "1 (Thread única)",
   },
-  "concurrencyUnlimited": {
-    "message": "Ilimitado"
+  concurrencyUnlimited: {
+    message: "Ilimitado",
   },
-  "confirm": {
-    "message": "Confirmar"
+  confirm: {
+    message: "Confirmar",
   },
-  "conflictOverwrite": {
-    "message": "Sobrescrever"
+  conflictOverwrite: {
+    message: "Sobrescrever",
   },
-  "conflictPrompt": {
-    "message": "Perguntar"
+  conflictPrompt: {
+    message: "Perguntar",
   },
-  "conflictUniquify": {
-    "message": "Renomear"
+  conflictUniquify: {
+    message: "Renomear",
   },
-  "descDisabledDomains": {
-    "message": "O botão flutuante não será exibido nesses sites"
+  descDisabledDomains: {
+    message: "O botão flutuante não será exibido nesses sites",
   },
-  "descFilterDefaults": {
-    "message": "Os valores padrão que serão usados quando a extensão for iniciada ou quando os filtros forem redefinidos."
+  descFilterDefaults: {
+    message:
+      "Os valores padrão que serão usados quando a extensão for iniciada ou quando os filtros forem redefinidos.",
   },
-  "deselectAll": {
-    "message": "Desmarcar Tudo"
+  deselectAll: {
+    message: "Desmarcar Tudo",
   },
-  "downloadSelected": {
-    "message": "Baixar Selecionadas ($1)"
+  downloadSelected: {
+    message: "Baixar Selecionadas ($1)",
   },
-  "downloadZip": {
-    "message": "Baixar ZIP"
+  downloadZip: {
+    message: "Baixar ZIP",
   },
-  "exploringImages": {
-    "message": "Explorando imagens na página..."
+  exploringImages: {
+    message: "Explorando imagens na página...",
   },
-  "extDesc": {
-    "message": "Busque e baixe imagens em lote automaticamente de qualquer página web."
+  extDesc: {
+    message:
+      "Busque e baixe imagens em lote automaticamente de qualquer página web.",
   },
-  "extName": {
-    "message": "Imaget - Sniffer e Downloader de Imagens Inteligente"
+  extName: {
+    message: "Imaget - Sniffer e Downloader de Imagens Inteligente",
   },
-  "filterExclude": {
-    "message": "Excluir Palabras"
+  filterExclude: {
+    message: "Excluir Palabras",
   },
-  "filterExcludeType": {
-    "message": "Excluir tipo"
+  filterExcludeType: {
+    message: "Excluir tipo",
   },
-  "filterLayout": {
-    "message": "Proporção"
+  filterLayout: {
+    message: "Proporção",
   },
-  "filterMinHeight": {
-    "message": "Altura Mín."
+  filterMinHeight: {
+    message: "Altura Mín.",
   },
-  "filterMinWidth": {
-    "message": "Largura Mín."
+  filterMinWidth: {
+    message: "Largura Mín.",
   },
-  "filterSearch": {
-    "message": "Buscar"
+  filterSearch: {
+    message: "Buscar",
   },
-  "filterType": {
-    "message": "Tipo"
+  filterType: {
+    message: "Tipo",
   },
-  "formatOriginal": {
-    "message": "Original"
+  formatOriginal: {
+    message: "Original",
   },
-  "gifExtract": {
-    "message": "Extrair Primeiro Quadro"
+  gifExtract: {
+    message: "Extrair Primeiro Quadro",
   },
-  "gifOriginal": {
-    "message": "Manter Original"
+  gifOriginal: {
+    message: "Manter Original",
   },
-  "gifSkip": {
-    "message": "Pular GIF"
+  gifSkip: {
+    message: "Pular GIF",
   },
-  "hintClick": {
-    "message": "Clique fundo: Fechar"
+  hintClick: {
+    message: "Clique fundo: Fechar",
   },
-  "hintDrag": {
-    "message": "Botão Esquerdo + Arrastar: Pan"
+  hintDrag: {
+    message: "Botão Esquerdo + Arrastar: Pan",
   },
-  "hintWheel": {
-    "message": "Roda: Zoom"
+  hintWheel: {
+    message: "Roda: Zoom",
   },
-  "imgAlt": {
-    "message": "Imagem detectada"
+  imgAlt: {
+    message: "Imagem detectada",
   },
-  "imgLoadError": {
-    "message": "Erro de carregamento"
+  imgLoadError: {
+    message: "Erro de carregamento",
   },
-  "infoExtensionEnvironment": {
-    "message": "Ambiente de extensão detectado."
+  infoExtensionEnvironment: {
+    message: "Ambiente de extensão detectado.",
   },
-  "labelAfdian": {
-    "message": "Afdian"
+  labelAfdian: {
+    message: "Afdian",
   },
-  "labelClearExclude": {
-    "message": "Limpar exclusão"
+  labelClearExclude: {
+    message: "Limpar exclusão",
   },
-  "labelClearSearch": {
-    "message": "Limpar busca"
+  labelClearSearch: {
+    message: "Limpar busca",
   },
-  "labelCloseEsc": {
-    "message": "Fechar (Esc)"
+  labelCloseEsc: {
+    message: "Fechar (Esc)",
   },
-  "labelCopied": {
-    "message": "Copiado!"
+  labelCopied: {
+    message: "Copiado!",
   },
-  "labelCopyLink": {
-    "message": "Copiar Link"
+  labelCopyLink: {
+    message: "Copiar Link",
   },
-  "labelDeepScan": {
-    "message": "Varredura com rolagem"
+  labelDeepScan: {
+    message: "Varredura com rolagem",
   },
-  "labelDeselectAll": {
-    "message": "Desmarcar tudo"
+  labelDeselectAll: {
+    message: "Desmarcar tudo",
   },
-  "labelDonate": {
-    "message": "Apoiar e Doar"
+  labelDonate: {
+    message: "Apoiar e Doar",
   },
-  "labelFit": {
-    "message": "Ajustar à janela"
+  labelFit: {
+    message: "Ajustar à janela",
   },
-  "labelFloatingClose": {
-    "message": "Ocultar temporariamente"
+  labelFloatingClose: {
+    message: "Ocultar temporariamente",
   },
-  "labelFloatingDisable": {
-    "message": "Desativar neste site"
+  labelFloatingDisable: {
+    message: "Desativar neste site",
   },
-  "labelFloatingDownload": {
-    "message": "Baixar imagem"
+  labelFloatingDownload: {
+    message: "Baixar imagem",
   },
-  "labelFloatingError": {
-    "message": "Falha no download"
+  labelFloatingError: {
+    message: "Falha no download",
   },
-  "labelFloatingHidePermanent": {
-    "message": "Ocultar permanentemente (Desativar recurso)"
+  labelFloatingHidePermanent: {
+    message: "Ocultar permanentemente (Desativar recurso)",
   },
-  "labelFloatingSuccess": {
-    "message": "Download concluído"
+  labelFloatingSuccess: {
+    message: "Download concluído",
   },
-  "labelFollowScanOff": {
-    "message": "Varredura de acompanhamento desativada"
+  labelFollowScanOff: {
+    message: "Varredura de acompanhamento desativada",
   },
-  "labelFollowScanOn": {
-    "message": "Varredura de acompanhamento ativada"
+  labelFollowScanOn: {
+    message: "Varredura de acompanhamento ativada",
   },
-  "labelGithub": {
-    "message": "Repositório GitHub"
+  labelGithub: {
+    message: "Repositório GitHub",
   },
-  "labelImageQuality": {
-    "message": "Qualidade da imagem"
+  labelImageQuality: {
+    message: "Qualidade da imagem",
   },
-  "labelKofi": {
-    "message": "Ko-fi"
+  labelKofi: {
+    message: "Ko-fi",
   },
-  "labelMinHeight": {
-    "message": "Altura mínima"
+  labelMinHeight: {
+    message: "Altura mínima",
   },
-  "labelMinWidth": {
-    "message": "Largura mínima"
+  labelMinWidth: {
+    message: "Largura mínima",
   },
-  "labelOpenLink": {
-    "message": "Abrir Link"
+  labelOpenLink: {
+    message: "Abrir Link",
   },
-  "labelOriginalSize": {
-    "message": "Tamanho original 1:1"
+  labelOriginalSize: {
+    message: "Tamanho original 1:1",
   },
-  "labelPreview": {
-    "message": "Visualizar"
+  labelPreview: {
+    message: "Visualizar",
   },
-  "labelRefresh": {
-    "message": "Actualizar"
+  labelRefresh: {
+    message: "Actualizar",
   },
-  "labelRotate": {
-    "message": "Girar 90°"
+  labelRotate: {
+    message: "Girar 90°",
   },
-  "labelSaveFile": {
-    "message": "Salvar Arquivo"
+  labelSaveFile: {
+    message: "Salvar Arquivo",
   },
-  "labelSearchImages": {
-    "message": "Buscar imagens"
+  labelSearchImages: {
+    message: "Buscar imagens",
   },
-  "labelSelectAll": {
-    "message": "Selecionar tudo"
+  labelSelectAll: {
+    message: "Selecionar tudo",
   },
-  "labelSelectImage": {
-    "message": "Selecionar imagem: $1"
+  labelSelectImage: {
+    message: "Selecionar imagem: $1",
   },
-  "labelStopDeepScan": {
-    "message": "Parar rolagem"
+  labelStopDeepScan: {
+    message: "Parar rolagem",
   },
-  "labelZoomIn": {
-    "message": "Aumentar Zoom"
+  labelZoomIn: {
+    message: "Aumentar Zoom",
   },
-  "labelZoomOut": {
-    "message": "Diminuir Zoom"
+  labelZoomOut: {
+    message: "Diminuir Zoom",
   },
-  "layoutAny": {
-    "message": "Tudo"
+  layoutAny: {
+    message: "Tudo",
   },
-  "layoutColumns": {
-    "message": "Colunas"
+  layoutColumns: {
+    message: "Colunas",
   },
-  "layoutGrid": {
-    "message": "Grade"
+  layoutGrid: {
+    message: "Grade",
   },
-  "layoutList": {
-    "message": "Lista"
+  layoutList: {
+    message: "Lista",
   },
-  "layoutSquare": {
-    "message": "Quadrado"
+  layoutSquare: {
+    message: "Quadrado",
   },
-  "layoutTall": {
-    "message": "Vertical"
+  layoutTall: {
+    message: "Vertical",
   },
-  "layoutWide": {
-    "message": "Horizontal"
+  layoutWide: {
+    message: "Horizontal",
   },
-  "loading": {
-    "message": "Carregando..."
+  loading: {
+    message: "Carregando...",
   },
-  "menuOpenDashboard": {
-    "message": "Abrir Painel do Imaget"
+  menuOpenDashboard: {
+    message: "Abrir Painel do Imaget",
   },
-  "menuRoot": {
-    "message": "Imaget"
+  menuRoot: {
+    message: "Imaget",
   },
-  "menuSaveAsJPG": {
-    "message": "Salvar como JPG"
+  menuSaveAsJPG: {
+    message: "Salvar como JPG",
   },
-  "menuSaveAsPNG": {
-    "message": "Salvar como PNG"
+  menuSaveAsPNG: {
+    message: "Salvar como PNG",
   },
-  "menuSaveAsWebP": {
-    "message": "Salvar como WebP"
+  menuSaveAsWebP: {
+    message: "Salvar como WebP",
   },
-  "menuSaveImageSmart": {
-    "message": "Smart Save Image"
+  menuSaveImageSmart: {
+    message: "Smart Save Image",
   },
-  "noDisabledDomains": {
-    "message": "Nenhum site desativado"
+  noDisabledDomains: {
+    message: "Nenhum site desativado",
   },
-  "noImages": {
-    "message": "Nenhuma imagem encontrada"
+  noImages: {
+    message: "Nenhuma imagem encontrada",
   },
-  "noImagesHint": {
-    "message": "Tente ajustar os filtros ou atualizar a página"
+  noImagesHint: {
+    message: "Tente ajustar os filtros ou atualizar a página",
   },
-  "prefCancel": {
-    "message": "Cancelar"
+  prefCancel: {
+    message: "Cancelar",
   },
-  "prefConflictAction": {
-    "message": "Conflito de Arquivos"
+  prefConflictAction: {
+    message: "Conflito de Arquivos",
   },
-  "prefConflictOverwrite": {
-    "message": "Sobrescrever"
+  prefConflictOverwrite: {
+    message: "Sobrescrever",
   },
-  "prefConflictPrompt": {
-    "message": "Perguntar"
+  prefConflictPrompt: {
+    message: "Perguntar",
   },
-  "prefConflictResolution": {
-    "message": "Resolução de Conflitos"
+  prefConflictResolution: {
+    message: "Resolução de Conflitos",
   },
-  "prefConflictUniquify": {
-    "message": "Auto-Renomear"
+  prefConflictUniquify: {
+    message: "Auto-Renomear",
   },
-  "prefCustomSize": {
-    "message": "Personalizado"
+  prefCustomSize: {
+    message: "Personalizado",
   },
-  "prefDefaultAllowedFormats": {
-    "message": "Formatos Permitidos Padrão"
+  prefDefaultAllowedFormats: {
+    message: "Formatos Permitidos Padrão",
   },
-  "prefDefaultAspectRatio": {
-    "message": "Proporção Padrão"
+  prefDefaultAspectRatio: {
+    message: "Proporção Padrão",
   },
-  "prefDefaultExcludeFormats": {
-    "message": "Formatos Excluídos Padrão"
+  prefDefaultExcludeFormats: {
+    message: "Formatos Excluídos Padrão",
   },
-  "prefDefaultExcludeKeywords": {
-    "message": "Palavras-chave Excluídas Padrão"
+  prefDefaultExcludeKeywords: {
+    message: "Palavras-chave Excluídas Padrão",
   },
-  "prefDefaultMinHeight": {
-    "message": "Altura Mínima Padrão"
+  prefDefaultMinHeight: {
+    message: "Altura Mínima Padrão",
   },
-  "prefDefaultMinWidth": {
-    "message": "Largura Mínima Padrão"
+  prefDefaultMinWidth: {
+    message: "Largura Mínima Padrão",
   },
-  "prefDefaultResolutionMode": {
-    "message": "Modo de Resolução Padrão"
+  prefDefaultResolutionMode: {
+    message: "Modo de Resolução Padrão",
   },
-  "prefDefaultSearchQuery": {
-    "message": "Consulta de Pesquisa Padrão"
+  prefDefaultSearchQuery: {
+    message: "Consulta de Pesquisa Padrão",
   },
-  "prefFilename": {
-    "message": "Modelo de Nome"
+  prefFilename: {
+    message: "Modelo de Nome",
   },
-  "prefFilenameHint": {
-    "message": "Variáveis disponíveis: $1"
+  prefFilenameHint: {
+    message: "Variáveis disponíveis: $1",
   },
-  "prefFollowScan": {
-    "message": "Varredura de acompanhamento"
+  prefFollowScan: {
+    message: "Varredura de acompanhamento",
   },
-  "prefFollowScanHint": {
-    "message": "Adiciona automaticamente à lista as imagens recém-carregadas enquanto a janela do plugin está aberta"
+  prefFollowScanHint: {
+    message:
+      "Adiciona automaticamente à lista as imagens recém-carregadas enquanto a janela do plugin está aberta",
   },
-  "prefGifHandling": {
-    "message": "Estratégia GIF"
+  prefGifHandling: {
+    message: "Estratégia GIF",
   },
-  "prefHideDownloadWarning": {
-    "message": "Pular confirmação interna de download em lote"
+  prefHideDownloadWarning: {
+    message: "Pular confirmação interna de download em lote",
   },
-  "prefHideDownloadWarningHint": {
-    "message": "Os downloads começam diretamente quando mais de 30 imagens estão selecionadas. Os avisos de permissão do navegador para múltiplos downloads não são afetados."
+  prefHideDownloadWarningHint: {
+    message:
+      "Os downloads começam diretamente quando mais de 30 imagens estão selecionadas. Os avisos de permissão do navegador para múltiplos downloads não são afetados.",
   },
-  "prefIdentifyBackgroundImages": {
-    "message": "Identificar Imagens de Fundo"
+  prefIdentifyBackgroundImages: {
+    message: "Identificar Imagens de Fundo",
   },
-  "prefIdentifyBlobImages": {
-    "message": "Identificar recursos Blob (para Telegram, Discord, etc.)"
+  prefIdentifyBlobImages: {
+    message: "Identificar recursos Blob (para Telegram, Discord, etc.)",
   },
-  "prefLanguage": {
-    "message": "Idioma da Interface"
+  prefLanguage: {
+    message: "Idioma da Interface",
   },
-  "prefMaxConcurrency": {
-    "message": "Limite de Downloads Simultâneos"
+  prefMaxConcurrency: {
+    message: "Limite de Downloads Simultâneos",
   },
-  "prefMinImageSize": {
-    "message": "Tamanho Mín. para Botão Flutuante"
+  prefMinImageSize: {
+    message: "Tamanho Mín. para Botão Flutuante",
   },
-  "prefQuality": {
-    "message": "Qualidade"
+  prefQuality: {
+    message: "Qualidade",
   },
-  "prefReEncodeWebp": {
-    "message": "Forçar Re-codificação WebP"
+  prefReEncodeWebp: {
+    message: "Forçar Re-codificação WebP",
   },
-  "prefSave": {
-    "message": "Salvar"
+  prefSave: {
+    message: "Salvar",
   },
-  "prefSearchAllFrames": {
-    "message": "Buscar em todos os Frames"
+  prefSearchAllFrames: {
+    message: "Buscar em todos os Frames",
   },
-  "prefShowHoverBtn": {
-    "message": "Mostrar Botão Flutuante"
+  prefShowHoverBtn: {
+    message: "Mostrar Botão Flutuante",
   },
-  "prefShowInSidebar": {
-    "message": "Mostrar na Sidebar"
+  prefShowInSidebar: {
+    message: "Mostrar na Sidebar",
   },
-  "prefShowInSidebarHint": {
-    "message": "Requer fechar e reabrir a extensão para entrar em vigor"
+  prefShowInSidebarHint: {
+    message: "Requer fechar e reabrir a extensão para entrar em vigor",
   },
-  "prefSimulateDownloadFailure": {
-    "message": "Simular falha no download"
+  prefSimulateDownloadFailure: {
+    message: "Simular falha no download",
   },
-  "prefSubfolder": {
-    "message": "Subpasta"
+  prefSubfolder: {
+    message: "Subpasta",
   },
-  "prefSubfolderHint": {
-    "message": "Arquivos serão salvos nesta subpasta em Downloads"
+  prefSubfolderHint: {
+    message: "Arquivos serão salvos nesta subpasta em Downloads",
   },
-  "prefSubfolderPlaceholder": {
-    "message": "ex: Imaget"
+  prefSubfolderPlaceholder: {
+    message: "ex: Imaget",
   },
-  "prefTargetFormat": {
-    "message": "Formato de Destino"
+  prefTargetFormat: {
+    message: "Formato de Destino",
   },
-  "preparingZip": {
-    "message": "Preparando ZIP..."
+  preparingZip: {
+    message: "Preparando ZIP...",
   },
-  "presetIndexOriginal": {
-    "message": "Índice + Original"
+  presetIndexOriginal: {
+    message: "Índice + Original",
   },
-  "preview": {
-    "message": "Pré-visualização"
+  preview: {
+    message: "Pré-visualização",
   },
-  "processing": {
-    "message": "Processando... ($1/$2)"
+  processing: {
+    message: "Processando... ($1/$2)",
   },
-  "resModeAnd": {
-    "message": "E"
+  resModeAnd: {
+    message: "E",
   },
-  "resModeAndDesc": {
-    "message": "Ambas largura e altura devem coincidir"
+  resModeAndDesc: {
+    message: "Ambas largura e altura devem coincidir",
   },
-  "resModeOr": {
-    "message": "OU"
+  resModeOr: {
+    message: "OU",
   },
-  "resModeOrDesc": {
-    "message": "Largura ou altura deve coincidir"
+  resModeOrDesc: {
+    message: "Largura ou altura deve coincidir",
   },
-  "resetAllSettings": {
-    "message": "Redefinir Tudo"
+  resetAllSettings: {
+    message: "Redefinir Tudo",
   },
-  "resetDefault": {
-    "message": "Restaurar Padrões"
+  resetDefault: {
+    message: "Restaurar Padrões",
   },
-  "secDebug": {
-    "message": "Depuração (Apenas para testes)"
+  secDebug: {
+    message: "Depuração (Apenas para testes)",
   },
-  "secDisabledDomains": {
-    "message": "Sites desativados"
+  secDisabledDomains: {
+    message: "Sites desativados",
   },
-  "secDownload": {
-    "message": "Download"
+  secDownload: {
+    message: "Download",
   },
-  "secDownloadControl": {
-    "message": "Controle de Download"
+  secDownloadControl: {
+    message: "Controle de Download",
   },
-  "secDownloadLogic": {
-    "message": "Lógica de Download"
+  secDownloadLogic: {
+    message: "Lógica de Download",
   },
-  "secExtraction": {
-    "message": "Extração"
+  secExtraction: {
+    message: "Extração",
   },
-  "secFileSave": {
-    "message": "Salvamento de Arquivos"
+  secFileSave: {
+    message: "Salvamento de Arquivos",
   },
-  "secFilterDefaults": {
-    "message": "Padrões de Filtro"
+  secFilterDefaults: {
+    message: "Padrões de Filtro",
   },
-  "secGeneral": {
-    "message": "Geral"
+  secGeneral: {
+    message: "Geral",
   },
-  "secGifHandling": {
-    "message": "Gerenciamento de GIF"
+  secGifHandling: {
+    message: "Gerenciamento de GIF",
   },
-  "secLanguage": {
-    "message": "Idioma"
+  secLanguage: {
+    message: "Idioma",
   },
-  "secSupport": {
-    "message": "Suporte e Sobre"
+  secSupport: {
+    message: "Suporte e Sobre",
   },
-  "secUiBehavior": {
-    "message": "Comportamento da UI"
+  secUiBehavior: {
+    message: "Comportamento da UI",
   },
-  "selectAll": {
-    "message": "Selecionar Tudo"
+  selectAll: {
+    message: "Selecionar Tudo",
   },
-  "selectPlaceholder": {
-    "message": "Por favor selecione"
+  selectPlaceholder: {
+    message: "Por favor selecione",
   },
-  "selectedCount": {
-    "message": "$1 selec. / $2 filtradas / $3 total"
+  selectedCount: {
+    message: "$1 selec. / $2 filtradas / $3 total",
   },
-  "sizeAlways": {
-    "message": "Sempre Mostrar"
+  sizeAlways: {
+    message: "Sempre Mostrar",
   },
-  "sortAsc": {
-    "message": "Crescente"
+  sortAsc: {
+    message: "Crescente",
   },
-  "sortBy": {
-    "message": "Ordenar por"
+  sortBy: {
+    message: "Ordenar por",
   },
-  "sortDesc": {
-    "message": "Decrescente"
+  sortDesc: {
+    message: "Decrescente",
   },
-  "sortOrder": {
-    "message": "Ordem"
+  sortOrder: {
+    message: "Ordem",
   },
-  "sortResolution": {
-    "message": "Resolução"
+  sortResolution: {
+    message: "Resolução",
   },
-  "sortSize": {
-    "message": "Tamanho"
+  sortSize: {
+    message: "Tamanho",
   },
-  "statFilter": {
-    "message": "Filtrada"
+  statFilter: {
+    message: "Filtrada",
   },
-  "statSelected": {
-    "message": "Selecionada"
+  statSelected: {
+    message: "Selecionada",
   },
-  "statTotal": {
-    "message": "Total descoberto"
+  statTotal: {
+    message: "Total descoberto",
   },
-  "statusSaved": {
-    "message": "Salvo"
+  statusSaved: {
+    message: "Salvo",
   },
-  "tabImages": {
-    "message": "Imagens"
+  tabImages: {
+    message: "Imagens",
   },
-  "tabPreferences": {
-    "message": "Configurações"
+  tabPreferences: {
+    message: "Configurações",
   },
-  "toastDownloadStarted": {
-    "message": "Download de $1 imagens iniciado"
+  toastDownloadStarted: {
+    message: "Download de $1 imagens iniciado",
   },
-  "toastNoSelection": {
-    "message": "Por favor, selecione imagens primeiro"
+  toastNoSelection: {
+    message: "Por favor, selecione imagens primeiro",
   },
-  "unitPixel": {
-    "message": "$1px+"
+  unitPixel: {
+    message: "$1px+",
   },
-  "useOriginal": {
-    "message": "Usar Nome Original"
+  useOriginal: {
+    message: "Usar Nome Original",
   },
-  "viewVariables": {
-    "message": "Ver variáveis disponíveis"
+  viewVariables: {
+    message: "Ver variáveis disponíveis",
   },
-  "warnManyFiles": {
-    "message": "Você está prestes a baixar $1 imagens, continuar?"
+  warnManyFiles: {
+    message: "Você está prestes a baixar $1 imagens, continuar?",
   },
-  "warnResetAll": {
-    "message": "Tem certeza que deseja redefinir todas as configurações?"
+  warnResetAll: {
+    message: "Tem certeza que deseja redefinir todas as configurações?",
   },
-  "warning": {
-    "message": "Aviso"
+  warning: {
+    message: "Aviso",
   },
-  "warningWebEnvironment": {
-    "message": "Nota: Ambiente web. Algumas funções podem ser limitadas."
-  }
+  warningWebEnvironment: {
+    message: "Nota: Ambiente web. Algumas funções podem ser limitadas.",
+  },
 };

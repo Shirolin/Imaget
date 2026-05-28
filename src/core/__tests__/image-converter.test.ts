@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { convertImage } from "../utils/image-converter";
 import { defaultSettings, type ImageItem } from "../../types";
@@ -35,14 +36,18 @@ describe("ImageConverter", () => {
     };
     const mockCanvas = {
       getContext: vi.fn(() => mockContext),
-      toBlob: vi.fn((callback) => callback(new Blob(["converted webp"], { type: "image/webp" }))),
+      toBlob: vi.fn((callback) =>
+        callback(new Blob(["converted webp"], { type: "image/webp" })),
+      ),
       width: 0,
       height: 0,
     };
-    vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-      if (tagName === "canvas") return mockCanvas as any;
-      return {} as any;
-    });
+    vi.spyOn(document, "createElement").mockImplementation(
+      (tagName: string) => {
+        if (tagName === "canvas") return mockCanvas as any;
+        return {} as any;
+      },
+    );
 
     vi.stubGlobal(
       "createImageBitmap",
@@ -56,7 +61,11 @@ describe("ImageConverter", () => {
     const result = await convertImage(webpBlob, img, settings);
 
     expect(mockCanvas.getContext).toHaveBeenCalledWith("2d");
-    expect(mockCanvas.toBlob).toHaveBeenCalledWith(expect.any(Function), "image/webp", 0.8);
+    expect(mockCanvas.toBlob).toHaveBeenCalledWith(
+      expect.any(Function),
+      "image/webp",
+      0.8,
+    );
     expect(result.extension).toBe("webp");
     expect(await result.blob.text()).toBe("converted webp");
   });
@@ -89,14 +98,18 @@ describe("ImageConverter", () => {
     };
     const mockCanvas = {
       getContext: vi.fn(() => mockContext),
-      toBlob: vi.fn((callback) => callback(new Blob(["converted webp"], { type: "image/webp" }))),
+      toBlob: vi.fn((callback) =>
+        callback(new Blob(["converted webp"], { type: "image/webp" })),
+      ),
       width: 0,
       height: 0,
     };
-    vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-      if (tagName === "canvas") return mockCanvas as any;
-      return {} as any;
-    });
+    vi.spyOn(document, "createElement").mockImplementation(
+      (tagName: string) => {
+        if (tagName === "canvas") return mockCanvas as any;
+        return {} as any;
+      },
+    );
 
     vi.stubGlobal(
       "createImageBitmap",
@@ -110,7 +123,11 @@ describe("ImageConverter", () => {
     const result = await convertImage(webpBlob, img, settings);
 
     expect(mockCanvas.getContext).toHaveBeenCalledWith("2d");
-    expect(mockCanvas.toBlob).toHaveBeenCalledWith(expect.any(Function), "image/webp", 0.8);
+    expect(mockCanvas.toBlob).toHaveBeenCalledWith(
+      expect.any(Function),
+      "image/webp",
+      0.8,
+    );
     expect(result.extension).toBe("webp");
   });
 

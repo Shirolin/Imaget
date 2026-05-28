@@ -52,7 +52,9 @@ describe("FollowScanController", () => {
     expect(emitted).toEqual([
       {
         sessionId: "follow-1",
-        items: [expect.objectContaining({ url: "https://cdn.example.com/a.jpg" })],
+        items: [
+          expect.objectContaining({ url: "https://cdn.example.com/a.jpg" }),
+        ],
       },
     ]);
   });
