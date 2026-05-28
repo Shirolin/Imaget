@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Imaget - Smart Image Sniffer & Downloader",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Automatically sniff and batch download images from any webpage.",
   "author": "shirolin",
   "homepage_url": "https://github.com/Shirolin/Imaget",
