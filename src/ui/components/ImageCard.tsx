@@ -18,10 +18,16 @@ import {
   IconDownload,
   IconEye,
   IconCheck,
+  IconPhoto,
 } from "@tabler/icons-react";
 import { type ImageItem, getFormatColor } from "../../types";
 import { PortalTooltip } from "./common/PortalTooltip";
 import { GlassActionIcon } from "./common/GlassActionIcon";
+import {
+  markThumbnailError,
+  revealThumbnailImage,
+  syncCachedThumbnail,
+} from "../utils/thumbnail-state";
 
 interface ImageCardProps {
   item: ImageItem;
@@ -37,6 +43,124 @@ const badgeStyle: React.CSSProperties = {
     "color-mix(in srgb, var(--mantine-color-black), transparent 55%)",
   border:
     "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 92%)",
+};
+
+export const imageThumbStyles = `
+  .imaget-thumb {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
+      var(--mantine-color-dark-7);
+  }
+
+  .imaget-thumb img {
+    opacity: 0;
+    transition: opacity 140ms ease-out;
+  }
+
+  .imaget-thumb[data-loaded="true"] img {
+    opacity: 1;
+  }
+
+  .imaget-thumb__placeholder,
+  .imaget-thumb__error {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mantine-color-dark-2);
+    pointer-events: none;
+    transition: opacity 120ms ease-out;
+  }
+
+  .imaget-thumb[data-loaded="true"] .imaget-thumb__placeholder,
+  .imaget-thumb__error {
+    opacity: 0;
+  }
+
+  .imaget-thumb[data-error="true"] .imaget-thumb__placeholder,
+  .imaget-thumb[data-error="true"] img {
+    opacity: 0;
+  }
+
+  .imaget-thumb[data-error="true"] .imaget-thumb__error {
+    opacity: 0.72;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .imaget-thumb img,
+    .imaget-thumb__placeholder,
+    .imaget-thumb__error {
+      transition: none;
+    }
+  }
+`;
+
+export const ImageThumbStyles = () => <style>{imageThumbStyles}</style>;
+
+interface ImageThumbProps {
+  item: ImageItem;
+  isSvg: boolean;
+  height?: number;
+  width?: { base: number; xs: number };
+  radius?: string;
+  fit: "cover" | "contain";
+}
+
+const ImageThumb: React.FC<ImageThumbProps> = ({
+  item,
+  isSvg,
+  height,
+  width,
+  radius,
+  fit,
+}) => {
+  const { t } = useI18n();
+  const imageRef = React.useCallback((node: HTMLImageElement | null) => {
+    if (node) syncCachedThumbnail(node);
+  }, []);
+
+  return (
+    <Box
+      data-image-thumb
+      className="imaget-thumb"
+      style={{
+        width: width ? undefined : "100%",
+        height,
+        borderRadius: radius ? "var(--mantine-radius-sm)" : undefined,
+      }}
+      w={width}
+      h={height}
+    >
+      <Box className="imaget-thumb__placeholder" aria-hidden="true">
+        <IconPhoto size={height && height <= 80 ? 18 : 24} stroke={1.5} />
+      </Box>
+      <Image
+        ref={imageRef}
+        src={item.url}
+        w="100%"
+        h="100%"
+        radius={radius}
+        alt={t("imgAlt")}
+        fit={fit}
+        bg={isSvg ? "dark.7" : "transparent"}
+        loading="lazy"
+        onLoad={(event) => {
+          void revealThumbnailImage(event.currentTarget);
+        }}
+        onError={(event) => {
+          markThumbnailError(event.currentTarget);
+        }}
+      />
+      <Box className="imaget-thumb__error">
+        <Text size="xs" c="dimmed">
+          {t("imgLoadError")}
+        </Text>
+      </Box>
+    </Box>
+  );
 };
 
 const ImageCardBase: React.FC<ImageCardProps> = ({
@@ -81,16 +205,13 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
         onClick={(e) => onSelect(item.id, e.shiftKey)}
       >
         <Group align="center" gap="md" wrap="nowrap">
-          <Image
-            src={item.url}
-            w={{ base: 60, xs: 80 }}
-            h={{ base: 45, xs: 60 }}
+          <ImageThumb
+            item={item}
+            isSvg={isSvg}
+            width={{ base: 60, xs: 80 }}
+            height={60}
             radius="sm"
-            alt={t("imgAlt")}
             fit={isSvg ? "contain" : "cover"}
-            bg={isSvg ? "dark.7" : "transparent"}
-            fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
-            loading="lazy"
           />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
             <Text size="xs" truncate fw={500} c="dimmed">
@@ -258,14 +379,11 @@ const ImageCardBase: React.FC<ImageCardProps> = ({
       onClick={(e) => onSelect(item.id, e.shiftKey)}
     >
       <Card.Section style={{ position: "relative", overflow: "hidden" }}>
-        <Image
-          src={item.url}
+        <ImageThumb
+          item={item}
+          isSvg={isSvg}
           height={layout === "columns" ? 300 : 160}
-          alt={t("imgAlt")}
           fit={isSvg ? "contain" : "cover"}
-          bg={isSvg ? "dark.7" : "transparent"}
-          fallbackSrc={`https://placehold.co/400x400?text=${encodeURIComponent(t("imgLoadError"))}`}
-          loading="lazy"
         />
 
         {/* Top Badges */}

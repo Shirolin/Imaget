@@ -202,7 +202,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     leftSection={<IconCheck size={10} aria-hidden="true" />}
                     style={{ ...styles, flexShrink: 0 }}
                   >
-                    {t("statusSaved") || "已保存"}
+                    {t("statusSaved")}
                   </Badge>
                 )}
               </Transition>

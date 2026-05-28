@@ -39,7 +39,7 @@ export const GeneralSection = memo(
         <Stack gap="xs">
           <Group gap="xs">
             <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-              {t("secGeneral") || "General"}
+              {t("secGeneral")}
             </Text>
             <Divider style={{ flex: 1 }} opacity={0.5} />
           </Group>
@@ -96,7 +96,7 @@ export const GeneralSection = memo(
                     leftSection={<IconCheck size={10} />}
                     style={{ ...styles, alignSelf: "flex-start" }}
                   >
-                    {t("statusSaved") || "Updated"}
+                    {t("statusSaved")}
                   </Badge>
                 )}
               </Transition>

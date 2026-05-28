@@ -14,8 +14,10 @@ import {
   IconX,
   IconRefresh,
   IconArrowsDown,
+  IconPlayerStop,
   IconPhoto,
   IconSettings,
+  IconRadar,
   IconHeart,
   IconBrandGithub,
   IconCoffee,
@@ -25,7 +27,11 @@ interface HeaderProps {
   onClose: () => void;
   onRefresh?: () => void;
   onDeepScan?: () => void;
+  onStopDeepScan?: () => void;
+  followScanEnabled?: boolean;
+  onFollowScanToggle?: (enabled: boolean) => void;
   isScanning?: boolean;
+  isDeepScanning?: boolean;
   activeTab: "images" | "settings";
   onTabChange: (tab: "images" | "settings") => void;
   portalNode: HTMLDivElement | null;
@@ -35,7 +41,11 @@ const HeaderBase: React.FC<HeaderProps> = ({
   onClose,
   onRefresh,
   onDeepScan,
+  onStopDeepScan,
+  followScanEnabled,
+  onFollowScanToggle,
   isScanning,
+  isDeepScanning,
   activeTab,
   onTabChange,
   portalNode,
@@ -71,7 +81,7 @@ const HeaderBase: React.FC<HeaderProps> = ({
 
         <Group gap={2} wrap="nowrap">
           <Tooltip
-            label={t("labelGithub") || "GitHub"}
+            label={t("labelGithub")}
             position="bottom"
             withArrow
             portalProps={{ target: portalNode || undefined }}
@@ -83,14 +93,14 @@ const HeaderBase: React.FC<HeaderProps> = ({
                 window.open("https://github.com/Shirolin/Imaget", "_blank")
               }
               size="sm"
-              aria-label={t("labelGithub") || "GitHub"}
+              aria-label={t("labelGithub")}
             >
               <IconBrandGithub size={16} />
             </ActionIcon>
           </Tooltip>
 
           <Tooltip
-            label={t("labelAfdian") || "Afdian"}
+            label={t("labelAfdian")}
             position="bottom"
             withArrow
             portalProps={{ target: portalNode || undefined }}
@@ -102,14 +112,14 @@ const HeaderBase: React.FC<HeaderProps> = ({
                 window.open("https://ifdian.net/a/shirolin", "_blank")
               }
               size="sm"
-              aria-label={t("labelAfdian") || "Afdian"}
+              aria-label={t("labelAfdian")}
             >
               <IconHeart size={16} fill="currentColor" />
             </ActionIcon>
           </Tooltip>
 
           <Tooltip
-            label={t("labelKofi") || "Ko-fi"}
+            label={t("labelKofi")}
             position="bottom"
             withArrow
             portalProps={{ target: portalNode || undefined }}
@@ -121,7 +131,7 @@ const HeaderBase: React.FC<HeaderProps> = ({
                 window.open("https://ko-fi.com/shirolin", "_blank")
               }
               size="sm"
-              aria-label={t("labelKofi") || "Ko-fi"}
+              aria-label={t("labelKofi")}
             >
               <IconCoffee size={16} />
             </ActionIcon>
@@ -183,7 +193,51 @@ const HeaderBase: React.FC<HeaderProps> = ({
       />
 
       <Group gap={4} wrap="nowrap">
-        {onDeepScan && (
+        {onFollowScanToggle && (
+          <Tooltip
+            label={
+              followScanEnabled
+                ? t("labelFollowScanOn")
+                : t("labelFollowScanOff")
+            }
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
+              variant={followScanEnabled ? "light" : "subtle"}
+              color={followScanEnabled ? "teal" : "gray"}
+              onClick={() => onFollowScanToggle(!followScanEnabled)}
+              size="md"
+              aria-label={
+                followScanEnabled
+                  ? t("labelFollowScanOn")
+                  : t("labelFollowScanOff")
+              }
+            >
+              <IconRadar size={17} />
+            </ActionIcon>
+          </Tooltip>
+        )}
+
+        {isDeepScanning && onStopDeepScan ? (
+          <Tooltip
+            label={t("labelStopDeepScan")}
+            position="bottom"
+            withArrow
+            portalProps={{ target: portalNode || undefined }}
+          >
+            <ActionIcon
+              variant="light"
+              color="red"
+              onClick={onStopDeepScan}
+              size="md"
+              aria-label={t("labelStopDeepScan")}
+            >
+              <IconPlayerStop size={18} />
+            </ActionIcon>
+          </Tooltip>
+        ) : onDeepScan ? (
           <Tooltip
             label={t("labelDeepScan")}
             position="bottom"
@@ -200,7 +254,7 @@ const HeaderBase: React.FC<HeaderProps> = ({
               <IconArrowsDown size={18} />
             </ActionIcon>
           </Tooltip>
-        )}
+        ) : null}
 
         {onRefresh && (
           <Tooltip

@@ -61,39 +61,22 @@ export const t = (
   substitutions?: string | string[],
   overrideLocale?: string,
 ): string => {
-  let message = "";
+  const locale = overrideLocale || getLocale();
+  const table = MESSAGES[locale] || MESSAGES.en;
+  const entry = table[key] || MESSAGES.en[key];
 
-  // 1. Try Chrome i18n API
-  if (
-    !forcedLocale &&
-    !overrideLocale &&
-    typeof chrome !== "undefined" &&
-    chrome.i18n &&
-    chrome.i18n.getMessage
-  ) {
-    message = chrome.i18n.getMessage(key, substitutions);
-  }
-
-  // 2. Fallback to dictionary
-  if (!message) {
-    const locale = overrideLocale || getLocale();
-    const table = MESSAGES[locale] || MESSAGES.en;
-    const entry = table[key] || MESSAGES.en[key];
-
-    if (entry) {
-      message = entry.message;
-      if (substitutions) {
-        const subs = Array.isArray(substitutions)
-          ? substitutions
-          : [substitutions];
-        subs.forEach((sub, index) => {
-          message = message.replace(`$${index + 1}`, sub);
-        });
-      }
-    } else {
-      message = key;
+  if (entry) {
+    let message = entry.message;
+    if (substitutions) {
+      const subs = Array.isArray(substitutions)
+        ? substitutions
+        : [substitutions];
+      subs.forEach((sub, index) => {
+        message = message.replace(`$${index + 1}`, sub);
+      });
     }
+    return message;
   }
 
-  return message;
+  return key;
 };

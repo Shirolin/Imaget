@@ -1,6 +1,37 @@
 import type { ImageItem, Settings } from "../../types";
 
 /**
+ * 格式化日期/时间为标准字符串
+ */
+export function formatDate(now: Date = new Date()): {
+  dateStr: string;
+  timeStr: string;
+  year: string;
+  month: string;
+  day: string;
+  hour: string;
+  minute: string;
+  second: string;
+} {
+  const year = now.getFullYear().toString();
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
+  const hour = now.getHours().toString().padStart(2, "0");
+  const minute = now.getMinutes().toString().padStart(2, "0");
+  const second = now.getSeconds().toString().padStart(2, "0");
+  return {
+    dateStr: `${year}${month}${day}`,
+    timeStr: `${hour}${minute}${second}`,
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    second,
+  };
+}
+
+/**
  * 文件名生成器：100% 对齐旧项目逻辑
  * 处理全量模板变量、特殊字符过滤以及路径拼装
  */
@@ -14,15 +45,8 @@ export function generateFilename(
     settings.fileSaving?.filenameTemplate ||
     "{page_title}_{date}_{time}_{index}";
   const now = new Date();
-  const year = now.getFullYear().toString();
-  const month = (now.getMonth() + 1).toString().padStart(2, "0");
-  const day = now.getDate().toString().padStart(2, "0");
-  const hour = now.getHours().toString().padStart(2, "0");
-  const minute = now.getMinutes().toString().padStart(2, "0");
-  const second = now.getSeconds().toString().padStart(2, "0");
-
-  const dateStr = `${year}${month}${day}`;
-  const timeStr = `${hour}${minute}${second}`;
+  const { dateStr, timeStr, year, month, day, hour, minute, second } =
+    formatDate(now);
 
   // 100% 对齐旧项目：原始文件名获取逻辑
   let originName = "image";
@@ -64,23 +88,41 @@ export function generateFilename(
     "{hour}": hour,
     "{minute}": minute,
     "{second}": second,
-    "{title}": sanitize(img.pageTitle || document.title || "Untitled"),
+    "{title}": sanitize(
+      img.pageTitle ||
+        (typeof document !== "undefined" ? document.title : "Untitled"),
+    ),
     "{id}": img.id.slice(0, 8),
     "{index}": indexStr,
-    "{page_title}": sanitize(img.pageTitle || document.title || "NoTitle"),
-    "{page_url}": img.pageUrl || window.location.href,
+    "{page_title}": sanitize(
+      img.pageTitle ||
+        (typeof document !== "undefined" ? document.title : "NoTitle"),
+    ),
+    "{page_url}":
+      img.pageUrl ||
+      (typeof window !== "undefined" ? window.location.href : ""),
     "{host}": (() => {
       try {
-        return new URL(img.pageUrl || window.location.href).hostname;
+        return new URL(
+          img.pageUrl ||
+            (typeof window !== "undefined" ? window.location.href : ""),
+        ).hostname;
       } catch {
-        return window.location.hostname;
+        return typeof window !== "undefined"
+          ? window.location.hostname
+          : "localhost";
       }
     })(),
     "{domain}": (() => {
       try {
-        return new URL(img.pageUrl || window.location.href).hostname;
+        return new URL(
+          img.pageUrl ||
+            (typeof window !== "undefined" ? window.location.href : ""),
+        ).hostname;
       } catch {
-        return window.location.hostname;
+        return typeof window !== "undefined"
+          ? window.location.hostname
+          : "localhost";
       }
     })(),
     "{origin}": sanitize(originName),

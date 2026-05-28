@@ -33,7 +33,7 @@ export const FileSavingSection = memo(
         <Stack gap="xs">
           <Group gap="xs">
             <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-              {t("secFileSave") || "File Saving"}
+              {t("secFileSave")}
             </Text>
             <Divider style={{ flex: 1 }} opacity={0.5} />
           </Group>

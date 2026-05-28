@@ -103,9 +103,9 @@ const TestPage: React.FC = () => {
   return (
     <Box
       style={{
-        backgroundColor: "#050505", // Deeper black for high contrast
+        backgroundColor: "var(--mantine-color-dark-9)", // Deeper black for high contrast
         minHeight: "100vh",
-        color: "#eee",
+        color: "var(--mantine-color-gray-1)",
       }}
     >
       {/* Hero Section */}
@@ -117,7 +117,7 @@ const TestPage: React.FC = () => {
           fit="cover"
         />
         <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(5, 5, 5, 1) 100%)"
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, var(--mantine-color-dark-9) 100%)"
           opacity={1}
           zIndex={1}
         />
@@ -146,7 +146,11 @@ const TestPage: React.FC = () => {
               order={1}
               size={64}
               fw={900}
-              style={{ color: "#fff", lineHeight: 1, marginBottom: 16 }}
+              style={{
+                color: "var(--mantine-color-white)",
+                lineHeight: 1,
+                marginBottom: 16,
+              }}
             >
               High-Precision <br />
               Sniffer Sandbox
@@ -182,11 +186,11 @@ const TestPage: React.FC = () => {
                   key={`${item.id}-${idx}`}
                   padding={0}
                   radius="lg"
-                  bg="#111"
+                  bg="var(--mantine-color-dark-7)"
                   style={{
                     breakInside: "avoid",
                     marginBottom: "20px",
-                    border: "1px solid #222",
+                    border: "1px solid var(--mantine-color-dark-6)",
                     overflow: "hidden",
                     cursor: "zoom-in",
                     transition: "transform 0.3s ease, border-color 0.3s ease",
@@ -198,7 +202,8 @@ const TestPage: React.FC = () => {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.borderColor = "#222";
+                    e.currentTarget.style.borderColor =
+                      "var(--mantine-color-dark-6)";
                   }}
                 >
                   <Box style={{ position: "relative" }}>
@@ -247,8 +252,8 @@ const TestPage: React.FC = () => {
                   key={tc.id}
                   padding={0}
                   radius="lg"
-                  bg="#111"
-                  style={{ border: "1px solid #222" }}
+                  bg="var(--mantine-color-dark-7)"
+                  style={{ border: "1px solid var(--mantine-color-dark-6)" }}
                 >
                   <Box
                     h={200}
@@ -317,8 +322,8 @@ const TestPage: React.FC = () => {
             <Box
               p={40}
               style={{
-                background: "#080808",
-                border: "1px dashed #333",
+                background: "var(--mantine-color-dark-8)",
+                border: "1px dashed var(--mantine-color-dark-5)",
                 borderRadius: "20px",
               }}
             >
@@ -341,7 +346,7 @@ const TestPage: React.FC = () => {
                         top-level nodes and correctly reaches every leaf of the
                         DOM tree.
                       </Text>
-                      <Divider color="#222" />
+                      <Divider color="var(--mantine-color-dark-6)" />
                       <Text size="xs" ff="monospace" c="blue.4">
                         Status: Searchable & Capture-ready
                       </Text>
@@ -357,7 +362,10 @@ const TestPage: React.FC = () => {
       {/* Page Footer */}
       <Box
         py={60}
-        style={{ borderTop: "1px solid #222", background: "#050505" }}
+        style={{
+          borderTop: "1px solid var(--mantine-color-dark-6)",
+          background: "var(--mantine-color-dark-9)",
+        }}
       >
         <Container size="xl">
           <Group justify="space-between">

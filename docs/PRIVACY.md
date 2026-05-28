@@ -11,7 +11,7 @@ All image sniffing, processing (such as WebP conversion), and downloading operat
 ## 2. Permissions and Their Usage
 The Extension requires the following permissions to function:
 - **`downloads`**: Used to save images to your local device or create ZIP archives.
-- **`activeTab` & `<all_urls>`**: Used to detect and extract images from the web pages you visit. This is necessary for the core functionality of the extension.
+- **`activeTab`, `http://*/*` & `https://*/*`**: Used to detect and extract images from HTTP and HTTPS web pages you visit. This is necessary for the core functionality of the extension.
 - **`storage`**: Used to save your local preferences and settings (e.g., filter criteria, download format preferences).
 - **`contextMenus`**: Used to provide "Download with Imaget" options when you right-click on an image or page.
 

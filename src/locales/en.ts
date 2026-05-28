@@ -4,7 +4,7 @@ export default {
     message: "Automatically sniff and batch download images from any webpage.",
   },
   btnDownload: { message: "Download" },
-  btnDeepScan: { message: "Deep Scan" },
+  btnDeepScan: { message: "Scroll & Scan" },
   btnClose: { message: "Close" },
   selectAll: { message: "Select All" },
   deselectAll: { message: "Deselect All" },
@@ -18,6 +18,7 @@ export default {
     message: "Try adjusting filter options or refreshing the page",
   },
   loading: { message: "Loading..." },
+  exploringImages: { message: "Exploring images on the page..." },
   processing: { message: "Processing... ($1/$2)" },
   preparingZip: { message: "Preparing ZIP..." },
   toastDownloadStarted: { message: "Started downloading $1 images" },
@@ -83,7 +84,18 @@ export default {
   prefShowInSidebarHint: {
     message: "Requires closing and reopening the extension to take effect",
   },
-  prefHideDownloadWarning: { message: "Hide Download Warning" },
+  prefHideDownloadWarning: {
+    message: "Skip in-app batch download confirmation",
+  },
+  prefHideDownloadWarningHint: {
+    message:
+      "Start downloads directly when more than 30 images are selected. Browser multiple-download permission prompts are not affected.",
+  },
+  prefFollowScan: { message: "Follow Scan" },
+  prefFollowScanHint: {
+    message:
+      "Automatically add newly loaded images while the plugin window is open",
+  },
   prefSearchAllFrames: { message: "Search All Frames" },
   prefIdentifyBackgroundImages: { message: "Identify Background Images" },
   prefIdentifyBlobImages: {
@@ -137,7 +149,10 @@ export default {
   labelCopyLink: { message: "Copy Link" },
   labelSaveFile: { message: "Save File" },
   labelPreview: { message: "Preview" },
-  labelDeepScan: { message: "Deep Scan" },
+  labelDeepScan: { message: "Scroll & Scan" },
+  labelStopDeepScan: { message: "Stop scrolling" },
+  labelFollowScanOn: { message: "Follow scan is on" },
+  labelFollowScanOff: { message: "Follow scan is off" },
   labelFloatingDownload: { message: "Imaget Download this image" },
   labelFloatingSuccess: { message: "Imaget Download successful" },
   labelFloatingError: { message: "Download failed" },
@@ -187,4 +202,13 @@ export default {
   resModeOrDesc: { message: "Match either width OR height" },
   resModeAndDesc: { message: "Match both width AND height" },
   labelClearExclude: { message: "Clear exclude" },
+  layoutGrid: { message: "Grid" },
+  layoutColumns: { message: "Columns" },
+  layoutList: { message: "List" },
+  btnAddDomain: { message: "Add Domain" },
+  menuSaveImageSmart: { message: "Smart Save Image" },
+  menuRoot: { message: "Imaget" },
+  confirm: { message: "Confirm" },
+  cancel: { message: "Cancel" },
+  warning: { message: "Warning" },
 };

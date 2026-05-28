@@ -44,7 +44,7 @@ export const DownloadSection = memo(
         <Stack gap="xs">
           <Group gap="xs">
             <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-              {t("secDownload") || "Download"}
+              {t("secDownload")}
             </Text>
             <Divider style={{ flex: 1 }} opacity={0.5} />
           </Group>

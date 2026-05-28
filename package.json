@@ -11,8 +11,11 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
     "lint": "eslint .",
     "type-check": "tsc -b",
-    "build": "npm run sync-version && npm run build:docs && npm run format && npm run lint && npm run type-check && vite build",
-    "release": "bumpp && npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "npm run sync-version && npm run build:docs && vite build",
+    "build:check": "npm run format && npm run lint && npm run type-check && npm run test && npm run build",
+    "release": "bumpp && npm run build:check",
     "watch": "vite build --watch",
     "preview": "vite preview"
   },
@@ -39,11 +42,13 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "jsdom": "^29.1.1",
     "jszip": "^3.10.1",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.0"
+    "vite": "^8.0.0",
+    "vitest": "^3.2.1"
   }
 }

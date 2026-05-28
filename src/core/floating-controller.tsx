@@ -4,12 +4,17 @@ import { MantineProvider } from "@mantine/core";
 import type { Sniffer } from "./sniffer";
 import type { ImageProcessor } from "./processor";
 import { FloatingButton } from "../ui/components/FloatingButton";
-import { type Settings, defaultSettings, type ImageItem } from "../types";
+import { type Settings, defaultSettings } from "../types";
+import { createImageItemFromElement } from "./utils/image-item-factory";
 import { UrlResolver } from "./utils/url-resolver";
+import { isDomainDisabled } from "./utils/settings-policy";
 import mantineStyles from "@mantine/core/styles.css?inline";
 
 const SELECTOR = ".imaget-floating-container";
-const finalCSS = mantineStyles.replaceAll(":root", SELECTOR);
+// 使用正则替换仅选择器位置的 :root，避免替换属性值中的内容
+const finalCSS = mantineStyles.replace(/(?:^|,)\s*:root(?=\s*{)/g, (match) =>
+  match.replace(":root", SELECTOR),
+);
 
 interface ActiveInstance {
   id: string;
@@ -18,7 +23,6 @@ interface ActiveInstance {
   status: "idle" | "downloading" | "success" | "error";
   progress: number;
   isHovering: boolean;
-  progressInterval?: number;
   hideTimer?: number;
   wrapperRef: HTMLDivElement | null;
 }
@@ -46,6 +50,7 @@ export class FloatingController {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.loadSettings();
+    this.watchSettings();
   }
 
   private async loadSettings() {
@@ -58,6 +63,16 @@ export class FloatingController {
       } catch (e) {
         console.error("FloatingController: Failed to load settings", e);
       }
+    }
+  }
+
+  private watchSettings() {
+    if (typeof chrome !== "undefined" && chrome.storage?.onChanged) {
+      chrome.storage.onChanged.addListener((changes) => {
+        if (changes.imaget_settings?.newValue) {
+          this.settings = changes.imaget_settings.newValue as Settings;
+        }
+      });
     }
   }
 
@@ -235,7 +250,6 @@ export class FloatingController {
   private clearAllInstances() {
     if (this.hoverTimer) clearTimeout(this.hoverTimer);
     for (const inst of this.instances.values()) {
-      if (inst.progressInterval) clearInterval(inst.progressInterval);
       if (inst.hideTimer) clearTimeout(inst.hideTimer);
     }
     this.instances.clear();
@@ -246,7 +260,6 @@ export class FloatingController {
   private removeInstance(target: HTMLElement) {
     const inst = this.instances.get(target);
     if (!inst) return;
-    if (inst.progressInterval) clearInterval(inst.progressInterval);
     if (inst.hideTimer) clearTimeout(inst.hideTimer);
     this.instances.delete(target);
     this.renderReact();
@@ -309,6 +322,14 @@ export class FloatingController {
   private async handleMouseOver(e: MouseEvent) {
     if (this.isMuted || this.isTemporarilyDisabled) return;
     if (!this.settings.interfaceBehavior.showFloatingButton) return;
+    if (
+      isDomainDisabled(
+        window.location.href,
+        this.settings.interfaceBehavior.disabledDomains,
+      )
+    ) {
+      return;
+    }
 
     const path = e.composedPath();
     const target = (path[0] as HTMLElement) || (e.target as HTMLElement);
@@ -377,48 +398,40 @@ export class FloatingController {
     this.scheduleHideInstance(target);
   }
 
-  private async triggerDownload(inst: ActiveInstance) {
+  private async triggerDownload(
+    inst: ActiveInstance,
+    settings = this.settings,
+  ) {
     if (inst.status !== "idle") return;
 
     inst.status = "downloading";
     inst.progress = 0;
     this.renderReact();
 
-    inst.progressInterval = window.setInterval(() => {
-      inst.progress = Math.min(95, inst.progress + 5);
-      this.renderReact();
-    }, 200);
-
     try {
-      let width = inst.target.getBoundingClientRect().width;
-      let height = inst.target.getBoundingClientRect().height;
-
-      if (inst.target instanceof HTMLImageElement) {
-        if (inst.target.naturalWidth) width = inst.target.naturalWidth;
-        if (inst.target.naturalHeight) height = inst.target.naturalHeight;
-      }
-
-      const item: ImageItem = {
+      const item = createImageItemFromElement({
         id: "f-" + Date.now(),
         url: inst.url,
-        width: Math.round(width),
-        height: Math.round(height),
-        format: "JPG",
-        isSelected: true,
+        target: inst.target,
         pageTitle: document.title,
         pageUrl: window.location.href,
-        sizeKB: 0,
-      };
+      });
 
-      await this.processor.downloadBatch([item], this.settings);
+      await this.processor.downloadBatch(
+        [item],
+        settings,
+        (curr: number, total: number) => {
+          inst.progress = Math.round((curr / total) * 100);
+          this.renderReact();
+        },
+      );
       inst.status = "success";
       inst.progress = 100;
-    } catch {
+    } catch (err) {
+      console.error("[FloatingController] Download failed:", err);
       inst.status = "error";
     } finally {
-      if (inst.progressInterval) clearInterval(inst.progressInterval);
       this.renderReact();
-
       setTimeout(() => {
         const currentInst = this.instances.get(inst.target);
         if (currentInst) {
@@ -433,10 +446,13 @@ export class FloatingController {
     }
   }
 
-  public async tryTriggerCustomDownload(url: string): Promise<boolean> {
+  public async tryTriggerCustomDownload(
+    url: string,
+    settings = this.settings,
+  ): Promise<boolean> {
     for (const inst of this.instances.values()) {
       if (inst.url === url && inst.status === "idle") {
-        this.triggerDownload(inst);
+        this.triggerDownload(inst, settings);
         return true;
       }
     }

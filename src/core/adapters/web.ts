@@ -25,7 +25,11 @@ export class WebAdapter implements IPlatformAdapter {
     },
   };
 
-  async download(blob: Blob, filename: string): Promise<void> {
+  async download(
+    blob: Blob,
+    filename: string,
+    _conflictAction?: "uniquify" | "overwrite" | "prompt",
+  ): Promise<void> {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;

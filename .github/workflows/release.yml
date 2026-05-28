@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Build & Package
-        run: npm run build
+        run: npm run build:check
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

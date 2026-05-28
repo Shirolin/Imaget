@@ -1,54 +1,354 @@
 import { type ImageItem, type ImageFormat } from "../types";
 import { UrlResolver } from "./utils/url-resolver";
 import { ImageTypeDetector } from "./utils/image-type-detector";
+import { runConcurrent } from "./utils/concurrency";
+import {
+  isDomainDisabled,
+  type SnifferSettings,
+} from "./utils/settings-policy";
+import {
+  calculateAutoScrollStep,
+  getCurrentScrollTop,
+  getTargetMaxScrollTop,
+  pickAutoScrollTarget,
+  resolveAutoScrollPolicy,
+  type AutoScrollPolicy,
+  type AutoScrollStopReason,
+} from "./utils/auto-scroll-policy";
+import { collectLoadedImageItems } from "./utils/loaded-image-candidates";
+import {
+  FOLLOW_SCAN_PAUSE,
+  FOLLOW_SCAN_RESUME,
+  FOLLOW_SCAN_START,
+  FOLLOW_SCAN_STOP,
+  type FollowScanCommandType,
+} from "../ui/utils/sniffer-events";
+
+const METADATA_CONCURRENCY = 12;
+const IMAGE_METADATA_TIMEOUT_MS = 1500;
+const FETCH_METADATA_TIMEOUT_MS = 1000;
+
+/** 为字符串生成稳定的数字哈希（不依赖索引位置） */
+function stableHash(str: string): string {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash + str.charCodeAt(i)) & 0xffffffff;
+  }
+  return Math.abs(hash).toString(36);
+}
+
+// 匹配项标记：记录需要第二阶段背景图检查的元素
+interface BgCandidate {
+  element: Element;
+}
+
+export interface AutoScrollResult {
+  reason: AutoScrollStopReason;
+  steps: number;
+  durationMs: number;
+  targetKind: "document" | "container" | "none";
+  requestId?: string;
+}
+
+export interface SniffAllOptions {
+  requestId?: string;
+  onCandidates?: (items: ImageItem[]) => void;
+}
 
 export class Sniffer {
+  public async startFollowScan(
+    settings: SnifferSettings,
+    sessionId: string,
+  ): Promise<number | null> {
+    return this.sendFollowScanCommand(FOLLOW_SCAN_START, {
+      settings,
+      sessionId,
+    });
+  }
+
+  public async stopFollowScan(
+    sessionId?: string,
+    targetTabId?: number | null,
+  ): Promise<void> {
+    await this.sendFollowScanCommand(FOLLOW_SCAN_STOP, { sessionId }, targetTabId);
+  }
+
+  public async pauseFollowScan(
+    sessionId?: string,
+    targetTabId?: number | null,
+  ): Promise<void> {
+    await this.sendFollowScanCommand(FOLLOW_SCAN_PAUSE, { sessionId }, targetTabId);
+  }
+
+  public async resumeFollowScan(
+    sessionId?: string,
+    targetTabId?: number | null,
+  ): Promise<void> {
+    await this.sendFollowScanCommand(FOLLOW_SCAN_RESUME, { sessionId }, targetTabId);
+  }
+
+  private async sendFollowScanCommand(
+    type: FollowScanCommandType,
+    payload: { settings?: SnifferSettings; sessionId?: string },
+    targetTabId?: number | null,
+  ): Promise<number | null> {
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (!isExtensionPage) {
+      window.postMessage({ type, payload }, "*");
+      return null;
+    }
+
+    try {
+      const tabId =
+        targetTabId ??
+        (
+          await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+          })
+        )[0]?.id;
+      if (!tabId) return null;
+      await chrome.tabs.sendMessage(tabId, { action: type, payload });
+      return tabId;
+    } catch {
+      // Content script may be unavailable on restricted pages.
+      return null;
+    }
+  }
+
+  public async cancelAutoScroll(requestId: string): Promise<void> {
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.tabs &&
+      window.location.protocol === "chrome-extension:";
+    if (!isExtensionPage) return;
+
+    try {
+      const tabs = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      const activeTab = tabs[0];
+      if (!activeTab?.id) return;
+      await chrome.tabs.sendMessage(activeTab.id, {
+        action: "AUTOSCROLL_CANCEL_REQUEST",
+        payload: { requestId },
+      });
+    } catch {
+      // The scroll request may already have completed.
+    }
+  }
+
   /**
    * 自动滚动触发懒加载
    */
   public async autoScroll(
+    settings?: SnifferSettings,
     onProgress?: (percent: number) => void,
-  ): Promise<void> {
+    policyOverrides?: Partial<AutoScrollPolicy>,
+    externalRequestId?: string,
+    signal?: AbortSignal,
+    hooks?: {
+      onSettledStep?: () => void | Promise<void>;
+      onBeforeRestore?: () => void | Promise<void>;
+    },
+  ): Promise<AutoScrollResult> {
+    if (
+      isDomainDisabled(
+        window.location.href,
+        settings?.interfaceBehavior?.disabledDomains,
+      )
+    ) {
+      return {
+        reason: "disabled-domain",
+        steps: 0,
+        durationMs: 0,
+        targetKind: "none",
+      };
+    }
+
     const isExtensionPage =
       typeof chrome !== "undefined" &&
       chrome.tabs &&
       window.location.protocol === "chrome-extension:";
     if (isExtensionPage) {
+      const requestId =
+        externalRequestId ||
+        (typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `auto-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+
       return new Promise((resolve) => {
         chrome.tabs
           .query({ active: true, currentWindow: true })
           .then((tabs) => {
             const activeTab = tabs[0];
-            if (!activeTab?.id) return resolve();
+            if (!activeTab?.id) {
+              return resolve({
+                reason: "not-scrollable",
+                steps: 0,
+                durationMs: 0,
+                targetKind: "none",
+                requestId,
+              });
+            }
             chrome.tabs.sendMessage(
               activeTab.id,
-              { action: "AUTOSCROLL_REQUEST" },
-              () => resolve(),
+              {
+                action: "AUTOSCROLL_REQUEST",
+                payload: { settings, requestId },
+              },
+              (response) =>
+                resolve({
+                  reason: response?.result?.reason || "not-scrollable",
+                  steps: response?.result?.steps || 0,
+                  durationMs: response?.result?.durationMs || 0,
+                  targetKind: response?.result?.targetKind || "none",
+                  requestId,
+                }),
             );
           })
-          .catch(() => resolve());
+          .catch((err) => {
+            console.warn("[Sniffer] Failed to send AUTOSCROLL_REQUEST:", err);
+            resolve({
+              reason: "not-scrollable",
+              steps: 0,
+              durationMs: 0,
+              targetKind: "none",
+              requestId,
+            });
+          });
       });
     }
 
-    const totalHeight = document.body.scrollHeight;
-    const distance = 400;
-    let currentPosition = 0;
-
-    while (currentPosition < totalHeight) {
-      window.scrollBy(0, distance);
-      currentPosition += distance;
-      if (onProgress) {
-        onProgress(
-          Math.min(100, Math.round((currentPosition / totalHeight) * 100)),
-        );
-      }
-      await new Promise((r) => setTimeout(r, 150));
+    const policy = resolveAutoScrollPolicy(policyOverrides);
+    const target = pickAutoScrollTarget(document);
+    if (!target.element) {
+      return {
+        reason: "not-scrollable",
+        steps: 0,
+        durationMs: 0,
+        targetKind: target.kind,
+      };
     }
-    window.scrollTo(0, 0); // 回滚到顶部
+
+    const startTime = Date.now();
+    const initialScrollTop = getCurrentScrollTop(target);
+    let maxScrollTop = getTargetMaxScrollTop(target);
+    if (maxScrollTop <= 0) {
+      return {
+        reason: "not-scrollable",
+        steps: 0,
+        durationMs: 0,
+        targetKind: target.kind,
+      };
+    }
+
+    const stepDistance = calculateAutoScrollStep(target.viewportHeight, policy);
+    let steps = 0;
+    let idleRounds = 0;
+    let reason: AutoScrollStopReason = "completed";
+
+    onProgress?.(0);
+    try {
+      while (true) {
+        if (signal?.aborted) {
+          reason = "cancelled";
+          break;
+        }
+
+        const elapsed = Date.now() - startTime;
+        if (elapsed >= policy.maxDurationMs) {
+          reason = "max-duration";
+          break;
+        }
+        if (steps >= policy.maxSteps) {
+          reason = "max-steps";
+          break;
+        }
+
+        const currentScrollTop = getCurrentScrollTop(target);
+        if (currentScrollTop >= maxScrollTop - 1) {
+          await new Promise((r) => setTimeout(r, policy.settleMs));
+          if (signal?.aborted) {
+            reason = "cancelled";
+            break;
+          }
+
+          const latestMaxScrollTop = getTargetMaxScrollTop(target);
+          if (latestMaxScrollTop > maxScrollTop + 1) {
+            idleRounds = 0;
+            maxScrollTop = latestMaxScrollTop;
+            continue;
+          }
+
+          idleRounds += 1;
+          onProgress?.(99);
+
+          if (idleRounds >= policy.idleRounds) {
+            reason = "completed";
+            break;
+          }
+          continue;
+        }
+
+        if (target.kind === "document") {
+          window.scrollBy(0, stepDistance);
+        } else {
+          target.element.scrollTop = Math.min(
+            target.element.scrollTop + stepDistance,
+            maxScrollTop,
+          );
+        }
+        steps += 1;
+
+        await new Promise((r) => setTimeout(r, policy.settleMs));
+        if (signal?.aborted) {
+          reason = "cancelled";
+          break;
+        }
+        await hooks?.onSettledStep?.();
+
+        const latestMaxScrollTop = getTargetMaxScrollTop(target);
+        if (latestMaxScrollTop > maxScrollTop + 1) {
+          idleRounds = 0;
+          maxScrollTop = latestMaxScrollTop;
+        } else {
+          idleRounds = 0;
+        }
+
+        const latestScrollTop = getCurrentScrollTop(target);
+        const progressPercent =
+          maxScrollTop > 0
+            ? Math.min(99, Math.round((latestScrollTop / maxScrollTop) * 100))
+            : 0;
+        onProgress?.(progressPercent);
+      }
+    } finally {
+      await hooks?.onBeforeRestore?.();
+      if (target.kind === "document") {
+        window.scrollTo(0, initialScrollTop);
+      } else {
+        target.element.scrollTop = initialScrollTop;
+      }
+    }
+
+    onProgress?.(100);
+    return {
+      reason,
+      steps,
+      durationMs: Date.now() - startTime,
+      targetKind: target.kind,
+    };
   }
 
   /**
    * 单遍深度扫描：合并普通元素、背景图、Shadow DOM 和 iframe 的扫描，大幅优化性能
+   * 使用 TreeWalker 替代 querySelectorAll('*')，减少内存分配；
+   * 分两阶段：Phase 1 遍历 DOM 树收集候选，Phase 2 仅对候选调用 getComputedStyle
    */
   private async sniffNodeTree(
     root: Document | ShadowRoot | Element,
@@ -60,12 +360,17 @@ export class Sniffer {
     visited.add(root);
 
     const urls = new Set<string>();
-    const elements = root.querySelectorAll("*");
+    const bgCandidates: BgCandidate[] = [];
 
-    // 使用标准 for 循环，避免 Array.from 造成的大量内存分配
-    for (let i = 0; i < elements.length; i++) {
-      const el = elements[i];
+    // Phase 1: TreeWalker — 仅遍历一次 DOM 树
+    const treeWalker = document.createTreeWalker(
+      root,
+      NodeFilter.SHOW_ELEMENT,
+      () => NodeFilter.FILTER_ACCEPT,
+    );
 
+    let el: Element | null;
+    while ((el = treeWalker.nextNode() as Element | null)) {
       // 1. 处理普通图片
       if (el.tagName === "IMG") {
         const url = UrlResolver.resolveBestUrl(el as HTMLElement);
@@ -86,10 +391,14 @@ export class Sniffer {
             }
           }
         }
-      } else if (identifyBackground && el instanceof HTMLElement) {
-        // 2. 处理背景图
-        const url = UrlResolver.resolveBestUrl(el);
-        if (url) urls.add(url);
+      }
+
+      // 2. 收集背景图候选（延迟到 Phase 2 检查 getComputedStyle）
+      if (identifyBackground && el instanceof HTMLElement) {
+        // 先通过 style 属性快速过滤：没有 style 属性则不可能有 background-image
+        if (el.hasAttribute("style") || el.hasAttribute("background")) {
+          bgCandidates.push({ element: el });
+        }
       }
 
       // 3. 处理 Shadow DOM
@@ -121,6 +430,16 @@ export class Sniffer {
         } catch {
           // 忽略跨域 iframe 报错
         }
+      }
+    }
+
+    // Phase 2: 仅对候选元素执行 getComputedStyle（避免对无关元素触发重排）
+    if (identifyBackground) {
+      for (const candidate of bgCandidates) {
+        const url = UrlResolver.resolveBestUrl(
+          candidate.element as HTMLElement,
+        );
+        if (url) urls.add(url);
       }
     }
 
@@ -192,13 +511,11 @@ export class Sniffer {
   /**
    * 核心嗅探方法：整合所有来源并获取元数据
    */
-  public async sniffAll(settings?: {
-    interfaceBehavior: {
-      searchAllFrames: boolean;
-      identifyBackgroundImages: boolean;
-      identifyBlobImages: boolean;
-    };
-  }): Promise<ImageItem[]> {
+  public async sniffAll(
+    settings?: SnifferSettings,
+    existingItems?: ImageItem[],
+    options?: SniffAllOptions,
+  ): Promise<ImageItem[]> {
     const isExtensionPage =
       typeof chrome !== "undefined" &&
       chrome.tabs &&
@@ -212,7 +529,10 @@ export class Sniffer {
             if (!activeTab?.id) return resolve([]);
             chrome.tabs.sendMessage(
               activeTab.id,
-              { action: "SNIFF_REQUEST", payload: { settings } },
+              {
+                action: "SNIFF_REQUEST",
+                payload: { settings, requestId: options?.requestId },
+              },
               (response) => {
                 if (chrome.runtime.lastError || !response) {
                   const errMsg = chrome.runtime.lastError?.message || "";
@@ -234,6 +554,20 @@ export class Sniffer {
             resolve([]);
           });
       });
+    }
+
+    if (
+      isDomainDisabled(
+        window.location.href,
+        settings?.interfaceBehavior?.disabledDomains,
+      )
+    ) {
+      return [];
+    }
+
+    const earlyItems = this.sniffLoadedElementItems(settings, existingItems);
+    if (earlyItems.length > 0) {
+      options?.onCandidates?.(earlyItems);
     }
 
     const urls = new Set<string>();
@@ -262,16 +596,29 @@ export class Sniffer {
     });
 
     const urlArray = Array.from(urls);
-    const results = await Promise.allSettled(
-      urlArray.map((url) => this.getImageMetadata(url)),
-    );
+    const metadataResults: Array<Omit<ImageItem, "id" | "isSelected"> | null> =
+      Array(urlArray.length).fill(null);
+    await runConcurrent(urlArray, METADATA_CONCURRENCY, async (url, index) => {
+      metadataResults[index] = await this.getImageMetadata(url);
+    });
+
+    // 构建已有图片的 URL→ID 映射，保持 ID 稳定
+    const existingIdMap = new Map<string, string>();
+    if (existingItems) {
+      for (const item of existingItems) {
+        existingIdMap.set(item.url, item.id);
+      }
+    }
 
     const items: ImageItem[] = [];
-    results.forEach((result, index) => {
-      if (result.status === "fulfilled" && result.value) {
+    metadataResults.forEach((metadata, index) => {
+      if (metadata) {
+        const url = urlArray[index];
+        // 优先复用已有 ID，否则生成新的稳定哈希
+        const id = existingIdMap.get(url) ?? stableHash(url);
         items.push({
-          ...result.value,
-          id: btoa(encodeURIComponent(urlArray[index])).slice(0, 10) + index,
+          ...metadata,
+          id,
           isSelected: false,
           pageTitle: document.title,
           pageUrl: window.location.href,
@@ -280,6 +627,17 @@ export class Sniffer {
     });
 
     return items;
+  }
+
+  private sniffLoadedElementItems(
+    settings?: SnifferSettings,
+    existingItems?: ImageItem[],
+  ): ImageItem[] {
+    return collectLoadedImageItems({
+      root: document,
+      settings,
+      existingItems,
+    });
   }
 
   /**
@@ -292,9 +650,39 @@ export class Sniffer {
       const dimensions = await new Promise<{ width: number; height: number }>(
         (resolve, reject) => {
           const img = new Image();
-          img.onload = () =>
-            resolve({ width: img.naturalWidth, height: img.naturalHeight });
-          img.onerror = () => reject();
+          const timeoutId = window.setTimeout(() => {
+            cleanup();
+            reject(
+              new Error(
+                `Timed out loading image metadata: ${String(url).slice(0, 100)}`,
+              ),
+            );
+          }, IMAGE_METADATA_TIMEOUT_MS);
+          const cleanup = () => {
+            window.clearTimeout(timeoutId);
+            img.onload = null;
+            img.onerror = null;
+            try {
+              img.src = "";
+            } catch {
+              // 忽略清理失败
+            }
+          };
+
+          img.onload = () => {
+            const size = {
+              width: img.naturalWidth,
+              height: img.naturalHeight,
+            };
+            cleanup();
+            resolve(size);
+          };
+          img.onerror = () => {
+            cleanup();
+            reject(
+              new Error(`Failed to load image: ${String(url).slice(0, 100)}`),
+            );
+          };
           img.src = url;
         },
       );
@@ -310,18 +698,32 @@ export class Sniffer {
         const isBlob = url.startsWith("blob:");
 
         if (isExtension || !isUrlExternal || isBlob) {
-          const response = await fetch(url, {
-            method: isBlob ? "GET" : "HEAD",
-            cache: "no-cache",
-          });
-          if (response.ok) {
-            const sizeBytes = response.headers.get("content-length");
-            if (sizeBytes) sizeKB = Math.round(parseInt(sizeBytes) / 1024);
+          const controller = new AbortController();
+          const timeoutId = window.setTimeout(
+            () => controller.abort(),
+            FETCH_METADATA_TIMEOUT_MS,
+          );
+          let response: Response | undefined;
+          try {
+            response = await fetch(url, {
+              method: isBlob ? "GET" : "HEAD",
+              cache: "no-cache",
+              signal: controller.signal,
+            });
+            if (response.ok) {
+              const sizeBytes = response.headers.get("content-length");
+              if (sizeBytes) sizeKB = Math.round(parseInt(sizeBytes) / 1024);
 
-            const contentType = response.headers.get("content-type");
-            if (contentType) {
-              format = ImageTypeDetector.getFormatFromMimeType(contentType);
+              const contentType = response.headers.get("content-type");
+              if (contentType) {
+                format = ImageTypeDetector.getFormatFromMimeType(contentType);
+              }
             }
+          } finally {
+            if (response?.body) {
+              await response.body.cancel();
+            }
+            window.clearTimeout(timeoutId);
           }
         }
       } catch {
@@ -341,7 +743,14 @@ export class Sniffer {
         format,
         filename: url.split("/").pop()?.split(/[?#]/)[0] || "image",
       };
-    } catch {
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.debug(
+          "[Sniffer] Failed to load image metadata:",
+          String(url).slice(0, 100),
+          err,
+        );
+      }
       return null;
     }
   }

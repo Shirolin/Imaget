@@ -86,6 +86,7 @@ export interface Settings {
     searchAllFrames: boolean;
     identifyBackgroundImages: boolean;
     identifyBlobImages: boolean;
+    followScanEnabled: boolean;
     showFloatingButton: boolean;
     minImageSize: number;
     disabledDomains?: string[];
@@ -129,6 +130,7 @@ export const defaultSettings: Settings = {
     searchAllFrames: true,
     identifyBackgroundImages: true,
     identifyBlobImages: false,
+    followScanEnabled: true,
     showFloatingButton: true,
     minImageSize: 128,
     disabledDomains: [],
@@ -141,7 +143,7 @@ export const defaultSettings: Settings = {
   gifStrategy: "keep",
   downloadControl: {
     conflictResolution: "uniquify",
-    maxConcurrency: 0, // 0 means no limit
+    maxConcurrency: 5,
   },
   filterDefaults: {
     minWidth: 200,

@@ -74,42 +74,42 @@ const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
 
       <Group gap={4} wrap="nowrap">
         <Tooltip
-          label={t("layoutGrid") || "Grid"}
+          label={t("layoutGrid")}
           portalProps={{ target: portalNode || undefined }}
         >
           <ActionIcon
             variant={layout === "grid" ? "filled" : "light"}
             size="sm"
             onClick={() => onChange({ layout: "grid" })}
-            aria-label={t("layoutGrid") || "Grid"}
+            aria-label={t("layoutGrid")}
           >
             <IconLayoutGrid size={14} />
           </ActionIcon>
         </Tooltip>
 
         <Tooltip
-          label={t("layoutColumns") || "Columns"}
+          label={t("layoutColumns")}
           portalProps={{ target: portalNode || undefined }}
         >
           <ActionIcon
             variant={layout === "columns" ? "filled" : "light"}
             size="sm"
             onClick={() => onChange({ layout: "columns" })}
-            aria-label={t("layoutColumns") || "Columns"}
+            aria-label={t("layoutColumns")}
           >
             <IconLayoutColumns size={14} />
           </ActionIcon>
         </Tooltip>
 
         <Tooltip
-          label={t("layoutList") || "List"}
+          label={t("layoutList")}
           portalProps={{ target: portalNode || undefined }}
         >
           <ActionIcon
             variant={layout === "list" ? "filled" : "light"}
             size="sm"
             onClick={() => onChange({ layout: "list" })}
-            aria-label={t("layoutList") || "List"}
+            aria-label={t("layoutList")}
           >
             <IconLayoutList size={14} />
           </ActionIcon>

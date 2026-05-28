@@ -1,8 +1,14 @@
 import JSZip from "jszip";
 import { type ImageItem, type Settings } from "../types";
 import type { IPlatformAdapter } from "./adapters/interface";
-import { generateFilename } from "./utils/filename-generator";
+import { runConcurrent } from "./utils/concurrency";
+import { formatDate, generateFilename } from "./utils/filename-generator";
 import { convertImage } from "./utils/image-converter";
+
+interface ProcessResult {
+  blob: Blob;
+  filename: string;
+}
 
 /**
  * ImageProcessor: 100% 对齐旧项目核心逻辑
@@ -16,6 +22,107 @@ export class ImageProcessor {
   }
 
   /**
+   * 处理单张图片：GIF 过滤、获取数据、格式转换、生成文件名
+   * 返回处理结果或 null（表示应跳过）
+   */
+  private async processSingleImage(
+    img: ImageItem,
+    settings: Settings,
+    index: number,
+    total: number,
+  ): Promise<ProcessResult | null> {
+    // GIF 过滤策略: skip
+    if (img.format.toLowerCase() === "gif" && settings.gifStrategy === "skip") {
+      return null;
+    }
+
+    // 1. 获取数据 (Referer 镜像)
+    let blob = await this.adapter.fetchBlob(
+      img.url,
+      img.pageUrl ||
+        (typeof window !== "undefined" ? window.location.href : ""),
+    );
+
+    // 2. 核心逻辑：格式转换
+    let extension: string | undefined;
+    try {
+      const converted = await convertImage(blob, img, settings);
+      blob = converted.blob;
+      extension = converted.extension;
+    } catch (convErr) {
+      if (convErr instanceof Error && convErr.message === "SKIP_GIF") {
+        return null;
+      }
+      console.warn(
+        `[Processor] Format conversion failed, using original:`,
+        convErr,
+      );
+    }
+
+    // 3. 格式化完整保存路径 (含子文件夹与变量替换)
+    const filename = generateFilename(
+      img,
+      settings,
+      { index: index + 1, total },
+      extension,
+    );
+    return { blob, filename };
+  }
+
+  /**
+   * 获取并发数配置
+   */
+  private getConcurrency(total: number, settings: Settings): number {
+    const max = settings.downloadControl?.maxConcurrency;
+    if (max !== undefined && max > 0) return max;
+    if (max === 0) return total;
+    return 5;
+  }
+
+  private canDownloadOriginalUrlDirectly(
+    img: ImageItem,
+    settings: Settings,
+  ): boolean {
+    if (!this.adapter.downloadUrl) return false;
+    if (!/^https?:\/\//i.test(img.url)) return false;
+    if (settings.downloadLogic?.targetFormat !== "original") return false;
+    if (img.format.toLowerCase() === "gif") return false;
+    if (
+      img.format.toLowerCase() === "webp" &&
+      settings.downloadLogic?.reEncodeWebp
+    ) {
+      return false;
+    }
+    if (
+      this.adapter.env === "extension" &&
+      img.pageUrl?.trim() &&
+      !this.hasSameOrigin(img.url, img.pageUrl)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private hasSameOrigin(imageUrl: string, pageUrl: string): boolean {
+    try {
+      return new URL(imageUrl).origin === new URL(pageUrl).origin;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * 发送调试消息（仅在扩展环境中有效）
+   */
+  private sendDebugLog(payload: Record<string, unknown>): void {
+    if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
+      chrome.runtime
+        .sendMessage({ type: "DEBUG_LOG", payload })
+        .catch(() => {});
+    }
+  }
+
+  /**
    * 批量下载图片 (100% 对齐旧项目并发队列与异常捕获)
    */
   async downloadBatch(
@@ -23,121 +130,75 @@ export class ImageProcessor {
     settings: Settings,
     onProgress?: (current: number, total: number) => void,
   ): Promise<void> {
+    if (settings.debug?.simulateDownloadFailure) {
+      throw new Error("Simulated download failure");
+    }
     const total = images.length;
-    const CONCURRENCY =
-      settings.downloadControl?.maxConcurrency > 0
-        ? settings.downloadControl.maxConcurrency
-        : settings.downloadControl?.maxConcurrency === 0
-          ? total
-          : 5;
-    let currentIndex = 0;
-    let completed = 0;
-    let failCount = 0;
+    const CONCURRENCY = this.getConcurrency(total, settings);
 
-    const worker = async () => {
-      while (currentIndex < total) {
-        const index = currentIndex++;
-        const img = images[index];
+    this.sendDebugLog({
+      message: `Processor using settings: ${JSON.stringify(settings)}`,
+    });
 
-        // GIF 过滤策略: skip
-        if (
-          img.format.toLowerCase() === "gif" &&
-          settings.gifStrategy === "skip"
-        ) {
-          completed++;
-          onProgress?.(completed, total);
-          continue;
-        }
-
+    const { fail: failCount } = await runConcurrent(
+      images,
+      CONCURRENCY,
+      async (img, index) => {
         try {
-          // 调试：只给第一个任务发一次全量配置，辅助排查
-          if (
-            index === 0 &&
-            typeof chrome !== "undefined" &&
-            chrome.runtime?.sendMessage
-          ) {
-            chrome.runtime
-              .sendMessage({
-                type: "DEBUG_LOG",
-                payload: {
-                  message: `Processor using settings: ${JSON.stringify(settings)}`,
-                },
-              })
-              .catch(() => {});
-          }
-
-          // 1. 获取数据 (Referer 镜像)
-          let blob = await this.adapter.fetchBlob(
-            img.url,
-            img.pageUrl || window.location.href,
-          );
-
-          // 2. 核心逻辑：格式转换
-          let extension: string | undefined;
-          try {
-            const converted = await convertImage(blob, img, settings);
-            blob = converted.blob;
-            extension = converted.extension;
-          } catch (convErr) {
-            if (convErr instanceof Error && convErr.message === "SKIP_GIF") {
-              console.log(`[Processor] Skipping GIF after fetch: ${img.url}`);
-              continue;
-            }
-            console.warn(
-              `[Processor] Format conversion failed, using original:`,
-              convErr,
+          if (this.canDownloadOriginalUrlDirectly(img, settings)) {
+            const extension = img.format === "UNKNOWN" ? undefined : img.format;
+            const filename = generateFilename(
+              img,
+              settings,
+              { index: index + 1, total },
+              extension?.toLowerCase(),
             );
+            const conflictAction =
+              settings.downloadControl?.conflictResolution || "uniquify";
+
+            this.sendDebugLog({
+              message: `Preparing direct URL download: ${filename}`,
+              filename,
+            });
+
+            await this.adapter.downloadUrl!(
+              img.url,
+              filename,
+              conflictAction,
+              img.pageUrl || "",
+            );
+            return;
           }
 
-          // 3. 格式化完整保存路径 (含子文件夹与变量替换)
-          const finalPath = generateFilename(
+          const result = await this.processSingleImage(
             img,
             settings,
-            {
-              index: index + 1,
-              total,
-            },
-            extension,
+            index,
+            total,
           );
+          if (!result) return;
 
-          // 4. 执行下载 ( conflictAction 冲突处理)
+          const { blob, filename } = result;
+
           const conflictAction =
-            settings.downloadControl?.conflictResolution === "overwrite"
-              ? "overwrite"
-              : "uniquify";
+            settings.downloadControl?.conflictResolution || "uniquify";
 
-          // 如果在插件环境下，尝试同步日志到后台以便调试
-          if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
-            chrome.runtime
-              .sendMessage({
-                type: "DEBUG_LOG",
-                payload: {
-                  message: `Preparing download: ${finalPath}`,
-                  filename: finalPath,
-                },
-              })
-              .catch(() => {});
-          }
+          this.sendDebugLog({
+            message: `Preparing download: ${filename}`,
+            filename,
+          });
 
-          await this.adapter.download(blob, finalPath, conflictAction);
+          await this.adapter.download(blob, filename, conflictAction);
         } catch (err) {
-          failCount++;
           console.error(
             `[Processor] Failed at index ${index} (${img.url}):`,
             err,
           );
-        } finally {
-          completed++;
-          onProgress?.(completed, total);
+          throw err;
         }
-      }
-    };
-
-    // 启动并行工作线程
-    const workers = Array(Math.min(CONCURRENCY, total))
-      .fill(null)
-      .map(() => worker());
-    await Promise.all(workers);
+      },
+      onProgress,
+    );
 
     if (total > 0 && failCount === total) {
       throw new Error(`All ${total} downloads failed`);
@@ -152,97 +213,58 @@ export class ImageProcessor {
     settings: Settings,
     onProgress?: (current: number, total: number) => void,
   ): Promise<void> {
+    if (settings.debug?.simulateDownloadFailure) {
+      throw new Error("Simulated download failure");
+    }
     const zip = new JSZip();
     const total = images.length;
-    const CONCURRENCY =
-      settings.downloadControl?.maxConcurrency > 0
-        ? settings.downloadControl.maxConcurrency
-        : settings.downloadControl?.maxConcurrency === 0
-          ? total
-          : 5;
-    let currentIndex = 0;
-    let completed = 0;
-    let failCount = 0;
+    const CONCURRENCY = this.getConcurrency(total, settings);
 
-    const worker = async () => {
-      while (currentIndex < total) {
-        const index = currentIndex++;
-        const img = images[index];
-
-        // GIF 过滤
-        if (
-          img.format.toLowerCase() === "gif" &&
-          settings.gifStrategy === "skip"
-        ) {
-          completed++;
-          onProgress?.(completed, total);
-          continue;
-        }
-
+    const { fail: failCount } = await runConcurrent(
+      images,
+      CONCURRENCY,
+      async (img, index) => {
         try {
-          // ZIP 打包同样需要镜像 Referer
-          let blob = await this.adapter.fetchBlob(
-            img.url,
-            img.pageUrl || window.location.href,
-          );
-
-          // 核心逻辑：格式转换 (ZIP 模式也支持转换)
-          let extension: string | undefined;
-          try {
-            const converted = await convertImage(blob, img, settings);
-            blob = converted.blob;
-            extension = converted.extension;
-          } catch (convErr) {
-            if (convErr instanceof Error && convErr.message === "SKIP_GIF") {
-              console.log(`[Processor] ZIP: Skipping GIF after fetch: ${img.url}`);
-              continue;
-            }
-            console.warn(`[Processor] ZIP conversion failed:`, convErr);
-          }
-
-          // 获取包含完整目录结构的文件名
-          const filename = generateFilename(
+          const result = await this.processSingleImage(
             img,
             settings,
-            {
-              index: index + 1,
-              total,
-            },
-            extension,
+            index,
+            total,
           );
+          if (!result) return;
 
-          // 写入 ZIP (JSZip 会根据 filename 中的 / 自动创建层级)
+          const { blob, filename } = result;
+
+          // 写入 ZIP
           zip.file(filename, blob);
         } catch (err) {
-          failCount++;
           console.error(
             `[Processor] ZIP resource fetch failed (${img.url}):`,
             err,
           );
-        } finally {
-          completed++;
-          onProgress?.(completed, total);
+          throw err;
         }
-      }
-    };
-
-    const workers = Array(Math.min(CONCURRENCY, total))
-      .fill(null)
-      .map(() => worker());
-    await Promise.all(workers);
+      },
+      onProgress ? (current) => onProgress(current, total + 1) : undefined,
+    );
 
     if (total > 0 && failCount === total) {
       throw new Error(`All ${total} resources failed to fetch for ZIP`);
     }
 
     // 生成 ZIP Blob
-    const content = await zip.generateAsync({ type: "blob" });
+    const progressTotal = total + 1;
+    const content = await zip.generateAsync({ type: "blob" }, (metadata) => {
+      onProgress?.(total + metadata.percent / 100, progressTotal);
+    });
+    onProgress?.(progressTotal, progressTotal);
 
     // 解析当前时间与基础模板变量用于 ZIP 命名
     const now = new Date();
-    const dateStr = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, "0")}${now.getDate().toString().padStart(2, "0")}`;
-    const timeStr = `${now.getHours().toString().padStart(2, "0")}${now.getMinutes().toString().padStart(2, "0")}${now.getSeconds().toString().padStart(2, "0")}`;
-    const pageTitle = images[0]?.pageTitle || document.title || "Imaget";
+    const { dateStr, timeStr } = formatDate(now);
+    const pageTitle =
+      images[0]?.pageTitle ||
+      (typeof document !== "undefined" ? document.title : "Imaget");
 
     // 支持解析子文件夹中的常用变量
     let cleanSub = settings.fileSaving?.subfolder || "Imaget";

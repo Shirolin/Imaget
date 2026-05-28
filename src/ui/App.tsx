@@ -13,7 +13,7 @@ import "@mantine/core/styles.css";
 
 import Header from "./components/Header";
 import FilterBar from "./components/FilterBar";
-import ImageGrid from "./components/ImageGrid";
+import { ImageGrid } from "./components/ImageGrid";
 import Footer from "./components/Footer";
 import { ImagePreview } from "./components/ImagePreview";
 import SettingsPage from "./components/SettingsPage";
@@ -25,6 +25,17 @@ import { filterImages } from "../core/filter";
 import { ImageProcessor } from "../core/processor";
 import { WebAdapter } from "../core/adapters/web";
 import { ExtensionAdapter } from "../core/adapters/extension";
+import {
+  getSnifferSettingsKey,
+  type SnifferSettings,
+} from "../core/utils/settings-policy";
+import { upsertImageItems } from "./utils/image-state";
+import {
+  FOLLOW_SCAN_CANDIDATES,
+  FOLLOW_SCAN_SCAN_NOW,
+  isImagetReopenMessage,
+} from "./utils/sniffer-events";
+import { getRollingScanFollowSessionPolicy } from "./utils/rolling-scan-session";
 import type { ImageItem, FilterOptions } from "../types";
 
 const defaultFilters: FilterOptions = {
@@ -41,6 +52,27 @@ const defaultFilters: FilterOptions = {
   resolutionMode: "or",
 };
 
+function createAutoScrollRequestId(): string {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return `auto-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function createScanRequestId(): string {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return `scan-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function createFollowScanSessionId(): string {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return `follow-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
 const App: React.FC = () => {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -48,17 +80,34 @@ const App: React.FC = () => {
   const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"images" | "settings">("images");
+  const [isDeepScanning, setIsDeepScanning] = useState(false);
+  const activeScanRequestId = useRef<string | null>(null);
+  const activeFollowScanSessionId = useRef<string | null>(null);
+  const activeFollowScanTabId = useRef<number | null>(null);
+  const activeAutoScrollRequestId = useRef<string | null>(null);
+  const autoScrollAbortController = useRef<AbortController | null>(null);
 
   const { settings, updateSettings, resetSettings } = useSettings();
   const downloadingUrls = useRef<Set<string>>(new Set());
 
-  // 当默认配置发生变化时，立即同步到当前筛选（包括初始加载和设置页修改）
+  // 同步 settings.filterDefaults 到 filters 状态
+  const initialSyncDone = useRef(false);
+  const lastFilterDefaultsRef = useRef<string>(
+    JSON.stringify(settings.filterDefaults),
+  );
+
   useEffect(() => {
-    if (settings?.filterDefaults) {
+    const currentDefaultsStr = JSON.stringify(settings.filterDefaults);
+    if (
+      !initialSyncDone.current ||
+      currentDefaultsStr !== lastFilterDefaultsRef.current
+    ) {
       setFilters((prev) => ({
         ...prev,
         ...settings.filterDefaults,
       }));
+      lastFilterDefaultsRef.current = currentDefaultsStr;
+      initialSyncDone.current = true;
     }
   }, [settings.filterDefaults]);
 
@@ -67,6 +116,19 @@ const App: React.FC = () => {
   }, []);
 
   const sniffer = useMemo(() => new Sniffer(), []);
+  const snifferSettingsKey = useMemo(
+    () => getSnifferSettingsKey(settings),
+    [settings],
+  );
+  const snifferSettings: SnifferSettings = useMemo(
+    () => ({
+      interfaceBehavior: JSON.parse(
+        snifferSettingsKey,
+      ) as SnifferSettings["interfaceBehavior"],
+    }),
+    [snifferSettingsKey],
+  );
+  const followScanEnabled = settings.interfaceBehavior.followScanEnabled ?? true;
 
   const processor = useMemo(() => {
     const isExtension = typeof chrome !== "undefined" && !!chrome.runtime?.id;
@@ -74,13 +136,88 @@ const App: React.FC = () => {
     return new ImageProcessor(adapter);
   }, []);
 
-  // 执行初次嗅探
+  // 执行初次嗅探（使用 useRef 保持对最新 images 的引用，用于 ID 稳定化）
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+  const isDeepScanningRef = useRef(isDeepScanning);
+  isDeepScanningRef.current = isDeepScanning;
+  const runSniffer = useCallback(async (resetList = false) => {
+    const requestId = createScanRequestId();
+    activeScanRequestId.current = requestId;
+    if (resetList) {
+      setImages([]);
+    }
+
+    try {
+      const applyItems = (items: ImageItem[]) => {
+        if (activeScanRequestId.current !== requestId || items.length === 0) {
+          return;
+        }
+        setImages((prev) => upsertImageItems(prev, items));
+      };
+
+      const results = await sniffer.sniffAll(snifferSettings, imagesRef.current, {
+        requestId,
+        onCandidates: applyItems,
+      });
+      applyItems(results);
+    } finally {
+      if (activeScanRequestId.current === requestId) {
+        activeScanRequestId.current = null;
+      }
+    }
+  }, [sniffer, snifferSettings]);
+
+  const applyFollowCandidates = useCallback((sessionId: string, items: ImageItem[]) => {
+    if (
+      activeFollowScanSessionId.current !== sessionId ||
+      items.length === 0
+    ) {
+      return;
+    }
+    setImages((prev) => upsertImageItems(prev, items));
+  }, []);
+
+  const stopFollowScan = useCallback(async () => {
+    const sessionId = activeFollowScanSessionId.current;
+    const tabId = activeFollowScanTabId.current;
+    activeFollowScanSessionId.current = null;
+    activeFollowScanTabId.current = null;
+    await sniffer.stopFollowScan(sessionId || undefined, tabId);
+  }, [sniffer]);
+
+  const startFollowScan = useCallback(async () => {
+    if (!followScanEnabled || isDeepScanningRef.current) return;
+    const sessionId = createFollowScanSessionId();
+    activeFollowScanSessionId.current = sessionId;
+    activeFollowScanTabId.current = await sniffer.startFollowScan(
+      snifferSettings,
+      sessionId,
+    );
+  }, [followScanEnabled, sniffer, snifferSettings]);
+
+  const startFollowScanSession = useCallback(async () => {
+    const sessionId = createFollowScanSessionId();
+    activeFollowScanSessionId.current = sessionId;
+    activeFollowScanTabId.current = await sniffer.startFollowScan(
+      snifferSettings,
+      sessionId,
+    );
+  }, [sniffer, snifferSettings]);
+
+  const restartFollowScan = useCallback(async () => {
+    await stopFollowScan();
+    await startFollowScan();
+  }, [startFollowScan, stopFollowScan]);
+  const restartFollowScanRef = useRef(restartFollowScan);
+  restartFollowScanRef.current = restartFollowScan;
+
   useEffect(() => {
-    const runSniffer = async () => {
+    const runInitialSniffer = async () => {
       setLoading(true);
       try {
-        const results = await sniffer.sniffAll(settings);
-        setImages(results);
+        await runSniffer(true);
+        await restartFollowScanRef.current();
       } catch {
         console.error("Sniffer failed");
       } finally {
@@ -88,7 +225,7 @@ const App: React.FC = () => {
       }
     };
 
-    runSniffer();
+    runInitialSniffer();
 
     // 监听侧边栏模式下的 Tab 切换
     const isExtensionPage =
@@ -96,10 +233,10 @@ const App: React.FC = () => {
       chrome.tabs &&
       window.location.protocol === "chrome-extension:";
     if (isExtensionPage) {
-      const handleTabChange = () => runSniffer();
+      const handleTabChange = () => runInitialSniffer();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const handleTabUpdate = (_tabId: number, changeInfo: any) => {
-        if (changeInfo.status === "complete") runSniffer();
+        if (changeInfo.status === "complete") runInitialSniffer();
       };
 
       chrome.tabs.onActivated.addListener(handleTabChange);
@@ -110,7 +247,126 @@ const App: React.FC = () => {
         chrome.tabs.onUpdated.removeListener(handleTabUpdate);
       };
     }
-  }, [sniffer, settings]);
+  }, [runSniffer]);
+
+  useEffect(() => {
+    if (!followScanEnabled) {
+      void stopFollowScan();
+      return;
+    }
+
+    void restartFollowScan();
+    return () => {
+      void stopFollowScan();
+    };
+  }, [followScanEnabled, restartFollowScan, stopFollowScan]);
+
+  useEffect(() => {
+    const handleReopen = (event: MessageEvent) => {
+      if (!isImagetReopenMessage(event.data)) return;
+
+      setLoading(true);
+      runSniffer(false)
+        .then(() => restartFollowScan())
+        .catch(() => {
+          console.error("Sniffer failed");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    window.addEventListener("message", handleReopen);
+    return () => window.removeEventListener("message", handleReopen);
+  }, [restartFollowScan, runSniffer]);
+
+  useEffect(() => {
+    const handleWindowMessage = (event: MessageEvent) => {
+      const message = event.data as {
+        type?: string;
+        payload?: { sessionId?: string; items?: ImageItem[] };
+      };
+      if (message.type !== FOLLOW_SCAN_CANDIDATES) return;
+      if (
+        message.payload?.sessionId &&
+        Array.isArray(message.payload.items)
+      ) {
+        applyFollowCandidates(message.payload.sessionId, message.payload.items);
+      }
+    };
+
+    window.addEventListener("message", handleWindowMessage);
+    return () => window.removeEventListener("message", handleWindowMessage);
+  }, [applyFollowCandidates]);
+
+  useEffect(() => {
+    const isExtensionPage =
+      typeof chrome !== "undefined" &&
+      chrome.runtime?.onMessage &&
+      window.location.protocol === "chrome-extension:";
+    if (!isExtensionPage) return;
+
+    const onRuntimeMessage = (message: unknown) => {
+      if (
+        !message ||
+        typeof message !== "object" ||
+        !("type" in message) ||
+        !("payload" in message)
+      ) {
+        return;
+      }
+
+      const typedMessage = message as {
+        type?: string;
+        payload?: {
+          requestId?: string;
+          sessionId?: string;
+          progress?: number;
+          items?: ImageItem[];
+        };
+      };
+
+      if (typedMessage.type === "AUTOSCROLL_PROGRESS") {
+        if (
+          typedMessage.payload?.requestId &&
+          typedMessage.payload.requestId === activeAutoScrollRequestId.current &&
+          typeof typedMessage.payload.progress === "number"
+        ) {
+          setProgress(
+            Math.max(0, Math.min(100, typedMessage.payload.progress)),
+          );
+        }
+        return;
+      }
+
+      if (typedMessage.type === "SNIFF_PROGRESS") {
+        if (
+          typedMessage.payload?.requestId &&
+          typedMessage.payload.requestId === activeScanRequestId.current &&
+          Array.isArray(typedMessage.payload.items)
+        ) {
+          setImages((prev) =>
+            upsertImageItems(prev, typedMessage.payload?.items ?? []),
+          );
+        }
+      }
+
+      if (typedMessage.type === FOLLOW_SCAN_CANDIDATES) {
+        if (
+          typedMessage.payload?.sessionId &&
+          Array.isArray(typedMessage.payload.items)
+        ) {
+          applyFollowCandidates(
+            typedMessage.payload.sessionId,
+            typedMessage.payload.items,
+          );
+        }
+      }
+    };
+
+    chrome.runtime.onMessage.addListener(onRuntimeMessage);
+    return () => chrome.runtime.onMessage.removeListener(onRuntimeMessage);
+  }, [applyFollowCandidates]);
 
   const currentLang = useMemo(() => {
     const lang = settings.general.language;
@@ -142,9 +398,7 @@ const App: React.FC = () => {
   }, [previewIndex, filteredImages]);
 
   // 选中逻辑
-  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(
-    null,
-  );
+  const lastSelectedIndexRef = useRef<number | null>(null);
 
   const toggleSelect = useCallback(
     (id: string, isShift: boolean = false): void => {
@@ -155,9 +409,9 @@ const App: React.FC = () => {
         const newImages = [...prev];
         const targetValue = !prev[currentIndex].isSelected;
 
-        if (isShift && lastSelectedIndex !== null) {
-          const start = Math.min(lastSelectedIndex, currentIndex);
-          const end = Math.max(lastSelectedIndex, currentIndex);
+        if (isShift && lastSelectedIndexRef.current !== null) {
+          const start = Math.min(lastSelectedIndexRef.current, currentIndex);
+          const end = Math.max(lastSelectedIndexRef.current, currentIndex);
           for (let i = start; i <= end; i++) {
             newImages[i] = { ...newImages[i], isSelected: targetValue };
           }
@@ -168,11 +422,11 @@ const App: React.FC = () => {
           };
         }
 
-        setLastSelectedIndex(currentIndex);
+        lastSelectedIndexRef.current = currentIndex;
         return newImages;
       });
     },
-    [lastSelectedIndex],
+    [], // empty deps - ref doesn't need to be in deps
   );
 
   const selectAll = (): void => {
@@ -307,8 +561,7 @@ const App: React.FC = () => {
   const handleRefresh = async () => {
     setLoading(true);
     try {
-      const results = await sniffer.sniffAll(settings);
-      setImages(results);
+      await runSniffer(false);
     } finally {
       setLoading(false);
     }
@@ -316,18 +569,56 @@ const App: React.FC = () => {
 
   const handleDeepScan = async () => {
     setLoading(true);
+    setIsDeepScanning(true);
     setProgress(0);
+    const requestId = createAutoScrollRequestId();
+    const controller = new AbortController();
+    const followSessionPolicy = getRollingScanFollowSessionPolicy({
+      hasActiveSession: Boolean(activeFollowScanSessionId.current),
+      followScanEnabled,
+    });
+    activeAutoScrollRequestId.current = requestId;
+    autoScrollAbortController.current = controller;
     try {
-      await sniffer.autoScroll((p) => setProgress(p));
-      const results = await sniffer.sniffAll(settings);
-      setImages(results);
+      if (followSessionPolicy.startSession) {
+        await startFollowScanSession();
+      }
+      await sniffer.autoScroll(
+        snifferSettings,
+        (p) => setProgress(p),
+        undefined,
+        requestId,
+        controller.signal,
+        {
+          onSettledStep: () =>
+            window.postMessage({ type: FOLLOW_SCAN_SCAN_NOW }, "*"),
+          onBeforeRestore: () =>
+            window.postMessage({ type: FOLLOW_SCAN_SCAN_NOW }, "*"),
+        },
+      );
+      await runSniffer(false);
     } finally {
+      if (followSessionPolicy.stopAfterScan) {
+        await stopFollowScan();
+      }
+      activeAutoScrollRequestId.current = null;
+      autoScrollAbortController.current = null;
+      setIsDeepScanning(false);
       setLoading(false);
       setTimeout(() => setProgress(0), 1000);
     }
   };
 
+  const handleStopDeepScan = () => {
+    autoScrollAbortController.current?.abort();
+    const requestId = activeAutoScrollRequestId.current;
+    if (requestId) {
+      void sniffer.cancelAutoScroll(requestId);
+    }
+  };
+
   const handleClose = () => {
+    void stopFollowScan();
     const isExtensionPage =
       typeof chrome !== "undefined" &&
       chrome.tabs &&
@@ -410,7 +701,19 @@ const App: React.FC = () => {
               onClose={handleClose}
               onRefresh={handleRefresh}
               onDeepScan={handleDeepScan}
+              onStopDeepScan={handleStopDeepScan}
+              followScanEnabled={followScanEnabled}
+              onFollowScanToggle={(enabled) =>
+                updateSettings((prev) => ({
+                  ...prev,
+                  interfaceBehavior: {
+                    ...prev.interfaceBehavior,
+                    followScanEnabled: enabled,
+                  },
+                }))
+              }
               isScanning={loading}
+              isDeepScanning={isDeepScanning}
               activeTab={activeTab}
               onTabChange={setActiveTab}
               portalNode={portalNode}

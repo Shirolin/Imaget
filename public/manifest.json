@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "__MSG_extName__",
+  "name": "Imaget - Smart Image Sniffer & Downloader",
   "version": "1.0.1",
-  "description": "__MSG_extDesc__",
+  "description": "Automatically sniff and batch download images from any webpage.",
   "author": "shirolin",
   "homepage_url": "https://github.com/Shirolin/Imaget",
   "short_name": "Imaget",
-  "default_locale": "en",
   "icons": {
     "16": "icon-16.png",
     "48": "icon-48.png",
@@ -20,7 +19,8 @@
     "sidePanel"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "http://*/*",
+    "https://*/*"
   ],
   "side_panel": {
     "default_path": "sidepanel.html"
@@ -40,7 +40,8 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
         "content-loader.js"
@@ -50,10 +51,17 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "*"
+        "content.js",
+        "theme.js",
+        "types.js",
+        "favicon.svg",
+        "icon-16.png",
+        "icon-48.png",
+        "icon-128.png"
       ],
       "matches": [
-        "<all_urls>"
+        "http://*/*",
+        "https://*/*"
       ]
     }
   ]

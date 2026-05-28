@@ -9,7 +9,7 @@
 ## 2. 核心技术栈
 
 * **构建工具**: Vite (极简配置，针对 Content Script 统一打包)
-* **核心框架**: React 18 + TypeScript (强类型约束，AI 的最佳向导)
+* **核心框架**: React 19 + TypeScript (强类型约束，AI 的最佳向导)
 * **UI 组件库**: **Mantine v8** (唯一合法的 UI 构建方案，严禁混用其他 CSS 框架)
 * **环境隔离**: Shadow DOM (采用 ID 挂载策略，统一 Dev 与 Prod 环境)
 * **插件规范**: Chrome Manifest V3
@@ -103,14 +103,6 @@ export interface FilterOptions {
 1. **UI 与逻辑本地联调**：运行 `npm run dev`，在本地 `index.html` 的高强度污染测试页中打开。只要这里显示完美，生产环境就绝对完美。
 2. **打包注入**：运行 `npm run build`，在 Chrome 扩展管理页面加载 `dist` 目录进行最终的端到端测试。
 
-我的错！刚才光顾着帮你解决最头疼的架构和 CSS 污染（Shadow DOM）问题，把最核心的**业务功能需求（PRD）**给漏掉了。
-
-如果没有详细的功能描述，AI 拿到架构文档也只会给你画一个空壳。结合你之前发来的参考图和 Imaget 的核心定位，我为你补充了**第 7 部分：核心功能与业务细节**。
-
-你可以直接把下面这段完整追加到刚才那个 `PROJECT_DESIGN.md` 文档的末尾。AI 读完这段，就能精准知道每个按钮是干什么用的，以及需要实现哪些复杂的内部逻辑。
-
----
-
 ## 7. 核心功能与业务细节 (Functional Requirements)
 
 **致 AI：在编写 `src/core` 目录下的业务逻辑和 `src/ui` 下的组件交互时，必须严格实现以下功能模块：**
@@ -120,11 +112,12 @@ export interface FilterOptions {
 负责从宿主网页中全方位提取图片资源。
 
 * **基础提取**：遍历并提取页面中所有的 `<img>` 标签的 `src`、`<picture>` 标签的 `source`、以及带有 `background-image` 的内联样式元素。
-* **深度扫描 (Deep Scan)**：
+* **深度提取（引擎默认）**：
     * **Performance API 追踪**：利用 `performance.getEntriesByType('resource')` 捕捉通过 JS 加载或样式表引用的资源。
     * **Shadow DOM 穿透**：递归遍历页面中的所有 Shadow Root，确保能获取到复杂社交平台（如 Twitter/Instagram）中的图片。
     * **SVG 转换**：支持解析 `<svg>` 节点并将其转化为可下载的图片格式。
-    * **智能自动滚动 (Auto Scroll)**：深度适配无限流网页，模拟人类滚动行为以自动抓取动态加载的后续图片。
+* **滚动扫描 (Scroll & Scan)**：顶栏主动触发的自动滚页 + 全量重新嗅探，适配无限流/懒加载页面；与设置中的**跟随嗅探**（用户滚动时被动补图）区分。
+    * **智能自动滚动 (Auto Scroll)**：模拟人类滚动行为以加载动态内容后再扫描。
 
 * **元数据获取**：针对提取到的每个 URL，必须计算或获取其实际的**像素尺寸（宽 x 高）**、**文件大小（KB/MB）**和**真实格式（JPG/PNG/WEBP/SVG 等）**，剔除无效的 Base64 占位符或极小像素的埋点图片。
 

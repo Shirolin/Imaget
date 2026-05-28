@@ -29,7 +29,14 @@ export interface IPlatformAdapter {
   download(
     blob: Blob,
     filename: string,
-    conflictAction?: "uniquify" | "overwrite",
+    conflictAction?: "uniquify" | "overwrite" | "prompt",
+  ): Promise<void>;
+
+  downloadUrl?(
+    url: string,
+    filename: string,
+    conflictAction?: "uniquify" | "overwrite" | "prompt",
+    referer?: string,
   ): Promise<void>;
 
   /**

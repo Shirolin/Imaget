@@ -1,195 +1,533 @@
 export default {
-  extName: {
-    message: "Imaget - Sniffer y Descargador Inteligente de Imágenes",
+  "btnAddDomain": {
+    "message": "Agregar dominio"
   },
-  extDesc: {
-    message:
-      "Busca y descarga imágenes por lotes automáticamente de cualquier página web.",
+  "btnClose": {
+    "message": "Cerrar"
   },
-  btnDownload: { message: "Descargar" },
-  btnDeepScan: { message: "Escaneo Profundo" },
-  btnClose: { message: "Cerrar" },
-  selectAll: { message: "Seleccionar Todo" },
-  deselectAll: { message: "Deseleccionar Todo" },
-  downloadSelected: { message: "Descargar Selección ($1)" },
-  selectedCount: { message: "$1 selec. / $2 filtradas / $3 total" },
-  statTotal: { message: "Total descubierto" },
-  statFilter: { message: "Filtrada" },
-  statSelected: { message: "Seleccionada" },
-  noImages: { message: "No se encontraron imágenes" },
-  noImagesHint: {
-    message: "Intente ajustar los filtros o actualizar la página",
+  "btnDeepScan": {
+    "message": "Escaneo con scroll"
   },
-  loading: { message: "Cargando..." },
-  processing: { message: "Procesando... ($1/$2)" },
-  preparingZip: { message: "Preparando ZIP..." },
-  toastDownloadStarted: { message: "Descarga de $1 imágenes iniciada" },
-  toastNoSelection: { message: "Por favor, seleccione imágenes primero" },
-  preview: { message: "Vista Previa" },
-  downloadZip: { message: "Descargar ZIP" },
-  filterMinWidth: { message: "Ancho Mín." },
-  filterMinHeight: { message: "Alto Mín." },
-  filterSearch: { message: "Buscar" },
-  filterExclude: { message: "Excluir Palabras" },
-  filterType: { message: "Tipo" },
-  filterExcludeType: { message: "Excluir tipo" },
-  filterLayout: { message: "Relación de Aspecto" },
-  layoutAny: { message: "Todo" },
-  layoutSquare: { message: "Cuadrado" },
-  layoutWide: { message: "Ancho" },
-  layoutTall: { message: "Alto" },
-  sortBy: { message: "Ordenar por" },
-  sortOrder: { message: "Orden" },
-  sortSize: { message: "Tamaño" },
-  sortAsc: { message: "Ascendente" },
-  sortDesc: { message: "Descendente" },
-  tabImages: { message: "Imágenes" },
-  labelRefresh: { message: "Actualizar" },
-  tabPreferences: { message: "Ajustes" },
-  prefSubfolder: { message: "Subcarpeta" },
-  prefFilename: { message: "Plantilla de Nombre" },
-  prefSave: { message: "Guardar" },
-  prefCancel: { message: "Cancelar" },
-  prefConflictAction: { message: "Conflicto de Archivos" },
-  conflictUniquify: { message: "Renombrar" },
-  conflictOverwrite: { message: "Sobrescribir" },
-  conflictPrompt: { message: "Preguntar" },
-  warnManyFiles: {
-    message: "Está a punto de descargar $1 imágenes, ¿continuar?",
+  "btnDownload": {
+    "message": "Descargar"
   },
-  secFileSave: { message: "Guardado de Archivos" },
-  secDownloadLogic: { message: "Lógica de Descarga" },
-  secUiBehavior: { message: "Comportamiento UI" },
-  prefShowHoverBtn: { message: "Mostrar Botón Flotante" },
-  formatOriginal: { message: "Original" },
-  resetDefault: { message: "Restablecer Valores" },
-  useOriginal: { message: "Usar Nombre Original" },
-  presetIndexOriginal: { message: "Índice + Original" },
-  resetAllSettings: { message: "Restablecer Todo" },
-  warnResetAll: {
-    message: "¿Está seguro de restablecer todos los ajustes?",
+  "btnRemoveDomain": {
+    "message": "Eliminar"
   },
-  statusSaved: { message: "Guardado" },
-  secGeneral: { message: "General" },
-  secExtraction: { message: "Extracción" },
-  secDownload: { message: "Descargar" },
-  secLanguage: { message: "Idioma" },
-  prefLanguage: { message: "Idioma de Interfaz" },
-  prefSubfolderHint: {
-    message: "Los archivos se guardarán en esta subcarpeta de Descargas",
+  "cancel": {
+    "message": "Cancelar"
   },
-  prefFilenameHint: { message: "Variables disponibles: $1" },
-  prefConflictUniquify: { message: "Auto-Renombrar" },
-  prefConflictOverwrite: { message: "Sobrescribir" },
-  prefConflictPrompt: { message: "Preguntarme" },
-  prefShowInSidebar: { message: "Mostrar en Sidebar" },
-  prefShowInSidebarHint: {
-    message:
-      "Requiere cerrar y volver a abrir la extensión para que surta efecto",
+  "concurrencyRecommended": {
+    "message": "3 (Recomendado)"
   },
-  prefHideDownloadWarning: { message: "Ocultar Advertencia" },
-  prefSearchAllFrames: { message: "Buscar en todos los Frames" },
-  prefIdentifyBackgroundImages: { message: "Identificar Imágenes de Fondo" },
-  prefIdentifyBlobImages: {
-    message: "Identificar recursos Blob (para Telegram, Discord, etc.)",
+  "concurrencySingle": {
+    "message": "1 (Hilo único)"
   },
-  prefMinImageSize: { message: "Tamaño Mín. para Botón Flotante" },
-  sizeAlways: { message: "Mostrar Siempre" },
-  prefCustomSize: { message: "Personalizado" },
-  prefTargetFormat: { message: "Formato de Destino" },
-  prefQuality: { message: "Calidad" },
-  prefReEncodeWebp: { message: "Forzar Re-codificación WebP" },
-  prefGifHandling: { message: "Estrategia GIF" },
-  gifOriginal: { message: "Mantener Original" },
-  gifExtract: { message: "Extraer Primer Frame" },
-  gifSkip: { message: "Omitir GIF" },
-  prefConflictResolution: { message: "Resolución de Conflictos" },
-  prefMaxConcurrency: { message: "Límite de Descargas Simultáneas" },
-  concurrencyUnlimited: { message: "Ilimitado" },
-  warningWebEnvironment: {
-    message: "Nota: Entorno web. Algunas funciones pueden estar limitadas.",
+  "concurrencyUnlimited": {
+    "message": "Ilimitado"
   },
-  infoExtensionEnvironment: {
-    message: "Entorno de extensión detectado.",
+  "confirm": {
+    "message": "Confirmar"
   },
-  selectPlaceholder: { message: "Por favor seleccione" },
-  prefSubfolderPlaceholder: { message: "ej., Imaget" },
-  viewVariables: { message: "Ver variables disponibles" },
-  secGifHandling: { message: "Manejo de GIF" },
-  secDownloadControl: { message: "Control de Descarga" },
-  secFilterDefaults: { message: "Valores predeterminados del filtro" },
-  descFilterDefaults: {
-    message:
-      "Los valores predeterminados que se utilizarán cuando se inicie la extensión o cuando se restablezcan los filtros.",
+  "conflictOverwrite": {
+    "message": "Sobrescribir"
   },
-  prefDefaultMinWidth: { message: "Ancho mínimo predeterminado" },
-  prefDefaultMinHeight: { message: "Altura mínima predeterminada" },
-  prefDefaultExcludeKeywords: {
-    message: "Palabras clave excluidas predeterminadas",
+  "conflictPrompt": {
+    "message": "Preguntar"
   },
-  prefDefaultSearchQuery: { message: "Consulta de búsqueda predeterminada" },
-  prefDefaultAllowedFormats: { message: "Formatos permitidos predeterminados" },
-  prefDefaultExcludeFormats: { message: "Formatos excluidos predeterminados" },
-  prefDefaultAspectRatio: { message: "Relación de aspecto predeterminada" },
-  prefDefaultResolutionMode: { message: "Modo de resolución predeterminado" },
-  menuSaveAsWebP: { message: "Guardar como WebP" },
-  menuSaveAsPNG: { message: "Guardar como PNG" },
-  menuSaveAsJPG: { message: "Guardar como JPG" },
-  menuOpenDashboard: { message: "Abrir Panel de Imaget" },
-  labelOpenLink: { message: "Abrir Enlace" },
-  labelCopied: { message: "¡Copiado!" },
-  labelCopyLink: { message: "Copiar Enlace" },
-  labelSaveFile: { message: "Guardar Archivo" },
-  labelPreview: { message: "Vista Previa" },
-  labelDeepScan: { message: "Escaneo Profundo" },
-  labelFloatingDownload: { message: "Descargar imagen" },
-  labelFloatingSuccess: { message: "Descarga exitosa" },
-  labelFloatingError: { message: "Error en la descarga" },
-
-  labelFloatingClose: { message: "Ocultar botón temporalmente" },
-  labelZoomOut: { message: "Alejar" },
-  labelZoomIn: { message: "Acercar" },
-  labelRotate: { message: "Girar 90°" },
-  labelFit: { message: "Ajustar a ventana" },
-  labelOriginalSize: { message: "Tamaño original 1:1" },
-  labelCloseEsc: { message: "Cerrar (Esc)" },
-  hintWheel: { message: "Rueda: Zoom" },
-  hintDrag: { message: "Click Izq. + Arrastrar: Panorámica" },
-  hintClick: { message: "Click fondo: Cerrar" },
-  labelSelectImage: { message: "Seleccionar imagen: $1" },
-  labelSearchImages: { message: "Buscar imágenes" },
-  labelMinWidth: { message: "Ancho mínimo" },
-  labelMinHeight: { message: "Altura mínima" },
-  labelSelectAll: { message: "Seleccionar todo" },
-  labelDeselectAll: { message: "Deseleccionar todo" },
-  labelImageQuality: { message: "Calidad de imagen" },
-  sortResolution: { message: "Resolución" },
-  concurrencySingle: { message: "1 (Hilo único)" },
-  concurrencyRecommended: { message: "3 (Recomendado)" },
-  imgAlt: { message: "Imagen detectada" },
-  imgLoadError: { message: "Error de carga" },
-  labelClearSearch: { message: "Borrar búsqueda" },
-  unitPixel: { message: "$1px+" },
-  labelGithub: { message: "Repositorio GitHub" },
-  labelDonate: { message: "Donar y Apoyar" },
-  labelAfdian: { message: "Afdian" },
-  labelKofi: { message: "Ko-fi" },
-  secSupport: { message: "Soporte y Acerca de" },
-  secDebug: { message: "Depuración (Solo para pruebas)" },
-  prefSimulateDownloadFailure: { message: "Simular error de descarga" },
-  labelFloatingDisable: { message: "Desactivar en este sitio web" },
-  secDisabledDomains: { message: "Sitios web desactivados" },
-  descDisabledDomains: {
-    message: "El botón flotante no se mostrará en estos sitios web",
+  "conflictUniquify": {
+    "message": "Renombrar"
   },
-  btnRemoveDomain: { message: "Eliminar" },
-  noDisabledDomains: { message: "No hay sitios web desactivados" },
-  labelFloatingHidePermanent: {
-    message: "Desactivar la función del botón flotante permanentemente",
+  "descDisabledDomains": {
+    "message": "El botón flotante no se mostrará en estos sitios web"
   },
-  resModeOr: { message: "O" },
-  resModeAnd: { message: "Y" },
-  resModeOrDesc: { message: "Ancho o alto debe coincidir" },
-  resModeAndDesc: { message: "Tanto el ancho como el alto deben coincidir" },
-  labelClearExclude: { message: "Borrar exclusión" },
+  "descFilterDefaults": {
+    "message": "Los valores predeterminados que se utilizarán cuando se inicie la extensión o cuando se restablezcan los filtros."
+  },
+  "deselectAll": {
+    "message": "Deseleccionar Todo"
+  },
+  "downloadSelected": {
+    "message": "Descargar Selección ($1)"
+  },
+  "downloadZip": {
+    "message": "Descargar ZIP"
+  },
+  "exploringImages": {
+    "message": "Explorando imágenes en la página..."
+  },
+  "extDesc": {
+    "message": "Busca y descarga imágenes por lotes automáticamente de cualquier página web."
+  },
+  "extName": {
+    "message": "Imaget - Sniffer y Descargador Inteligente de Imágenes"
+  },
+  "filterExclude": {
+    "message": "Excluir Palabras"
+  },
+  "filterExcludeType": {
+    "message": "Excluir tipo"
+  },
+  "filterLayout": {
+    "message": "Relación de Aspecto"
+  },
+  "filterMinHeight": {
+    "message": "Alto Mín."
+  },
+  "filterMinWidth": {
+    "message": "Ancho Mín."
+  },
+  "filterSearch": {
+    "message": "Buscar"
+  },
+  "filterType": {
+    "message": "Tipo"
+  },
+  "formatOriginal": {
+    "message": "Original"
+  },
+  "gifExtract": {
+    "message": "Extraer Primer Frame"
+  },
+  "gifOriginal": {
+    "message": "Mantener Original"
+  },
+  "gifSkip": {
+    "message": "Omitir GIF"
+  },
+  "hintClick": {
+    "message": "Click fondo: Cerrar"
+  },
+  "hintDrag": {
+    "message": "Click Izq. + Arrastrar: Panorámica"
+  },
+  "hintWheel": {
+    "message": "Rueda: Zoom"
+  },
+  "imgAlt": {
+    "message": "Imagen detectada"
+  },
+  "imgLoadError": {
+    "message": "Error de carga"
+  },
+  "infoExtensionEnvironment": {
+    "message": "Entorno de extensión detectado."
+  },
+  "labelAfdian": {
+    "message": "Afdian"
+  },
+  "labelClearExclude": {
+    "message": "Borrar exclusión"
+  },
+  "labelClearSearch": {
+    "message": "Borrar búsqueda"
+  },
+  "labelCloseEsc": {
+    "message": "Cerrar (Esc)"
+  },
+  "labelCopied": {
+    "message": "¡Copiado!"
+  },
+  "labelCopyLink": {
+    "message": "Copiar Enlace"
+  },
+  "labelDeepScan": {
+    "message": "Escaneo con scroll"
+  },
+  "labelDeselectAll": {
+    "message": "Deseleccionar todo"
+  },
+  "labelDonate": {
+    "message": "Donar y Apoyar"
+  },
+  "labelFit": {
+    "message": "Ajustar a ventana"
+  },
+  "labelFloatingClose": {
+    "message": "Ocultar botón temporalmente"
+  },
+  "labelFloatingDisable": {
+    "message": "Desactivar en este sitio web"
+  },
+  "labelFloatingDownload": {
+    "message": "Descargar imagen"
+  },
+  "labelFloatingError": {
+    "message": "Error en la descarga"
+  },
+  "labelFloatingHidePermanent": {
+    "message": "Desactivar la función del botón flotante permanentemente"
+  },
+  "labelFloatingSuccess": {
+    "message": "Descarga exitosa"
+  },
+  "labelFollowScanOff": {
+    "message": "Escaneo de seguimiento desactivado"
+  },
+  "labelFollowScanOn": {
+    "message": "Escaneo de seguimiento activado"
+  },
+  "labelGithub": {
+    "message": "Repositorio GitHub"
+  },
+  "labelImageQuality": {
+    "message": "Calidad de imagen"
+  },
+  "labelKofi": {
+    "message": "Ko-fi"
+  },
+  "labelMinHeight": {
+    "message": "Altura mínima"
+  },
+  "labelMinWidth": {
+    "message": "Ancho mínimo"
+  },
+  "labelOpenLink": {
+    "message": "Abrir Enlace"
+  },
+  "labelOriginalSize": {
+    "message": "Tamaño original 1:1"
+  },
+  "labelPreview": {
+    "message": "Vista Previa"
+  },
+  "labelRefresh": {
+    "message": "Actualizar"
+  },
+  "labelRotate": {
+    "message": "Girar 90°"
+  },
+  "labelSaveFile": {
+    "message": "Guardar Archivo"
+  },
+  "labelSearchImages": {
+    "message": "Buscar imágenes"
+  },
+  "labelSelectAll": {
+    "message": "Seleccionar todo"
+  },
+  "labelSelectImage": {
+    "message": "Seleccionar imagen: $1"
+  },
+  "labelStopDeepScan": {
+    "message": "Detener desplazamiento"
+  },
+  "labelZoomIn": {
+    "message": "Acercar"
+  },
+  "labelZoomOut": {
+    "message": "Alejar"
+  },
+  "layoutAny": {
+    "message": "Todo"
+  },
+  "layoutColumns": {
+    "message": "Columnas"
+  },
+  "layoutGrid": {
+    "message": "Cuadrícula"
+  },
+  "layoutList": {
+    "message": "Lista"
+  },
+  "layoutSquare": {
+    "message": "Cuadrado"
+  },
+  "layoutTall": {
+    "message": "Alto"
+  },
+  "layoutWide": {
+    "message": "Ancho"
+  },
+  "loading": {
+    "message": "Cargando..."
+  },
+  "menuOpenDashboard": {
+    "message": "Abrir Panel de Imaget"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  },
+  "menuSaveAsJPG": {
+    "message": "Guardar como JPG"
+  },
+  "menuSaveAsPNG": {
+    "message": "Guardar como PNG"
+  },
+  "menuSaveAsWebP": {
+    "message": "Guardar como WebP"
+  },
+  "menuSaveImageSmart": {
+    "message": "Smart Save Image"
+  },
+  "noDisabledDomains": {
+    "message": "No hay sitios web desactivados"
+  },
+  "noImages": {
+    "message": "No se encontraron imágenes"
+  },
+  "noImagesHint": {
+    "message": "Intente ajustar los filtros o actualizar la página"
+  },
+  "prefCancel": {
+    "message": "Cancelar"
+  },
+  "prefConflictAction": {
+    "message": "Conflicto de Archivos"
+  },
+  "prefConflictOverwrite": {
+    "message": "Sobrescribir"
+  },
+  "prefConflictPrompt": {
+    "message": "Preguntarme"
+  },
+  "prefConflictResolution": {
+    "message": "Resolución de Conflictos"
+  },
+  "prefConflictUniquify": {
+    "message": "Auto-Renombrar"
+  },
+  "prefCustomSize": {
+    "message": "Personalizado"
+  },
+  "prefDefaultAllowedFormats": {
+    "message": "Formatos permitidos predeterminados"
+  },
+  "prefDefaultAspectRatio": {
+    "message": "Relación de aspecto predeterminada"
+  },
+  "prefDefaultExcludeFormats": {
+    "message": "Formatos excluidos predeterminados"
+  },
+  "prefDefaultExcludeKeywords": {
+    "message": "Palabras clave excluidas predeterminadas"
+  },
+  "prefDefaultMinHeight": {
+    "message": "Altura mínima predeterminada"
+  },
+  "prefDefaultMinWidth": {
+    "message": "Ancho mínimo predeterminado"
+  },
+  "prefDefaultResolutionMode": {
+    "message": "Modo de resolución predeterminado"
+  },
+  "prefDefaultSearchQuery": {
+    "message": "Consulta de búsqueda predeterminada"
+  },
+  "prefFilename": {
+    "message": "Plantilla de Nombre"
+  },
+  "prefFilenameHint": {
+    "message": "Variables disponibles: $1"
+  },
+  "prefFollowScan": {
+    "message": "Escaneo de seguimiento"
+  },
+  "prefFollowScanHint": {
+    "message": "Añade automáticamente a la lista las imágenes que se carguen mientras la ventana del plugin está abierta"
+  },
+  "prefGifHandling": {
+    "message": "Estrategia GIF"
+  },
+  "prefHideDownloadWarning": {
+    "message": "Omitir confirmación interna de descarga por lotes"
+  },
+  "prefHideDownloadWarningHint": {
+    "message": "Las descargas comienzan directamente cuando hay más de 30 imágenes seleccionadas. Los avisos de permiso del navegador para descargas múltiples no se ven afectados."
+  },
+  "prefIdentifyBackgroundImages": {
+    "message": "Identificar Imágenes de Fondo"
+  },
+  "prefIdentifyBlobImages": {
+    "message": "Identificar recursos Blob (para Telegram, Discord, etc.)"
+  },
+  "prefLanguage": {
+    "message": "Idioma de Interfaz"
+  },
+  "prefMaxConcurrency": {
+    "message": "Límite de Descargas Simultáneas"
+  },
+  "prefMinImageSize": {
+    "message": "Tamaño Mín. para Botón Flotante"
+  },
+  "prefQuality": {
+    "message": "Calidad"
+  },
+  "prefReEncodeWebp": {
+    "message": "Forzar Re-codificación WebP"
+  },
+  "prefSave": {
+    "message": "Guardar"
+  },
+  "prefSearchAllFrames": {
+    "message": "Buscar en todos los Frames"
+  },
+  "prefShowHoverBtn": {
+    "message": "Mostrar Botón Flotante"
+  },
+  "prefShowInSidebar": {
+    "message": "Mostrar en Sidebar"
+  },
+  "prefShowInSidebarHint": {
+    "message": "Requiere cerrar y volver a abrir la extensión para que surta efecto"
+  },
+  "prefSimulateDownloadFailure": {
+    "message": "Simular error de descarga"
+  },
+  "prefSubfolder": {
+    "message": "Subcarpeta"
+  },
+  "prefSubfolderHint": {
+    "message": "Los archivos se guardarán en esta subcarpeta de Descargas"
+  },
+  "prefSubfolderPlaceholder": {
+    "message": "ej., Imaget"
+  },
+  "prefTargetFormat": {
+    "message": "Formato de Destino"
+  },
+  "preparingZip": {
+    "message": "Preparando ZIP..."
+  },
+  "presetIndexOriginal": {
+    "message": "Índice + Original"
+  },
+  "preview": {
+    "message": "Vista Previa"
+  },
+  "processing": {
+    "message": "Procesando... ($1/$2)"
+  },
+  "resModeAnd": {
+    "message": "Y"
+  },
+  "resModeAndDesc": {
+    "message": "Tanto el ancho como el alto deben coincidir"
+  },
+  "resModeOr": {
+    "message": "O"
+  },
+  "resModeOrDesc": {
+    "message": "Ancho o alto debe coincidir"
+  },
+  "resetAllSettings": {
+    "message": "Restablecer Todo"
+  },
+  "resetDefault": {
+    "message": "Restablecer Valores"
+  },
+  "secDebug": {
+    "message": "Depuración (Solo para pruebas)"
+  },
+  "secDisabledDomains": {
+    "message": "Sitios web desactivados"
+  },
+  "secDownload": {
+    "message": "Descargar"
+  },
+  "secDownloadControl": {
+    "message": "Control de Descarga"
+  },
+  "secDownloadLogic": {
+    "message": "Lógica de Descarga"
+  },
+  "secExtraction": {
+    "message": "Extracción"
+  },
+  "secFileSave": {
+    "message": "Guardado de Archivos"
+  },
+  "secFilterDefaults": {
+    "message": "Valores predeterminados del filtro"
+  },
+  "secGeneral": {
+    "message": "General"
+  },
+  "secGifHandling": {
+    "message": "Manejo de GIF"
+  },
+  "secLanguage": {
+    "message": "Idioma"
+  },
+  "secSupport": {
+    "message": "Soporte y Acerca de"
+  },
+  "secUiBehavior": {
+    "message": "Comportamiento UI"
+  },
+  "selectAll": {
+    "message": "Seleccionar Todo"
+  },
+  "selectPlaceholder": {
+    "message": "Por favor seleccione"
+  },
+  "selectedCount": {
+    "message": "$1 selec. / $2 filtradas / $3 total"
+  },
+  "sizeAlways": {
+    "message": "Mostrar Siempre"
+  },
+  "sortAsc": {
+    "message": "Ascendente"
+  },
+  "sortBy": {
+    "message": "Ordenar por"
+  },
+  "sortDesc": {
+    "message": "Descendente"
+  },
+  "sortOrder": {
+    "message": "Orden"
+  },
+  "sortResolution": {
+    "message": "Resolución"
+  },
+  "sortSize": {
+    "message": "Tamaño"
+  },
+  "statFilter": {
+    "message": "Filtrada"
+  },
+  "statSelected": {
+    "message": "Seleccionada"
+  },
+  "statTotal": {
+    "message": "Total descubierto"
+  },
+  "statusSaved": {
+    "message": "Guardado"
+  },
+  "tabImages": {
+    "message": "Imágenes"
+  },
+  "tabPreferences": {
+    "message": "Ajustes"
+  },
+  "toastDownloadStarted": {
+    "message": "Descarga de $1 imágenes iniciada"
+  },
+  "toastNoSelection": {
+    "message": "Por favor, seleccione imágenes primero"
+  },
+  "unitPixel": {
+    "message": "$1px+"
+  },
+  "useOriginal": {
+    "message": "Usar Nombre Original"
+  },
+  "viewVariables": {
+    "message": "Ver variables disponibles"
+  },
+  "warnManyFiles": {
+    "message": "Está a punto de descargar $1 imágenes, ¿continuar?"
+  },
+  "warnResetAll": {
+    "message": "¿Está seguro de restablecer todos los ajustes?"
+  },
+  "warning": {
+    "message": "Advertencia"
+  },
+  "warningWebEnvironment": {
+    "message": "Nota: Entorno web. Algunas funciones pueden estar limitadas."
+  }
 };

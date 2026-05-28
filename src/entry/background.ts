@@ -1,4 +1,5 @@
-import { defaultSettings } from "../types";
+import { defaultSettings, type Settings } from "../types";
+import { t } from "../core/utils/i18n";
 
 /**
  * 后台逻辑：
@@ -7,6 +8,49 @@ import { defaultSettings } from "../types";
  * 3. 处理下载分发 (Chrome API 限速/并发)
  */
 
+// 处理图标点击
+chrome.action.onClicked.addListener(async (tab) => {
+  if (!tab.id) return;
+
+  const result = await chrome.storage.local.get("imaget_settings");
+  const settings = (result.imaget_settings || defaultSettings) as Settings;
+
+  if (settings.interfaceBehavior?.showInSidebar) {
+    chrome.sidePanel.open({ tabId: tab.id }).catch((err) => {
+      console.warn("[Background] Failed to open side panel:", err);
+    });
+  } else {
+    // 禁用侧边栏自动打开，改用消息触发 Content Script 弹窗
+    chrome.tabs.sendMessage(tab.id, { action: "toggle-sniffer" }).catch(() => {
+      // 如果 Content Script 尚未加载，可能需要先注入
+      console.warn(
+        "[Background] Failed to send toggle message, script might not be ready",
+      );
+    });
+  }
+});
+
+// 动态配置侧边栏策略
+const updateSidePanelBehavior = async () => {
+  const result = await chrome.storage.local.get("imaget_settings");
+  const settings = (result.imaget_settings || defaultSettings) as Settings;
+
+  if (typeof chrome.sidePanel?.setPanelBehavior === "function") {
+    chrome.sidePanel
+      .setPanelBehavior({
+        openPanelOnActionClick: !!settings.interfaceBehavior?.showInSidebar,
+      })
+      .catch(() => {});
+  }
+};
+
+// 监听设置变化以更新行为
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.imaget_settings) {
+    updateSidePanelBehavior();
+  }
+});
+
 // 初始化设置
 chrome.runtime.onInstalled.addListener(async () => {
   const result = await chrome.storage.local.get("imaget_settings");
@@ -14,13 +58,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     await chrome.storage.local.set({ imaget_settings: defaultSettings });
   }
   setupContextMenus();
-});
-
-// 处理图标点击
-chrome.action.onClicked.addListener((tab) => {
-  if (tab.id) {
-    chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
-  }
+  updateSidePanelBehavior();
 });
 
 // 消息转发中心
@@ -36,45 +74,52 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     fetch(url, {
       headers: referer ? { Referer: referer } : undefined,
     })
-      .then((res) => res.blob())
-      .then((blob) => {
+      .then(async (res) => {
+        const mimeType = res.headers.get("content-type") || "";
+        const blob = await res.blob();
+
+        // 使用 FileReader 将 Blob 转换为 Base64
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onloadend = () => {
+          const result = reader.result as string;
+          const base64 = result.split(",")[1];
           try {
-            sendResponse({ success: true, dataUrl: reader.result });
+            sendResponse({ success: true, arrayBuffer: base64, mimeType });
           } catch (e) {
             console.error("sendResponse failed (payload too large?):", e);
-            // Catching it doesn't help send it to the content script if the port closed,
-            // but at least it won't crash the background worker silently.
           }
         };
         reader.onerror = () => {
-          try {
-            sendResponse({ success: false, error: "Failed to read blob" });
-          } catch {
-            /* ignore */
-          }
+          sendResponse({ success: false, error: "FileReader failed" });
         };
         reader.readAsDataURL(blob);
       })
       .catch((err) => {
         try {
           sendResponse({ success: false, error: err.message || String(err) });
-        } catch {
-          /* ignore */
+        } catch (e) {
+          console.warn("[Background] sendResponse failed (FETCH_BLOB):", e);
         }
       });
     return true; // 保持异步
   }
 
-  if (message.type === "DOWNLOAD_REQUEST") {
-    const { url, filename, conflictAction } = message.payload;
+  if (message.type === "DOWNLOAD_URL_REQUEST") {
+    const { url, filename, conflictAction, referer } = message.payload;
     chrome.downloads.download(
       {
-        url: url,
-        filename: filename,
+        url,
+        filename,
         conflictAction: conflictAction || "uniquify",
         saveAs: false,
+        headers: referer
+          ? [
+              {
+                name: "Referer",
+                value: referer,
+              },
+            ]
+          : undefined,
       },
       (downloadId) => {
         if (chrome.runtime.lastError) {
@@ -87,6 +132,37 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         }
       },
     );
+    return true;
+  }
+
+  if (message.type === "DOWNLOAD_REQUEST") {
+    const { arrayBuffer, mimeType, filename, conflictAction } = message.payload;
+    try {
+      // 在 MV3 Service Worker 中 URL.createObjectURL 不可用，
+      // 且由于 arrayBuffer 已经是 base64 字符串，我们直接使用 Data URL 方案
+      const dataUrl = `data:${mimeType || "image/png"};base64,${arrayBuffer}`;
+
+      chrome.downloads.download(
+        {
+          url: dataUrl,
+          filename: filename,
+          conflictAction: conflictAction || "uniquify",
+          saveAs: false,
+        },
+        (downloadId) => {
+          if (chrome.runtime.lastError) {
+            sendResponse({
+              success: false,
+              error: chrome.runtime.lastError.message,
+            });
+          } else {
+            sendResponse({ success: true, downloadId });
+          }
+        },
+      );
+    } catch (err) {
+      sendResponse({ success: false, error: String(err) });
+    }
     return true; // 保持异步
   }
 
@@ -113,7 +189,7 @@ function setupContextMenus() {
     // 根菜单
     chrome.contextMenus.create({
       id: "imaget-root",
-      title: chrome.i18n.getMessage("menuRoot"),
+      title: t("menuRoot"),
       contexts: ["all"],
     });
 
@@ -121,28 +197,28 @@ function setupContextMenus() {
     chrome.contextMenus.create({
       id: "save-image-smart",
       parentId: "imaget-root",
-      title: chrome.i18n.getMessage("menuSaveImageSmart"),
+      title: t("menuSaveImageSmart"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-webp",
       parentId: "save-image-smart",
-      title: chrome.i18n.getMessage("menuSaveAsWebP"),
+      title: t("menuSaveAsWebP"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-jpg",
       parentId: "save-image-smart",
-      title: chrome.i18n.getMessage("menuSaveAsJPG"),
+      title: t("menuSaveAsJPG"),
       contexts: ["image"],
     });
 
     chrome.contextMenus.create({
       id: "save-image-as-png",
       parentId: "save-image-smart",
-      title: chrome.i18n.getMessage("menuSaveAsPNG"),
+      title: t("menuSaveAsPNG"),
       contexts: ["image"],
     });
 
@@ -157,7 +233,7 @@ function setupContextMenus() {
     chrome.contextMenus.create({
       id: "open-dashboard",
       parentId: "imaget-root",
-      title: chrome.i18n.getMessage("menuOpenDashboard"),
+      title: t("menuOpenDashboard"),
       contexts: ["all"],
     });
   });
@@ -168,7 +244,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!tab?.id) return;
 
   if (info.menuItemId === "open-dashboard") {
-    chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
+    chrome.sidePanel.open({ tabId: tab.id }).catch((err) => {
+      console.warn(
+        "[Background] Failed to open side panel from context menu:",
+        err,
+      );
+    });
     return;
   }
 
@@ -182,6 +263,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
           targetFormat: format,
         },
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.warn(
+          "[Background] Failed to send CONTEXT_SAVE_SINGLE message:",
+          err,
+        );
+      });
   }
 });

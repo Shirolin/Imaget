@@ -117,26 +117,21 @@ export function useSettings() {
   return { settings, updateSettings, resetSettings, loading };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mergeDeep(target: any, source: any): any {
-  const output = Object.assign({}, target);
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
-        if (!(key in target)) {
-          Object.assign(output, { [key]: source[key] });
-        } else {
-          output[key] = mergeDeep(target[key], source[key]);
-        }
-      } else {
-        Object.assign(output, { [key]: source[key] });
-      }
-    });
-  }
-  return output;
+function isObject(item: unknown): item is Record<string, unknown> {
+  return item !== null && typeof item === "object" && !Array.isArray(item);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isObject(item: any): item is Record<string, any> {
-  return item && typeof item === "object" && !Array.isArray(item);
+function mergeDeep<T extends object>(target: T, source: Partial<T>): T {
+  const output = { ...target } as Record<string, unknown>;
+  for (const key of Object.keys(source)) {
+    const sourceVal = (source as Record<string, unknown>)[key];
+    if (sourceVal === undefined) continue;
+    const targetVal = (target as Record<string, unknown>)[key];
+    if (isObject(sourceVal) && isObject(targetVal)) {
+      output[key] = mergeDeep(targetVal, sourceVal);
+    } else {
+      output[key] = sourceVal;
+    }
+  }
+  return output as T;
 }

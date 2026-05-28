@@ -9,8 +9,8 @@ This document provides detailed justification for the permissions requested by *
 
 ## Permission Justifications
 
-### 1. `host_permissions: ["<all_urls>"]` (Broad Host Permission)
-*   **Necessity**: Imaget is a general-purpose image discovery and batch-download tool. Users expect it to function on any website where images are displayed.
+### 1. `host_permissions: ["http://*/*", "https://*/*"]` (HTTP(S) Host Permissions)
+*   **Necessity**: Imaget is a general-purpose image discovery and batch-download tool. Users expect it to function on HTTP and HTTPS websites where images are displayed.
 *   **Usage**: Used to inject content scripts to identify <img> tags, background-images, and CSS assets. It also enables the extension to bypass cross-origin (CORS) restrictions when resolving image dimensions or fetching metadata for high-quality previews.
 
 ### 2. `permissions: ["downloads"]`

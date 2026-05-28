@@ -24,7 +24,7 @@ export const SupportSection = memo(
         <Stack gap="xs">
           <Group gap="xs">
             <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-              {t("secSupport") || "Support"}
+              {t("secSupport")}
             </Text>
             <Divider style={{ flex: 1 }} opacity={0.5} />
           </Group>

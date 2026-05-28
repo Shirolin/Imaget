@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, useRef, useMemo, memo } from "react";
 import {
   SimpleGrid,
   ScrollArea,
@@ -11,7 +11,7 @@ import {
 import { IconPhotoOff } from "@tabler/icons-react";
 import { useI18n } from "../hooks/useI18n";
 import type { ImageItem } from "../../types";
-import { ImageCard } from "./ImageCard";
+import { ImageCard, ImageThumbStyles } from "./ImageCard";
 
 interface ImageGridProps {
   items: ImageItem[];
@@ -34,13 +34,17 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
 }) => {
   const { t } = useI18n();
   const [visibleCount, setVisibleCount] = useState(40);
-  const [prevItems, setPrevItems] = useState(items);
   const observerTarget = useRef<HTMLDivElement>(null);
+  const itemIdentity = useMemo(
+    () => items.map((item) => item.id).join("\u0001"),
+    [items],
+  );
 
-  if (items !== prevItems) {
-    setPrevItems(items);
+  useEffect(() => {
+    // Required to reset pagination only after the item identity changes, not during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisibleCount(40);
-  }
+  }, [itemIdentity]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,12 +75,12 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
       <Center style={{ flex: 1 }} p="xl">
         <Stack align="center" gap="lg">
           <Loader size={40} variant="bars" color="blue" />
-          <Stack gap={4} align="center">
+          <Stack gap="xs" align="center">
             <Text fw={700} size="md" c="bright">
               {t("loading")}
             </Text>
             <Text size="xs" c="dimmed">
-              探索网页中的图片中...
+              {t("exploringImages")}
             </Text>
           </Stack>
         </Stack>
@@ -90,21 +94,18 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
         <Stack align="center" gap="md" style={{ opacity: 0.6 }}>
           <Box
             p="xl"
+            bg="dark.6"
+            c="dark.3"
             style={{
-              borderRadius: "50%",
-              backgroundColor: "var(--mantine-color-dark-6)",
+              borderRadius: 999,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconPhotoOff
-              size={48}
-              stroke={1.5}
-              color="var(--mantine-color-dark-3)"
-            />
+            <IconPhotoOff size={48} stroke={1.5} color="currentColor" />
           </Box>
-          <Stack gap={4} align="center">
+          <Stack gap="xs" align="center">
             <Text fw={700} size="lg" c="bright">
               {t("noImages")}
             </Text>
@@ -120,7 +121,7 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
   const renderContent = () => {
     if (layout === "list") {
       return (
-        <Stack gap="sm" style={{ paddingTop: 4, paddingBottom: 4 }}>
+        <Stack gap="sm" pt="xs" pb="xs">
           {visibleItems.map((item) => (
             <ImageCard
               key={item.id}
@@ -142,11 +143,7 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
         : { base: 2, xs: 2, sm: 3, md: 4, lg: 5 };
 
     return (
-      <SimpleGrid
-        cols={cols}
-        spacing="md"
-        style={{ paddingTop: 4, paddingBottom: 4 }}
-      >
+      <SimpleGrid cols={cols} spacing="md" pt="xs" pb="xs">
         {visibleItems.map((item) => (
           <ImageCard
             key={item.id}
@@ -180,10 +177,11 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
           transition: "background-color 0.2s ease",
         },
         viewport: {
-          paddingBottom: 40,
+          paddingBottom: "var(--mantine-spacing-xl)",
         },
       }}
     >
+      <ImageThumbStyles />
       {renderContent()}
 
       <Box ref={observerTarget} h={20} mt="md">
@@ -198,4 +196,3 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
 };
 
 export const ImageGrid = memo(ImageGridBase);
-export default ImageGrid;

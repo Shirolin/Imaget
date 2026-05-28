@@ -1,5 +1,5 @@
 # Imaget Project AI Rules (Mantine v8 in Shadow DOM)
-CRITICAL: You are building a React 18 UI inside a Chrome Extension Shadow DOM. Violating these 5 rules is a Fatal Error.
+CRITICAL: You are building a React 19 UI inside a Chrome Extension Shadow DOM. Violating these 5 rules is a Fatal Error.
 - 遵循第一性原理。
 
 ## 1. Portals (Local Ref ONLY)

@@ -10,11 +10,26 @@ import { ImageProcessor } from "../core/processor";
 import { ExtensionAdapter } from "../core/adapters/extension";
 import { WebAdapter } from "../core/adapters/web";
 import { UrlResolver } from "../core/utils/url-resolver";
+import { applyTargetFormat } from "../core/utils/settings-policy";
+import { FollowScanController } from "../core/follow-scan";
 import { theme, FONT_STACK } from "../ui/theme";
+import { ErrorBoundary } from "../ui/components/ErrorBoundary";
+import {
+  FOLLOW_SCAN_CANDIDATES,
+  FOLLOW_SCAN_PAUSE,
+  FOLLOW_SCAN_RESUME,
+  FOLLOW_SCAN_SCAN_NOW,
+  FOLLOW_SCAN_START,
+  FOLLOW_SCAN_STOP,
+  IMAGET_REOPEN,
+} from "../ui/utils/sniffer-events";
 
 const ROOT_ID = "imaget-reborn-root";
 const SELECTOR = ".imaget-extension-container";
-const finalCSS = mantineStyles.replaceAll(":root", SELECTOR);
+// 使用正则替换仅选择器位置的 :root，避免替换属性值（如 content: ":root"）中的内容
+const finalCSS = mantineStyles.replace(/(?:^|,)\s*:root(?=\s*{)/g, (match) =>
+  match.replace(":root", SELECTOR),
+);
 
 // 初始化依赖项
 const isExtension = typeof chrome !== "undefined" && !!chrome.runtime?.id;
@@ -22,6 +37,21 @@ const adapter = isExtension ? new ExtensionAdapter() : new WebAdapter();
 const sniffer = new Sniffer();
 const processor = new ImageProcessor(adapter);
 export const floatingController = new FloatingController(sniffer, processor);
+const autoScrollControllers = new Map<string, AbortController>();
+const followScanController = new FollowScanController({
+  onCandidates: (sessionId, items) => {
+    const message = {
+      type: FOLLOW_SCAN_CANDIDATES,
+      payload: { sessionId, items },
+    };
+    window.postMessage(message, "*");
+    if (typeof chrome !== "undefined") {
+      chrome.runtime?.sendMessage(message).catch(() => {
+        // 忽略临时通道错误
+      });
+    }
+  },
+});
 
 floatingController.init();
 
@@ -32,7 +62,9 @@ function init() {
     if (rootContainer.style.display === "none") {
       rootContainer.style.display = "block";
       floatingController.setMuted(true);
+      window.postMessage({ type: IMAGET_REOPEN }, "*");
     } else {
+      followScanController.stop();
       rootContainer.style.display = "none";
       floatingController.setMuted(false);
     }
@@ -79,6 +111,7 @@ function init() {
 
   window.addEventListener("message", (event) => {
     if (event.data.type === "IMAGET_CLOSE") {
+      followScanController.stop();
       if (rootContainer) rootContainer.style.display = "none";
       floatingController.setMuted(false);
     }
@@ -88,14 +121,16 @@ function init() {
 
   ReactDOM.createRoot(appMountPoint).render(
     <React.StrictMode>
-      <MantineProvider
-        theme={theme}
-        forceColorScheme="dark"
-        cssVariablesSelector={SELECTOR}
-        getRootElement={() => extensionRoot}
-      >
-        <App />
-      </MantineProvider>
+      <ErrorBoundary>
+        <MantineProvider
+          theme={theme}
+          forceColorScheme="dark"
+          cssVariablesSelector={SELECTOR}
+          getRootElement={() => extensionRoot}
+        >
+          <App />
+        </MantineProvider>
+      </ErrorBoundary>
     </React.StrictMode>,
   );
 }
@@ -109,8 +144,22 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
     }
 
     if (message.action === "SNIFF_REQUEST") {
+      const requestId = message.payload?.requestId as string | undefined;
       sniffer
-        .sniffAll(message.payload?.settings)
+        .sniffAll(message.payload?.settings, undefined, {
+          requestId,
+          onCandidates: (items) => {
+            if (!requestId || typeof chrome === "undefined") return;
+            chrome.runtime
+              ?.sendMessage({
+                type: "SNIFF_PROGRESS",
+                payload: { requestId, items },
+              })
+              .catch(() => {
+                // 忽略临时通道错误
+              });
+          },
+        })
         .then((results) => {
           sendResponse({ results });
         })
@@ -121,17 +170,79 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
       return true;
     }
 
+    if (message.action === FOLLOW_SCAN_START) {
+      const sessionId = message.payload?.sessionId as string | undefined;
+      if (sessionId) {
+        followScanController.start({
+          sessionId,
+          settings: message.payload?.settings,
+        });
+      }
+      sendResponse({ success: true });
+      return false;
+    }
+
+    if (message.action === FOLLOW_SCAN_STOP) {
+      followScanController.stop();
+      sendResponse({ success: true });
+      return false;
+    }
+
+    if (message.action === FOLLOW_SCAN_PAUSE) {
+      followScanController.pause();
+      sendResponse({ success: true });
+      return false;
+    }
+
+    if (message.action === FOLLOW_SCAN_RESUME) {
+      followScanController.resume();
+      sendResponse({ success: true });
+      return false;
+    }
+
     if (message.action === "AUTOSCROLL_REQUEST") {
+      const requestId = message.payload?.requestId as string | undefined;
+      const controller = new AbortController();
+      if (requestId) {
+        autoScrollControllers.set(requestId, controller);
+      }
       sniffer
-        .autoScroll()
-        .then(() => {
-          sendResponse({ success: true });
+        .autoScroll(message.payload?.settings, (progress) => {
+          if (!requestId || typeof chrome === "undefined") return;
+          chrome.runtime
+            ?.sendMessage({
+              type: "AUTOSCROLL_PROGRESS",
+              payload: { requestId, progress },
+            })
+            .catch(() => {
+              // 忽略临时通道错误
+            });
+        }, undefined, undefined, controller.signal, {
+          onSettledStep: () => followScanController.scanNow(),
+          onBeforeRestore: () => followScanController.scanNow(),
+        })
+        .then((result) => {
+          sendResponse({ success: true, result });
         })
         .catch((err) => {
           console.error("[Content] Autoscroll error:", err);
           sendResponse({ success: false });
+        })
+        .finally(() => {
+          if (requestId) {
+            autoScrollControllers.delete(requestId);
+          }
         });
       return true;
+    }
+
+    if (message.action === "AUTOSCROLL_CANCEL_REQUEST") {
+      const requestId = message.payload?.requestId as string | undefined;
+      if (requestId) {
+        autoScrollControllers.get(requestId)?.abort();
+      }
+      sendResponse({ success: true });
+      return false;
     }
 
     if (message.type === "CONTEXT_SAVE_SINGLE") {
@@ -157,19 +268,13 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
             );
           });
 
-          if (target) {
-            const settings = await adapter.getSettings();
-            const tempSettings = {
-              ...settings,
-              downloadLogic: {
-                ...settings.downloadLogic,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                targetFormat: targetFormat.toLowerCase() as any,
-              },
-            };
+          const settings = await adapter.getSettings();
+          const tempSettings = applyTargetFormat(settings, targetFormat);
 
+          if (target) {
             const started = await floatingController.tryTriggerCustomDownload(
               target.url,
+              tempSettings,
             );
             if (!started) {
               await processor.downloadBatch([target], tempSettings);
@@ -186,10 +291,7 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
               pageTitle: document.title,
               pageUrl: window.location.href,
             };
-            await processor.downloadBatch(
-              [fallbackItem],
-              await adapter.getSettings(),
-            );
+            await processor.downloadBatch([fallbackItem], tempSettings);
           }
           sendResponse({ success: true });
         } catch (err) {
@@ -201,6 +303,29 @@ if (typeof chrome !== "undefined" && chrome.runtime?.onMessage) {
     return false;
   });
 }
+
+window.addEventListener("message", (event) => {
+  const message = event.data;
+  if (!message || typeof message !== "object" || !("type" in message)) return;
+
+  if (message.type === FOLLOW_SCAN_START) {
+    const sessionId = message.payload?.sessionId as string | undefined;
+    if (sessionId) {
+      followScanController.start({
+        sessionId,
+        settings: message.payload?.settings,
+      });
+    }
+  } else if (message.type === FOLLOW_SCAN_STOP) {
+    followScanController.stop();
+  } else if (message.type === FOLLOW_SCAN_PAUSE) {
+    followScanController.pause();
+  } else if (message.type === FOLLOW_SCAN_RESUME) {
+    followScanController.resume();
+  } else if (message.type === FOLLOW_SCAN_SCAN_NOW) {
+    followScanController.scanNow();
+  }
+});
 
 if (import.meta.env.DEV) {
   init();

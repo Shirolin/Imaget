@@ -49,7 +49,7 @@ export const ExtractionSection = memo(
         <Stack gap="xs">
           <Group gap="xs">
             <Text fw={700} size="sm" c="dimmed" tt="uppercase">
-              {t("secExtraction") || "Extraction"}
+              {t("secExtraction")}
             </Text>
             <Divider style={{ flex: 1 }} opacity={0.5} />
           </Group>
@@ -74,10 +74,21 @@ export const ExtractionSection = memo(
               />
               <SettingSwitch
                 label={t("prefHideDownloadWarning")}
+                description={t("prefHideDownloadWarningHint")}
                 checked={settings.hideDownloadWarning}
                 onChange={(e) =>
                   onUpdate({
                     hideDownloadWarning: e.currentTarget.checked,
+                  })
+                }
+              />
+              <SettingSwitch
+                label={t("prefFollowScan")}
+                description={t("prefFollowScanHint")}
+                checked={settings.followScanEnabled ?? true}
+                onChange={(e) =>
+                  onUpdate({
+                    followScanEnabled: e.currentTarget.checked,
                   })
                 }
               />
@@ -96,6 +107,15 @@ export const ExtractionSection = memo(
                 onChange={(e) =>
                   onUpdate({
                     identifyBackgroundImages: e.currentTarget.checked,
+                  })
+                }
+              />
+              <SettingSwitch
+                label={t("prefIdentifyBlobImages")}
+                checked={settings.identifyBlobImages}
+                onChange={(e) =>
+                  onUpdate({
+                    identifyBlobImages: e.currentTarget.checked,
                   })
                 }
               />
@@ -181,7 +201,7 @@ export const ExtractionSection = memo(
               }}
               rightSection={
                 <Tooltip
-                  label={t("btnAddDomain") || "Add Domain"}
+                  label={t("btnAddDomain")}
                   portalProps={{ target: portalNode || undefined }}
                   disabled={!newDomain.trim()}
                 >
@@ -191,7 +211,7 @@ export const ExtractionSection = memo(
                     color="brand"
                     onClick={handleAddDomain}
                     disabled={!newDomain.trim()}
-                    aria-label={t("btnAddDomain") || "Add Domain"}
+                    aria-label={t("btnAddDomain")}
                   >
                     <IconPlus size={14} />
                   </ActionIcon>
