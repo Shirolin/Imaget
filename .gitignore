@@ -13,6 +13,7 @@ dist-ssr
 releases
 *.local
 key.pem
+docs/superpowers/
 
 # Editor directories and files
 .vscode/*
