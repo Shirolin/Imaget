@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - 智能圖片嗅探與下載器"
+  },
+  "extDesc": {
+    "message": "自動識別網頁所有圖片，支持一键批量下載。"
+  },
+  "btnDownload": {
+    "message": "下載"
+  },
+  "btnDeepScan": {
+    "message": "深度掃描"
+  },
+  "btnClose": {
+    "message": "關閉"
+  },
+  "selectAll": {
+    "message": "全選"
+  },
+  "deselectAll": {
+    "message": "取消全選"
+  },
+  "downloadSelected": {
+    "message": "下載選中 ($1)"
+  },
+  "selectedCount": {
+    "message": "已選 $1 / 篩出 $2"
+  },
+  "noImages": {
+    "message": "未發現圖片"
+  },
+  "noImagesHint": {
+    "message": "請嘗試調整過濾選項或刷新頁面重新掃描"
+  },
+  "loading": {
+    "message": "加載中..."
+  },
+  "processing": {
+    "message": "正在處理... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "正在打包 ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "已開始下載 $1 張圖片"
+  },
+  "toastNoSelection": {
+    "message": "請先選擇圖片"
+  },
+  "preview": {
+    "message": "預覽圖片"
+  },
+  "downloadZip": {
+    "message": "打包下載"
+  },
+  "filterMinWidth": {
+    "message": "最小寬度"
+  },
+  "filterMinHeight": {
+    "message": "最小高度"
+  },
+  "filterSearch": {
+    "message": "搜索內容或鏈接"
+  },
+  "filterExclude": {
+    "message": "排除詞 (空格分隔)"
+  },
+  "filterType": {
+    "message": "類型"
+  },
+  "filterLayout": {
+    "message": "寬高比"
+  },
+  "layoutAny": {
+    "message": "全部"
+  },
+  "layoutSquare": {
+    "message": "正方形"
+  },
+  "layoutWide": {
+    "message": "橫圖"
+  },
+  "layoutTall": {
+    "message": "豎圖"
+  },
+  "sortBy": {
+    "message": "排序依據"
+  },
+  "sortOrder": {
+    "message": "順序"
+  },
+  "sortSize": {
+    "message": "尺寸"
+  },
+  "sortAsc": {
+    "message": "升序"
+  },
+  "sortDesc": {
+    "message": "降序"
+  },
+  "tabImages": {
+    "message": "圖片列表"
+  },
+  "tabPreferences": {
+    "message": "選項設置"
+  },
+  "prefSubfolder": {
+    "message": "子文件夾名"
+  },
+  "prefFilename": {
+    "message": "文件名模板"
+  },
+  "prefSave": {
+    "message": "保存"
+  },
+  "prefCancel": {
+    "message": "取消"
+  },
+  "prefConflictAction": {
+    "message": "衝突處理"
+  },
+  "conflictUniquify": {
+    "message": "自動重命名"
+  },
+  "conflictOverwrite": {
+    "message": "直接覆蓋"
+  },
+  "conflictPrompt": {
+    "message": "詢問我"
+  },
+  "warnManyFiles": {
+    "message": "您正準備下載 $1 張圖片，確定要繼續嗎？"
+  },
+  "secFileSave": {
+    "message": "文件保存"
+  },
+  "secDownloadLogic": {
+    "message": "下載邏輯"
+  },
+  "secUiBehavior": {
+    "message": "界面行為"
+  },
+  "prefShowHoverBtn": {
+    "message": "顯示懸浮按鈕"
+  },
+  "formatOriginal": {
+    "message": "原圖"
+  },
+  "resetDefault": {
+    "message": "恢復默認"
+  },
+  "menuSaveAsWebP": {
+    "message": "WebP 格式"
+  },
+  "menuSaveAsPNG": {
+    "message": "原格式 / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "JPG 格式"
+  },
+  "menuOpenDashboard": {
+    "message": "批量下載圖片..."
+  },
+  "menuSaveImageSmart": {
+    "message": "智能保存圖片"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

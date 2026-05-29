@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - Intelligenter Bild-Sniffer & Downloader"
+  },
+  "extDesc": {
+    "message": "Erkennt automatisch Bilder auf jeder Webseite und lädt sie im Batch herunter."
+  },
+  "btnDownload": {
+    "message": "Download"
+  },
+  "btnDeepScan": {
+    "message": "Deep Scan"
+  },
+  "btnClose": {
+    "message": "Schließen"
+  },
+  "selectAll": {
+    "message": "Alle auswählen"
+  },
+  "deselectAll": {
+    "message": "Auswahl aufheben"
+  },
+  "downloadSelected": {
+    "message": "Ausgewählte herunterladen ($1)"
+  },
+  "selectedCount": {
+    "message": "$1 ausgewählt / $2 gefiltert"
+  },
+  "noImages": {
+    "message": "Keine Bilder gefunden"
+  },
+  "noImagesHint": {
+    "message": "Versuchen Sie, die Filter anzupassen oder die Seite neu zu laden"
+  },
+  "loading": {
+    "message": "Laden..."
+  },
+  "processing": {
+    "message": "Verarbeitung... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "ZIP wird vorbereitet..."
+  },
+  "toastDownloadStarted": {
+    "message": "Download von $1 Bildern gestartet"
+  },
+  "toastNoSelection": {
+    "message": "Bitte wählen Sie zuerst Bilder aus"
+  },
+  "preview": {
+    "message": "Vorschau"
+  },
+  "downloadZip": {
+    "message": "ZIP herunterladen"
+  },
+  "filterMinWidth": {
+    "message": "Min. Breite"
+  },
+  "filterMinHeight": {
+    "message": "Min. Höhe"
+  },
+  "filterSearch": {
+    "message": "Suche"
+  },
+  "filterExclude": {
+    "message": "Ausschluss-Keywords"
+  },
+  "filterType": {
+    "message": "Typ"
+  },
+  "filterLayout": {
+    "message": "Seitenverhältnis"
+  },
+  "layoutAny": {
+    "message": "Alle"
+  },
+  "layoutSquare": {
+    "message": "Quadratisch"
+  },
+  "layoutWide": {
+    "message": "Breit"
+  },
+  "layoutTall": {
+    "message": "Hoch"
+  },
+  "sortBy": {
+    "message": "Sortieren nach"
+  },
+  "sortOrder": {
+    "message": "Reihenfolge"
+  },
+  "sortSize": {
+    "message": "Größe"
+  },
+  "sortAsc": {
+    "message": "Aufsteigend"
+  },
+  "sortDesc": {
+    "message": "Absteigend"
+  },
+  "tabImages": {
+    "message": "Bilder"
+  },
+  "tabPreferences": {
+    "message": "Einstellungen"
+  },
+  "prefSubfolder": {
+    "message": "Unterordner"
+  },
+  "prefFilename": {
+    "message": "Dateinamenvorlage"
+  },
+  "prefSave": {
+    "message": "Speichern"
+  },
+  "prefCancel": {
+    "message": "Abbrechen"
+  },
+  "prefConflictAction": {
+    "message": "Konfliktlösung"
+  },
+  "conflictUniquify": {
+    "message": "Umbenennen"
+  },
+  "conflictOverwrite": {
+    "message": "Überschreiben"
+  },
+  "conflictPrompt": {
+    "message": "Nachfragen"
+  },
+  "warnManyFiles": {
+    "message": "Sie möchten $1 Bilder herunterladen, fortfahren?"
+  },
+  "secFileSave": {
+    "message": "Dateispeicherung"
+  },
+  "secDownloadLogic": {
+    "message": "Download-Logik"
+  },
+  "secUiBehavior": {
+    "message": "UI-Verhalten"
+  },
+  "prefShowHoverBtn": {
+    "message": "Floating Button anzeigen"
+  },
+  "formatOriginal": {
+    "message": "Original"
+  },
+  "resetDefault": {
+    "message": "Auf Standard zurücksetzen"
+  },
+  "menuSaveAsWebP": {
+    "message": "WebP Format"
+  },
+  "menuSaveAsPNG": {
+    "message": "Original / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "JPG Format"
+  },
+  "menuOpenDashboard": {
+    "message": "Batch Download..."
+  },
+  "menuSaveImageSmart": {
+    "message": "Smart Save Image"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - スマート画像スニッファー＆ダウンローダー"
+  },
+  "extDesc": {
+    "message": "ウェブページから画像を自動的にスニッフィングし、一括ダウンロードします。"
+  },
+  "btnDownload": {
+    "message": "ダウンロード"
+  },
+  "btnDeepScan": {
+    "message": "ディープスキャン"
+  },
+  "btnClose": {
+    "message": "閉じる"
+  },
+  "selectAll": {
+    "message": "すべて選択"
+  },
+  "deselectAll": {
+    "message": "選択を解除"
+  },
+  "downloadSelected": {
+    "message": "選択項目をダウンロード ($1)"
+  },
+  "selectedCount": {
+    "message": "選択 $1 / 抽出 $2"
+  },
+  "noImages": {
+    "message": "画像が見つかりません"
+  },
+  "noImagesHint": {
+    "message": "フィルター設定を調整するか、ページを更新してください"
+  },
+  "loading": {
+    "message": "読み込み中..."
+  },
+  "processing": {
+    "message": "処理中... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "ZIPを準備中..."
+  },
+  "toastDownloadStarted": {
+    "message": "$1 枚の画像のダウンロードを開始しました"
+  },
+  "toastNoSelection": {
+    "message": "最初に画像を選択してください"
+  },
+  "preview": {
+    "message": "プレビュー"
+  },
+  "downloadZip": {
+    "message": "ZIPでダウンロード"
+  },
+  "filterMinWidth": {
+    "message": "最小幅"
+  },
+  "filterMinHeight": {
+    "message": "最小高さ"
+  },
+  "filterSearch": {
+    "message": "検索"
+  },
+  "filterExclude": {
+    "message": "除外キーワード"
+  },
+  "filterType": {
+    "message": "タイプ"
+  },
+  "filterLayout": {
+    "message": "アスペクト比"
+  },
+  "layoutAny": {
+    "message": "すべて"
+  },
+  "layoutSquare": {
+    "message": "正方形"
+  },
+  "layoutWide": {
+    "message": "横長"
+  },
+  "layoutTall": {
+    "message": "縦長"
+  },
+  "sortBy": {
+    "message": "並べ替え"
+  },
+  "sortOrder": {
+    "message": "順序"
+  },
+  "sortSize": {
+    "message": "サイズ"
+  },
+  "sortAsc": {
+    "message": "昇順"
+  },
+  "sortDesc": {
+    "message": "降順"
+  },
+  "tabImages": {
+    "message": "画像"
+  },
+  "tabPreferences": {
+    "message": "設定"
+  },
+  "prefSubfolder": {
+    "message": "サブフォルダ"
+  },
+  "prefFilename": {
+    "message": "ファイル名テンプレート"
+  },
+  "prefSave": {
+    "message": "保存"
+  },
+  "prefCancel": {
+    "message": "キャンセル"
+  },
+  "prefConflictAction": {
+    "message": "競合解決"
+  },
+  "conflictUniquify": {
+    "message": "名前を変更"
+  },
+  "conflictOverwrite": {
+    "message": "上書き"
+  },
+  "conflictPrompt": {
+    "message": "確認する"
+  },
+  "warnManyFiles": {
+    "message": "$1 枚の画像をダウンロードしようとしています。続行しますか？"
+  },
+  "secFileSave": {
+    "message": "ファイルの保存"
+  },
+  "secDownloadLogic": {
+    "message": "ダウンロードロジック"
+  },
+  "secUiBehavior": {
+    "message": "UIの動作"
+  },
+  "prefShowHoverBtn": {
+    "message": "フローティングボタンを表示"
+  },
+  "formatOriginal": {
+    "message": "オリジナル"
+  },
+  "resetDefault": {
+    "message": "デフォルトに戻す"
+  },
+  "menuSaveAsWebP": {
+    "message": "WebP形式"
+  },
+  "menuSaveAsPNG": {
+    "message": "元の形式 / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "JPG形式"
+  },
+  "menuOpenDashboard": {
+    "message": "一括ダウンロード..."
+  },
+  "menuSaveImageSmart": {
+    "message": "画像をスマート保存"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}
