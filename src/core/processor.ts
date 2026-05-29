@@ -100,6 +100,15 @@ export class ImageProcessor {
     ) {
       return false;
     }
+    // 微博、Pixiv 和 Reddit 具有极其严格的防盗链，且 chrome.downloads.download 在网络底层无法被拦截修改 Referer/Origin，
+    // 因此必须强制走 background.js 的 Blob 代理抓取模式，才能下载到真正的原图而非 403 报错 htm 网页！
+    const isProtectedDomain =
+      img.url.includes("sinaimg.cn") ||
+      img.url.includes("pximg.net") ||
+      img.url.includes("redd.it");
+    if (isProtectedDomain) {
+      return false;
+    }
     return true;
   }
 

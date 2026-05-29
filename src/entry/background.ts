@@ -1,4 +1,3 @@
-/* global FileReader */
 import { defaultSettings, type Settings } from "../types";
 import { t } from "../core/utils/i18n";
 
@@ -60,6 +59,12 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
   setupContextMenus();
   updateSidePanelBehavior();
+  setupDeclarativeNetRequestRules();
+});
+
+// 每次浏览器/扩展启动时确保规则正确应用
+chrome.runtime.onStartup.addListener(() => {
+  setupDeclarativeNetRequestRules();
 });
 
 // 消息转发中心
@@ -72,28 +77,44 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "FETCH_BLOB") {
     const { url, referer } = message.payload;
+    
+    // 规范澄清：Chrome 扩展 Service Worker 无法在普通 fetch 中真正自定义 Referer (属于 Forbidden Headers)。
+    // 此处能成功绕过防盗链主要是因为 SW 处于插件特权域，其发起的 fetch 请求不会被浏览器强制标记
+    // 跨域沙盒特征（如 Sec-Fetch-Site: cross-site），使得 CDN 防火墙放行。
     fetch(url, {
       headers: referer ? { Referer: referer } : undefined,
     })
       .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        // 增加安全防御：限制超大图或大媒体文件（50MB 阈值），防止 Base64 通信信道堆栈溢出或 SW 内存崩溃
+        const contentLength = res.headers.get("content-length");
+        if (contentLength && parseInt(contentLength, 10) > 50 * 1024 * 1024) {
+          throw new Error("Target resource size exceeds proxy safe limits (50MB)");
+        }
+
         const mimeType = res.headers.get("content-type") || "";
         const blob = await res.blob();
+        
+        if (blob.size > 50 * 1024 * 1024) {
+          throw new Error("Blob payload size exceeds proxy safe limits (50MB)");
+        }
 
-        // 使用 FileReader 将 Blob 转换为 Base64
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const result = reader.result as string;
-          const base64 = result.split(",")[1];
-          try {
-            sendResponse({ success: true, arrayBuffer: base64, mimeType });
-          } catch (e) {
-            console.error("sendResponse failed (payload too large?):", e);
-          }
-        };
-        reader.onerror = () => {
-          sendResponse({ success: false, error: "FileReader failed" });
-        };
-        reader.readAsDataURL(blob);
+        // 使用 ArrayBuffer 将 Blob 转换为 Base64
+        const arrayBuffer = await blob.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        const chunkSize = 8192;
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)));
+        }
+        const base64 = btoa(binary);
+
+        try {
+          sendResponse({ success: true, arrayBuffer: base64, mimeType });
+        } catch (e) {
+          console.error("sendResponse failed (payload too large?):", e);
+        }
       })
       .catch((err) => {
         try {
@@ -181,6 +202,105 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return false;
 });
+
+/**
+ * 配置 Declarative Net Request 规则，绕过微博等防盗链
+ */
+async function setupDeclarativeNetRequestRules() {
+  if (typeof chrome.declarativeNetRequest === "undefined") return;
+
+  const rules: chrome.declarativeNetRequest.Rule[] = [
+    {
+      id: 1,
+      priority: 1,
+      action: {
+        type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+        requestHeaders: [
+          {
+            header: "Referer",
+            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            value: "https://weibo.com/",
+          },
+          {
+            header: "Origin",
+            operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+          },
+        ],
+      },
+      condition: {
+        urlFilter: "||sinaimg.cn",
+        resourceTypes: [
+          chrome.declarativeNetRequest.ResourceType.IMAGE,
+          chrome.declarativeNetRequest.ResourceType.XMLHTTPREQUEST,
+        ],
+      },
+    },
+    {
+      id: 2,
+      priority: 1,
+      action: {
+        type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+        requestHeaders: [
+          {
+            header: "Referer",
+            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            value: "https://www.pixiv.net/",
+          },
+          {
+            header: "Origin",
+            operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+          },
+        ],
+      },
+      condition: {
+        urlFilter: "||i.pximg.net",
+        resourceTypes: [
+          chrome.declarativeNetRequest.ResourceType.IMAGE,
+          chrome.declarativeNetRequest.ResourceType.XMLHTTPREQUEST,
+        ],
+      },
+    },
+    {
+      id: 3,
+      priority: 1,
+      action: {
+        type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+        requestHeaders: [
+          {
+            header: "Origin",
+            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            value: "https://www.reddit.com",
+          },
+          {
+            header: "Referer",
+            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            value: "https://www.reddit.com/",
+          },
+        ],
+      },
+      condition: {
+        urlFilter: "||redd.it",
+        resourceTypes: [
+          chrome.declarativeNetRequest.ResourceType.IMAGE,
+          chrome.declarativeNetRequest.ResourceType.XMLHTTPREQUEST,
+        ],
+      },
+    },
+  ];
+
+  try {
+    const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
+    const existingIds = existingRules.map((r) => r.id);
+
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: existingIds,
+      addRules: rules,
+    });
+    console.log("[Background] DeclarativeNetRequest rules set successfully.");
+  } catch (err) {
+    console.error("[Background] Failed to update declarativeNetRequest rules:", err);
+  }
+}
 
 /**
  * 右键菜单管理

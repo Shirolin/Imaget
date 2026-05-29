@@ -345,6 +345,9 @@ export default {
   prefIdentifyBlobImages: {
     message: "Blob 동적 리소스 식별 (Telegram, Discord 등)",
   },
+  prefIdentifyBlobImagesHint: {
+    message: "Telegram 등 암호화된 채팅의 경우, 웹페이지에서 이미지를 클릭하여 원본 미리보기 모드로 들어가면 가장 해상도가 높은 원본 이미지를 자동으로 즉시 감지하여 캡처할 수 있습니다.",
+  },
   prefLanguage: {
     message: "인터페이스 언어",
   },

@@ -21,6 +21,9 @@ export function upsertImageItems(
     const previous = next[existingIndex];
     next[existingIndex] = {
       ...item,
+      width: item.width > 0 ? item.width : previous.width,
+      height: item.height > 0 ? item.height : previous.height,
+      sizeKB: item.sizeKB > 0 ? item.sizeKB : previous.sizeKB,
       id: previous.id,
       isSelected: previous.isSelected,
     };

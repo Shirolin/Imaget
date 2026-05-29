@@ -20,7 +20,8 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 import { useI18n } from "../hooks/useI18n";
-import type { ImageItem } from "../../types";
+import { type ImageItem } from "../../types";
+import { useProtectedImageUrl } from "../hooks/useProtectedImageUrl";
 
 interface ImagePreviewProps {
   item: ImageItem;
@@ -43,6 +44,8 @@ const ImagePreviewBase: React.FC<ImagePreviewProps> = ({
 }) => {
   const { t } = useI18n();
   const url = item.url;
+  // 借助受保护的图片 Hook 加载后台转换的 blob URL
+  const displaySrc = useProtectedImageUrl(url);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -238,10 +241,21 @@ const ImagePreviewBase: React.FC<ImagePreviewProps> = ({
       >
         <Box style={{ pointerEvents: "auto" }}>
           <Image
-            src={url}
+            src={displaySrc}
             alt="Preview"
             draggable={false}
+            referrerPolicy="no-referrer"
             onDragStart={(e: React.DragEvent) => e.preventDefault()}
+            onError={(event) => {
+              const currentTarget = event.currentTarget;
+              if (
+                currentTarget.src.includes("i.pximg.net") &&
+                (currentTarget.src.includes("/img-original/") || currentTarget.src.includes("/novel-cover-original/")) &&
+                currentTarget.src.endsWith(".jpg")
+              ) {
+                currentTarget.src = currentTarget.src.replace(/\.jpg$/, ".png");
+              }
+            }}
             style={{
               maxWidth: "90vw",
               maxHeight: "90vh",

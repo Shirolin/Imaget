@@ -345,6 +345,9 @@ export default {
   prefIdentifyBlobImages: {
     message: "Blob Kaynaklarını Tanımla (Telegram, Discord vb. için)",
   },
+  prefIdentifyBlobImagesHint: {
+    message: "Telegram gibi şifreli sohbetler için, sayfadaki resme tıklayarak büyük önizleme moduna geçip en yüksek çözünürlüklü orijinal resmi anında otomatik olarak yakalayabilirsiniz.",
+  },
   prefLanguage: {
     message: "Arayüz Dili",
   },

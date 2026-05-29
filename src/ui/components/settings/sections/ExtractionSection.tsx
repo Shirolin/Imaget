@@ -112,6 +112,7 @@ export const ExtractionSection = memo(
               />
               <SettingSwitch
                 label={t("prefIdentifyBlobImages")}
+                description={t("prefIdentifyBlobImagesHint")}
                 checked={settings.identifyBlobImages}
                 onChange={(e) =>
                   onUpdate({

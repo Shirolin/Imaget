@@ -24,10 +24,11 @@ import { type ImageItem, getFormatColor } from "../../types";
 import { PortalTooltip } from "./common/PortalTooltip";
 import { GlassActionIcon } from "./common/GlassActionIcon";
 import {
-  markThumbnailError,
   revealThumbnailImage,
   syncCachedThumbnail,
+  markThumbnailError,
 } from "../utils/thumbnail-state";
+import { useProtectedImageUrl } from "../hooks/useProtectedImageUrl";
 
 interface ImageCardProps {
   item: ImageItem;
@@ -121,6 +122,8 @@ const ImageThumb: React.FC<ImageThumbProps> = ({
   const imageRef = React.useCallback((node: HTMLImageElement | null) => {
     if (node) syncCachedThumbnail(node);
   }, []);
+  // 对于受限 CDN，使用代理 Blob URL
+  const displaySrc = useProtectedImageUrl(item.url);
 
   return (
     <Box
@@ -139,7 +142,7 @@ const ImageThumb: React.FC<ImageThumbProps> = ({
       </Box>
       <Image
         ref={imageRef}
-        src={item.url}
+        src={displaySrc}
         w="100%"
         h="100%"
         radius={radius}
@@ -147,11 +150,21 @@ const ImageThumb: React.FC<ImageThumbProps> = ({
         fit={fit}
         bg={isSvg ? "dark.7" : "transparent"}
         loading="lazy"
+        referrerPolicy="no-referrer"
         onLoad={(event) => {
           void revealThumbnailImage(event.currentTarget);
         }}
         onError={(event) => {
-          markThumbnailError(event.currentTarget);
+          const currentTarget = event.currentTarget;
+          if (
+            currentTarget.src.includes("i.pximg.net") &&
+            (currentTarget.src.includes("/img-original/") || currentTarget.src.includes("/novel-cover-original/")) &&
+            currentTarget.src.endsWith(".jpg")
+          ) {
+            currentTarget.src = currentTarget.src.replace(/\.jpg$/, ".png");
+            return;
+          }
+          markThumbnailError(currentTarget);
         }}
       />
       <Box className="imaget-thumb__error">

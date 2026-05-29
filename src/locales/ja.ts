@@ -346,6 +346,9 @@ export default {
   prefIdentifyBlobImages: {
     message: "Blob動的リソースの識別 (Telegram、Discordなど)",
   },
+  prefIdentifyBlobImagesHint: {
+    message: "Telegramなどの暗号化チャットでは、ページ内の画像をクリックして拡大プレビューを表示することで、最高画質のオリジナル画像を自動的かつ瞬時に検出してキャプチャできます。",
+  },
   prefLanguage: {
     message: "インターフェース言語",
   },

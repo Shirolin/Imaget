@@ -16,7 +16,8 @@
     "activeTab",
     "storage",
     "contextMenus",
-    "sidePanel"
+    "sidePanel",
+    "declarativeNetRequest"
   ],
   "host_permissions": [
     "http://*/*",
@@ -51,13 +52,11 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "content.js",
-        "theme.js",
-        "types.js",
-        "favicon.svg",
-        "icon-16.png",
-        "icon-48.png",
-        "icon-128.png"
+        "*.js",
+        "*.css",
+        "*.svg",
+        "*.png",
+        "*.ico"
       ],
       "matches": [
         "http://*/*",

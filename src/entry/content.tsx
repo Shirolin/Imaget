@@ -12,7 +12,8 @@ import { WebAdapter } from "../core/adapters/web";
 import { UrlResolver } from "../core/utils/url-resolver";
 import { applyTargetFormat } from "../core/utils/settings-policy";
 import { FollowScanController } from "../core/follow-scan";
-import { theme, FONT_STACK } from "../ui/theme";
+import { theme, getFontStackByLocale } from "../ui/theme";
+import { getLocale } from "../core/utils/i18n";
 import { ErrorBoundary } from "../ui/components/ErrorBoundary";
 import {
   FOLLOW_SCAN_CANDIDATES,
@@ -86,7 +87,13 @@ function init() {
   extensionRoot.style.display = "block";
   extensionRoot.style.width = "100%";
   extensionRoot.style.height = "100%";
-  extensionRoot.style.fontFamily = FONT_STACK;
+
+  // 动态自适应多语言字体栈配置
+  const currentLocale = getLocale();
+  const dynamicFont = getFontStackByLocale(currentLocale);
+  extensionRoot.style.setProperty("--imaget-font-family", dynamicFont);
+  extensionRoot.style.fontFamily = "var(--imaget-font-family)";
+
   extensionRoot.style.pointerEvents = "auto";
   extensionRoot.style.color = "var(--mantine-color-text)";
   extensionRoot.style.backgroundColor = "transparent";
