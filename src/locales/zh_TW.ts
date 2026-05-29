@@ -343,7 +343,8 @@ export default {
     message: "識別 Blob 動態資源 (適用於 Telegram / Discord 等)",
   },
   prefIdentifyBlobImagesHint: {
-    message: "對 Telegram 等加密聊天，在網頁中點擊圖片進入大圖預覽模式即可自動且瞬間嗅探捕獲其最高清原圖尺寸。",
+    message:
+      "對 Telegram 等加密聊天，在網頁中點擊圖片進入大圖預覽模式即可自動且瞬間嗅探捕獲其最高清原圖尺寸。",
   },
   prefLanguage: {
     message: "界面語言",

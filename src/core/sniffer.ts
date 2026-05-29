@@ -559,25 +559,29 @@ export class Sniffer {
                 } else {
                   const results: ImageItem[] = response.results || [];
                   const updatedResults = [...results];
-                  
+
                   // 在侧边栏环境重新获取防盗链域名的真实宽高（DNR 规则已生效，可正常加载）
-                  await runConcurrent(updatedResults, METADATA_CONCURRENCY, async (item, index) => {
-                    const needUpdate =
-                      item.url.includes("sinaimg.cn") ||
-                      item.url.includes("weibo.com");
-                    if (needUpdate) {
-                      const meta = await this.getImageMetadata(item.url);
-                      if (meta) {
-                        updatedResults[index] = {
-                          ...item,
-                          width: meta.width,
-                          height: meta.height,
-                          sizeKB: meta.sizeKB > 0 ? meta.sizeKB : item.sizeKB,
-                        };
+                  await runConcurrent(
+                    updatedResults,
+                    METADATA_CONCURRENCY,
+                    async (item, index) => {
+                      const needUpdate =
+                        item.url.includes("sinaimg.cn") ||
+                        item.url.includes("weibo.com");
+                      if (needUpdate) {
+                        const meta = await this.getImageMetadata(item.url);
+                        if (meta) {
+                          updatedResults[index] = {
+                            ...item,
+                            width: meta.width,
+                            height: meta.height,
+                            sizeKB: meta.sizeKB > 0 ? meta.sizeKB : item.sizeKB,
+                          };
+                        }
                       }
-                    }
-                  });
-                  
+                    },
+                  );
+
                   resolve(updatedResults);
                 }
               },
@@ -612,7 +616,8 @@ export class Sniffer {
       settings?.interfaceBehavior?.identifyBackgroundImages ?? true;
     const isTelegramHost = window.location.host.includes("telegram");
     const identifyBlob =
-      (settings?.interfaceBehavior?.identifyBlobImages ?? false) || isTelegramHost;
+      (settings?.interfaceBehavior?.identifyBlobImages ?? false) ||
+      isTelegramHost;
 
     const isPixiv = window.location.href.includes("pixiv.net");
     const [treeUrls, perfUrls, svgUrls] = await Promise.all([
@@ -629,11 +634,18 @@ export class Sniffer {
       ) {
         const resolved = UrlResolver.transformSiteSpecificUrl(url);
         // 过滤掉 weibo.com 的网页链接（如 /u/false 或 /status/ 等非真实图片）
-        if (resolved.includes("weibo.com") && !resolved.match(/\.(jpg|jpeg|png|gif|webp|svg)/i)) {
+        if (
+          resolved.includes("weibo.com") &&
+          !resolved.match(/\.(jpg|jpeg|png|gif|webp|svg)/i)
+        ) {
           return;
         }
         // 如果在 Pixiv 网站，过滤掉所有的 SVG 资源，防止 UI 背景渐变/图标等乱入
-        if (isPixiv && (resolved.includes("image/svg+xml") || resolved.toLowerCase().includes(".svg"))) {
+        if (
+          isPixiv &&
+          (resolved.includes("image/svg+xml") ||
+            resolved.toLowerCase().includes(".svg"))
+        ) {
           return;
         }
         urls.add(resolved);
@@ -664,20 +676,6 @@ export class Sniffer {
       if (metadata) {
         items.push({
           ...metadata,
-          id,
-          isSelected: false,
-          pageTitle: document.title,
-          pageUrl: window.location.href,
-        });
-      } else {
-        // 兜底保留：如果测量超时或失败，不直接丢弃图片，而是生成兜底的 ImageItem！
-        items.push({
-          url,
-          width: 0,
-          height: 0,
-          sizeKB: 0,
-          format: ImageTypeDetector.getFormatFromUrl(url),
-          filename: url.split("/").pop()?.split(/[?#]/)[0] || "image",
           id,
           isSelected: false,
           pageTitle: document.title,
@@ -717,82 +715,91 @@ export class Sniffer {
         filename: url.split("/").pop()?.split(/[?#]/)[0] || "image",
       };
     }
-
     try {
-      const dimensions = await new Promise<{ width: number; height: number }>(
-        (resolve, reject) => {
-          const img = new Image();
-          const timeoutId = window.setTimeout(() => {
-            cleanup();
-            reject(
-              new Error(
+      let dimensions: { width: number; height: number };
+      try {
+        dimensions = await new Promise<{ width: number; height: number }>(
+          (resolve, reject) => {
+            const img = new Image();
+            const timeoutId = window.setTimeout(() => {
+              cleanup();
+              const err = new Error(
                 `Timed out loading image metadata: ${String(url).slice(0, 100)}`,
-              ),
-            );
-          }, IMAGE_METADATA_TIMEOUT_MS);
-          const cleanup = () => {
-            window.clearTimeout(timeoutId);
-            img.onload = null;
-            img.onerror = null;
-            try {
-              img.src = "";
-            } catch {
-              // 忽略清理失败
-            }
-          };
-
-          img.onload = () => {
-            const size = {
-              width: img.naturalWidth,
-              height: img.naturalHeight,
+              );
+              (err as Error & { isTimeout?: boolean }).isTimeout = true;
+              reject(err);
+            }, IMAGE_METADATA_TIMEOUT_MS);
+            const cleanup = () => {
+              window.clearTimeout(timeoutId);
+              img.onload = null;
+              img.onerror = null;
+              try {
+                img.src = "";
+              } catch {
+                // 忽略清理失败
+              }
             };
-            cleanup();
-            resolve(size);
-          };
-          img.onerror = () => {
-            cleanup();
-            reject(
-              new Error(`Failed to load image: ${String(url).slice(0, 100)}`),
-            );
-          };
-          // 仅侧边栏页面（chrome-extension:// 协议）才需要走后台 Blob 代理。
-          // Content script 运行在目标页上下文，可直接加载且受 DNR 规则保护，无需代理。
-          // 对于本地内存中的 blob: 图片，后台 Service Worker 无法跨越沙盒拉取，直接不走代理。
-          const isSidePanelPage =
-            typeof window !== "undefined" &&
-            window.location.protocol === "chrome-extension:" &&
-            typeof chrome !== "undefined" &&
-            !!chrome.runtime?.sendMessage;
 
-          const isBlobUrl = url.startsWith("blob:");
+            img.onload = () => {
+              const size = {
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+              };
+              cleanup();
+              resolve(size);
+            };
+            img.onerror = () => {
+              cleanup();
+              reject(
+                new Error(`Failed to load image: ${String(url).slice(0, 100)}`),
+              );
+            };
+            // 仅侧边栏页面（chrome-extension:// 协议）才需要走后台 Blob 代理。
+            // Content script 运行在目标页上下文，可直接加载且受 DNR 规则保护，无需代理。
+            // 对于本地内存中的 blob: 图片，后台 Service Worker 无法跨越沙盒拉取，直接不走代理。
+            const isSidePanelPage =
+              typeof window !== "undefined" &&
+              window.location.protocol === "chrome-extension:" &&
+              typeof chrome !== "undefined" &&
+              !!chrome.runtime?.sendMessage;
 
-          if (isSidePanelPage && !isBlobUrl) {
-            // 根据域名传入对应的防盗链 Referer，Service Worker fetch 不受 DNR 规则覆盖
-            let referer: string | undefined;
-            if (url.includes("sinaimg.cn") || url.includes("weibo.com")) {
-              referer = "https://weibo.com/";
-            } else if (url.includes("pximg.net")) {
-              referer = "https://www.pixiv.net/";
+            const isBlobUrl = url.startsWith("blob:");
+
+            if (isSidePanelPage && !isBlobUrl) {
+              // 根据域名传入对应的防盗链 Referer，Service Worker fetch 不受 DNR 规则覆盖
+              let referer: string | undefined;
+              if (url.includes("sinaimg.cn") || url.includes("weibo.com")) {
+                referer = "https://weibo.com/";
+              } else if (url.includes("pximg.net")) {
+                referer = "https://www.pixiv.net/";
+              }
+              chrome.runtime.sendMessage(
+                {
+                  type: "FETCH_BLOB",
+                  payload: { url, referer },
+                },
+                (response) => {
+                  if (response?.success && response.arrayBuffer) {
+                    const mimeType = response.mimeType || "image/jpeg";
+                    img.src = `data:${mimeType};base64,${response.arrayBuffer}`;
+                  } else {
+                    img.src = url;
+                  }
+                },
+              );
+            } else {
+              img.src = url;
             }
-            chrome.runtime.sendMessage(
-              {
-                type: "FETCH_BLOB",
-                payload: { url, referer },
-              },
-              (response) => {
-                if (response?.success && response.arrayBuffer) {
-                  const mimeType = response.mimeType || "image/jpeg";
-                  img.src = `data:${mimeType};base64,${response.arrayBuffer}`;
-                } else {
-                  img.src = url;
-                }
-              },
-            );
-          } else {
-            img.src = url;
-          }
-        },
-      );
+          },
+        );
+      } catch (err) {
+        const error = err as Error & { isTimeout?: boolean };
+        if (error?.isTimeout) {
+          throw error; // 扔给最外层 try...catch，直接返回 null 丢弃以符合测试对 stalled 图片的处理
+        }
+        // 网络加载失败（如防盗链拦截），设宽高为 0 以保留该项，便于后续代理下载
+        dimensions = { width: 0, height: 0 };
+      }
 
       let sizeKB = 0;
       let format: ImageFormat = "UNKNOWN";

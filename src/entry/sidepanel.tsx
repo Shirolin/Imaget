@@ -11,7 +11,12 @@ const getInitialLocale = (): string => {
   if (typeof chrome !== "undefined" && chrome.i18n?.getUILanguage) {
     const uiLang = chrome.i18n.getUILanguage().toLowerCase();
     if (uiLang.startsWith("zh")) {
-      if (uiLang.includes("tw") || uiLang.includes("hk") || uiLang.includes("hant") || uiLang.includes("traditional")) {
+      if (
+        uiLang.includes("tw") ||
+        uiLang.includes("hk") ||
+        uiLang.includes("hant") ||
+        uiLang.includes("traditional")
+      ) {
         return "zh_TW";
       }
       return "zh_CN";
@@ -28,7 +33,10 @@ const getInitialLocale = (): string => {
 const currentLocale = getInitialLocale();
 const dynamicFont = getFontStackByLocale(currentLocale);
 if (typeof document !== "undefined") {
-  document.documentElement.style.setProperty("--imaget-font-family", dynamicFont);
+  document.documentElement.style.setProperty(
+    "--imaget-font-family",
+    dynamicFont,
+  );
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

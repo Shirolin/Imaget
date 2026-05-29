@@ -11,13 +11,18 @@ export class PixivResolver implements IUrlResolver {
     const isNovelCover = /\/(sci|ci)\d+_[a-zA-Z0-9]+/.test(url);
 
     // 1. 小说封面等带有 sci/ci 前缀的图片原图存放在 /novel-cover-original/ 目录下，其他常规图片存放在 /img-original/ 目录下
-    const originalDir = isNovelCover ? "/novel-cover-original/" : "/img-original/";
+    const originalDir = isNovelCover
+      ? "/novel-cover-original/"
+      : "/img-original/";
 
     let resolved = url
       .replace(/\/c\/[^/]+\/[^/]+/, "") // 匹配双层缩略路径
-      .replace(/\/c\/[^/]+/, "")        // 匹配单层缩略路径
+      .replace(/\/c\/[^/]+/, "") // 匹配单层缩略路径
       .replace(/\/(img-master|custom-thumb)\//, originalDir)
-      .replace(/i\.pximg\.net\/img\/(\d{4})\//, `i.pximg.net${originalDir}img/$1/`); // 适配小说/插画封面路径，锚定域名防递归
+      .replace(
+        /i\.pximg\.net\/img\/(\d{4})\//,
+        `i.pximg.net${originalDir}img/$1/`,
+      ); // 适配小说/插画封面路径，锚定域名防递归
 
     // 2. 剥离文件名中的尺寸后缀，如 _p0_master1200, _p0_custom1200, _p0_square1200, _master1200
     resolved = resolved.replace(/_(master|custom|square)\d+/, "");

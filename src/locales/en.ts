@@ -102,7 +102,8 @@ export default {
     message: "Identify Blob Resources (for Telegram, Discord, etc.)",
   },
   prefIdentifyBlobImagesHint: {
-    message: "For encrypted chats like Telegram, click or double-click to view the large preview and sniff the highest resolution version instantly.",
+    message:
+      "For encrypted chats like Telegram, click or double-click to view the large preview and sniff the highest resolution version instantly.",
   },
   prefMinImageSize: { message: "Min Image Size for Floating Button" },
   sizeAlways: { message: "Always Show" },

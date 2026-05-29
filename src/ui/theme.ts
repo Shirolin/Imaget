@@ -1,7 +1,8 @@
 import { createTheme } from "@mantine/core";
 
 // 基础西文核心后备栈（用于 Outfit 加载失败或未覆盖特殊符号时的优雅降级，防止直接掉入中日韩的英文字形）
-const WESTERN_FALLBACK = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
+const WESTERN_FALLBACK =
+  "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
 
 // 纯西文字体栈
 export const EN_FONT_STACK = `Outfit, ${WESTERN_FALLBACK}, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`;
@@ -37,7 +38,8 @@ export const getFontStackByLocale = (locale: string): string => {
 };
 
 // 精简 Mantine Theme 里的兜底，冗余的降级栈完全由运行时 JS 控制，以极大地减少编译生成的 CSS 体积
-export const FONT_STACK = "var(--imaget-font-family, system-ui, -apple-system, sans-serif)";
+export const FONT_STACK =
+  "var(--imaget-font-family, system-ui, -apple-system, sans-serif)";
 
 export const theme = createTheme({
   fontFamily: FONT_STACK,

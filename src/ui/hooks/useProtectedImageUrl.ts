@@ -9,8 +9,8 @@ const pendingPromises = new Map<string, Promise<string>>();
  */
 function isProtectedDomain(url: string): boolean {
   return (
-    url.includes("i.redd.it") || 
-    url.includes("pximg.net") || 
+    url.includes("i.redd.it") ||
+    url.includes("pximg.net") ||
     url.includes("sinaimg.cn")
   );
 }
@@ -22,24 +22,26 @@ function isProtectedDomain(url: string): boolean {
  */
 export function useProtectedImageUrl(url: string): string | undefined {
   // 仅在需要异步载入保护域名图片时，存储获取到的临时 Blob Object URL
-  const [asyncBlobUrl, setAsyncBlobUrl] = useState<string | undefined>(undefined);
+  const [asyncBlobUrl, setAsyncBlobUrl] = useState<string | undefined>(
+    undefined,
+  );
 
   // 1. 同步计算派生状态（Derived State）- 物理级零延迟、安全、无重绘副作用
   const isProtected = isProtectedDomain(url);
   const cachedUrl = cache.get(url);
-  
+
   // 最终应该被用于 <img> 标签的 URL：
   // - 如果是非保护域名，直接秒级显示原始 url
   // - 如果保护域名且已在本地 Map 缓存中，直接同步显示缓存的 Object URL
   // - 否则，显示我们异步加载完毕并存储在状态中的 asyncBlobUrl（载入中时为 undefined）
-  const displaySrc = !isProtected ? url : (cachedUrl || asyncBlobUrl);
+  const displaySrc = !isProtected ? url : cachedUrl || asyncBlobUrl;
 
   useEffect(() => {
     if (!isProtected) return;
     if (cache.has(url)) return;
 
     let isMounted = true;
-    
+
     // 我们只需传递 referer 为其首页即可。对于 redd.it，referer 就是 reddit.com
     let referer = undefined;
     if (url.includes("redd.it")) referer = "https://www.reddit.com/";
@@ -50,24 +52,22 @@ export function useProtectedImageUrl(url: string): string | undefined {
     let promise = pendingPromises.get(url);
     if (!promise) {
       const fetchWithFallback = (targetUrl: string): Promise<string> => {
-        return platformAdapter
-          .fetchBlob(targetUrl, referer)
-          .then((blob) => {
-            const objectUrl = URL.createObjectURL(blob);
-            
-            // 简单的容量控制，防止极端情况下一直不关侧边栏导致的隐性内存泄漏
-            if (cache.size > 500) {
-              const firstKey = cache.keys().next().value;
-              if (firstKey) {
-                const oldUrl = cache.get(firstKey);
-                if (oldUrl) URL.revokeObjectURL(oldUrl);
-                cache.delete(firstKey);
-              }
+        return platformAdapter.fetchBlob(targetUrl, referer).then((blob) => {
+          const objectUrl = URL.createObjectURL(blob);
+
+          // 简单的容量控制，防止极端情况下一直不关侧边栏导致的隐性内存泄漏
+          if (cache.size > 500) {
+            const firstKey = cache.keys().next().value;
+            if (firstKey) {
+              const oldUrl = cache.get(firstKey);
+              if (oldUrl) URL.revokeObjectURL(oldUrl);
+              cache.delete(firstKey);
             }
-            
-            cache.set(url, objectUrl); // 始终用组件请求的原始 url 作为缓存 key
-            return objectUrl;
-          });
+          }
+
+          cache.set(url, objectUrl); // 始终用组件请求的原始 url 作为缓存 key
+          return objectUrl;
+        });
       };
 
       promise = fetchWithFallback(url)
@@ -75,7 +75,10 @@ export function useProtectedImageUrl(url: string): string | undefined {
           // Pixiv 的 JPG 回退到 PNG 自动重试逻辑下沉到代理层
           if (url.includes("pximg.net") && url.endsWith(".jpg")) {
             const pngUrl = url.replace(/\.jpg$/, ".png");
-            console.log(`[Proxy] Pixiv JPG failed, retrying PNG: ${pngUrl}`, err);
+            console.log(
+              `[Proxy] Pixiv JPG failed, retrying PNG: ${pngUrl}`,
+              err,
+            );
             return fetchWithFallback(pngUrl);
           }
           throw err;
@@ -92,11 +95,16 @@ export function useProtectedImageUrl(url: string): string | undefined {
       pendingPromises.set(url, promise);
     }
 
-    promise.then((finalUrl) => {
-      if (isMounted) setAsyncBlobUrl(finalUrl);
-    }).catch((err) => {
-      console.error("[useProtectedImageUrl] Unexpected error in promise chain:", err);
-    });
+    promise
+      .then((finalUrl) => {
+        if (isMounted) setAsyncBlobUrl(finalUrl);
+      })
+      .catch((err) => {
+        console.error(
+          "[useProtectedImageUrl] Unexpected error in promise chain:",
+          err,
+        );
+      });
 
     return () => {
       isMounted = false;
@@ -107,4 +115,3 @@ export function useProtectedImageUrl(url: string): string | undefined {
 
   return displaySrc;
 }
-

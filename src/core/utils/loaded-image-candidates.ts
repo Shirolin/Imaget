@@ -63,12 +63,18 @@ export function collectLoadedImageItems({
     if (!url.startsWith("http") && !allowBlob) continue;
 
     const isPixiv = window.location.href.includes("pixiv.net");
-    if (isPixiv && (url.includes("image/svg+xml") || url.toLowerCase().includes(".svg"))) {
+    if (
+      isPixiv &&
+      (url.includes("image/svg+xml") || url.toLowerCase().includes(".svg"))
+    ) {
       continue;
     }
 
     // 过滤掉 weibo.com 的网页链接（如 /u/false 或 /status/ 等非真实图片）
-    if (url.includes("weibo.com") && !url.match(/\.(jpg|jpeg|png|gif|webp|svg)/i)) {
+    if (
+      url.includes("weibo.com") &&
+      !url.match(/\.(jpg|jpeg|png|gif|webp|svg)/i)
+    ) {
       continue;
     }
 

@@ -16,7 +16,10 @@ export const I18nProvider: React.FC<{
 
     // 1. 设置到 html/body 上以适配 Sidepanel、网页沙盒及常规页面
     if (typeof document !== "undefined") {
-      document.documentElement.style.setProperty("--imaget-font-family", dynamicFont);
+      document.documentElement.style.setProperty(
+        "--imaget-font-family",
+        dynamicFont,
+      );
 
       // 2. 为 Shadow DOM 内部的环境提供渐进式检测，动态写入对应的插件根容器中
       const container = document.querySelector(".imaget-extension-container");
@@ -30,9 +33,14 @@ export const I18nProvider: React.FC<{
           .filter((sr): sr is ShadowRoot => !!sr);
 
         for (const sr of shadowRoots) {
-          const shadowContainer = sr.querySelector(".imaget-extension-container");
+          const shadowContainer = sr.querySelector(
+            ".imaget-extension-container",
+          );
           if (shadowContainer instanceof HTMLElement) {
-            shadowContainer.style.setProperty("--imaget-font-family", dynamicFont);
+            shadowContainer.style.setProperty(
+              "--imaget-font-family",
+              dynamicFont,
+            );
           }
         }
       } catch {

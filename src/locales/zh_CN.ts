@@ -344,7 +344,8 @@ export default {
     message: "识别 Blob 动态资源 (适用于 Telegram / Discord 等)",
   },
   prefIdentifyBlobImagesHint: {
-    message: "对 Telegram 等加密聊天，在网页中点击图片进入大图预览模式即可自动且瞬间嗅探捕获其最高清原图尺寸。",
+    message:
+      "对 Telegram 等加密聊天，在网页中点击图片进入大图预览模式即可自动且瞬间嗅探捕获其最高清原图尺寸。",
   },
   prefLanguage: {
     message: "界面语言",

@@ -346,7 +346,8 @@ export default {
     message: "Blob-Ressourcen identifizieren (für Telegram, Discord etc.)",
   },
   prefIdentifyBlobImagesHint: {
-    message: "Für verschlüsselte Chats wie Telegram klicken oder doppelklicken Sie auf das Bild, um die große Vorschau anzuzeigen und die Version mit der höchsten Auflösung sofort zu erfassen.",
+    message:
+      "Für verschlüsselte Chats wie Telegram klicken oder doppelklicken Sie auf das Bild, um die große Vorschau anzuzeigen und die Version mit der höchsten Auflösung sofort zu erfassen.",
   },
   prefLanguage: {
     message: "Sprache der Benutzeroberfläche",

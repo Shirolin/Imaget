@@ -250,7 +250,8 @@ const ImagePreviewBase: React.FC<ImagePreviewProps> = ({
               const currentTarget = event.currentTarget;
               if (
                 currentTarget.src.includes("i.pximg.net") &&
-                (currentTarget.src.includes("/img-original/") || currentTarget.src.includes("/novel-cover-original/")) &&
+                (currentTarget.src.includes("/img-original/") ||
+                  currentTarget.src.includes("/novel-cover-original/")) &&
                 currentTarget.src.endsWith(".jpg")
               ) {
                 currentTarget.src = currentTarget.src.replace(/\.jpg$/, ".png");

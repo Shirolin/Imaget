@@ -346,7 +346,8 @@ export default {
     message: "Identificar recursos Blob (para Telegram, Discord, etc.)",
   },
   prefIdentifyBlobImagesHint: {
-    message: "Para chats criptografados como Telegram, clique ou dê um duplo clique para abrir a visualização ampliada e capturar instantaneamente a versão em resolução máxima.",
+    message:
+      "Para chats criptografados como Telegram, clique ou dê um duplo clique para abrir a visualização ampliada e capturar instantaneamente a versão em resolução máxima.",
   },
   prefLanguage: {
     message: "Idioma da Interface",

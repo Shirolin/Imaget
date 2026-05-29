@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "FETCH_BLOB") {
     const { url, referer } = message.payload;
-    
+
     // 规范澄清：Chrome 扩展 Service Worker 无法在普通 fetch 中真正自定义 Referer (属于 Forbidden Headers)。
     // 此处能成功绕过防盗链主要是因为 SW 处于插件特权域，其发起的 fetch 请求不会被浏览器强制标记
     // 跨域沙盒特征（如 Sec-Fetch-Site: cross-site），使得 CDN 防火墙放行。
@@ -90,12 +90,14 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         // 增加安全防御：限制超大图或大媒体文件（50MB 阈值），防止 Base64 通信信道堆栈溢出或 SW 内存崩溃
         const contentLength = res.headers.get("content-length");
         if (contentLength && parseInt(contentLength, 10) > 50 * 1024 * 1024) {
-          throw new Error("Target resource size exceeds proxy safe limits (50MB)");
+          throw new Error(
+            "Target resource size exceeds proxy safe limits (50MB)",
+          );
         }
 
         const mimeType = res.headers.get("content-type") || "";
         const blob = await res.blob();
-        
+
         if (blob.size > 50 * 1024 * 1024) {
           throw new Error("Blob payload size exceeds proxy safe limits (50MB)");
         }
@@ -106,7 +108,10 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         const chunkSize = 8192;
         let binary = "";
         for (let i = 0; i < bytes.length; i += chunkSize) {
-          binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)));
+          binary += String.fromCharCode.apply(
+            null,
+            Array.from(bytes.subarray(i, i + chunkSize)),
+          );
         }
         const base64 = btoa(binary);
 
@@ -298,7 +303,10 @@ async function setupDeclarativeNetRequestRules() {
     });
     console.log("[Background] DeclarativeNetRequest rules set successfully.");
   } catch (err) {
-    console.error("[Background] Failed to update declarativeNetRequest rules:", err);
+    console.error(
+      "[Background] Failed to update declarativeNetRequest rules:",
+      err,
+    );
   }
 }
 
