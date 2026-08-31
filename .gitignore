@@ -42,3 +42,6 @@ docs/superpowers/
 .vfox/
 
 # Agent skills (not tracked with this project)
+
+# Test coverage
+coverage/

@@ -17,26 +17,18 @@ import {
   type AutoScrollStopReason,
 } from "./utils/auto-scroll-policy";
 import { collectLoadedImageItems } from "./utils/loaded-image-candidates";
+import { stableHash } from "./utils/hash";
 import {
   FOLLOW_SCAN_PAUSE,
   FOLLOW_SCAN_RESUME,
   FOLLOW_SCAN_START,
   FOLLOW_SCAN_STOP,
   type FollowScanCommandType,
-} from "../ui/utils/sniffer-events";
+} from "./utils/sniffer-events";
 
 const METADATA_CONCURRENCY = 12;
 const IMAGE_METADATA_TIMEOUT_MS = 3000;
 const FETCH_METADATA_TIMEOUT_MS = 2000;
-
-/** 为字符串生成稳定的数字哈希（不依赖索引位置） */
-function stableHash(str: string): string {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash + str.charCodeAt(i)) & 0xffffffff;
-  }
-  return Math.abs(hash).toString(36);
-}
 
 // 匹配项标记：记录需要第二阶段背景图检查的元素
 interface BgCandidate {
@@ -408,8 +400,18 @@ export class Sniffer {
 
       // 2. 收集背景图候选（延迟到 Phase 2 检查 getComputedStyle）
       if (identifyBackground && el instanceof HTMLElement) {
-        // 先通过 style 属性快速过滤：没有 style 属性则不可能有 background-image
-        if (el.hasAttribute("style") || el.hasAttribute("background")) {
+        // 候选过滤：内联 style/background 属性，或命中常见背景/懒加载 class 关键词。
+        // 部分站点通过 class 定义 background-image（如 .lazy-bg/.blur-up），
+        // 仅凭内联属性会漏检；但为避免对所有元素执行 getComputedStyle，
+        // 仍只对候选触发 Phase 2 的重排检查。
+        const className = typeof el.className === "string" ? el.className : "";
+        const hasInlineBg =
+          el.hasAttribute("style") || el.hasAttribute("background");
+        const hasBgClass =
+          /(^|[\s_-])(bg-image|background|lazy-bg|lazy_bg|blur-up|thumb|thumbnail)([\s_-]|$)/i.test(
+            className,
+          );
+        if (hasInlineBg || hasBgClass) {
           bgCandidates.push({ element: el });
         }
       }
@@ -655,23 +657,37 @@ export class Sniffer {
     const urlArray = Array.from(urls);
     const metadataResults: Array<Omit<ImageItem, "id" | "isSelected"> | null> =
       Array(urlArray.length).fill(null);
-    await runConcurrent(urlArray, METADATA_CONCURRENCY, async (url, index) => {
-      metadataResults[index] = await this.getImageMetadata(url);
-    });
 
-    // 构建已有图片的 URL→ID 映射，保持 ID 稳定
-    const existingIdMap = new Map<string, string>();
+    // 构建已有图片的 URL→数据映射：稳定 ID 并复用已有元数据，
+    // 避免刷新/深扫时对已识别图片重复发起加载请求
+    const existingItemMap = new Map<string, ImageItem>();
     if (existingItems) {
       for (const item of existingItems) {
-        existingIdMap.set(item.url, item.id);
+        existingItemMap.set(item.url, item);
       }
     }
+
+    await runConcurrent(urlArray, METADATA_CONCURRENCY, async (url, index) => {
+      const existing = existingItemMap.get(url);
+      if (existing && existing.width > 0 && existing.height > 0) {
+        metadataResults[index] = {
+          url,
+          width: existing.width,
+          height: existing.height,
+          sizeKB: existing.sizeKB,
+          format: existing.format,
+          filename: existing.filename || url.split("/").pop()?.split(/[?#]/)[0],
+        };
+        return;
+      }
+      metadataResults[index] = await this.getImageMetadata(url);
+    });
 
     const items: ImageItem[] = [];
     metadataResults.forEach((metadata, index) => {
       const url = urlArray[index];
       // 优先复用已有 ID，否则生成新的稳定哈希
-      const id = existingIdMap.get(url) ?? stableHash(url);
+      const id = existingItemMap.get(url)?.id ?? stableHash(url);
 
       if (metadata) {
         items.push({
@@ -792,12 +808,9 @@ export class Sniffer {
             }
           },
         );
-      } catch (err) {
-        const error = err as Error & { isTimeout?: boolean };
-        if (error?.isTimeout) {
-          throw error; // 扔给最外层 try...catch，直接返回 null 丢弃以符合测试对 stalled 图片的处理
-        }
-        // 网络加载失败（如防盗链拦截），设宽高为 0 以保留该项，便于后续代理下载
+      } catch {
+        // 超时或网络加载失败（如防盗链拦截）统一设宽高为 0，
+        // 保留该项以便后续代理下载，避免慢网/受限图片被悄悄丢弃
         dimensions = { width: 0, height: 0 };
       }
 

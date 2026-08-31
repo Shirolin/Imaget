@@ -46,13 +46,6 @@ export function isDomainDisabled(
   });
 }
 
-export function shouldContinueAutoScroll(
-  currentPosition: number,
-  latestScrollHeight: number,
-): boolean {
-  return currentPosition < latestScrollHeight;
-}
-
 export interface SnifferSettings {
   interfaceBehavior: {
     disabledDomains?: string[];

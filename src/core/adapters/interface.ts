@@ -36,7 +36,6 @@ export interface IPlatformAdapter {
     url: string,
     filename: string,
     conflictAction?: "uniquify" | "overwrite" | "prompt",
-    referer?: string,
   ): Promise<void>;
 
   /**

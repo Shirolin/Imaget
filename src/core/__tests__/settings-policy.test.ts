@@ -4,7 +4,6 @@ import {
   getSnifferSettings,
   getSnifferSettingsKey,
   isDomainDisabled,
-  shouldContinueAutoScroll,
 } from "../utils/settings-policy";
 import { defaultSettings, type Settings } from "../../types";
 
@@ -29,11 +28,6 @@ describe("settings policy helpers", () => {
     expect(
       isDomainDisabled("https://notexample.com/gallery", ["example.com"]),
     ).toBe(false);
-  });
-
-  it("uses the latest scroll height when deciding whether auto scroll should continue", () => {
-    expect(shouldContinueAutoScroll(800, 1600)).toBe(true);
-    expect(shouldContinueAutoScroll(1600, 1600)).toBe(false);
   });
 
   it("uses a bounded default download concurrency", () => {

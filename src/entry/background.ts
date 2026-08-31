@@ -1,5 +1,5 @@
 import { defaultSettings, type Settings } from "../types";
-import { t } from "../core/utils/i18n";
+import { t, setLocale } from "../core/utils/i18n";
 
 /**
  * 后台逻辑：
@@ -45,9 +45,24 @@ const updateSidePanelBehavior = async () => {
 };
 
 // 监听设置变化以更新行为
+let currentMenuLocale: string | null = null;
+
+const syncContextMenuLocale = (settings?: Settings) => {
+  if (!settings) return;
+  const language = settings.general?.language ?? "auto";
+  if (language === currentMenuLocale) return;
+  currentMenuLocale = language;
+  setLocale(language);
+  // 语言变化时重建菜单，使右键文案立即反映新语言
+  setupContextMenus();
+};
+
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.imaget_settings) {
     updateSidePanelBehavior();
+    syncContextMenuLocale(
+      changes.imaget_settings.newValue as Settings | undefined,
+    );
   }
 });
 
@@ -56,8 +71,10 @@ chrome.runtime.onInstalled.addListener(async () => {
   const result = await chrome.storage.local.get("imaget_settings");
   if (!result.imaget_settings) {
     await chrome.storage.local.set({ imaget_settings: defaultSettings });
+    syncContextMenuLocale(defaultSettings);
+  } else {
+    syncContextMenuLocale(result.imaget_settings as Settings);
   }
-  setupContextMenus();
   updateSidePanelBehavior();
   setupDeclarativeNetRequestRules();
 });
@@ -132,21 +149,16 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   }
 
   if (message.type === "DOWNLOAD_URL_REQUEST") {
-    const { url, filename, conflictAction, referer } = message.payload;
+    const { url, filename, conflictAction } = message.payload;
+    // 注意：chrome.downloads.download 的 headers 仅允许 XHR 安全头（如
+    // Content-Disposition/Content-Type），Referer 属被禁止的请求头，设置无效。
+    // 受防盗链保护的域名必须走 FETCH_BLOB 代理抓取，因此这里不再传 headers。
     chrome.downloads.download(
       {
         url,
         filename,
         conflictAction: conflictAction || "uniquify",
         saveAs: false,
-        headers: referer
-          ? [
-              {
-                name: "Referer",
-                value: referer,
-              },
-            ]
-          : undefined,
       },
       (downloadId) => {
         if (chrome.runtime.lastError) {

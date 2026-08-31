@@ -2,6 +2,7 @@ import type { ImageItem } from "../../types";
 import { ImageTypeDetector } from "./image-type-detector";
 import { UrlResolver } from "./url-resolver";
 import { WeiboResolver } from "../resolvers/weibo";
+import { stableHash } from "./hash";
 
 export interface LoadedImageCandidateSettings {
   interfaceBehavior?: {
@@ -15,14 +16,6 @@ interface CollectLoadedImageItemsOptions {
   existingItems?: ImageItem[];
   seenUrls?: Set<string>;
   batchLimit?: number;
-}
-
-function stableHash(str: string): string {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash + str.charCodeAt(i)) & 0xffffffff;
-  }
-  return Math.abs(hash).toString(36);
 }
 
 export function collectLoadedImageItems({

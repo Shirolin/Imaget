@@ -7,16 +7,18 @@ export function filterImages(
   return images
     .map((img, index) => ({ img, index }))
     .filter(({ img }) => {
-      // 尺寸过滤
-      const widthMatch = img.width >= options.minWidth;
-      const heightMatch = img.height >= options.minHeight;
+      // 尺寸过滤：宽高均为 0 视为元数据未知（超时/加载失败），不按 min 尺寸丢弃
+      if (!(img.width === 0 && img.height === 0)) {
+        const widthMatch = img.width >= options.minWidth;
+        const heightMatch = img.height >= options.minHeight;
 
-      const isResolutionMatch =
-        options.resolutionMode === "and"
-          ? widthMatch && heightMatch
-          : widthMatch || heightMatch;
+        const isResolutionMatch =
+          options.resolutionMode === "and"
+            ? widthMatch && heightMatch
+            : widthMatch || heightMatch;
 
-      if (!isResolutionMatch) return false;
+        if (!isResolutionMatch) return false;
+      }
 
       // 格式过滤
       if (
@@ -48,8 +50,8 @@ export function filterImages(
         if (keywords.some((k) => urlLower.includes(k))) return false;
       }
 
-      // 比例过滤
-      if (options.aspectRatio !== "all") {
+      // 比例过滤：未知尺寸（0×0）跳过，避免 NaN 误滤
+      if (options.aspectRatio !== "all" && !(img.width === 0 && img.height === 0)) {
         const ratio = img.width / img.height;
         if (options.aspectRatio === "square") {
           // 正方形: 宽高比在 0.95 到 1.05 之间

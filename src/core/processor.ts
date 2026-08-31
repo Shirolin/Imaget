@@ -174,7 +174,6 @@ export class ImageProcessor {
               img.url,
               filename,
               conflictAction,
-              img.pageUrl || "",
             );
             return;
           }

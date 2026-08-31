@@ -23,7 +23,7 @@ import {
   FOLLOW_SCAN_START,
   FOLLOW_SCAN_STOP,
   IMAGET_REOPEN,
-} from "../ui/utils/sniffer-events";
+} from "../core/utils/sniffer-events";
 
 const ROOT_ID = "imaget-reborn-root";
 const SELECTOR = ".imaget-extension-container";

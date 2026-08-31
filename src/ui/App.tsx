@@ -148,6 +148,7 @@ const App: React.FC = () => {
       activeScanRequestId.current = requestId;
       if (resetList) {
         setImages([]);
+        imagesRef.current = [];
       }
 
       try {
@@ -224,10 +225,10 @@ const App: React.FC = () => {
   restartFollowScanRef.current = restartFollowScan;
 
   useEffect(() => {
-    const runInitialSniffer = async () => {
+    const runSnifferWithLoading = async (resetList: boolean) => {
       setLoading(true);
       try {
-        await runSniffer(true);
+        await runSniffer(resetList);
         await restartFollowScanRef.current();
       } catch {
         console.error("Sniffer failed");
@@ -236,7 +237,8 @@ const App: React.FC = () => {
       }
     };
 
-    runInitialSniffer();
+    // 设置变化触发的刷新采用增量合并，避免清空已嗅探列表
+    void runSnifferWithLoading(false);
 
     // 监听侧边栏模式下的 Tab 切换
     const isExtensionPage =
@@ -244,10 +246,19 @@ const App: React.FC = () => {
       chrome.tabs &&
       window.location.protocol === "chrome-extension:";
     if (isExtensionPage) {
-      const handleTabChange = () => runInitialSniffer();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const handleTabUpdate = (_tabId: number, changeInfo: any) => {
-        if (changeInfo.status === "complete") runInitialSniffer();
+      const handleTabChange = () => {
+        // 切换到新页面时清空上一页残留，再重新嗅探
+        void runSnifferWithLoading(true);
+      };
+      const handleTabUpdate = (
+        _tabId: number,
+        changeInfo: { status?: string },
+        tab: { active?: boolean },
+      ) => {
+        // 仅响应当前窗口活动 Tab 的加载完成，避免后台 Tab 触发多余重嗅
+        if (changeInfo.status === "complete" && tab.active) {
+          void runSnifferWithLoading(true);
+        }
       };
 
       chrome.tabs.onActivated.addListener(handleTabChange);

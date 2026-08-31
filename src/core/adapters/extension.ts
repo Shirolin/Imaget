@@ -128,7 +128,6 @@ export class ExtensionAdapter implements IPlatformAdapter {
     url: string,
     filename: string,
     conflictAction?: "uniquify" | "overwrite" | "prompt",
-    referer?: string,
   ): Promise<void> {
     if (!this.isValidContext()) return;
 
@@ -141,7 +140,6 @@ export class ExtensionAdapter implements IPlatformAdapter {
               url,
               filename,
               conflictAction: conflictAction || "uniquify",
-              referer,
             },
           },
           (response) => {

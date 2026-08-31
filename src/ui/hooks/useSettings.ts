@@ -75,7 +75,8 @@ export function useSettings() {
 
   useEffect(() => {
     if (loading) return;
-    const timer = setTimeout(() => {
+
+    const persist = () => {
       if (
         typeof chrome !== "undefined" &&
         chrome.storage &&
@@ -85,8 +86,14 @@ export function useSettings() {
       } else {
         localStorage.setItem("imaget_settings", JSON.stringify(settings));
       }
-    }, 500);
-    return () => clearTimeout(timer);
+    };
+
+    const timer = setTimeout(persist, 500);
+    return () => {
+      clearTimeout(timer);
+      // effect 清理时立即落盘（含卸载与 settings/loading 依赖变更），避免防抖窗口内修改丢失
+      persist();
+    };
   }, [settings, loading]);
 
   const updateSettings = useCallback(

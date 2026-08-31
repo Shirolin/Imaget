@@ -33,6 +33,51 @@ describe("filterImages", () => {
     expect(filterImages([], defaultOptions)).toEqual([]);
   });
 
+  it("未知尺寸（0×0）应跳过尺寸过滤", () => {
+    const images = [
+      makeImage({ url: "unknown.png", width: 0, height: 0 }),
+      makeImage({ url: "small.png", width: 50, height: 50 }),
+    ];
+    const options = {
+      ...defaultOptions,
+      minWidth: 200,
+      minHeight: 200,
+      resolutionMode: "and" as const,
+    };
+    const result = filterImages(images, options);
+    expect(result).toHaveLength(1);
+    expect(result[0].url).toBe("unknown.png");
+  });
+
+  it("半已知尺寸仍按最小尺寸过滤", () => {
+    const images = [
+      makeImage({ url: "partial.png", width: 50, height: 0 }),
+      makeImage({ url: "large.png", width: 300, height: 300 }),
+    ];
+    const options = {
+      ...defaultOptions,
+      minWidth: 200,
+      minHeight: 200,
+      resolutionMode: "and" as const,
+    };
+    const result = filterImages(images, options);
+    expect(result).toHaveLength(1);
+    expect(result[0].url).toBe("large.png");
+  });
+
+  it("未知尺寸（0×0）应跳过宽高比过滤", () => {
+    const images = [
+      makeImage({ url: "unknown.png", width: 0, height: 0 }),
+      makeImage({ url: "square.png", width: 100, height: 100 }),
+    ];
+    const options = {
+      ...defaultOptions,
+      aspectRatio: "landscape" as const,
+    };
+    const result = filterImages(images, options);
+    expect(result.map((img) => img.url)).toEqual(["unknown.png"]);
+  });
+
   it("应该按最小尺寸过滤（resolutionMode=or）", () => {
     const images = [
       makeImage({ url: "img1.png", width: 50, height: 50 }),

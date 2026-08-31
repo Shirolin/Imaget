@@ -77,7 +77,6 @@ describe("ImageProcessor", () => {
       "https://example.com/a.png",
       expect.stringContaining(".png"),
       expect.any(String),
-      "https://example.com/page",
     );
     expect(adapter.fetchBlob).not.toHaveBeenCalled();
   });
@@ -185,7 +184,6 @@ describe("ImageProcessor", () => {
       "https://example.com/a.png",
       expect.stringContaining(".png"),
       expect.any(String),
-      "https://example.com/page",
     );
     expect(adapter.fetchBlob).not.toHaveBeenCalled();
   });
@@ -271,7 +269,6 @@ describe("ImageProcessor", () => {
         expect.any(String),
         expect.any(String),
         "prompt",
-        expect.any(String),
       );
     });
   });

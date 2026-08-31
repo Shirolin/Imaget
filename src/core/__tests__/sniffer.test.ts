@@ -130,6 +130,61 @@ describe("Sniffer", () => {
     expect(urls.some((url) => url.startsWith("data:image/svg+xml"))).toBe(true);
   });
 
+  it("treats elements with common background classes as background candidates", async () => {
+    installMockImage();
+    const el = document.createElement("div");
+    el.className = "lazy-bg thumbnail";
+    document.body.appendChild(el);
+
+    vi.spyOn(window, "getComputedStyle").mockImplementation((node) => {
+      const style = {} as CSSStyleDeclaration;
+      if (node === el) {
+        Object.defineProperty(style, "backgroundImage", {
+          value: 'url("https://cdn.example.com/class-bg.webp")',
+          configurable: true,
+        });
+      }
+      return style;
+    });
+
+    const results = await new Sniffer().sniffAll(defaultSettings);
+    expect(results.map((item) => item.url)).toContain(
+      "https://cdn.example.com/class-bg.webp",
+    );
+  });
+
+  it("does not treat Tailwind bg-* utility classes as background candidates", async () => {
+    installMockImage();
+    const el = document.createElement("div");
+    el.className = "bg-white bg-gray-100";
+    document.body.appendChild(el);
+
+    const getComputedStyleSpy = vi
+      .spyOn(window, "getComputedStyle")
+      .mockImplementation(() => ({}) as CSSStyleDeclaration);
+
+    const results = await new Sniffer().sniffAll(defaultSettings);
+
+    expect(getComputedStyleSpy).not.toHaveBeenCalled();
+    expect(results).toEqual([]);
+  });
+
+  it("does not treat generic hero/banner classes as background candidates", async () => {
+    installMockImage();
+    const el = document.createElement("div");
+    el.className = "hero banner";
+    document.body.appendChild(el);
+
+    const getComputedStyleSpy = vi
+      .spyOn(window, "getComputedStyle")
+      .mockImplementation(() => ({}) as CSSStyleDeclaration);
+
+    const results = await new Sniffer().sniffAll(defaultSettings);
+
+    expect(getComputedStyleSpy).not.toHaveBeenCalled();
+    expect(results).toEqual([]);
+  });
+
   it("limits concurrent metadata image loads to twelve", async () => {
     let maxActive = 0;
     installMockImage({
@@ -166,7 +221,11 @@ describe("Sniffer", () => {
 
     expect(results.map((item) => item.url)).toEqual([
       "https://cdn.example.com/ok.jpg",
+      "https://cdn.example.com/stuck.jpg",
     ]);
+    expect(
+      results.find((item) => item.url.endsWith("stuck.jpg")),
+    ).toMatchObject({ width: 0, height: 0 });
     vi.useRealTimers();
   });
 
@@ -205,7 +264,14 @@ describe("Sniffer", () => {
     ]);
 
     await vi.advanceTimersByTimeAsync(5000);
-    await expect(scan).resolves.toEqual([]);
+    const results = await scan;
+    expect(results).toEqual([
+      expect.objectContaining({
+        url: "https://cdn.example.com/loaded.webp",
+        width: 0,
+        height: 0,
+      }),
+    ]);
     vi.useRealTimers();
   });
 

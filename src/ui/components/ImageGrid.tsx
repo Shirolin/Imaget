@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, memo } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import {
   SimpleGrid,
   ScrollArea,
@@ -35,16 +35,32 @@ const ImageGridBase: React.FC<ImageGridProps> = ({
   const { t } = useI18n();
   const [visibleCount, setVisibleCount] = useState(40);
   const observerTarget = useRef<HTMLDivElement>(null);
-  const itemIdentity = useMemo(
-    () => items.map((item) => item.id).join("\u0001"),
-    [items],
-  );
+  const prevIdsRef = useRef<string[] | null>(null);
 
   useEffect(() => {
-    // Required to reset pagination only after the item identity changes, not during render.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setVisibleCount(40);
-  }, [itemIdentity]);
+    // 区分「整体列表变化」（重新排序/替换/删除）与「尾部增量新增」：
+    // 仅整体变化时重置分页，增量追加时保持当前浏览窗口，避免 follow-scan 反复跳回顶部。
+    const ids = items.map((item) => item.id);
+    const prevIds = prevIdsRef.current;
+
+    let shouldReset = prevIds === null;
+    if (prevIds) {
+      const isAppendOnly =
+        ids.length > prevIds.length &&
+        prevIds.every((id, index) => id === ids[index]);
+      const isSameSequence =
+        ids.length === prevIds.length &&
+        prevIds.every((id, index) => id === ids[index]);
+      shouldReset = !isAppendOnly && !isSameSequence;
+    }
+
+    if (shouldReset) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVisibleCount(40);
+    }
+
+    prevIdsRef.current = ids;
+  }, [items]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
