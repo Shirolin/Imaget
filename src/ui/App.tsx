@@ -663,6 +663,12 @@ const App: React.FC = () => {
 
   const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null);
 
+  // 侧边栏模式（sidepanel.html 是唯一的 chrome-extension:// 入口）：
+  // 面板贴边铺满，不套浮层模式的圆角/边框/阴影，避免与容器边缘不贴合
+  const isSidepanelMode =
+    typeof window !== "undefined" &&
+    window.location.protocol === "chrome-extension:";
+
   return (
     <Box
       pos="fixed"
@@ -701,18 +707,24 @@ const App: React.FC = () => {
             zIndex={0}
           />{" "}
           <Box
-            w={{ base: "100vw", sm: "85vw" }}
-            h={{ base: "100vh", sm: "90vh" }}
-            maw={1200}
+            w={isSidepanelMode ? "100vw" : { base: "100vw", sm: "85vw" }}
+            h={isSidepanelMode ? "100vh" : { base: "100vh", sm: "90vh" }}
+            maw={isSidepanelMode ? undefined : 1200}
             bg="dark.7"
             style={{
-              borderRadius: "var(--mantine-radius-lg)",
-              boxShadow: "var(--mantine-shadow-xl)",
+              borderRadius: isSidepanelMode
+                ? undefined
+                : "var(--mantine-radius-lg)",
+              boxShadow: isSidepanelMode
+                ? undefined
+                : "var(--mantine-shadow-xl)",
               margin: 0,
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              border: "1px solid var(--mantine-color-dark-4)",
+              border: isSidepanelMode
+                ? "none"
+                : "1px solid var(--mantine-color-dark-4)",
               zIndex: 1,
               transition: "all 0.2s ease",
             }}
