@@ -51,7 +51,10 @@ export function filterImages(
       }
 
       // 比例过滤：未知尺寸（0×0）跳过，避免 NaN 误滤
-      if (options.aspectRatio !== "all" && !(img.width === 0 && img.height === 0)) {
+      if (
+        options.aspectRatio !== "all" &&
+        !(img.width === 0 && img.height === 0)
+      ) {
         const ratio = img.width / img.height;
         if (options.aspectRatio === "square") {
           // 正方形: 宽高比在 0.95 到 1.05 之间

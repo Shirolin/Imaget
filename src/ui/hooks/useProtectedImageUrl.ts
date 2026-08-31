@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { platformAdapter } from "../../core/platform";
+import { UrlResolver } from "../../core/utils/url-resolver";
 
 const cache = new Map<string, string>();
 const pendingPromises = new Map<string, Promise<string>>();
@@ -70,19 +71,21 @@ export function useProtectedImageUrl(url: string): string | undefined {
         });
       };
 
-      promise = fetchWithFallback(url)
-        .catch((err) => {
-          // Pixiv 的 JPG 回退到 PNG 自动重试逻辑下沉到代理层
-          if (url.includes("pximg.net") && url.endsWith(".jpg")) {
-            const pngUrl = url.replace(/\.jpg$/, ".png");
-            console.log(
-              `[Proxy] Pixiv JPG failed, retrying PNG: ${pngUrl}`,
-              err,
-            );
-            return fetchWithFallback(pngUrl);
-          }
-          throw err;
-        })
+      // 回退候选由站点 resolver 统一提供（如 pixiv 扩展名变体 + master 缩略图保底）
+      const fallbacks = UrlResolver.getFallbackUrls(url);
+      const fetchWithFallbacks = (
+        targetUrl: string,
+        remaining: string[],
+      ): Promise<string> => {
+        return fetchWithFallback(targetUrl).catch((err) => {
+          const [next, ...rest] = remaining;
+          if (!next) throw err;
+          console.log(`[Proxy] Primary failed, retrying: ${next}`, err);
+          return fetchWithFallbacks(next, rest);
+        });
+      };
+
+      promise = fetchWithFallbacks(url, fallbacks)
         .catch((err) => {
           console.warn("Failed to proxy protected image completely:", url, err);
           // 如果完全失败，退回到原始 URL

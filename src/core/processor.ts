@@ -4,6 +4,7 @@ import type { IPlatformAdapter } from "./adapters/interface";
 import { runConcurrent } from "./utils/concurrency";
 import { formatDate, generateFilename } from "./utils/filename-generator";
 import { convertImage } from "./utils/image-converter";
+import { UrlResolver } from "./utils/url-resolver";
 
 interface ProcessResult {
   blob: Blob;
@@ -36,12 +37,32 @@ export class ImageProcessor {
       return null;
     }
 
-    // 1. 获取数据 (Referer 镜像)
-    let blob = await this.adapter.fetchBlob(
-      img.url,
+    // 1. 获取数据 (Referer 镜像)；失败时按站点回退候选重试
+    //    （如 pixiv 原图扩展名猜测错误 404 → 换扩展名 → 最后回退 master 缩略图）
+    const referer =
       img.pageUrl ||
-        (typeof window !== "undefined" ? window.location.href : ""),
-    );
+      (typeof window !== "undefined" ? window.location.href : "");
+    const candidates = [img.url, ...UrlResolver.getFallbackUrls(img.url)];
+    let blob: Blob | null = null;
+    let lastErr: unknown;
+    for (const candidate of candidates) {
+      try {
+        blob = await this.adapter.fetchBlob(candidate, referer);
+        if (candidate !== img.url) {
+          this.sendDebugLog({
+            message: `Primary fetch failed, fallback succeeded: ${candidate}`,
+          });
+        }
+        break;
+      } catch (err) {
+        lastErr = err;
+      }
+    }
+    if (!blob) {
+      throw lastErr instanceof Error
+        ? lastErr
+        : new Error(String(lastErr ?? "All fetch candidates failed"));
+    }
 
     // 2. 核心逻辑：格式转换
     let extension: string | undefined;
@@ -170,11 +191,7 @@ export class ImageProcessor {
               filename,
             });
 
-            await this.adapter.downloadUrl!(
-              img.url,
-              filename,
-              conflictAction,
-            );
+            await this.adapter.downloadUrl!(img.url, filename, conflictAction);
             return;
           }
 

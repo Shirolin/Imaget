@@ -16,4 +16,10 @@ export interface IUrlResolver {
    * 将缩略图或预览图 URL 转换为高清/原图 URL
    */
   resolve(url: string): string;
+
+  /**
+   * 主 URL 拉取失败时按序尝试的回退候选（如原图扩展名猜测错误、原图已删除）。
+   * 返回空数组表示该解析器无回退策略。
+   */
+  getFallbackUrls?(url: string): string[];
 }

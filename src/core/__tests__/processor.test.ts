@@ -273,6 +273,66 @@ describe("ImageProcessor", () => {
     });
   });
 
+  describe("fetch fallback candidates", () => {
+    it("retries resolver fallback URLs when the primary fetch fails", async () => {
+      const original =
+        "https://i.pximg.net/img-original/img/2015/06/12/01/51/39/50849292_p0.jpg";
+      const adapter = {
+        ...makeAdapter(),
+        fetchBlob: vi.fn(async (url: string) => {
+          if (url === original) {
+            throw new Error("HTTP error! status: 404");
+          }
+          return new Blob(["png"], { type: "image/png" });
+        }),
+      };
+      const processor = new ImageProcessor(adapter);
+
+      await processor.downloadAsZip([makeImage(original)], {
+        ...defaultSettings,
+        downloadLogic: {
+          ...defaultSettings.downloadLogic,
+          targetFormat: "original",
+        },
+      });
+
+      expect(adapter.fetchBlob).toHaveBeenCalledTimes(2);
+      expect(adapter.fetchBlob).toHaveBeenNthCalledWith(
+        2,
+        "https://i.pximg.net/img-original/img/2015/06/12/01/51/39/50849292_p0.png",
+        expect.any(String),
+      );
+    });
+
+    it("throws the last fetch error when all candidates fail", async () => {
+      const adapter = {
+        ...makeAdapter(),
+        fetchBlob: vi.fn(async () => {
+          throw new Error("HTTP error! status: 404");
+        }),
+      };
+      const processor = new ImageProcessor(adapter);
+
+      await expect(
+        processor.downloadAsZip(
+          [
+            makeImage(
+              "https://i.pximg.net/img-original/img/2015/06/12/01/51/39/50849292_p0.jpg",
+            ),
+          ],
+          {
+            ...defaultSettings,
+            downloadLogic: {
+              ...defaultSettings.downloadLogic,
+              targetFormat: "original",
+            },
+          },
+        ),
+      ).rejects.toThrow("All 1 resources failed to fetch for ZIP");
+      expect(adapter.fetchBlob).toHaveBeenCalledTimes(4);
+    });
+  });
+
   describe("simulateDownloadFailure", () => {
     it("throws error in downloadBatch when simulateDownloadFailure is true", async () => {
       const adapter = makeAdapter();

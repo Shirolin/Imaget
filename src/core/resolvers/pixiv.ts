@@ -34,4 +34,39 @@ export class PixivResolver implements IUrlResolver {
 
     return resolved;
   }
+
+  /**
+   * 原图 URL 拉取失败时的回退候选：
+   * 1. 扩展名变体——pixiv 原图扩展名 (jpg/png/gif) 无法从缩略图 URL 推出，猜错时 404
+   * 2. img-master/_master1200 缩略图保底——原图已删除时至少拿到低清版本
+   */
+  getFallbackUrls(url: string): string[] {
+    if (!/\/(img|novel-cover)-original\//.test(url)) return [];
+
+    const fallbacks: string[] = [];
+    const extMatch = url.match(/\.(jpg|jpeg|png|gif)$/i);
+    if (extMatch) {
+      const current = extMatch[1].toLowerCase();
+      const variants =
+        current === "jpg" || current === "jpeg"
+          ? ["png", "gif"]
+          : current === "png"
+            ? ["jpg", "gif"]
+            : ["jpg", "png"];
+      for (const ext of variants) {
+        fallbacks.push(url.replace(/\.(jpg|jpeg|png|gif)$/i, `.${ext}`));
+      }
+    }
+
+    // master1200 缩略图恒为 jpg（实测 png/gif 原图同样如此）；仅常规插画路径存在对应 master 目录
+    if (url.includes("/img-original/")) {
+      fallbacks.push(
+        url
+          .replace("/img-original/", "/img-master/")
+          .replace(/\.[a-z]+$/i, "_master1200.jpg"),
+      );
+    }
+
+    return fallbacks;
+  }
 }

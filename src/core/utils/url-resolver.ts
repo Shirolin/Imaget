@@ -76,6 +76,21 @@ export class UrlResolver {
   }
 
   /**
+   * 主 URL 拉取失败时按序尝试的回退候选（由命中站点的 resolver 提供）
+   */
+  public static getFallbackUrls(url: string): string[] {
+    if (!url) return [];
+
+    for (const resolver of RESOLVERS) {
+      if (resolver.matches(url)) {
+        return resolver.getFallbackUrls?.(url) ?? [];
+      }
+    }
+
+    return [];
+  }
+
+  /**
    * 解析 srcset 字符串并返回最高质量的 URL
    */
   public static parseSrcset(srcset: string): string | null {
