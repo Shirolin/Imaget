@@ -77,6 +77,10 @@ export const GeneralSection = memo(
                   { value: "es", label: "Español" },
                   { value: "pt_BR", label: "Português (Brasil)" },
                   { value: "tr", label: "Türkçe" },
+                  { value: "uk", label: "Українська" },
+                  { value: "ru", label: "Русский" },
+                  { value: "it", label: "Italiano" },
+                  { value: "id", label: "Bahasa Indonesia" },
                 ]}
                 styles={{
                   input: { cursor: "pointer" },

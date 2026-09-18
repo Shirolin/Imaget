@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/Platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine v8" />
-    <img src="https://img.shields.io/badge/i18n-10%20Languages-green?style=flat-square" alt="i18n Support" />
+    <img src="https://img.shields.io/badge/i18n-14%20Languages-green?style=flat-square" alt="i18n Support" />
   </p>
 </div>
 
@@ -61,7 +61,7 @@
 - **即时转换**：支持在下载时自动转为 **WebP** 或 **JPG** 格式并调整质量。
 
 #### 🌍 全球化与无障碍
-- **原生多语言**：完整适配 **10 国语言** (中、英、日、韩、德、法、西、葡、土)。
+- **原生多语言**：完整适配 **14 个语言区域** (中、英、日、韩、德、法、西、葡、土、乌、俄、意、印尼，其中「中」含简体与繁体两种)。
 - **隐私保护**：100% 本地处理，不收集任何用户数据，不进行云端上传。
 
 ---

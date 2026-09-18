@@ -1,0 +1,52 @@
+Imaget — Téléchargement d'Images en Lot & Convertisseur Intelligent
+
+Fatigué de faire un clic droit pour enregistrer des dizaines d'images une par une ? Imaget s'occupe de tout en un clic !
+
+
+▎ Que peut faire Imaget pour vous ?
+
+▶ Intégration avancée pour Pixiv, Twitter/X, Weibo & Reddit
+Détecte automatiquement les liens pour extraire les images originales en haute résolution à la place des miniatures basse qualité. Cochez → Téléchargez → C'est fait.
+
+▶ Pénétration des flux Blob chiffrés (Nouveauté 🌟)
+Prend en charge les ressources Blob chiffrées sur des plateformes comme Telegram ou Discord. Cliquez simplement sur l'image pour ouvrir l'aperçu, et Imaget capture instantanément l'image originale en résolution maximale.
+
+▶ Exécution en panneau latéral pour les sites restreints
+S'intègre élégamment dans le panneau latéral natif de Chrome sans perturber votre navigation. Idéal pour contourner facilement les restrictions de clic droit ou de protection contre le hotlinking.
+
+▶ Export ZIP en un clic
+Des centaines d'images sur une page ? Utilisez le Shift-clic ou le glisser-sélectionner pour tout choisir rapidement et téléchargez le tout compressé dans un seul fichier ZIP.
+
+
+▎ Fonctionnalités puissantes & intuitives
+
+🔍 Filtres avancés en temps réel
+Trop d'images sur la page ? Filtrez instantanément par dimensions (largeur/hauteur), par format (PNG/JPG/WebP/GIF), par mot-clé ou par mot d'exclusion.
+
+🔄 Conversion de format intelligente
+Besoin de convertir des images WebP en JPG/PNG ? Imaget convertit automatiquement les fichiers lors du téléchargement avec contrôle de la qualité.
+
+📜 Défilement automatique (Le sauveur des pages infinies)
+Sur une page au défilement infini ? Cliquez sur "Scroll Scan" et Imaget fait défiler la page automatiquement jusqu'en bas pour charger et extraire toutes les images.
+
+📁 Organisation intelligente & Renommage automatique
+Triez automatiquement vos téléchargements dans des sous-dossiers basés sur le titre de la page. Personnalisez les modèles de noms de fichiers pour éviter les noms aléatoires.
+
+🖱️ Bouton flottant de téléchargement rapide
+Survolez n'importe quelle image avec votre souris pour afficher un bouton d'aperçu et de téléchargement rapide sans interrompre votre flux de travail.
+
+🖼️ Visionneuse ultra-rapide intégrée
+Visionneuse d'images haute performance intégrée qui prend en charge le zoom fluide à la molette, le glisser-déplacer et la rotation.
+
+
+▎ Confidentialité & Sécurité
+
+🔒 100% Privé : Toutes les analyses, l'extraction d'images et le contrôle réseau s'effectuent localement dans votre navigateur. Aucune donnée utilisateur n'est collectée ou transférée. Pas d'inscription requise.
+
+💻 Open Source : Code source entièrement public, sûr et transparent sur GitHub : https://github.com/Shirolin/Imaget
+
+
+▎ En bref
+
+Un panneau latéral élégant pour voir toutes les images d'une page, sélectionner celles que vous voulez et tout télécharger d'un coup.
+Fini le clic droit fastidieux pour chaque image.

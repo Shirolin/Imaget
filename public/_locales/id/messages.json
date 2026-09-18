@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - Pencari & Pengunduh Gambar Cerdas"
+  },
+  "extDesc": {
+    "message": "Secara otomatis mendeteksi gambar di halaman web mana pun. Unduhan massal dan konversi format."
+  },
+  "btnDownload": {
+    "message": "Unduh"
+  },
+  "btnDeepScan": {
+    "message": "Pindai Mendalam"
+  },
+  "btnClose": {
+    "message": "Tutup"
+  },
+  "selectAll": {
+    "message": "Pilih Semua"
+  },
+  "deselectAll": {
+    "message": "Batal Pilih Semua"
+  },
+  "downloadSelected": {
+    "message": "Unduh yang Dipilih ($1)"
+  },
+  "selectedCount": {
+    "message": "Dipilih $1 / $2"
+  },
+  "noImages": {
+    "message": "Gambar tidak ditemukan"
+  },
+  "noImagesHint": {
+    "message": "Coba sesuaikan opsi filter atau muat ulang halaman untuk memindai lagi"
+  },
+  "loading": {
+    "message": "Memuat..."
+  },
+  "processing": {
+    "message": "Memproses... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "Menyiapkan ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "Mulai mengunduh $1 gambar"
+  },
+  "toastNoSelection": {
+    "message": "Pilih gambar terlebih dahulu"
+  },
+  "preview": {
+    "message": "Pratinjau"
+  },
+  "downloadZip": {
+    "message": "Unduh ZIP"
+  },
+  "filterMinWidth": {
+    "message": "Lebar Min"
+  },
+  "filterMinHeight": {
+    "message": "Tinggi Min"
+  },
+  "filterSearch": {
+    "message": "Cari konten atau URL"
+  },
+  "filterExclude": {
+    "message": "Kecualikan kata (dipisah spasi)"
+  },
+  "filterType": {
+    "message": "Tipe Gambar"
+  },
+  "filterLayout": {
+    "message": "Rasio Aspek"
+  },
+  "layoutAny": {
+    "message": "Apa Saja"
+  },
+  "layoutSquare": {
+    "message": "Persegi"
+  },
+  "layoutWide": {
+    "message": "Lebar"
+  },
+  "layoutTall": {
+    "message": "Tinggi"
+  },
+  "sortBy": {
+    "message": "Urutkan Berdasarkan"
+  },
+  "sortOrder": {
+    "message": "Urutan"
+  },
+  "sortSize": {
+    "message": "Ukuran"
+  },
+  "sortAsc": {
+    "message": "Naik"
+  },
+  "sortDesc": {
+    "message": "Turun"
+  },
+  "tabImages": {
+    "message": "Gambar"
+  },
+  "tabPreferences": {
+    "message": "Pengaturan"
+  },
+  "prefSubfolder": {
+    "message": "Nama Subfolder"
+  },
+  "prefFilename": {
+    "message": "Templat Nama File"
+  },
+  "prefSave": {
+    "message": "Simpan"
+  },
+  "prefCancel": {
+    "message": "Batal"
+  },
+  "prefConflictAction": {
+    "message": "Tindakan Konflik"
+  },
+  "conflictUniquify": {
+    "message": "Ganti Nama Otomatis"
+  },
+  "conflictOverwrite": {
+    "message": "Timpa"
+  },
+  "conflictPrompt": {
+    "message": "Tanya Saya"
+  },
+  "warnManyFiles": {
+    "message": "Anda akan mengunduh $1 gambar, yakin?"
+  },
+  "secFileSave": {
+    "message": "Penyimpanan File"
+  },
+  "secDownloadLogic": {
+    "message": "Logika Unduhan"
+  },
+  "secUiBehavior": {
+    "message": "Perilaku Antarmuka"
+  },
+  "prefShowHoverBtn": {
+    "message": "Tampilkan Tombol Hover"
+  },
+  "formatOriginal": {
+    "message": "Asli"
+  },
+  "resetDefault": {
+    "message": "Kembalikan ke Bawaan"
+  },
+  "menuSaveAsWebP": {
+    "message": "Format WebP"
+  },
+  "menuSaveAsPNG": {
+    "message": "Asli / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "Format JPG"
+  },
+  "menuOpenDashboard": {
+    "message": "Unduhan Massal..."
+  },
+  "menuSaveImageSmart": {
+    "message": "Simpan Gambar Cerdas"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

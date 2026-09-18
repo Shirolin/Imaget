@@ -32,8 +32,13 @@ CWS 审核极其看重“单一用途原则”和“权限最小化”：
   - `sidePanel`: 侧边栏交互核心。
 
 ## 4. 国际化与描述 (i18n)
-- [x] **多语言覆盖**: `public/_locales/` 下的 `en` 和 `zh_CN` 已包含 `extName` 和 `extDesc`。
-- [x] **多语言应用店描述**: 已在 `marketing/store-assets/STORE_DESCRIPTION` 中准备好中英文文案。
+- [x] **多语言覆盖**: `public/_locales/` 下 14 个语言目录（en, zh_CN, zh_TW, ja, ko, de, fr, es, pt_BR, tr, uk, ru, it, id）各含 56 个键，其中 `extName` 与 `extDesc` 供 manifest 的 `__MSG_*__` 占位符使用。
+- [x] **应用内文案**: `src/locales/` 下 14 个语言文件键集与 `en` 基线完全一致（各 178 键），由 `src/core/utils/__tests__/i18n-coverage.test.ts` 守护。
+- [x] **多语言应用店描述**: 已核实线上三个文案字段的来源（2026-09-18，用商店搜索页定位到真实 ID `kjnhapjhnhlilcngmhggiaaljddadjek`，并以 en / de 两个语言交叉验证）：
+  - **名称 (Name)** ← `public/_locales/<code>/messages.json` 的 `extName`（经 manifest 的 `__MSG_extName__` 解析）
+  - **摘要 (Summary)** ← 同一文件的 `extDesc`
+  - **说明 (Description)** ← `marketing/design-source/descriptions.md`（长文式：`▎` emoji 分节 + `▶`/🔍 条目）
+- [x] **已清理的旧稿**: 此前 `marketing/store-assets/STORE_DESCRIPTION.<code>.md`（14 个要点式旧稿，最后更新 2026-04-23）**不是线上文案**，已于 2026-09-18 删除以免与 `descriptions.md` 混淆（其中 10 个旧语言版本可从 git 历史找回）。**商店说明一律以 `marketing/design-source/descriptions.md` 为准。**
 
 ## 5. 法律与合规性 (Compliance)
 - [x] **隐私政策 (Privacy Policy)**: 已在 `docs/PRIVACY.md` 创建。提交时需提供公开 URL（如 GitHub Pages 链接）。
@@ -43,7 +48,7 @@ CWS 审核极其看重“单一用途原则”和“权限最小化”：
 在 Chrome 开发者控制台上传时需要：
 - [ ] **屏幕截图 (Screenshots)**: 已在 `marketing/screenshots/` 准备，需确认尺寸符合 1280x800 或 640x400。
 - [x] **宣传瓷砖图 (Promotional Tile)**: 440x280 PNG 已就位。
-- [x] **详细说明 (Long Description)**: 已在 `STORE_DESCRIPTION` 文档中完成。
+- [x] **详细说明 (Long Description)**: 线上使用 `marketing/design-source/descriptions.md`（已核实，见第 4 节）。14 个语言均已备齐。
 
 ---
 

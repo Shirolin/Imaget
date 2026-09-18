@@ -184,9 +184,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                   flexShrink: 0,
                 }}
               />
-              <Title order={3} style={{ whiteSpace: "nowrap" }}>
-                {t("tabPreferences")}
-              </Title>
+              <Title order={3}>{t("tabPreferences")}</Title>
               <Transition
                 mounted={showSaved}
                 transition="fade"

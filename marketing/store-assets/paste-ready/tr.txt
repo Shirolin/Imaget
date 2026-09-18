@@ -1,0 +1,52 @@
+Imaget — Web Sayfası Toplu Resim İndirici & Akıllı Format Dönüştürücü
+
+İnternette gezinirken beğendiğiniz görselleri tek tek sağ tıklayıp kaydetmekten yoruldunuz mu? Imaget bu süreci tek bir tıklamayla çözer!
+
+
+▎ Imaget Sizin İçin Ne Yapabilir?
+
+▶ Pixiv, Twitter/X, Weibo ve Reddit İçin Derin Entegrasyon
+Platform bağlantılarını otomatik olarak analiz eder ve düşük kaliteli önizlemeler yerine doğrudan yüksek çözünürlüklü orijinal ana görselleri çıkarır. Seçin → İndirin → Hepsi bu.
+
+▶ Şifreli Blob Kaynaklarına Erişim (Yeni Özellik 🌟)
+Telegram, Discord gibi platformlardaki şifreli Blob görsel kaynaklarını destekler. Sayfadaki görsele tıklayıp önizleme moduna geçmeniz yeterlidir; Imaget, en yüksek çözünürlüklü orijinal görseli anında yakalar.
+
+▶ Sağ Tık Yasağı Olan Sitelerde Yan Panel Desteği
+Chrome'un yerel yan panel modunda çalışır, gezinmenizi engellemez. Sağ tık yasaklarını veya doğrudan bağlantı korumalarını zahmetsizce aşar.
+
+▶ Tek Tıkla Toplu ZIP İndirme
+Sayfada yüzlerce görsel mi var? Çoklu seçim yapmak için Shift+tık özelliğini veya sürükleme yöntemini kullanın. Tek tıkla hepsini ZIP formatında paketleyip indirin.
+
+
+▎ Güçlü ve Kullanıcı Dostu Özellikler
+
+🔍 Gerçek Zamanlı Gelişmiş Filtreler
+Çok fazla görsel mi var? Görselleri minimum/maksimum genişlik ve yükseklik, görsel formatları (PNG/JPG/WebP/GIF), URL anahtar kelimeleri veya hariç tutma kelimelerine göre anında filtreleyin.
+
+🔄 Akıllı Format Dönüştürme
+WebP görsellerini JPG/PNG olarak mı kaydetmek istiyorsunuz? Imaget, indirme sırasında formatları otomatik olarak dönüştürür ve kalite kontrolü yapmanıza olanak tanır.
+
+📜 Otomatik Kaydırmalı Tarama (Sonsuz Kaydırmalı Sayfaların Kurtarıcısı)
+Aşağı kaydırdıkça yüklenen sayfalar mı var? "Kaydırma Taraması" seçeneğine tıklayın; Imaget sayfayı otomatik olarak en alta kadar kaydırarak tüm görselleri tarar ve çıkarır.
+
+📁 Düzenli Klasörler ve Akıllı Yeniden Adlandırma
+İndirilen görsellerin karışmasını önlemek için sayfa başlığına göre otomatik alt klasörler oluşturun. Rastgele dosya adlarını önlemek için dosya adı şablonlarını özelleştirin.
+
+🖱️ Yüzen Hızlı İndirme Butonu
+Hızlı önizleme ve indirme butonunu görüntülemek için farenizi herhangi bir görselin üzerine getirin. Gezinme akışınızı bozmadan hızlıca kaydedin.
+
+🖼️ Dahili Ultra Hızlı Önizleme
+Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme ve döndürme özelliklerini destekleyen yüksek performanslı dahili önizleme aracından yararlanen.
+
+
+▎ Gizlilik ve Güvenlik
+
+🔒 %100 Gizlilik Garantisi: Imaget'in tüm temel mantığı, görsel analizleri ve ağ denetimleri yerel olarak tarayıcınızın içinde çalışır. Hiçbir kullanıcı verisi toplanmaz veya sunuculara yüklenmez. Kayıt gerektirmez, güvenlidir.
+
+💻 Açık Kaynaklı: Kodlar tamamen güvenli ve şeffaf bir şekilde GitHub'da yayındadır: https://github.com/Shirolin/Imaget
+
+
+▎ Tek Cümlelik Özet
+
+Şık bir yan panel ile sayfadaki tüm görselleri tek bir yerde görün, istediklerinizi seçin ve hepsini tek seferde indirin.
+Görselleri tek tek sağ tıklayıp kaydetmeye son verin.

@@ -1,0 +1,52 @@
+Imaget — Pencari & Pengunduh Gambar Web Massal dengan Konversi Format Cerdas
+
+Lelah menyimpan gambar satu per satu dengan klik kanan? Imaget menyelesaikannya dengan sekali klik!
+
+
+▎ Apa yang bisa dilakukannya untuk Anda?
+
+▶ Integrasi mendalam untuk Pixiv, Twitter/X, Weibo, dan Reddit
+Secara otomatis menganalisis tautan platform dan mengekstrak gambar asli beresolusi tinggi alih-alih pratinjau berkualitas rendah. Pilih → Unduh → Selesai.
+
+▶ Akses ke Sumber Blob Terenkripsi (Fitur Baru 🌟)
+Mendukung sumber gambar Blob terenkripsi di platform seperti Telegram dan Discord. Cukup klik gambar untuk masuk ke mode pratinjau dan Imaget akan langsung menangkap versi asli beresolusi tertinggi.
+
+▶ Dukungan Bilah Samping di Situs yang Memblokir Klik Kanan
+Bekerja dalam mode bilah samping asli Chrome dan tidak menghalangi navigasi Anda. Melewati blokir klik kanan dan perlindungan tautan langsung dengan mudah.
+
+▶ Unduhan Massal ZIP Sekali Klik
+Ada ratusan gambar di halaman? Gunakan Shift+klik atau seret untuk memilih banyak sekaligus. Kemas dan unduh semuanya dalam ZIP dengan sekali klik.
+
+
+▎ Fitur yang Kuat dan Mudah Digunakan
+
+🔍 Filter Lanjutan Waktu Nyata
+Terlalu banyak gambar? Filter seketika berdasarkan lebar dan tinggi minimum/maksimum, format (PNG/JPG/WebP/GIF), kata kunci URL, atau kata yang dikecualikan.
+
+🔄 Konversi Format Cerdas
+Ingin menyimpan gambar WebP sebagai JPG/PNG? Imaget otomatis mengonversi format saat mengunduh dan memungkinkan Anda mengatur kualitas.
+
+📜 Pemindaian Gulir Otomatis (Penyelamat Halaman Tak Terbatas)
+Halaman yang memuat konten saat Anda menggulir? Klik "Gulir & Pindai" dan Imaget akan menggulir halaman hingga ke bawah secara otomatis, memindai dan mengekstrak semua gambar.
+
+📁 Folder Rapi dan Penggantian Nama Cerdas
+Buat subfolder otomatis berdasarkan judul halaman agar unduhan tidak berantakan. Sesuaikan templat nama file untuk menghindari nama acak.
+
+🖱️ Tombol Unduh Cepat Melayang
+Arahkan kursor ke gambar mana pun untuk menampilkan tombol pratinjau dan unduh cepat. Simpan dengan cepat tanpa mengganggu alur penjelajahan Anda.
+
+🖼️ Pratinjau Internal Ultra Cepat
+Alat pratinjau internal berperforma tinggi dengan zoom halus menggunakan roda mouse, geser, dan putar.
+
+
+▎ Privasi dan Keamanan
+
+🔒 Jaminan privasi 100%: seluruh logika inti Imaget, analisis gambar, dan pemeriksaan jaringan berjalan secara lokal di dalam browser Anda. Tidak ada data pengguna yang dikumpulkan atau diunggah ke server. Tanpa pendaftaran.
+
+💻 Sumber terbuka: kode sepenuhnya terbuka dan transparan di GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Ringkasan Satu Kalimat
+
+Lihat semua gambar di halaman dalam satu tempat melalui bilah samping yang rapi, pilih yang Anda inginkan, dan unduh semuanya sekaligus.
+Berhenti menyimpan gambar satu per satu dengan klik kanan.

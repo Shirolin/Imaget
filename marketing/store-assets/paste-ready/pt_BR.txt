@@ -1,0 +1,52 @@
+Imaget — Download em Lote & Conversor Inteligente de Imagens
+
+Cansado de clicar com o botão direito e salvar imagens uma por uma? O Imaget resolve isso para você com apenas um clique!
+
+
+▎ O que o Imaget pode fazer por você?
+
+▶ Integração profunda para Pixiv, Twitter/X, Weibo e Reddit
+Detecta links automaticamente para extrair as imagens originais em alta resolução em vez de miniaturas de baixa qualidade. Marcar → Baixar → Pronto.
+
+▶ Penetração de recursos Blob criptografados (Novidade 🌟)
+Suporte completo para recursos Blob protegidos em plataformas como Telegram e Discord. Basta clicar na imagem na página para abrir a visualização e o Imaget capturará instantaneamente a imagem original em máxima resolução.
+
+▶ Painel lateral nativo para sites com bloqueio de clique direito
+Funciona de forma elegante no painel lateral nativo do Chrome, sem atrapalhar sua navegação. Ignore facilmente restrições de clique direito ou bloqueios de hotlink.
+
+▶ Exportação em lote para ZIP com um clique
+Centenas de imagens na página? Use Shift+clique ou arraste para selecionar várias imagens e baixe tudo compactado em um único arquivo ZIP.
+
+
+▎ Recursos poderosos e intuitivos
+
+🔍 Filtros avançados em tempo real
+Imagens demais? Filtre instantaneamente por dimensões (largura/altura), formatos (PNG/JPG/WebP/GIF), palavras-chave da URL ou termos de exclusão.
+
+🔄 Conversão inteligente de formato
+Precisa converter imagens WebP para JPG/PNG? O Imaget converte formatos automaticamente durante o download com controle de qualidade personalizado.
+
+📜 Rolagem automática (Salvador de páginas com rolagem infinita)
+Páginas com carregamento infinito? Clique em "Escanear Rolagem" e o Imaget rolará a página automaticamente até o fim para renderizar e extrair todas as imagens.
+
+📁 Organização em pastas e renomeação inteligente
+Mantenha seus downloads organizados classificando-os em pastas com base no título da página. Personalize os nomes dos arquivos para evitar nomes aleatórios.
+
+🖱️ Botão flutuante de download rápido
+Passe o mouse sobre qualquer imagem para exibir um botão rápido de download/pré-visualização sem interromper sua navegação.
+
+🖼️ Visualizador de imagens integrado e ultra rápido
+Aproveite o visualizador embutido com suporte a zoom fluido com a roda do mouse, arrastar e rotacionar.
+
+
+▎ Privacidade & Segurança
+
+🔒 100% Seguro: Todo o processamento de imagens e interceptação ocorrem localmente em seu navegador. Nenhum dado do usuário é coletado ou enviado a servidores. Sem necessidade de registro.
+
+💻 Código Aberto: Totalmente transparente e seguro. Acesse nosso GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Resumo
+
+Um painel lateral elegante para visualizar todas as imagens de uma página, escolher as que deseja e baixar tudo de uma só vez.
+Chega de salvar uma por uma.

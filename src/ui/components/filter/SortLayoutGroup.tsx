@@ -30,7 +30,7 @@ const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
 }) => {
   const { t } = useI18n();
   return (
-    <Group gap="xs" wrap="nowrap">
+    <Group gap="xs" wrap="wrap">
       <PortalSelect
         placeholder={t("filterLayout")}
         aria-label={t("filterLayout")}
@@ -49,7 +49,7 @@ const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={90}
+        w={130}
       />
 
       <PortalSelect
@@ -69,7 +69,7 @@ const SortLayoutGroupBase: React.FC<SortLayoutGroupProps> = ({
         portalNode={portalNode}
         size="xs"
         variant="filled"
-        w={90}
+        w={130}
       />
 
       <Group gap={4} wrap="nowrap">

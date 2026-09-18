@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine v8" />
-    <img src="https://img.shields.io/badge/i18n-10%20Languages-green?style=flat-square" alt="i18n Support" />
+    <img src="https://img.shields.io/badge/i18n-14%20Languages-green?style=flat-square" alt="i18n Support" />
   </p>
 </div>
 
@@ -61,7 +61,7 @@
 - **オンザフライ変換**: ダウンロード時に **WebP** または **JPG** へ自動変換し、品質を調整可能。
 
 #### 🌍 グローバル対応 ＆ プライバシー
-- **ネイティブ多言語対応**: 日本語を含む **10 言語** (日、中、英、韓、独、仏、西、葡、土) に完全対応。
+- **ネイティブ多言語対応**: 日本語を含む **14 ロケール** (日、中、英、韓、独、仏、西、葡、土、宇、露、伊、尼。「中」は簡体字と繁体字の 2 種類を含む) に完全対応。
 - **プライバシー保護**: すべての処理はローカルで完結。ユーザーデータの収集やクラウドへのアップロードは一切行いません。
 
 ---

@@ -1,0 +1,52 @@
+Imaget — Smart Batch Image Downloader & Converter
+
+Tired of right-clicking and saving images one by one? Imaget is here to save the day!
+
+
+▎ What Can It Do for You?
+
+▶ Deep Integration for Pixiv, Twitter/X, Weibo & Reddit
+Automatically parses URLs to sniff out original, high-resolution images rather than low-quality thumbnails. Select → Download, and you are done.
+
+▶ Encrypted Blob Stream Penetration (New 🌟)
+Fully supports encrypted Blob assets on platforms like Telegram and Discord. Simply click the image to open the preview, and Imaget instantly sniffs and grabs the highest resolution original image.
+
+▶ Native Sidepanel Support for Right-Click Restricted Sites
+Runs elegantly inside Chrome's native sidepanel without interrupting your web browsing. It bypasses right-click restrictions or hotlink-protected sites effortlessly.
+
+▶ One-Click Batch ZIP Export
+Dozens of assets on a page? Use Shift-select or drag-to-select to batch download them instantly. Pack them all into a single ZIP file with one click.
+
+
+▎ Powerful & Intuitive Features
+
+🔍 Real-Time Advanced Filters
+Filter images on the fly by min/max width and height, image formats, URL keywords, or exclusion words.
+
+🔄 Smart Format Conversion
+Need to convert WebP images to JPG/PNG? Imaget automatically handles conversions during download with customizable quality control.
+
+📜 Auto-Scroll Scanning (Waterfall Flow Savior)
+Stuck on a dynamic scrolling page? Click "Scroll Scan" and watch Imaget automatically scroll to the bottom, rendering and extracting all images on the page.
+
+📁 Organized Folders & Smart Rename
+Keep your downloads tidy by automatically sorting files into subfolders based on page titles. Customize filename templates to eliminate random filenames.
+
+🖱️ Floating Download Button
+Hover over any image to reveal a quick preview/download button. Save images on the go without cluttering your workflow.
+
+🖼️ Lightning-Fast Image Viewer
+Includes a built-in high-performance previewer supporting zoom-in/out, drag-and-drop, and rotation.
+
+
+▎ Privacy & Security
+
+🔒 100% Private: All image sniffing, URL parsing, and request interception happen locally in your browser. No user data is collected or uploaded. No account registration required.
+
+💻 Open Source: Fully transparent and safe. Visit our GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ In a Nutshell
+
+One elegant sidepanel to view all images on a page, select what you want, and download them all at once.
+Stop saving them one by one.

@@ -28,6 +28,17 @@ This document provides detailed justification for the permissions requested by *
 ### 6. `permissions: ["activeTab"]`
 *   **Usage**: Used to ensure the extension has temporary permission to interact with the currently focused tab upon user invocation.
 
+### 7. `permissions: ["declarativeNetRequest"]`
+*   **Necessity**: A small number of image CDNs enforce hotlink protection: they reject requests whose `Referer` / `Origin` headers do not match their own site, even for images the user can already see rendered on the page. Without the ability to normalise those two headers, the extension cannot retrieve the image bytes the user has explicitly asked to download.
+*   **Usage**: Used exclusively to **modify two request headers** (`Referer`, `Origin`) for image and XHR requests, scoped to three specific CDN hosts:
+    | Target host | CDN | Header action |
+    |---|---|---|
+    | `sinaimg.cn` | Weibo | set `Referer` to `https://weibo.com/`, remove `Origin` |
+    | `i.pximg.net` | Pixiv | set `Referer` to `https://www.pixiv.net/`, remove `Origin` |
+    | `redd.it` | Reddit | set `Origin` and `Referer` to `https://www.reddit.com/` |
+*   **Scope and limits**: Rules are restricted to `resourceTypes: ["image", "xmlhttprequest"]` only. The extension performs **no request blocking, no redirection, and no header inspection** — the header values it writes are the public site origins listed above, not user data. Rules are registered at runtime via `chrome.declarativeNetRequest.updateDynamicRules()`; no static `rule_resources` ruleset file is shipped, so the manifest declares no `declarative_net_request.rule_resources` entry.
+*   **Reference**: `src/entry/background.ts` → `setupDeclarativeNetRequestRules()`.
+
 ---
 
 ## Compliance and Data Safety

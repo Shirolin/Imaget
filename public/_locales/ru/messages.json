@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - Умный загрузчик изображений с веб-страниц"
+  },
+  "extDesc": {
+    "message": "Автоматически находит изображения на любой веб-странице. Пакетная загрузка и конвертация форматов."
+  },
+  "btnDownload": {
+    "message": "Скачать"
+  },
+  "btnDeepScan": {
+    "message": "Глубокое сканирование"
+  },
+  "btnClose": {
+    "message": "Закрыть"
+  },
+  "selectAll": {
+    "message": "Выбрать все"
+  },
+  "deselectAll": {
+    "message": "Снять выделение"
+  },
+  "downloadSelected": {
+    "message": "Скачать выбранные ($1)"
+  },
+  "selectedCount": {
+    "message": "Выбрано $1 / $2"
+  },
+  "noImages": {
+    "message": "Изображения не найдены"
+  },
+  "noImagesHint": {
+    "message": "Измените параметры фильтра или обновите страницу для повторного поиска"
+  },
+  "loading": {
+    "message": "Загрузка..."
+  },
+  "processing": {
+    "message": "Обработка... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "Подготовка ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "Начата загрузка изображений: $1"
+  },
+  "toastNoSelection": {
+    "message": "Сначала выберите изображения"
+  },
+  "preview": {
+    "message": "Просмотр"
+  },
+  "downloadZip": {
+    "message": "Скачать ZIP"
+  },
+  "filterMinWidth": {
+    "message": "Мин. ширина"
+  },
+  "filterMinHeight": {
+    "message": "Мин. высота"
+  },
+  "filterSearch": {
+    "message": "Поиск по содержимому или URL"
+  },
+  "filterExclude": {
+    "message": "Исключить слова (через пробел)"
+  },
+  "filterType": {
+    "message": "Тип изображения"
+  },
+  "filterLayout": {
+    "message": "Соотношение сторон"
+  },
+  "layoutAny": {
+    "message": "Любое"
+  },
+  "layoutSquare": {
+    "message": "Квадратное"
+  },
+  "layoutWide": {
+    "message": "Широкое"
+  },
+  "layoutTall": {
+    "message": "Высокое"
+  },
+  "sortBy": {
+    "message": "Сортировка"
+  },
+  "sortOrder": {
+    "message": "Порядок"
+  },
+  "sortSize": {
+    "message": "Размер"
+  },
+  "sortAsc": {
+    "message": "По возр."
+  },
+  "sortDesc": {
+    "message": "По убыв."
+  },
+  "tabImages": {
+    "message": "Изображения"
+  },
+  "tabPreferences": {
+    "message": "Настройки"
+  },
+  "prefSubfolder": {
+    "message": "Имя подпапки"
+  },
+  "prefFilename": {
+    "message": "Шаблон имени файла"
+  },
+  "prefSave": {
+    "message": "Сохранить"
+  },
+  "prefCancel": {
+    "message": "Отмена"
+  },
+  "prefConflictAction": {
+    "message": "Действие при конфликте"
+  },
+  "conflictUniquify": {
+    "message": "Автопереименование"
+  },
+  "conflictOverwrite": {
+    "message": "Перезаписать"
+  },
+  "conflictPrompt": {
+    "message": "Спросить"
+  },
+  "warnManyFiles": {
+    "message": "Вы собираетесь скачать изображений: $1. Продолжить?"
+  },
+  "secFileSave": {
+    "message": "Сохранение файлов"
+  },
+  "secDownloadLogic": {
+    "message": "Логика загрузки"
+  },
+  "secUiBehavior": {
+    "message": "Поведение интерфейса"
+  },
+  "prefShowHoverBtn": {
+    "message": "Показывать кнопку при наведении"
+  },
+  "formatOriginal": {
+    "message": "Оригинал"
+  },
+  "resetDefault": {
+    "message": "Сбросить по умолчанию"
+  },
+  "menuSaveAsWebP": {
+    "message": "Формат WebP"
+  },
+  "menuSaveAsPNG": {
+    "message": "Оригинал / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "Формат JPG"
+  },
+  "menuOpenDashboard": {
+    "message": "Пакетная загрузка..."
+  },
+  "menuSaveImageSmart": {
+    "message": "Умное сохранение изображения"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

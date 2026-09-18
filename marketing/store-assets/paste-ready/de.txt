@@ -1,0 +1,52 @@
+Imaget — Intelligenter Batch-Bild-Downloader & Konverter
+
+Sind Sie es leid, Bilder auf Webseiten einzeln per Rechtsklick zu speichern? Imaget erledigt das für Sie mit nur einem Klick!
+
+
+▎ Was kann Imaget für Sie tun?
+
+▶ Tiefe Integration für Pixiv, Twitter/X, Weibo & Reddit
+Erkennt Plattform-Links automatisch und extrahiert die echten, hochauflösenden Originalbilder anstelle von minderwertigen Vorschaubildern. Auswählen → Herunterladen → Fertig.
+
+▶ Blob-Verschlüsselungsdurchdringung (Neue Funktion 🌟)
+Unterstützt verschlüsselte Blob-Assets auf Plattformen wie Telegram und Discord. Klicken Sie einfach auf das Bild, um die Vorschau zu öffnen, und Imaget erfasst sofort das Originalbild in maximaler Qualität.
+
+▶ Native Seitenleiste für durch Rechtsklick eingeschränkte Websites
+Läuft elegant in der nativen Chrome-Seitenleiste, ohne Ihr Surferlebnis zu stören. Sperren für Rechtsklicks oder Hotlinking werden mühelos umgangen.
+
+▶ ZIP-Export mit einem Klick
+Hunderte Bilder auf einer Seite? Nutzen Sie Shift-Klick oder Ziehen zur Mehrfachauswahl, um alle Bilder im Batch auszuwählen und mit einem Klick als ZIP-Archiv herunterzuladen.
+
+
+▎ Leistungsstarke & Intuitive Funktionen
+
+🔍 Echtzeit-Filterung
+Zu viele Bilder? Filtern Sie Bilder sofort nach minimaler/maximaler Breite und Höhe, Format (PNG/JPG/WebP/GIF) sowie nach Keywords oder Ausschlusswörtern.
+
+🔄 Intelligente Formatkonvertierung
+Möchten Sie WebP-Bilder lieber als JPG oder PNG speichern? Imaget konvertiert Formate automatisch während des Downloads mit anpassbarer Qualitätskontrolle.
+
+📜 Auto-Scroll-Scan (Ideal für Endless-Scroll-Seiten)
+Klicken Sie einfach auf "Scroll-Scan" und Imaget scrollt automatisch bis zum Ende der Seite, um alle dynamisch geladenen Bilder zu erfassen und zu extrahieren.
+
+📁 Organisierte Ordner & Intelligente Umbenennung
+Sortieren Sie Downloads automatisch in Unterordner basierend auf dem Seitentitel. Nutzen Sie anpassbare Dateinamenvorlagen, um kryptische Dateinamen zu vermeiden.
+
+🖱️ Schwebender Download-Button
+Bewegen Sie die Maus über ein Bild, um einen Schnell-Download- und Vorschaubutton einzublenden. Speichern Sie Bilder direkt beim Surfen.
+
+🖼️ Blitzschneller Bildbetrachter
+Der integrierte Hochleistungs-Bildbetrachter unterstützt stufenlosen Zoom per Mausrad, Drag-and-Drop und Rotation.
+
+
+▎ Datenschutz & Sicherheit
+
+🔒 100% Sicher: Alle Prozesse laufen lokal in Ihrem Browser ab. Keine Registrierung erforderlich. Es werden keinerlei Benutzerdaten gesammelt oder hochgeladen.
+
+💻 Open Source: Der Quellcode ist vollständig transparent und sicher auf GitHub einsehbar: https://github.com/Shirolin/Imaget
+
+
+▎ Fazit
+
+Eine elegante Seitenleiste, um alle Bilder einer Seite zu sehen, auszuwählen und auf einmal herunterzuladen.
+Sparen Sie sich das lästige Speichern per Rechtsklick.

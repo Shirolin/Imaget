@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - Розумний завантажувач зображень з веб-сторінок"
+  },
+  "extDesc": {
+    "message": "Автоматично знаходить зображення на будь-якій веб-сторінці. Пакетне завантаження та конвертація форматів."
+  },
+  "btnDownload": {
+    "message": "Завантажити"
+  },
+  "btnDeepScan": {
+    "message": "Глибоке сканування"
+  },
+  "btnClose": {
+    "message": "Закрити"
+  },
+  "selectAll": {
+    "message": "Вибрати все"
+  },
+  "deselectAll": {
+    "message": "Зняти виділення"
+  },
+  "downloadSelected": {
+    "message": "Завантажити вибрані ($1)"
+  },
+  "selectedCount": {
+    "message": "Вибрано $1 / $2"
+  },
+  "noImages": {
+    "message": "Зображень не знайдено"
+  },
+  "noImagesHint": {
+    "message": "Змініть параметри фільтра або оновіть сторінку, щоб сканувати знову"
+  },
+  "loading": {
+    "message": "Завантаження..."
+  },
+  "processing": {
+    "message": "Обробка... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "Підготовка ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "Розпочато завантаження зображень: $1"
+  },
+  "toastNoSelection": {
+    "message": "Спочатку виберіть зображення"
+  },
+  "preview": {
+    "message": "Перегляд"
+  },
+  "downloadZip": {
+    "message": "Завантажити ZIP"
+  },
+  "filterMinWidth": {
+    "message": "Мін. ширина"
+  },
+  "filterMinHeight": {
+    "message": "Мін. висота"
+  },
+  "filterSearch": {
+    "message": "Пошук за вмістом або URL"
+  },
+  "filterExclude": {
+    "message": "Виключити слова (через пробіл)"
+  },
+  "filterType": {
+    "message": "Тип зображення"
+  },
+  "filterLayout": {
+    "message": "Співвідношення сторін"
+  },
+  "layoutAny": {
+    "message": "Будь-яке"
+  },
+  "layoutSquare": {
+    "message": "Квадратне"
+  },
+  "layoutWide": {
+    "message": "Широке"
+  },
+  "layoutTall": {
+    "message": "Високе"
+  },
+  "sortBy": {
+    "message": "Сортування"
+  },
+  "sortOrder": {
+    "message": "Порядок"
+  },
+  "sortSize": {
+    "message": "Розмір"
+  },
+  "sortAsc": {
+    "message": "За зростанням"
+  },
+  "sortDesc": {
+    "message": "За спаданням"
+  },
+  "tabImages": {
+    "message": "Зображення"
+  },
+  "tabPreferences": {
+    "message": "Налаштування"
+  },
+  "prefSubfolder": {
+    "message": "Назва підпапки"
+  },
+  "prefFilename": {
+    "message": "Шаблон імені файлу"
+  },
+  "prefSave": {
+    "message": "Зберегти"
+  },
+  "prefCancel": {
+    "message": "Скасувати"
+  },
+  "prefConflictAction": {
+    "message": "Дія при конфлікті"
+  },
+  "conflictUniquify": {
+    "message": "Автоперейменування"
+  },
+  "conflictOverwrite": {
+    "message": "Перезаписати"
+  },
+  "conflictPrompt": {
+    "message": "Запитати"
+  },
+  "warnManyFiles": {
+    "message": "Ви збираєтеся завантажити зображень: $1. Продовжити?"
+  },
+  "secFileSave": {
+    "message": "Збереження файлів"
+  },
+  "secDownloadLogic": {
+    "message": "Логіка завантаження"
+  },
+  "secUiBehavior": {
+    "message": "Поведінка інтерфейсу"
+  },
+  "prefShowHoverBtn": {
+    "message": "Показувати кнопку при наведенні"
+  },
+  "formatOriginal": {
+    "message": "Оригінал"
+  },
+  "resetDefault": {
+    "message": "Скинути до типових"
+  },
+  "menuSaveAsWebP": {
+    "message": "Формат WebP"
+  },
+  "menuSaveAsPNG": {
+    "message": "Оригінал / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "Формат JPG"
+  },
+  "menuOpenDashboard": {
+    "message": "Пакетне завантаження..."
+  },
+  "menuSaveImageSmart": {
+    "message": "Розумне збереження зображення"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

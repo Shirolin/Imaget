@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Imaget - Sniffer e Downloader di Immagini Intelligente"
+  },
+  "extDesc": {
+    "message": "Sniffer intelligente di immagini per il web. Supporta download in blocco e conversione di formato."
+  },
+  "btnDownload": {
+    "message": "Scarica"
+  },
+  "btnDeepScan": {
+    "message": "Scansione profonda"
+  },
+  "btnClose": {
+    "message": "Chiudi"
+  },
+  "selectAll": {
+    "message": "Seleziona tutto"
+  },
+  "deselectAll": {
+    "message": "Deseleziona tutto"
+  },
+  "downloadSelected": {
+    "message": "Scarica selezionate ($1)"
+  },
+  "selectedCount": {
+    "message": "Selezionate $1 / $2"
+  },
+  "noImages": {
+    "message": "Nessuna immagine trovata"
+  },
+  "noImagesHint": {
+    "message": "Prova a modificare i filtri o aggiorna la pagina per rianalizzare"
+  },
+  "loading": {
+    "message": "Caricamento..."
+  },
+  "processing": {
+    "message": "Elaborazione... ($1/$2)"
+  },
+  "preparingZip": {
+    "message": "Preparazione ZIP..."
+  },
+  "toastDownloadStarted": {
+    "message": "Avviato il download di $1 immagini"
+  },
+  "toastNoSelection": {
+    "message": "Seleziona prima alcune immagini"
+  },
+  "preview": {
+    "message": "Anteprima"
+  },
+  "downloadZip": {
+    "message": "Scarica ZIP"
+  },
+  "filterMinWidth": {
+    "message": "Larghezza min"
+  },
+  "filterMinHeight": {
+    "message": "Altezza min"
+  },
+  "filterSearch": {
+    "message": "Cerca contenuto o URL"
+  },
+  "filterExclude": {
+    "message": "Escludi parole (separate da spazi)"
+  },
+  "filterType": {
+    "message": "Tipo immagine"
+  },
+  "filterLayout": {
+    "message": "Proporzioni"
+  },
+  "layoutAny": {
+    "message": "Qualsiasi"
+  },
+  "layoutSquare": {
+    "message": "Quadrata"
+  },
+  "layoutWide": {
+    "message": "Orizzontale"
+  },
+  "layoutTall": {
+    "message": "Verticale"
+  },
+  "sortBy": {
+    "message": "Ordina per"
+  },
+  "sortOrder": {
+    "message": "Ordine"
+  },
+  "sortSize": {
+    "message": "Dimensione"
+  },
+  "sortAsc": {
+    "message": "Cresc."
+  },
+  "sortDesc": {
+    "message": "Decresc."
+  },
+  "tabImages": {
+    "message": "Immagini"
+  },
+  "tabPreferences": {
+    "message": "Impostazioni"
+  },
+  "prefSubfolder": {
+    "message": "Nome sottocartella"
+  },
+  "prefFilename": {
+    "message": "Modello nome file"
+  },
+  "prefSave": {
+    "message": "Salva"
+  },
+  "prefCancel": {
+    "message": "Annulla"
+  },
+  "prefConflictAction": {
+    "message": "Azione sui conflitti"
+  },
+  "conflictUniquify": {
+    "message": "Rinomina automatica"
+  },
+  "conflictOverwrite": {
+    "message": "Sovrascrivi"
+  },
+  "conflictPrompt": {
+    "message": "Chiedi"
+  },
+  "warnManyFiles": {
+    "message": "Stai per scaricare $1 immagini, confermi?"
+  },
+  "secFileSave": {
+    "message": "Salvataggio file"
+  },
+  "secDownloadLogic": {
+    "message": "Logica di download"
+  },
+  "secUiBehavior": {
+    "message": "Comportamento interfaccia"
+  },
+  "prefShowHoverBtn": {
+    "message": "Mostra pulsante al passaggio"
+  },
+  "formatOriginal": {
+    "message": "Originale"
+  },
+  "resetDefault": {
+    "message": "Ripristina predefiniti"
+  },
+  "menuSaveAsWebP": {
+    "message": "Formato WebP"
+  },
+  "menuSaveAsPNG": {
+    "message": "Originale / PNG"
+  },
+  "menuSaveAsJPG": {
+    "message": "Formato JPG"
+  },
+  "menuOpenDashboard": {
+    "message": "Download in blocco..."
+  },
+  "menuSaveImageSmart": {
+    "message": "Salvataggio intelligente immagine"
+  },
+  "menuRoot": {
+    "message": "Imaget"
+  }
+}

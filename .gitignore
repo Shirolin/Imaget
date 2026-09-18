@@ -31,6 +31,10 @@ docs/superpowers/
 .claude/
 .gemini/
 .agent/
+.workbuddy-ai/
+
+# scratch space (workflow scripts live in scripts/, not here)
+temp/
 # i18n-agent-skill runtime files
 .i18n-cache.json
 .i18n-proposals/

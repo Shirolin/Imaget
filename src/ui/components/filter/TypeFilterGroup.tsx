@@ -64,6 +64,8 @@ const TypeFilterGroupBase: React.FC<TypeFilterGroupProps> = ({
       minHeight: "30px",
       paddingLeft: "30px",
       overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap" as const,
     },
     pillsList: {
       flexWrap: "nowrap" as const,

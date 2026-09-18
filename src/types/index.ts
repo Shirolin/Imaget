@@ -74,6 +74,10 @@ export interface Settings {
       | "es"
       | "pt_BR"
       | "tr"
+      | "uk"
+      | "ru"
+      | "it"
+      | "id"
       | "auto";
   };
   fileSaving: {

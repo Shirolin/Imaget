@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/Platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/Mantine-v8-339af0?style=flat-square" alt="Mantine v8" />
-    <img src="https://img.shields.io/badge/i18n-10%20Languages-green?style=flat-square" alt="i18n Support" />
+    <img src="https://img.shields.io/badge/i18n-14%20Languages-green?style=flat-square" alt="i18n Support" />
   </p>
 </div>
 
@@ -61,7 +61,7 @@ Built with **React 19** and **Mantine v8**, it features a sophisticated UI isola
 - **On-the-fly Conversion**: Auto-convert images to **WebP** or **JPG** with adjustable quality.
 
 #### 🌍 Global & Accessible
-- **Native Localization**: Fully localized in **10 languages** (EN, ZH, JA, KO, DE, FR, ES, PT, TR).
+- **Native Localization**: Fully localized in **14 locales** (EN, ZH, JA, KO, DE, FR, ES, PT, TR, UK, RU, IT, ID — ZH covers both Simplified and Traditional Chinese).
 - **Privacy Centric**: 100% local processing. No data collection, no cloud uploads.
 
 ---

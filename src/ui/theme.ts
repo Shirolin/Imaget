@@ -19,6 +19,11 @@ export const JA_FONT_STACK = `Outfit, ${WESTERN_FALLBACK}, 'Hiragino Sans', 'Hir
 // 韩语最佳字体栈 (Apple SD Gothic Neo、Malgun Gothic 优先)
 export const KO_FONT_STACK = `Outfit, ${WESTERN_FALLBACK}, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Nanum Gothic', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'`;
 
+// 西里尔语最佳字体栈 (俄语、乌克兰语)
+// Outfit 不含西里尔字形，实际由回退链中的 Segoe UI / Roboto / system-ui 逐字形接管；
+// 此处显式声明 PT Sans / Noto Sans Cyrillic 以覆盖 Linux 精简发行版，并保证 і ї є ґ 字形完整
+export const CYRILLIC_FONT_STACK = `Outfit, ${WESTERN_FALLBACK}, 'PT Sans', 'Noto Sans Cyrillic', 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`;
+
 /**
  * 根据 Locale 动态获取最完美的字体栈
  */
@@ -32,6 +37,9 @@ export const getFontStackByLocale = (locale: string): string => {
       return JA_FONT_STACK;
     case "ko":
       return KO_FONT_STACK;
+    case "ru":
+    case "uk":
+      return CYRILLIC_FONT_STACK;
     default:
       return EN_FONT_STACK;
   }

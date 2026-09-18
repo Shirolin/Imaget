@@ -1,0 +1,52 @@
+Imaget — Downloader e Convertitore Intelligente di Immagini
+
+Stanco di salvare ogni immagine a mano con il tasto destro? Imaget risolve tutto con un solo clic!
+
+
+▎ Cosa fa per te?
+
+▶ Integrazione profonda con Pixiv, Twitter/X, Weibo e Reddit
+Analizza automaticamente i link delle piattaforme ed estrae le immagini originali ad alta risoluzione al posto delle anteprime di bassa qualità. Seleziona → Scarica → Fatto.
+
+▶ Accesso alle risorse Blob crittografate (Nuova funzione 🌟)
+Supporta le risorse immagine Blob crittografate su piattaforme come Telegram e Discord. Basta cliccare sull'immagine per entrare in modalità anteprima e Imaget cattura all'istante l'originale alla massima risoluzione.
+
+▶ Supporto del pannello laterale sui siti con blocco del tasto destro
+Funziona nella modalità nativa del pannello laterale di Chrome e non ostacola la navigazione. Supera senza sforzo i blocchi del tasto destro e le protezioni dei link diretti.
+
+▶ Download massivo in ZIP con un clic
+La pagina ha centinaia di immagini? Usa Shift+clic o il trascinamento per la selezione multipla. Impacchetta e scarica tutto in ZIP con un solo clic.
+
+
+▎ Funzionalità potenti e intuitive
+
+🔍 Filtri avanzati in tempo reale
+Troppe immagini? Filtra all'istante per larghezza e altezza minime/massime, formati (PNG/JPG/WebP/GIF), parole chiave nell'URL o parole da escludere.
+
+🔄 Conversione di formato intelligente
+Vuoi salvare le immagini WebP come JPG/PNG? Imaget converte automaticamente i formati durante il download e ti lascia controllare la qualità.
+
+📜 Scansione automatica con scorrimento (il salvataggio per le pagine infinite)
+Pagine che caricano contenuti mentre scorri? Clicca su "Scorri e analizza" e Imaget scorrerà automaticamente la pagina fino in fondo, analizzando ed estraendo tutte le immagini.
+
+📁 Cartelle ordinate e rinomina intelligente
+Crea automaticamente sottocartelle in base al titolo della pagina per evitare confusione nei download. Personalizza i modelli di nome file per evitare nomi casuali.
+
+🖱️ Pulsante flottante di download rapido
+Passa il mouse su qualsiasi immagine per visualizzare il pulsante di anteprima e download rapido. Salva in fretta senza interrompere la navigazione.
+
+🖼️ Anteprima interna ultra-rapida
+Strumento di anteprima interno ad alte prestazioni con zoom fluido tramite rotella del mouse, trascinamento e rotazione.
+
+
+▎ Privacy e sicurezza
+
+🔒 Garanzia di privacy al 100%: tutta la logica principale di Imaget, l'analisi delle immagini e i controlli di rete vengono eseguiti localmente nel tuo browser. Nessun dato utente viene raccolto o caricato su server. Nessuna registrazione richiesta.
+
+💻 Open source: il codice è completamente pubblico e trasparente su GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Riassunto in una frase
+
+Visualizza tutte le immagini della pagina in un unico posto tramite un'elegante barra laterale, scegli quelle che ti servono e scaricale tutte in una volta.
+Smetti di salvare le immagini una per una con il tasto destro.

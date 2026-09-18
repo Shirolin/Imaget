@@ -1,6 +1,6 @@
 # Imaget Chrome Store Marketing Descriptions & Details
 
-本文档包含 Imaget 在 Chrome Web Store 商店上架所需的 10 国语言“概述（详细描述 - Description）”文案，采用易于阅读的纯文本格式排版，并辅以高质感的 Emoji 符号。方便后续维护与更新。
+本文档包含 Imaget 在 Chrome Web Store 商店上架所需的 14 国语言“概述（详细描述 - Description）”文案，采用易于阅读的纯文本格式排版，并辅以高质感的 Emoji 符号。方便后续维护与更新。
 
 ---
 
@@ -15,6 +15,10 @@
 8. [西班牙语 (es)](#8-西班牙语-es)
 9. [葡萄牙语 (pt_BR)](#9-葡萄牙语-pt_br)
 10. [土耳其语 (tr)](#10-土耳其语-tr)
+11. [乌克兰语 (uk)](#11-乌克兰语-uk)
+12. [俄语 (ru)](#12-俄语-ru)
+13. [意大利语 (it)](#13-意大利语-it)
+14. [印尼语 (id)](#14-印尼语-id)
 
 ---
 
@@ -604,4 +608,240 @@ Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme v
 
 Şık bir yan panel ile sayfadaki tüm görselleri tek bir yerde görün, istediklerinizi seçin ve hepsini tek seferde indirin.
 Görselleri tek tek sağ tıklayıp kaydetmeye son verin.
+```
+
+---
+
+## 11. 乌克兰语 (uk)
+
+```text
+Imaget — Розумний завантажувач і конвертер зображень
+
+Втомилися зберігати кожне зображення вручну через праву кнопку миші? Imaget вирішує це одним кліком!
+
+
+▎ Що він робить для вас?
+
+▶ Глибока інтеграція з Pixiv, Twitter/X, Weibo та Reddit
+Автоматично аналізує посилання платформи та витягує оригінальні зображення у високій роздільності замість низькоякісних мініатюр. Виберіть → Завантажте → Готово.
+
+▶ Доступ до зашифрованих Blob-ресурсів (Нова функція 🌟)
+Підтримує зашифровані Blob-ресурси зображень на платформах на кшталт Telegram і Discord. Просто натисніть на зображення, щоб перейти в режим перегляду, і Imaget миттєво захопить оригінал у найвищій роздільності.
+
+▶ Підтримка бічної панелі на сайтах із забороною правої кнопки
+Працює у вбудованому режимі бічної панелі Chrome і не заважає навігації. Легко обходить заборони правої кнопки та захист прямих посилань.
+
+▶ Пакетне завантаження в ZIP одним кліком
+На сторінці сотні зображень? Використовуйте Shift+клік або перетягування для множинного вибору. Запакуйте та завантажте їх усі в ZIP одним кліком.
+
+
+▎ Потужні та зручні функції
+
+🔍 Розширені фільтри в реальному часі
+Забагато зображень? Миттєво фільтруйте їх за мінімальною/максимальною шириною та висотою, форматами (PNG/JPG/WebP/GIF), ключовими словами в URL або виключеними словами.
+
+🔄 Розумна конвертація форматів
+Потрібно зберегти WebP як JPG/PNG? Imaget автоматично конвертує формати під час завантаження та дозволяє керувати якістю.
+
+📜 Автоматичне сканування з прокруткою (порятунок для нескінченних сторінок)
+Сторінки, що довантажуються під час прокрутки? Натисніть «Прокрутка й пошук», і Imaget автоматично прокрутить сторінку донизу, скануючи та витягуючи всі зображення.
+
+📁 Упорядковані папки та розумне перейменування
+Автоматично створюйте підпапки за заголовком сторінки, щоб уникнути плутанини в завантаженнях. Налаштуйте шаблони імен файлів, щоб позбутися випадкових назв.
+
+🖱️ Плаваюча кнопка швидкого завантаження
+Наведіть курсор на будь-яке зображення, щоб побачити кнопку швидкого перегляду та завантаження. Зберігайте швидко, не порушуючи процес перегляду.
+
+🖼️ Вбудований надшвидкий перегляд
+Високопродуктивний вбудований інструмент перегляду з плавним масштабуванням колесом миші, перетягуванням і обертанням.
+
+
+▎ Приватність і безпека
+
+🔒 100% гарантія приватності: усі основні алгоритми Imaget, аналіз зображень і мережеві перевірки працюють локально у вашому браузері. Дані користувача не збираються та не надсилаються на сервери. Реєстрація не потрібна.
+
+💻 Відкритий код: код повністю відкритий і прозорий на GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Підсумок одним реченням
+
+Перегляньте всі зображення сторінки в одному місці через зручну бічну панель, виберіть потрібні та завантажте їх усі одразу.
+Припиніть зберігати зображення по одному через праву кнопку миші.
+```
+
+---
+
+## 12. 俄语 (ru)
+
+```text
+Imaget — Умный загрузчик и конвертер изображений
+
+Устали сохранять каждое изображение вручную через правую кнопку мыши? Imaget решает это одним щелчком!
+
+
+▎ Что он делает для вас?
+
+▶ Глубокая интеграция с Pixiv, Twitter/X, Weibo и Reddit
+Автоматически анализирует ссылки платформы и извлекает оригинальные изображения в высоком разрешении вместо низкокачественных миниатюр. Выберите → Скачайте → Готово.
+
+▶ Доступ к зашифрованным Blob-ресурсам (Новая функция 🌟)
+Поддерживает зашифрованные Blob-ресурсы изображений на платформах вроде Telegram и Discord. Просто нажмите на изображение, чтобы перейти в режим просмотра, и Imaget мгновенно захватит оригинал в максимальном разрешении.
+
+▶ Поддержка боковой панели на сайтах с запретом правой кнопки
+Работает во встроенном режиме боковой панели Chrome и не мешает навигации. Легко обходит запреты правой кнопки и защиту прямых ссылок.
+
+▶ Пакетная загрузка в ZIP одним щелчком
+На странице сотни изображений? Используйте Shift+клик или перетаскивание для множественного выбора. Упакуйте и скачайте их все в ZIP одним щелчком.
+
+
+▎ Мощные и удобные функции
+
+🔍 Расширенные фильтры в реальном времени
+Слишком много изображений? Мгновенно фильтруйте их по минимальной/максимальной ширине и высоте, форматам (PNG/JPG/WebP/GIF), ключевым словам в URL или исключаемым словам.
+
+🔄 Умная конвертация форматов
+Нужно сохранить WebP как JPG/PNG? Imaget автоматически конвертирует форматы при загрузке и позволяет управлять качеством.
+
+📜 Автоматическое сканирование с прокруткой (спасение для бесконечных страниц)
+Страницы, подгружающиеся при прокрутке? Нажмите «Прокрутка и поиск», и Imaget автоматически прокрутит страницу донизу, сканируя и извлекая все изображения.
+
+📁 Упорядоченные папки и умное переименование
+Автоматически создавайте подпапки по заголовку страницы, чтобы избежать путаницы в загрузках. Настройте шаблоны имён файлов, чтобы избавиться от случайных названий.
+
+🖱️ Плавающая кнопка быстрой загрузки
+Наведите курсор на любое изображение, чтобы увидеть кнопку быстрого просмотра и загрузки. Сохраняйте быстро, не нарушая процесс просмотра.
+
+🖼️ Встроенный сверхбыстрый просмотр
+Высокопроизводительный встроенный инструмент просмотра с плавным масштабированием колесом мыши, перетаскиванием и поворотом.
+
+
+▎ Приватность и безопасность
+
+🔒 100% гарантия приватности: все основные алгоритмы Imaget, анализ изображений и сетевые проверки работают локально в вашем браузере. Данные пользователя не собираются и не отправляются на серверы. Регистрация не требуется.
+
+💻 Открытый код: код полностью открыт и прозрачен на GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Итог в одном предложении
+
+Просмотрите все изображения страницы в одном месте через удобную боковую панель, выберите нужные и скачайте их все сразу.
+Прекратите сохранять изображения по одному через правую кнопку мыши.
+```
+
+---
+
+## 13. 意大利语 (it)
+
+```text
+Imaget — Downloader e Convertitore Intelligente di Immagini
+
+Stanco di salvare ogni immagine a mano con il tasto destro? Imaget risolve tutto con un solo clic!
+
+
+▎ Cosa fa per te?
+
+▶ Integrazione profonda con Pixiv, Twitter/X, Weibo e Reddit
+Analizza automaticamente i link delle piattaforme ed estrae le immagini originali ad alta risoluzione al posto delle anteprime di bassa qualità. Seleziona → Scarica → Fatto.
+
+▶ Accesso alle risorse Blob crittografate (Nuova funzione 🌟)
+Supporta le risorse immagine Blob crittografate su piattaforme come Telegram e Discord. Basta cliccare sull'immagine per entrare in modalità anteprima e Imaget cattura all'istante l'originale alla massima risoluzione.
+
+▶ Supporto del pannello laterale sui siti con blocco del tasto destro
+Funziona nella modalità nativa del pannello laterale di Chrome e non ostacola la navigazione. Supera senza sforzo i blocchi del tasto destro e le protezioni dei link diretti.
+
+▶ Download massivo in ZIP con un clic
+La pagina ha centinaia di immagini? Usa Shift+clic o il trascinamento per la selezione multipla. Impacchetta e scarica tutto in ZIP con un solo clic.
+
+
+▎ Funzionalità potenti e intuitive
+
+🔍 Filtri avanzati in tempo reale
+Troppe immagini? Filtra all'istante per larghezza e altezza minime/massime, formati (PNG/JPG/WebP/GIF), parole chiave nell'URL o parole da escludere.
+
+🔄 Conversione di formato intelligente
+Vuoi salvare le immagini WebP come JPG/PNG? Imaget converte automaticamente i formati durante il download e ti lascia controllare la qualità.
+
+📜 Scansione automatica con scorrimento (il salvataggio per le pagine infinite)
+Pagine che caricano contenuti mentre scorri? Clicca su "Scorri e analizza" e Imaget scorrerà automaticamente la pagina fino in fondo, analizzando ed estraendo tutte le immagini.
+
+📁 Cartelle ordinate e rinomina intelligente
+Crea automaticamente sottocartelle in base al titolo della pagina per evitare confusione nei download. Personalizza i modelli di nome file per evitare nomi casuali.
+
+🖱️ Pulsante flottante di download rapido
+Passa il mouse su qualsiasi immagine per visualizzare il pulsante di anteprima e download rapido. Salva in fretta senza interrompere la navigazione.
+
+🖼️ Anteprima interna ultra-rapida
+Strumento di anteprima interno ad alte prestazioni con zoom fluido tramite rotella del mouse, trascinamento e rotazione.
+
+
+▎ Privacy e sicurezza
+
+🔒 Garanzia di privacy al 100%: tutta la logica principale di Imaget, l'analisi delle immagini e i controlli di rete vengono eseguiti localmente nel tuo browser. Nessun dato utente viene raccolto o caricato su server. Nessuna registrazione richiesta.
+
+💻 Open source: il codice è completamente pubblico e trasparente su GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Riassunto in una frase
+
+Visualizza tutte le immagini della pagina in un unico posto tramite un'elegante barra laterale, scegli quelle che ti servono e scaricale tutte in una volta.
+Smetti di salvare le immagini una per una con il tasto destro.
+```
+
+---
+
+## 14. 印尼语 (id)
+
+```text
+Imaget — Pencari & Pengunduh Gambar Web Massal dengan Konversi Format Cerdas
+
+Lelah menyimpan gambar satu per satu dengan klik kanan? Imaget menyelesaikannya dengan sekali klik!
+
+
+▎ Apa yang bisa dilakukannya untuk Anda?
+
+▶ Integrasi mendalam untuk Pixiv, Twitter/X, Weibo, dan Reddit
+Secara otomatis menganalisis tautan platform dan mengekstrak gambar asli beresolusi tinggi alih-alih pratinjau berkualitas rendah. Pilih → Unduh → Selesai.
+
+▶ Akses ke Sumber Blob Terenkripsi (Fitur Baru 🌟)
+Mendukung sumber gambar Blob terenkripsi di platform seperti Telegram dan Discord. Cukup klik gambar untuk masuk ke mode pratinjau dan Imaget akan langsung menangkap versi asli beresolusi tertinggi.
+
+▶ Dukungan Bilah Samping di Situs yang Memblokir Klik Kanan
+Bekerja dalam mode bilah samping asli Chrome dan tidak menghalangi navigasi Anda. Melewati blokir klik kanan dan perlindungan tautan langsung dengan mudah.
+
+▶ Unduhan Massal ZIP Sekali Klik
+Ada ratusan gambar di halaman? Gunakan Shift+klik atau seret untuk memilih banyak sekaligus. Kemas dan unduh semuanya dalam ZIP dengan sekali klik.
+
+
+▎ Fitur yang Kuat dan Mudah Digunakan
+
+🔍 Filter Lanjutan Waktu Nyata
+Terlalu banyak gambar? Filter seketika berdasarkan lebar dan tinggi minimum/maksimum, format (PNG/JPG/WebP/GIF), kata kunci URL, atau kata yang dikecualikan.
+
+🔄 Konversi Format Cerdas
+Ingin menyimpan gambar WebP sebagai JPG/PNG? Imaget otomatis mengonversi format saat mengunduh dan memungkinkan Anda mengatur kualitas.
+
+📜 Pemindaian Gulir Otomatis (Penyelamat Halaman Tak Terbatas)
+Halaman yang memuat konten saat Anda menggulir? Klik "Gulir & Pindai" dan Imaget akan menggulir halaman hingga ke bawah secara otomatis, memindai dan mengekstrak semua gambar.
+
+📁 Folder Rapi dan Penggantian Nama Cerdas
+Buat subfolder otomatis berdasarkan judul halaman agar unduhan tidak berantakan. Sesuaikan templat nama file untuk menghindari nama acak.
+
+🖱️ Tombol Unduh Cepat Melayang
+Arahkan kursor ke gambar mana pun untuk menampilkan tombol pratinjau dan unduh cepat. Simpan dengan cepat tanpa mengganggu alur penjelajahan Anda.
+
+🖼️ Pratinjau Internal Ultra Cepat
+Alat pratinjau internal berperforma tinggi dengan zoom halus menggunakan roda mouse, geser, dan putar.
+
+
+▎ Privasi dan Keamanan
+
+🔒 Jaminan privasi 100%: seluruh logika inti Imaget, analisis gambar, dan pemeriksaan jaringan berjalan secara lokal di dalam browser Anda. Tidak ada data pengguna yang dikumpulkan atau diunggah ke server. Tanpa pendaftaran.
+
+💻 Sumber terbuka: kode sepenuhnya terbuka dan transparan di GitHub: https://github.com/Shirolin/Imaget
+
+
+▎ Ringkasan Satu Kalimat
+
+Lihat semua gambar di halaman dalam satu tempat melalui bilah samping yang rapi, pilih yang Anda inginkan, dan unduh semuanya sekaligus.
+Berhenti menyimpan gambar satu per satu dengan klik kanan.
 ```
