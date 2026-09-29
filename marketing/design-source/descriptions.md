@@ -20,6 +20,8 @@
 13. [意大利语 (it)](#13-意大利语-it)
 14. [印尼语 (id)](#14-印尼语-id)
 
+> **待粘贴清单见文末 [附录 A](#附录-a商店说明的粘贴状态)**（哪些语言已上线、哪些还需手工填）。
+
 ---
 
 ## 1. 简体中文 (zh_CN)
@@ -845,3 +847,73 @@ Alat pratinjau internal berperforma tinggi dengan zoom halus menggunakan roda mo
 Lihat semua gambar di halaman dalam satu tempat melalui bilah samping yang rapi, pilih yang Anda inginkan, dan unduh semuanya sekaligus.
 Berhenti menyimpan gambar satu per satu dengan klik kanan.
 ```
+
+---
+
+## 附录 A：商店说明的粘贴状态
+
+**核查时间**：2026-09-29（扩展 ID `kjnhapjhnhlilcngmhggiaaljddadjek`，线上版本 1.1.2）
+
+### A.1 三个文案字段的来源（勿混淆）
+
+| 商店字段 | 来源 | 生效方式 |
+|---|---|---|
+| **名称** (Name) | `public/_locales/<code>/messages.json` → `extName` | 随包自动（manifest `__MSG_extName__`） |
+| **摘要** (Summary) | 同文件 → `extDesc` | 随包自动（上限 132 字符） |
+| **说明** (Description) | **本文件**（`descriptions.md`） | **必须手工粘贴到后台** |
+
+### A.2 线上说明逐语言状态
+
+用公开商店页逐语言比对（脚本 `scripts/check-store-listing.mjs` 的方法，`?hl=<code>` 取正文与本文档比对）：
+
+| # | 语言 | 状态 | 备注 |
+|---|---|---|---|
+| 1 | zh_CN | ✅ 已上线，逐字一致 | |
+| 2 | zh_TW | ✅ 已上线，逐字一致 | |
+| 3 | en | ✅ 已上线，逐字一致 | 基准语言 |
+| 4 | ja | ✅ 已上线，逐字一致 | |
+| 5 | ko | ✅ 已上线，逐字一致 | |
+| 6 | de | ✅ 已上线，逐字一致 | |
+| 7 | fr | ✅ 已上线，逐字一致 | |
+| 8 | es | ✅ 已上线，逐字一致 | |
+| 9 | pt_BR | ✅ 已上线，逐字一致 | |
+| 10 | tr | ✅ 已上线，逐字一致 | |
+| 11 | uk | ❌ **显示英文回退** | 需粘贴第 11 节 |
+| 12 | ru | ❌ **显示英文回退** | 需粘贴第 12 节 |
+| 13 | it | ❌ **显示英文回退** | 需粘贴第 13 节 |
+| 14 | id | ❌ **显示英文回退** | 需粘贴第 14 节 |
+
+**结论：只需补填 uk / ru / it / id 四个语言**（它们随 1.2.0 新增，包内 `extName`/`extDesc` 已生效，但**说明字段不会随包带入**，故线上回退到 `en`）。其余 10 个语言无需再动。
+
+### A.3 粘贴方法
+
+1. 打开后台：`https://chrome.google.com/webstore/devconsole/<publisherId>/kjnhapjhnhlilcngmhggiaaljddadjek/edit`
+2. 「说明」字段语言选择器切到目标语言（ru / uk / it / id）
+3. 整段复制 `marketing/store-assets/paste-ready/<code>.txt`（**不要**从本文件渲染视图复制，围栏内的空白才是正确排版）
+4. 保存 → 提交审核
+
+**为何用 `paste-ready/*.txt` 而不是本文件**：正文靠**连续两个空行**分隔 `▎` 分节；Markdown 渲染会折叠连续空行，从渲染视图复制会导致排版塌陷。`paste-ready/` 由 `python scripts/export-store-descriptions.py` 从本文件围栏内逐字节抽取（已验证 14/14 与本文件完全一致），是粘贴用的派生产物。
+
+### A.4 自动化可行性（已实测，勿重复尝试）
+
+**商店后台与商店页面均无法自动化**，两条路都封死：
+
+| 途径 | 结果 |
+|---|---|
+| CDP `Target.attachToTarget` 到 `chrome.google.com/webstore/devconsole/*` | ❌ `Cannot attach to tab` |
+| CDP 到 `chromewebstore.google.com/*` | ❌ `Cannot attach to tab` |
+| CDP `Target.createTarget` 打开商店域 | ❌ `Page.navigate: Not allowed` |
+| 普通页面（google.com、x.com 等 11 个对照） | ✅ 可 attach（证明是商店域专属限制） |
+| **CWS API v2** | ❌ 仅 `upload`/`publish`/`fetchStatus`/`cancelSubmission`/`setPublishedDeployPercentage` |
+| **CWS API v1** | ❌ Item Resource 仅 `id`/`publicKey`/`uploadState`/`itemError` |
+
+**结论：说明字段只能人工粘贴，API 无此能力。** 这是官方设计（文案属人工审核内容），非配置问题。
+
+---
+
+## 附录 B：修订记录
+
+| 日期 | 变更 |
+|---|---|
+| 2026-09-18 | 新增 uk / ru / it / id 四节，语言数达 14；统一以本文件为说明字段唯一来源 |
+| 2026-09-29 | 修正 ko 隐私行缺失的 `100%`（原为裸 `%`）、tr 拼写 `yararlanen` → `yararlanın`；新增附录 A（粘贴状态与自动化可行性）与附录 B |
