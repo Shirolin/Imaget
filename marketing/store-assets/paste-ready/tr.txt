@@ -36,7 +36,7 @@ Aşağı kaydırdıkça yüklenen sayfalar mı var? "Kaydırma Taraması" seçen
 Hızlı önizleme ve indirme butonunu görüntülemek için farenizi herhangi bir görselin üzerine getirin. Gezinme akışınızı bozmadan hızlıca kaydedin.
 
 🖼️ Dahili Ultra Hızlı Önizleme
-Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme ve döndürme özelliklerini destekleyen yüksek performanslı dahili önizleme aracından yararlanen.
+Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme ve döndürme özelliklerini destekleyen yüksek performanslı dahili önizleme aracından yararlanın.
 
 
 ▎ Gizlilik ve Güvenlik

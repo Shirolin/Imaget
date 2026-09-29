@@ -304,7 +304,7 @@ WebP 포맷을 지원하지 않는 환경이신가요? 다운로드 시 JPG 또�
 
 ▎ 개인정보 보호 및 안전성
 
-🔒 % 개인정보 보장: Imaget의 모든 핵심 로직, 이미지 분석 및 네트워크 제어는 사용자의 브라우저 내부에서만 완벽히 안전하게 처리됩니다. 개인 데이터를 수집하거나 업로드하지 않으며, 가입이 필요 없어 안심하고 사용하실 수 있습니다.
+🔒 100% 개인정보 보장: Imaget의 모든 핵심 로직, 이미지 분석 및 네트워크 제어는 사용자의 브라우저 내부에서만 완벽히 안전하게 처리됩니다. 개인 데이터를 수집하거나 업로드하지 않으며, 가입이 필요 없어 안심하고 사용하실 수 있습니다.
 
 💻 오픈소스 프로젝트: 전체 소스코드가 안전하고 투명하게 공개되어 있습니다. GitHub: https://github.com/Shirolin/Imaget
 
@@ -594,7 +594,7 @@ Aşağı kaydırdıkça yüklenen sayfalar mı var? "Kaydırma Taraması" seçen
 Hızlı önizleme ve indirme butonunu görüntülemek için farenizi herhangi bir görselin üzerine getirin. Gezinme akışınızı bozmadan hızlıca kaydedin.
 
 🖼️ Dahili Ultra Hızlı Önizleme
-Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme ve döndürme özelliklerini destekleyen yüksek performanslı dahili önizleme aracından yararlanen.
+Farenin tekerleğiyle pürüzsüz yakınlaştırma/uzaklaştırma, sürükleme ve döndürme özelliklerini destekleyen yüksek performanslı dahili önizleme aracından yararlanın.
 
 
 ▎ Gizlilik ve Güvenlik
