@@ -6,7 +6,7 @@ import {
   IconCheck,
   IconBan,
   IconEyeOff,
-  IconLoader,
+  IconArrowDown,
 } from "@tabler/icons-react";
 import { useI18n } from "../hooks/useI18n";
 
@@ -45,16 +45,72 @@ const GlobalAnimations = () => (
       100% { transform: scale(1); }
     }
 
-    @keyframes imaget-spin {
-      to { transform: rotate(360deg); }
+    /* 彗星轨道环：conic 渐变拖尾 + mask 镂空成环，仅 transform 动画 */
+    @keyframes imaget-orbit {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(200deg) scale(0.9); }
+      100% { transform: rotate(360deg) scale(1); }
     }
 
-    .imaget-spinner {
-      animation: imaget-spin 0.9s linear infinite;
-      /* 提升为独立合成层：避免在 backdrop-filter 模糊区域上逐帧重绘 */
+    /* 箭头落入：上落入位 → 停顿 → 下沉淡出，隐喻下载吸入 */
+    @keyframes imaget-drop {
+      0% { transform: translateY(-5px) scale(0.9); opacity: 0; }
+      35% { transform: translateY(0) scale(1); opacity: 1; }
+      65% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(6px) scale(0.85); opacity: 0; }
+    }
+
+    @keyframes imaget-loader-in {
+      from { opacity: 0; transform: scale(0.6); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .imaget-loader {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: imaget-loader-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .imaget-loader-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(255, 255, 255, 0) 0deg,
+        rgba(255, 255, 255, 0.1) 210deg,
+        rgba(255, 255, 255, 0.9) 340deg,
+        #fff 360deg
+      );
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+      animation: imaget-orbit 1.15s cubic-bezier(0.65, 0.1, 0.35, 0.9) infinite;
       will-change: transform;
-      transform: translateZ(0);
-      backface-visibility: hidden;
+    }
+
+    .imaget-loader-arrow {
+      color: var(--mantine-color-white);
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+      animation: imaget-drop 1.4s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+      will-change: transform, opacity;
+    }
+
+    /* 降级：系统关闭动画（如远程桌面会话）时不做位移运动，仅透明度呼吸保留加载信号 */
+    @keyframes imaget-breathe {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .imaget-loader-ring {
+        animation: imaget-breathe 1.6s ease-in-out infinite;
+      }
+      .imaget-loader-arrow {
+        animation: none;
+      }
     }
     
     .imaget-glass-wrapper {
@@ -290,16 +346,14 @@ const MainDownloadAction = ({
             }}
           />
           {status === "downloading" ? (
-            <IconLoader
-              className="imaget-spinner"
-              size={22}
-              stroke={2.5}
-              style={{
-                position: "absolute",
-                color: "var(--mantine-color-white)",
-                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
-              }}
-            />
+            <div className="imaget-loader" aria-hidden="true">
+              <span className="imaget-loader-ring" />
+              <IconArrowDown
+                className="imaget-loader-arrow"
+                size={13}
+                stroke={2.75}
+              />
+            </div>
           ) : (
             <IconDownload
               className="imaget-icon-inner"
