@@ -158,6 +158,49 @@ export class ExtensionAdapter implements IPlatformAdapter {
     });
   }
 
+  ping(): void {
+    if (!this.isValidContext()) return;
+    // Fire-and-forget：仅用于唤醒 MV3 Service Worker，不关心响应
+    chrome.runtime.sendMessage({ type: "PING" }).catch(() => {});
+  }
+
+  async proxyDownload(
+    candidates: string[],
+    referer: string | undefined,
+    filename: string,
+    conflictAction?: "uniquify" | "overwrite" | "prompt",
+  ): Promise<void> {
+    if (!this.isValidContext())
+      throw new Error("Extension context invalidated");
+
+    const { promise, resolve, reject } = Promise.withResolvers<void>();
+    try {
+      chrome.runtime.sendMessage(
+        {
+          type: "PROXY_DOWNLOAD",
+          payload: {
+            candidates,
+            referer,
+            filename,
+            conflictAction: conflictAction || "uniquify",
+          },
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else if (response && !response.success) {
+            reject(new Error(response.error));
+          } else {
+            resolve();
+          }
+        },
+      );
+    } catch (err) {
+      reject(err);
+    }
+    return promise;
+  }
+
   openOptionsPage(): void {
     if (this.isValidContext()) chrome.runtime.openOptionsPage();
   }

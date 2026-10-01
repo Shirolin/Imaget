@@ -22,6 +22,11 @@ export class ImageProcessor {
     this.adapter = adapter;
   }
 
+  /** 预热后台 SW，降低悬浮按钮点击后首条消息的冷启动延迟 */
+  warmup(): void {
+    this.adapter.ping?.();
+  }
+
   /**
    * 处理单张图片：GIF 过滤、获取数据、格式转换、生成文件名
    * 返回处理结果或 null（表示应跳过）
@@ -133,6 +138,28 @@ export class ImageProcessor {
     return true;
   }
 
+  /**
+   * 是否可走「后台代理抓取→直接落盘」单消息路径：
+   * 无需格式转换（字节原样保存），大体积数据不必回传内容脚本再送回 SW
+   */
+  private canProxyDownloadDirectly(
+    img: ImageItem,
+    settings: Settings,
+  ): boolean {
+    if (!this.adapter.proxyDownload) return false;
+    if (this.adapter.env !== "extension") return false;
+    if (!/^https?:\/\//i.test(img.url)) return false;
+    if (settings.downloadLogic?.targetFormat !== "original") return false;
+    if (img.format.toLowerCase() === "gif") return false;
+    if (
+      img.format.toLowerCase() === "webp" &&
+      settings.downloadLogic?.reEncodeWebp
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   private hasSameOrigin(imageUrl: string, pageUrl: string): boolean {
     try {
       return new URL(imageUrl).origin === new URL(pageUrl).origin;
@@ -192,6 +219,34 @@ export class ImageProcessor {
             });
 
             await this.adapter.downloadUrl!(img.url, filename, conflictAction);
+            return;
+          }
+
+          if (this.canProxyDownloadDirectly(img, settings)) {
+            const extension = img.format === "UNKNOWN" ? undefined : img.format;
+            const filename = generateFilename(
+              img,
+              settings,
+              { index: index + 1, total },
+              extension?.toLowerCase(),
+            );
+            const conflictAction =
+              settings.downloadControl?.conflictResolution || "uniquify";
+            const referer =
+              img.pageUrl ||
+              (typeof window !== "undefined" ? window.location.href : "");
+
+            this.sendDebugLog({
+              message: `Preparing proxy download: ${filename}`,
+              filename,
+            });
+
+            await this.adapter.proxyDownload!(
+              [img.url, ...UrlResolver.getFallbackUrls(img.url)],
+              referer,
+              filename,
+              conflictAction,
+            );
             return;
           }
 

@@ -39,6 +39,23 @@ export interface IPlatformAdapter {
   ): Promise<void>;
 
   /**
+   * 预热后台 Service Worker（悬浮按钮 hover 时触发），降低首次消息的冷启动延迟
+   */
+  ping?(): void;
+
+  /**
+   * 后台代理抓取并直接落盘（单条消息完成 fetch→download），
+   * 避免大体积 base64 在 SW 与内容脚本之间往返。
+   * 仅适用于无需格式转换的资源；candidates 为按序重试的候选 URL。
+   */
+  proxyDownload?(
+    candidates: string[],
+    referer: string | undefined,
+    filename: string,
+    conflictAction?: "uniquify" | "overwrite" | "prompt",
+  ): Promise<void>;
+
+  /**
    * 打开选项/设置页
    */
   openOptionsPage(): void;

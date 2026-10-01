@@ -288,6 +288,8 @@ export class FloatingController {
       inst.hideTimer = undefined;
     }
 
+    // 按钮即将可见：预热后台 SW，使点击后的首条消息免于冷启动等待
+    this.processor.warmup();
     this.renderReact();
     this.startPositionTracking();
   }

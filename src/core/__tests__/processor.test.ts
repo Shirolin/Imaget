@@ -81,6 +81,92 @@ describe("ImageProcessor", () => {
     expect(adapter.fetchBlob).not.toHaveBeenCalled();
   });
 
+  it("uses proxy download for cross-origin extension images without conversion", async () => {
+    const adapter: IPlatformAdapter = {
+      ...makeAdapter(),
+      env: "extension",
+      downloadUrl: vi.fn(async () => undefined),
+      proxyDownload: vi.fn(async () => undefined),
+    };
+    const processor = new ImageProcessor(adapter);
+
+    await processor.downloadBatch(
+      [makeImage("https://cdn.other-site.com/a.png")],
+      {
+        ...defaultSettings,
+        downloadLogic: {
+          ...defaultSettings.downloadLogic,
+          targetFormat: "original",
+          reEncodeWebp: false,
+        },
+      },
+    );
+
+    expect(adapter.proxyDownload).toHaveBeenCalledWith(
+      ["https://cdn.other-site.com/a.png"],
+      "https://example.com/page",
+      expect.stringContaining(".png"),
+      expect.any(String),
+    );
+    // 字节直达落盘，不再回传内容脚本
+    expect(adapter.fetchBlob).not.toHaveBeenCalled();
+    expect(adapter.downloadUrl).not.toHaveBeenCalled();
+  });
+
+  it("falls back to blob pipeline when conversion is required", async () => {
+    const adapter: IPlatformAdapter = {
+      ...makeAdapter(),
+      env: "extension",
+      downloadUrl: vi.fn(async () => undefined),
+      proxyDownload: vi.fn(async () => undefined),
+    };
+    const processor = new ImageProcessor(adapter);
+    const gifImage = {
+      ...makeImage("https://cdn.other-site.com/animated.gif"),
+      format: "GIF",
+      filename: "animated.gif",
+    } satisfies ImageItem;
+    const getContext = vi
+      .spyOn(HTMLCanvasElement.prototype, "getContext")
+      .mockReturnValue({
+        drawImage: vi.fn(),
+      } as unknown as CanvasRenderingContext2D);
+    const toBlob = vi
+      .spyOn(HTMLCanvasElement.prototype, "toBlob")
+      .mockImplementation((callback) => {
+        callback(new Blob(["png"], { type: "image/png" }));
+      });
+    vi.stubGlobal(
+      "createImageBitmap",
+      vi.fn(async () => ({
+        width: 10,
+        height: 10,
+        close: vi.fn(),
+      })),
+    );
+
+    try {
+      await processor.downloadBatch([gifImage], {
+        ...defaultSettings,
+        gifStrategy: "firstFrame",
+        downloadLogic: {
+          ...defaultSettings.downloadLogic,
+          targetFormat: "original",
+          reEncodeWebp: false,
+        },
+      });
+    } finally {
+      getContext.mockRestore();
+      toBlob.mockRestore();
+      vi.unstubAllGlobals();
+    }
+
+    // GIF 首帧需要 canvas 转换 → 必须走 fetchBlob + download 旧管线
+    expect(adapter.proxyDownload).not.toHaveBeenCalled();
+    expect(adapter.fetchBlob).toHaveBeenCalled();
+    expect(adapter.download).toHaveBeenCalledOnce();
+  });
+
   it("does not use direct URL download for GIF first-frame conversion", async () => {
     const adapter = {
       ...makeAdapter(),

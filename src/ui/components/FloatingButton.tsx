@@ -6,6 +6,7 @@ import {
   IconCheck,
   IconBan,
   IconEyeOff,
+  IconLoader,
 } from "@tabler/icons-react";
 import { useI18n } from "../hooks/useI18n";
 
@@ -42,6 +43,18 @@ const GlobalAnimations = () => (
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
+    }
+
+    @keyframes imaget-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .imaget-spinner {
+      animation: imaget-spin 0.9s linear infinite;
+      /* 提升为独立合成层：避免在 backdrop-filter 模糊区域上逐帧重绘 */
+      will-change: transform;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
     
     .imaget-glass-wrapper {
@@ -276,21 +289,34 @@ const MainDownloadAction = ({
               transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
             }}
           />
-          <IconDownload
-            className="imaget-icon-inner"
-            size={22}
-            stroke={2.5}
-            style={{
-              position: "absolute",
-              opacity: status === "success" || status === "error" ? 0 : 1,
-              transform:
-                status === "success" || status === "error"
-                  ? "scale(0.5) translateY(-10px)"
-                  : "scale(1) translateY(0)",
-              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
-              transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-            }}
-          />
+          {status === "downloading" ? (
+            <IconLoader
+              className="imaget-spinner"
+              size={22}
+              stroke={2.5}
+              style={{
+                position: "absolute",
+                color: "var(--mantine-color-white)",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
+              }}
+            />
+          ) : (
+            <IconDownload
+              className="imaget-icon-inner"
+              size={22}
+              stroke={2.5}
+              style={{
+                position: "absolute",
+                opacity: status === "success" || status === "error" ? 0 : 1,
+                transform:
+                  status === "success" || status === "error"
+                    ? "scale(0.5) translateY(-10px)"
+                    : "scale(1) translateY(0)",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
+                transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+              }}
+            />
+          )}
         </Box>
       </ActionIcon>
     </Tooltip>

@@ -92,6 +92,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     return false;
   }
 
+  // 悬浮按钮 hover 时的预热 ping：仅需唤醒 SW，无实际负载
+  if (message.type === "PING") {
+    sendResponse({ success: true });
+    return false;
+  }
+
   if (message.type === "FETCH_BLOB") {
     const { url, referer } = message.payload;
 
@@ -119,18 +125,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           throw new Error("Blob payload size exceeds proxy safe limits (50MB)");
         }
 
-        // 使用 ArrayBuffer 将 Blob 转换为 Base64
-        const arrayBuffer = await blob.arrayBuffer();
-        const bytes = new Uint8Array(arrayBuffer);
-        const chunkSize = 8192;
-        let binary = "";
-        for (let i = 0; i < bytes.length; i += chunkSize) {
-          binary += String.fromCharCode.apply(
-            null,
-            Array.from(bytes.subarray(i, i + chunkSize)),
-          );
-        }
-        const base64 = btoa(binary);
+        const base64 = blobToBase64(await blob.arrayBuffer());
 
         try {
           sendResponse({ success: true, arrayBuffer: base64, mimeType });
@@ -145,6 +140,69 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           console.warn("[Background] sendResponse failed (FETCH_BLOB):", e);
         }
       });
+    return true; // 保持异步
+  }
+
+  // 代理抓取 + 直接落盘：整条链路在 SW 内完成，大体积数据无需跨进程回传内容脚本
+  if (message.type === "PROXY_DOWNLOAD") {
+    const { candidates, referer, filename, conflictAction } = message.payload;
+    (async () => {
+      let lastErr: unknown;
+      for (const url of candidates as string[]) {
+        const t0 = performance.now();
+        let tFetch = 0;
+        let tEncode = 0;
+        try {
+          const res = await fetch(
+            url,
+            referer ? { headers: { Referer: referer } } : undefined,
+          );
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+          const contentLength = res.headers.get("content-length");
+          if (contentLength && parseInt(contentLength, 10) > 50 * 1024 * 1024) {
+            throw new Error(
+              "Target resource size exceeds proxy safe limits (50MB)",
+            );
+          }
+
+          const mimeType = res.headers.get("content-type") || "";
+          const buffer = await res.arrayBuffer();
+          tFetch = performance.now() - t0;
+          if (buffer.byteLength > 50 * 1024 * 1024) {
+            throw new Error(
+              "Blob payload size exceeds proxy safe limits (50MB)",
+            );
+          }
+
+          const tEnc0 = performance.now();
+          const base64 = blobToBase64(buffer);
+          tEncode = performance.now() - tEnc0;
+          const dataUrl = `data:${mimeType || "image/png"};base64,${base64}`;
+
+          const downloadId = await chrome.downloads.download({
+            url: dataUrl,
+            filename,
+            conflictAction: conflictAction || "uniquify",
+            saveAs: false,
+          });
+          console.debug(
+            `[Imaget] proxy-download ${(buffer.byteLength / 1024).toFixed(0)}KB: fetch ${tFetch.toFixed(0)}ms, encode ${tEncode.toFixed(0)}ms, total ${(performance.now() - t0).toFixed(0)}ms`,
+          );
+          sendResponse({ success: true, downloadId });
+          return;
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+      sendResponse({
+        success: false,
+        error:
+          lastErr instanceof Error
+            ? lastErr.message
+            : String(lastErr ?? "All proxy download candidates failed"),
+      });
+    })();
     return true; // 保持异步
   }
 
@@ -219,6 +277,20 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return false;
 });
+
+/**
+ * ArrayBuffer → Base64：分块 String.fromCharCode 避免栈溢出，
+ * chunks.join 避免大字符串反复拼接拷贝（SW 无 DOM，不能用 FileReader）
+ */
+function blobToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 32768;
+  const chunks: string[] = [];
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    chunks.push(String.fromCharCode(...bytes.subarray(i, i + chunkSize)));
+  }
+  return btoa(chunks.join(""));
+}
 
 /**
  * 配置 Declarative Net Request 规则，绕过微博等防盗链
