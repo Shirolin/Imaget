@@ -1,5 +1,8 @@
 import { createTheme } from "@mantine/core";
 
+// Outfit 为品牌字体，已随扩展打包自托管（public/fonts/*.woff2，SIL OFL 1.1）。
+// @font-face 注入见 core/utils/brand-font.ts：content script / floating UI 内联进各自
+// shadow root，sidepanel 与 dev 沙盒注入 document.head。所有场景下 Outfit 均可达。
 // 基础西文核心后备栈（用于 Outfit 加载失败或未覆盖特殊符号时的优雅降级，防止直接掉入中日韩的英文字形）
 const WESTERN_FALLBACK =
   "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";

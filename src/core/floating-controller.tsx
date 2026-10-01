@@ -9,6 +9,9 @@ import { createImageItemFromElement } from "./utils/image-item-factory";
 import { UrlResolver } from "./utils/url-resolver";
 import { isDomainDisabled } from "./utils/settings-policy";
 import mantineStyles from "@mantine/core/styles.css?inline";
+import { getBrandFontFaceCss } from "./utils/brand-font";
+import { getFontStackByLocale } from "../ui/theme";
+import { getLocale, onLocaleChange } from "./utils/i18n";
 
 const SELECTOR = ".imaget-floating-container";
 // 使用正则替换仅选择器位置的 :root，避免替换属性值中的内容
@@ -115,13 +118,23 @@ export class FloatingController {
     document.body.appendChild(this.host);
     const shadow = this.host.attachShadow({ mode: "open" });
     const styleTag = document.createElement("style");
-    styleTag.textContent = finalCSS;
+    styleTag.textContent = getBrandFontFaceCss() + "\n" + finalCSS;
     shadow.appendChild(styleTag);
 
     this.rootElement = document.createElement("div");
     this.rootElement.className = SELECTOR.replace(".", "");
     this.rootElement.style.width = "100%";
     this.rootElement.style.height = "100%";
+    this.rootElement.style.setProperty(
+      "--imaget-font-family",
+      getFontStackByLocale(getLocale()),
+    );
+    onLocaleChange((locale) => {
+      this.rootElement?.style.setProperty(
+        "--imaget-font-family",
+        getFontStackByLocale(locale),
+      );
+    });
     shadow.appendChild(this.rootElement);
 
     this.root = ReactDOM.createRoot(this.rootElement);

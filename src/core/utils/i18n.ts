@@ -106,12 +106,26 @@ export const resolveLocale = (rawLang: string): SupportedLocale => {
 
 let forcedLocale: string | null = null;
 
+type LocaleListener = (locale: SupportedLocale) => void;
+const localeListeners = new Set<LocaleListener>();
+
+/**
+ * Subscribe to locale changes so host-adaptation layers (entries) can react
+ * without the UI querying the host document. Returns an unsubscribe function.
+ */
+export const onLocaleChange = (listener: LocaleListener): (() => void) => {
+  localeListeners.add(listener);
+  return () => {
+    localeListeners.delete(listener);
+  };
+};
+
 export const setLocale = (locale: string) => {
-  if (!locale || locale === "auto") {
-    forcedLocale = null;
-  } else {
-    forcedLocale = locale;
-  }
+  const next = !locale || locale === "auto" ? null : locale;
+  if (next === forcedLocale) return;
+  forcedLocale = next;
+  const resolved = getLocale();
+  for (const listener of localeListeners) listener(resolved);
 };
 
 export const getLocale = () =>

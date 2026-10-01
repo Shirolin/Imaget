@@ -13,7 +13,8 @@ import { UrlResolver } from "../core/utils/url-resolver";
 import { applyTargetFormat } from "../core/utils/settings-policy";
 import { FollowScanController } from "../core/follow-scan";
 import { theme, getFontStackByLocale } from "../ui/theme";
-import { getLocale } from "../core/utils/i18n";
+import { getBrandFontFaceCss } from "../core/utils/brand-font";
+import { getLocale, onLocaleChange } from "../core/utils/i18n";
 import { ErrorBoundary } from "../ui/components/ErrorBoundary";
 import {
   FOLLOW_SCAN_CANDIDATES,
@@ -78,7 +79,8 @@ function init() {
 
   const shadow = rootContainer.attachShadow({ mode: "open" });
   const styleTag = document.createElement("style");
-  styleTag.textContent = finalCSS;
+  // 品牌字体自托管：@font-face 随 Mantine 样式一并内联进 shadow（chrome-extension:// 资源，宿主 CSP 不可达）
+  styleTag.textContent = getBrandFontFaceCss() + "\n" + finalCSS;
   shadow.appendChild(styleTag);
 
   const extensionRoot = document.createElement("div");
@@ -93,6 +95,14 @@ function init() {
   const dynamicFont = getFontStackByLocale(currentLocale);
   extensionRoot.style.setProperty("--imaget-font-family", dynamicFont);
   extensionRoot.style.fontFamily = "var(--imaget-font-family)";
+
+  // 宿主 DOM 适配归 entry 层：语言切换时更新 shadow 容器内的字体变量
+  onLocaleChange((locale) => {
+    extensionRoot.style.setProperty(
+      "--imaget-font-family",
+      getFontStackByLocale(locale),
+    );
+  });
 
   extensionRoot.style.pointerEvents = "auto";
   extensionRoot.style.color = "var(--mantine-color-text)";

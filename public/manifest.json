@@ -57,7 +57,8 @@
         "*.css",
         "*.svg",
         "*.png",
-        "*.ico"
+        "*.ico",
+        "fonts/*.woff2"
       ],
       "matches": [
         "http://*/*",
