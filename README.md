@@ -7,10 +7,11 @@
   </p>
 
   <p>
-    English | <a href="README.zh-CN.md">简体中文</a> | <a href="README.ja.md">日本語</a>
+    English | <a href="README.zh-CN.md">简体中文</a> | <a href="README.ja.md">日本語</a> · <a href="https://shirolin.github.io/Imaget/"><b>Official Showcase & Website ↗</b></a>
   </p>
 
   <p>
+    <a href="https://shirolin.github.io/Imaget/"><img src="https://img.shields.io/badge/Website-Live_Showcase-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Website" /></a>
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square" alt="License" />
     <img src="https://img.shields.io/badge/Platform-Chrome%20Extension-important?style=flat-square" alt="Platform" />
     <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
