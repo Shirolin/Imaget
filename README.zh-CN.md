@@ -7,7 +7,7 @@
   </p>
 
   <p>
-    <a href="README.md">English</a> | 简体中文 | <a href="README.ja.md">日本語</a> · <a href="https://shirolin.github.io/Imaget/"><b>官方网站与展示页 ↗</b></a>
+    <a href="README.md">English</a> | <b>简体中文</b> | <a href="README.ja.md">日本語</a> · <a href="https://shirolin.github.io/Imaget/"><b>产品主页与功能预览 ↗</b></a>
   </p>
 
   <p>
