@@ -113,6 +113,11 @@ npm run dev
 
 欢迎提交 Pull Request 参与贡献！
 
+### 同作者的其他扩展
+
+- **[PostPress](https://chromewebstore.google.com/detail/mfmldbbkajimckojjgceehiackjpakai)** —— 把 X 上的推文或长串一键复制成出版级 3× 卡片。
+- **[X-Puzzle-Kit](https://chromewebstore.google.com/detail/x-puzzle-kit-stitch-split/nadlbdmcfmjinifkoedegmiejfibdikk)** —— 在页面里直接切图、拼图、排版 X 的配图。
+
 ---
 
 ## 📄 开源协议

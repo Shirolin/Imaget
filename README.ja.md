@@ -113,6 +113,11 @@ Imaget がお役に立てましたら、開発者のサポートをご検討く�
 
 コントリビューションは大歓迎です！プルリクエストもお待ちしております。
 
+### 同じ作者の拡張機能
+
+- **[PostPress](https://chromewebstore.google.com/detail/mfmldbbkajimckojjgceehiackjpakai)** — X のポストやスレッドを、出版品質の 3× カードとしてクリップボードへ。
+- **[X-Puzzle-Kit](https://chromewebstore.google.com/detail/x-puzzle-kit-stitch-split/nadlbdmcfmjinifkoedegmiejfibdikk)** — ページを離れずに X 用の画像を分割・結合・レイアウト。
+
 ---
 
 ## 📄 ライセンス

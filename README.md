@@ -113,6 +113,11 @@ If you find Imaget helpful, consider supporting the developer:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+### More extensions by the same author
+
+- **[PostPress](https://chromewebstore.google.com/detail/mfmldbbkajimckojjgceehiackjpakai)** — Copy any post or thread on X as a print-grade 3× card, straight to your clipboard.
+- **[X-Puzzle-Kit](https://chromewebstore.google.com/detail/x-puzzle-kit-stitch-split/nadlbdmcfmjinifkoedegmiejfibdikk)** — Split, stitch and compose images for X without leaving the page.
+
 ---
 
 ## 📄 License

@@ -5,6 +5,8 @@ import {
   IconBrandGithub,
   IconCoffee,
   IconBug,
+  IconPrinter,
+  IconPuzzle,
 } from "@tabler/icons-react";
 import { useI18n } from "../../../hooks/useI18n";
 import type { Settings } from "../../../../types";
@@ -74,6 +76,32 @@ export const SupportSection = memo(
                   justify="flex-start"
                 >
                   {t("labelKofi")}
+                </Button>
+              </Group>
+              <Group grow gap="xs">
+                <Button
+                  component="a"
+                  href="https://chromewebstore.google.com/detail/mfmldbbkajimckojjgceehiackjpakai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="subtle"
+                  color="gray"
+                  leftSection={<IconPrinter size={16} />}
+                  justify="flex-start"
+                >
+                  PostPress
+                </Button>
+                <Button
+                  component="a"
+                  href="https://chromewebstore.google.com/detail/x-puzzle-kit-stitch-split/nadlbdmcfmjinifkoedegmiejfibdikk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="subtle"
+                  color="gray"
+                  leftSection={<IconPuzzle size={16} />}
+                  justify="flex-start"
+                >
+                  X-Puzzle-Kit
                 </Button>
               </Group>
             </Stack>
