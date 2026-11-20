@@ -3,7 +3,7 @@ import { type ImageItem, type Settings } from "../types";
 import type { IPlatformAdapter } from "./adapters/interface";
 import { runConcurrent } from "./utils/concurrency";
 import { formatDate, generateFilename } from "./utils/filename-generator";
-import { convertImage } from "./utils/image-converter";
+import { convertBlobToPng, convertImage } from "./utils/image-converter";
 import { UrlResolver } from "./utils/url-resolver";
 
 interface ProcessResult {
@@ -44,30 +44,7 @@ export class ImageProcessor {
 
     // 1. 获取数据 (Referer 镜像)；失败时按站点回退候选重试
     //    （如 pixiv 原图扩展名猜测错误 404 → 换扩展名 → 最后回退 master 缩略图）
-    const referer =
-      img.pageUrl ||
-      (typeof window !== "undefined" ? window.location.href : "");
-    const candidates = [img.url, ...UrlResolver.getFallbackUrls(img.url)];
-    let blob: Blob | null = null;
-    let lastErr: unknown;
-    for (const candidate of candidates) {
-      try {
-        blob = await this.adapter.fetchBlob(candidate, referer);
-        if (candidate !== img.url) {
-          this.sendDebugLog({
-            message: `Primary fetch failed, fallback succeeded: ${candidate}`,
-          });
-        }
-        break;
-      } catch (err) {
-        lastErr = err;
-      }
-    }
-    if (!blob) {
-      throw lastErr instanceof Error
-        ? lastErr
-        : new Error(String(lastErr ?? "All fetch candidates failed"));
-    }
+    let blob = await this.fetchBlobWithFallback(img.url, img.pageUrl);
 
     // 2. 核心逻辑：格式转换
     let extension: string | undefined;
@@ -93,6 +70,44 @@ export class ImageProcessor {
       extension,
     );
     return { blob, filename };
+  }
+
+  /**
+   * 取回单张图片并统一转成 PNG（供剪贴板等不落盘场景使用）。
+   * 复用后台代理抓取与站点回退候选，避免直接 fetch 触发跨域限制。
+   */
+  async fetchImageAsPng(url: string, pageUrl?: string): Promise<Blob> {
+    const blob = await this.fetchBlobWithFallback(url, pageUrl);
+    return convertBlobToPng(blob);
+  }
+
+  /**
+   * 按「原 URL → 站点回退候选」顺序抓取，返回第一个成功的 Blob。
+   */
+  private async fetchBlobWithFallback(
+    url: string,
+    pageUrl?: string,
+  ): Promise<Blob> {
+    const referer =
+      pageUrl || (typeof window !== "undefined" ? window.location.href : "");
+    const candidates = [url, ...UrlResolver.getFallbackUrls(url)];
+    let lastErr: unknown;
+    for (const candidate of candidates) {
+      try {
+        const blob = await this.adapter.fetchBlob(candidate, referer);
+        if (candidate !== url) {
+          this.sendDebugLog({
+            message: `Primary fetch failed, fallback succeeded: ${candidate}`,
+          });
+        }
+        return blob;
+      } catch (err) {
+        lastErr = err;
+      }
+    }
+    throw lastErr instanceof Error
+      ? lastErr
+      : new Error(String(lastErr ?? "All fetch candidates failed"));
   }
 
   /**

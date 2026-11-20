@@ -148,6 +148,18 @@ export default {
   labelFloatingClose: {
     message: "버튼 잠시 숨기기",
   },
+  labelFloatingCopy: {
+    message: "이미지 복사",
+  },
+  labelFloatingCopySuccess: {
+    message: "이미지 복사됨",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "이미지 링크 복사됨",
+  },
+  labelFloatingCopyError: {
+    message: "복사 실패",
+  },
   labelFloatingDisable: {
     message: "이 사이트에서 비활성화",
   },

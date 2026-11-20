@@ -149,6 +149,18 @@ export default {
   labelFloatingClose: {
     message: "Sembunyikan tombol sementara",
   },
+  labelFloatingCopy: {
+    message: "Salin gambar",
+  },
+  labelFloatingCopySuccess: {
+    message: "Gambar disalin",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "Tautan gambar disalin",
+  },
+  labelFloatingCopyError: {
+    message: "Gagal menyalin",
+  },
   labelFloatingDisable: {
     message: "Nonaktifkan di situs ini",
   },

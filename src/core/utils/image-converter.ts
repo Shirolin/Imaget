@@ -1,6 +1,76 @@
 import type { ImageItem, Settings } from "../../types";
 
 /**
+ * 把本地 Blob 绘制进 canvas。
+ * 优先 createImageBitmap（JPG/PNG/WebP 等），失败时（如 SVG）退回 <img>。
+ * Blob 本身已是本地数据，用 object URL 加载，不存在跨域污染。
+ */
+async function drawBlobToCanvas(
+  blob: Blob,
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+): Promise<void> {
+  try {
+    const imageBitmap = await createImageBitmap(blob);
+    canvas.width = imageBitmap.width;
+    canvas.height = imageBitmap.height;
+    ctx.drawImage(imageBitmap, 0, 0);
+    imageBitmap.close();
+    return;
+  } catch (fastPathErr) {
+    console.warn(
+      `[ImageConverter] createImageBitmap failed, falling back to <img>:`,
+      fastPathErr,
+    );
+  }
+
+  const objectUrl = URL.createObjectURL(blob);
+  try {
+    const imgElement = await new Promise<HTMLImageElement>(
+      (resolve, reject) => {
+        const element = new Image();
+        element.onload = () => resolve(element);
+        element.onerror = () =>
+          reject(new Error("Failed to load image for conversion (fallback)"));
+        element.src = objectUrl;
+      },
+    );
+    canvas.width = imgElement.naturalWidth;
+    canvas.height = imgElement.naturalHeight;
+    ctx.drawImage(imgElement, 0, 0);
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+/**
+ * 将任意可解码的图片 Blob 统一转为 PNG。
+ * ClipboardItem 只接受 image/png，因此这里不沿用用户的 targetFormat 设置；
+ * GIF 等动图会被压成首帧。
+ */
+export async function convertBlobToPng(blob: Blob): Promise<Blob> {
+  if (blob.type === "image/png") return blob;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Failed to get canvas context");
+  }
+
+  await drawBlobToCanvas(blob, canvas, ctx);
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((resultBlob) => {
+      if (resultBlob) {
+        resolve(resultBlob);
+      } else {
+        reject(new Error("Canvas toBlob failed for image/png"));
+      }
+    }, "image/png");
+  });
+}
+
+/**
  * ImageConverter: Handles image format conversion using Canvas API
  */
 export async function convertImage(
@@ -80,49 +150,7 @@ export async function convertImage(
   }
 
   try {
-    try {
-      // Fast Path: createImageBitmap (Ideal for JPG/PNG/WebP, memory efficient)
-      const imageBitmap = await createImageBitmap(blob);
-      canvas.width = imageBitmap.width;
-      canvas.height = imageBitmap.height;
-      ctx.drawImage(imageBitmap, 0, 0);
-      imageBitmap.close();
-    } catch (fastPathErr) {
-      // Fallback Path: <img> (Required for SVG and incompatible blobs)
-      console.warn(
-        `[ImageConverter] createImageBitmap failed, falling back to <img>:`,
-        fastPathErr,
-      );
-      await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const dataUrl = reader.result as string;
-          const imgElement = new Image();
-
-          imgElement.onload = () => {
-            canvas.width = imgElement.naturalWidth;
-            canvas.height = imgElement.naturalHeight;
-            ctx.drawImage(imgElement, 0, 0);
-            imgElement.src = ""; // 释放内存
-            resolve(null);
-          };
-
-          imgElement.onerror = () => {
-            imgElement.src = "";
-            reject(new Error("Failed to load image for conversion (fallback)"));
-          };
-
-          // 关键安全修复：仅对远程资源使用 crossOrigin，本地 blob/data 必须避免
-          if (!img.url.startsWith("blob:") && !img.url.startsWith("data:")) {
-            imgElement.crossOrigin = "anonymous";
-          }
-          imgElement.src = dataUrl;
-        };
-        reader.onerror = () =>
-          reject(new Error("FileReader failed in fallback"));
-        reader.readAsDataURL(blob);
-      });
-    }
+    await drawBlobToCanvas(blob, canvas, ctx);
 
     // Determine target mime type
     let finalMimeType = "image/png";

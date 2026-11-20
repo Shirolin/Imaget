@@ -149,6 +149,18 @@ export default {
   labelFloatingClose: {
     message: "一時的にボタンを非表示",
   },
+  labelFloatingCopy: {
+    message: "画像をコピー",
+  },
+  labelFloatingCopySuccess: {
+    message: "画像をコピーしました",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "画像リンクをコピーしました",
+  },
+  labelFloatingCopyError: {
+    message: "コピーに失敗しました",
+  },
   labelFloatingDisable: {
     message: "このサイトで無効にする",
   },

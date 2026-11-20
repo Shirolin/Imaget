@@ -146,6 +146,18 @@ export default {
   labelFloatingClose: {
     message: "暫時隱藏按鈕",
   },
+  labelFloatingCopy: {
+    message: "複製圖片",
+  },
+  labelFloatingCopySuccess: {
+    message: "已複製圖片",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "已複製圖片連結",
+  },
+  labelFloatingCopyError: {
+    message: "複製失敗",
+  },
   labelFloatingDisable: {
     message: "在此網站禁用",
   },

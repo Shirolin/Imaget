@@ -7,17 +7,38 @@ import {
   IconBan,
   IconEyeOff,
   IconArrowDown,
+  IconCopy,
 } from "@tabler/icons-react";
 import { useI18n } from "../hooks/useI18n";
 
 // ==============================================
 // Types
 // ==============================================
+/**
+ * 复制图片的反馈状态：
+ * - idle: 可点击
+ * - busy: 正在取图 / 写入剪贴板
+ * - image: 图片已写入剪贴板
+ * - link: 图片复制失败，已退化为复制链接
+ * - error: 图片与链接都复制失败
+ */
+export type CopyStatus = "idle" | "busy" | "image" | "link" | "error";
+
+/**
+ * 次要动作的展开方向：
+ * - rail: 主按钮正下方竖向轨道（默认）
+ * - row: 图片太矮或贴近视口底部时，改为向左横向展开
+ */
+export type FloatingActionLayout = "rail" | "row";
+
 interface FloatingButtonProps {
   visible: boolean;
   status?: "idle" | "downloading" | "success" | "error";
   progress?: number;
+  copyStatus?: CopyStatus;
+  layout?: FloatingActionLayout;
   onDownload: () => void;
+  onCopy?: () => void;
   onClose: () => void;
   onDisable?: () => void;
   onHidePermanent?: () => void;
@@ -63,6 +84,26 @@ const GlobalAnimations = () => (
     @keyframes imaget-loader-in {
       from { opacity: 0; transform: scale(0.6); }
       to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes imaget-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .imaget-copy-spinner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-top-color: rgba(255, 255, 255, 0.95);
+      animation: imaget-spin 0.8s linear infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .imaget-copy-spinner {
+        animation-duration: 2s;
+      }
     }
 
     .imaget-loader {
@@ -132,9 +173,9 @@ const GlobalAnimations = () => (
       content: "";
       position: absolute;
       top: -5px;
-      left: -30px;
-      right: -30px;
-      bottom: -50px;
+      left: -36px;
+      right: -36px;
+      bottom: -124px;
       background: transparent;
       pointer-events: none;
       z-index: -2;
@@ -142,6 +183,14 @@ const GlobalAnimations = () => (
     
     .imaget-glass-wrapper:hover::after {
       pointer-events: auto;
+    }
+
+    /* 横向布局：桥接层覆盖主按钮左侧的动作带，避免移向动作时丢失 hover */
+    .imaget-glass-wrapper[data-layout="row"]::after {
+      top: -8px;
+      left: -132px;
+      right: -12px;
+      bottom: -14px;
     }
 
     .imaget-glass-button {
@@ -245,6 +294,42 @@ const getTooltipStyles = (fontSize = "11px", padding = "4px 10px") => ({
   },
 });
 
+type ActionKey = "copy" | "disable" | "hide" | "close";
+
+/**
+ * 每个动作在两种布局下的位移。
+ * rail: 主按钮正下方；row: 主按钮左侧、同一水平线。
+ */
+const ACTION_OFFSETS: Record<
+  FloatingActionLayout,
+  Record<ActionKey, { x: number; y: number }>
+> = {
+  rail: {
+    copy: { x: 0, y: 40 },
+    disable: { x: 0, y: 66 },
+    hide: { x: 0, y: 92 },
+    close: { x: 0, y: 118 },
+  },
+  row: {
+    copy: { x: -36, y: 0 },
+    disable: { x: -62, y: 0 },
+    hide: { x: -88, y: 0 },
+    close: { x: -114, y: 0 },
+  },
+};
+
+const getActionTransform = (
+  layout: FloatingActionLayout,
+  action: ActionKey,
+  scale = 1,
+) => {
+  const { x, y } = ACTION_OFFSETS[layout][action];
+  return `translate(${x}px, ${y}px) scale(${scale})`;
+};
+
+const getTooltipPosition = (layout: FloatingActionLayout) =>
+  layout === "row" ? "bottom" : "left";
+
 // ==============================================
 // Sub-Components
 // ==============================================
@@ -252,11 +337,13 @@ const MainDownloadAction = ({
   status,
   progress,
   portalNode,
+  layout,
   onClick,
 }: {
   status: "idle" | "downloading" | "success" | "error";
   progress: number;
   portalNode: HTMLDivElement | null;
+  layout: FloatingActionLayout;
   onClick: () => void;
 }) => {
   const { t } = useI18n();
@@ -269,7 +356,8 @@ const MainDownloadAction = ({
             ? t("labelFloatingError")
             : t("labelFloatingDownload")
       }
-      position="left"
+      // 横向布局时动作在按钮左侧，提示必须让位，否则会盖住整排动作
+      position={layout === "row" ? "bottom" : "left"}
       withArrow
       transitionProps={{ transition: "fade", duration: 200 }}
       portalProps={{ target: portalNode || undefined }}
@@ -380,19 +468,26 @@ const MainDownloadAction = ({
 const CloseAction = ({
   visible,
   portalNode,
+  layout,
   onClick,
 }: {
   visible: boolean;
   portalNode: HTMLDivElement | null;
+  layout: FloatingActionLayout;
   onClick: () => void;
 }) => {
   const { t } = useI18n();
+  const transform = getActionTransform(layout, "close");
   return (
     <Transition
       mounted={visible}
       transition={{
-        in: { opacity: 1, transform: "translate(26px, 34px) scale(1)" },
-        out: { opacity: 0, transform: "translate(0, 0) scale(0.4)" },
+        in: {
+          opacity: 1,
+          transform,
+          transitionDelay: "100ms",
+        },
+        out: { opacity: 0, transform: getActionTransform(layout, "close", 0.4) },
         transitionProperty: "transform, opacity",
       }}
       duration={400}
@@ -401,7 +496,7 @@ const CloseAction = ({
       {(styles) => (
         <Tooltip
           label={t("labelFloatingClose")}
-          position="bottom"
+          position={getTooltipPosition(layout)}
           withArrow
           transitionProps={{ transition: "fade", duration: 200 }}
           portalProps={{ target: portalNode || undefined }}
@@ -433,12 +528,17 @@ const CloseAction = ({
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.transform =
-                "translate(26px, 34px) scale(1.2)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "close",
+                1.2,
+              ))
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.transform =
-                "translate(26px, 34px) scale(1)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "close",
+              ))
             }
           >
             <IconX size={12} stroke={3} />
@@ -452,26 +552,29 @@ const CloseAction = ({
 const DisableAction = ({
   visible,
   portalNode,
+  layout,
   onClick,
 }: {
   visible: boolean;
   portalNode: HTMLDivElement | null;
+  layout: FloatingActionLayout;
   onClick?: () => void;
 }) => {
   const { t } = useI18n();
   if (!onClick) return null;
+  const transform = getActionTransform(layout, "disable");
   return (
     <Transition
       mounted={visible}
       transition={{
         in: {
           opacity: 1,
-          transform: "translate(0, 40px) scale(1)",
-          transitionDelay: "40ms",
+          transform,
+          transitionDelay: "60ms",
         },
         out: {
           opacity: 0,
-          transform: "translate(0, 0) scale(0.4)",
+          transform: getActionTransform(layout, "disable", 0.4),
           transitionDelay: "0ms",
         },
         transitionProperty: "transform, opacity",
@@ -482,7 +585,7 @@ const DisableAction = ({
       {(styles) => (
         <Tooltip
           label={t("labelFloatingDisable")}
-          position="bottom"
+          position={getTooltipPosition(layout)}
           withArrow
           transitionProps={{ transition: "fade", duration: 200 }}
           portalProps={{ target: portalNode || undefined }}
@@ -514,11 +617,17 @@ const DisableAction = ({
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.transform =
-                "translate(0, 40px) scale(1.2)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "disable",
+                1.2,
+              ))
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.transform = "translate(0, 40px) scale(1)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "disable",
+              ))
             }
           >
             <IconBan size={12} stroke={3} />
@@ -529,29 +638,173 @@ const DisableAction = ({
   );
 };
 
-const HidePermanentAction = ({
+const CopyAction = ({
   visible,
   portalNode,
+  layout,
+  status,
   onClick,
 }: {
   visible: boolean;
   portalNode: HTMLDivElement | null;
+  layout: FloatingActionLayout;
+  status: CopyStatus;
   onClick?: () => void;
 }) => {
   const { t } = useI18n();
   if (!onClick) return null;
+
+  const label =
+    status === "image"
+      ? t("labelFloatingCopySuccess")
+      : status === "link"
+        ? t("labelFloatingCopyLinkSuccess")
+        : status === "error"
+          ? t("labelFloatingCopyError")
+          : t("labelFloatingCopy");
+
+  const isBusy = status === "busy";
+  const showSuccess = status === "image" || status === "link";
+  const showError = status === "error";
+  const transform = getActionTransform(layout, "copy");
+
   return (
     <Transition
       mounted={visible}
       transition={{
         in: {
           opacity: 1,
-          transform: "translate(-26px, 34px) scale(1)",
+          transform,
+          transitionDelay: "40ms",
+        },
+        out: {
+          opacity: 0,
+          transform: getActionTransform(layout, "copy", 0.4),
+          transitionDelay: "0ms",
+        },
+        transitionProperty: "transform, opacity",
+      }}
+      duration={400}
+      timingFunction="cubic-bezier(0.34, 1.56, 0.64, 1)"
+    >
+      {(styles) => (
+        <Tooltip
+          label={label}
+          position={getTooltipPosition(layout)}
+          withArrow
+          transitionProps={{ transition: "fade", duration: 200 }}
+          portalProps={{ target: portalNode || undefined }}
+          styles={getTooltipStyles("10px", "3px 8px")}
+        >
+          <ActionIcon
+            variant="subtle"
+            color={showError ? "red.4" : "gray.2"}
+            size={20}
+            radius="xl"
+            aria-label={label}
+            aria-busy={isBusy}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              if (!isBusy) onClick();
+            }}
+            style={{
+              ...styles,
+              position: "absolute",
+              top: 10,
+              left: 10,
+              backgroundColor: "rgba(0, 0, 0, 0.45)",
+              backdropFilter: "blur(8px)",
+              border:
+                "1px solid color-mix(in srgb, var(--mantine-color-white), transparent 85%)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              zIndex: -1,
+              transition:
+                styles.transition +
+                ", background-color 0.2s ease, transform 0.2s ease",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "copy",
+                1.2,
+              ))
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "copy",
+              ))
+            }
+          >
+            <Box
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 12,
+                height: 12,
+                position: "relative",
+              }}
+            >
+              <IconCopy
+                size={12}
+                stroke={3}
+                style={{ opacity: isBusy || showSuccess || showError ? 0 : 1 }}
+              />
+              {isBusy && <span className="imaget-copy-spinner" />}
+              <IconCheck
+                size={12}
+                stroke={3.5}
+                style={{
+                  position: "absolute",
+                  color: "var(--mantine-color-green-4)",
+                  opacity: showSuccess ? 1 : 0,
+                }}
+              />
+              <IconX
+                size={12}
+                stroke={3}
+                style={{
+                  position: "absolute",
+                  color: "var(--mantine-color-red-4)",
+                  opacity: showError ? 1 : 0,
+                }}
+              />
+            </Box>
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </Transition>
+  );
+};
+
+const HidePermanentAction = ({
+  visible,
+  portalNode,
+  layout,
+  onClick,
+}: {
+  visible: boolean;
+  portalNode: HTMLDivElement | null;
+  layout: FloatingActionLayout;
+  onClick?: () => void;
+}) => {
+  const { t } = useI18n();
+  if (!onClick) return null;
+  const transform = getActionTransform(layout, "hide");
+  return (
+    <Transition
+      mounted={visible}
+      transition={{
+        in: {
+          opacity: 1,
+          transform,
           transitionDelay: "80ms",
         },
         out: {
           opacity: 0,
-          transform: "translate(0, 0) scale(0.4)",
+          transform: getActionTransform(layout, "hide", 0.4),
           transitionDelay: "0ms",
         },
         transitionProperty: "transform, opacity",
@@ -562,7 +815,7 @@ const HidePermanentAction = ({
       {(styles) => (
         <Tooltip
           label={t("labelFloatingHidePermanent")}
-          position="bottom"
+          position={getTooltipPosition(layout)}
           withArrow
           transitionProps={{ transition: "fade", duration: 200 }}
           portalProps={{ target: portalNode || undefined }}
@@ -594,12 +847,17 @@ const HidePermanentAction = ({
                 ", background-color 0.2s ease, transform 0.2s ease",
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.transform =
-                "translate(-26px, 34px) scale(1.2)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "hide",
+                1.2,
+              ))
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.transform =
-                "translate(-26px, 34px) scale(1)")
+              (e.currentTarget.style.transform = getActionTransform(
+                layout,
+                "hide",
+              ))
             }
           >
             <IconEyeOff size={12} stroke={3} />
@@ -617,7 +875,10 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
   visible,
   status = "idle",
   progress = 0,
+  copyStatus = "idle",
+  layout = "rail",
   onDownload,
+  onCopy,
   onClose,
   onDisable,
   onHidePermanent,
@@ -659,6 +920,7 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
 
       <div
         className="imaget-glass-wrapper"
+        data-layout={layout}
         style={{ pointerEvents: "auto" }}
         onMouseEnter={() => {
           setHovered(true);
@@ -673,22 +935,33 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
           status={status}
           progress={progress}
           portalNode={portalNode}
+          layout={layout}
           onClick={onDownload}
         />
 
         <HidePermanentAction
           visible={hovered}
           portalNode={portalNode}
+          layout={layout}
           onClick={onHidePermanent}
+        />
+        <CopyAction
+          visible={hovered || copyStatus !== "idle"}
+          portalNode={portalNode}
+          layout={layout}
+          status={copyStatus}
+          onClick={onCopy}
         />
         <DisableAction
           visible={hovered}
           portalNode={portalNode}
+          layout={layout}
           onClick={onDisable}
         />
         <CloseAction
           visible={hovered}
           portalNode={portalNode}
+          layout={layout}
           onClick={onClose}
         />
       </div>

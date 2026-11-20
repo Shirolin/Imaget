@@ -3,10 +3,15 @@ import ReactDOM from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
 import type { Sniffer } from "./sniffer";
 import type { ImageProcessor } from "./processor";
-import { FloatingButton } from "../ui/components/FloatingButton";
+import {
+  FloatingButton,
+  type CopyStatus,
+  type FloatingActionLayout,
+} from "../ui/components/FloatingButton";
 import { type Settings, defaultSettings } from "../types";
 import { createImageItemFromElement } from "./utils/image-item-factory";
 import { UrlResolver } from "./utils/url-resolver";
+import { copyPngToClipboard } from "./utils/clipboard";
 import { isDomainDisabled } from "./utils/settings-policy";
 import mantineStyles from "@mantine/core/styles.css?inline";
 import { getBrandFontFaceCss } from "./utils/brand-font";
@@ -25,10 +30,16 @@ interface ActiveInstance {
   url: string;
   status: "idle" | "downloading" | "success" | "error";
   progress: number;
+  copyStatus: CopyStatus;
+  copyTimer?: number;
+  layout: FloatingActionLayout;
   isHovering: boolean;
   hideTimer?: number;
   wrapperRef: HTMLDivElement | null;
 }
+
+/** 竖向动作轨道需要的空间（主按钮顶到最后一个圆点底部 + 余量） */
+const RAIL_MIN_SPACE = 160;
 
 export class FloatingController {
   private isMuted: boolean = false;
@@ -145,6 +156,7 @@ export class FloatingController {
 
     const track = () => {
       let activeCount = 0;
+      let layoutChanged = false;
 
       for (const [target, inst] of Array.from(this.instances.entries())) {
         // 如果目标图被动态摘除，清理掉
@@ -155,13 +167,22 @@ export class FloatingController {
 
         activeCount++;
 
+        const rect = target.getBoundingClientRect();
         if (inst.wrapperRef) {
-          const rect = target.getBoundingClientRect();
           inst.wrapperRef.style.transform = `translate3d(${rect.left}px, ${rect.top}px, 0)`;
           inst.wrapperRef.style.width = `${rect.width}px`;
           inst.wrapperRef.style.height = `${rect.height}px`;
         }
+
+        // 滚动或图片尺寸变化可能让竖向轨道放不下，跟随切换布局
+        const layout = this.resolveLayout(rect);
+        if (inst.layout !== layout) {
+          inst.layout = layout;
+          layoutChanged = true;
+        }
       }
+
+      if (layoutChanged) this.renderReact();
 
       if (activeCount === 0) {
         this.rafId = null;
@@ -226,10 +247,17 @@ export class FloatingController {
               }}
             >
               <FloatingButton
-                visible={inst.isHovering || inst.status !== "idle"}
+                visible={
+                  inst.isHovering ||
+                  inst.status !== "idle" ||
+                  inst.copyStatus !== "idle"
+                }
                 status={inst.status}
                 progress={inst.progress}
+                copyStatus={inst.copyStatus}
+                layout={inst.layout}
                 onDownload={() => this.triggerDownload(inst)}
+                onCopy={() => this.triggerCopy(inst)}
                 onDisable={() => {
                   this.setMuted(true);
                 }}
@@ -264,6 +292,7 @@ export class FloatingController {
     if (this.hoverTimer) clearTimeout(this.hoverTimer);
     for (const inst of this.instances.values()) {
       if (inst.hideTimer) clearTimeout(inst.hideTimer);
+      if (inst.copyTimer) clearTimeout(inst.copyTimer);
     }
     this.instances.clear();
     this.stopPositionTracking();
@@ -274,8 +303,18 @@ export class FloatingController {
     const inst = this.instances.get(target);
     if (!inst) return;
     if (inst.hideTimer) clearTimeout(inst.hideTimer);
+    if (inst.copyTimer) clearTimeout(inst.copyTimer);
     this.instances.delete(target);
     this.renderReact();
+  }
+
+  /**
+   * 图片太矮或贴近视口底部时，竖向轨道会溢出图片/被视口裁掉，
+   * 此时改为向左横向展开；否则保持竖向轨道。
+   */
+  private resolveLayout(rect: DOMRect): FloatingActionLayout {
+    const available = Math.min(rect.height, window.innerHeight - rect.top);
+    return available >= RAIL_MIN_SPACE ? "rail" : "row";
   }
 
   private showInstance(target: HTMLElement, url: string) {
@@ -289,6 +328,8 @@ export class FloatingController {
         url,
         status: "idle",
         progress: 0,
+        copyStatus: "idle",
+        layout: this.resolveLayout(target.getBoundingClientRect()),
         isHovering: true,
         wrapperRef: null,
       };
@@ -313,8 +354,8 @@ export class FloatingController {
 
     inst.isHovering = false;
 
-    // 如果不在进行中也不是失败/成功停留态，准备离场清理
-    if (inst.status !== "idle") return;
+    // 下载/复制进行中或停留在结果态时不要离场，否则反馈还没播完按钮就没了
+    if (inst.status !== "idle" || inst.copyStatus !== "idle") return;
 
     if (inst.hideTimer) clearTimeout(inst.hideTimer);
 
@@ -327,7 +368,8 @@ export class FloatingController {
       if (
         currentInst &&
         !currentInst.isHovering &&
-        currentInst.status === "idle"
+        currentInst.status === "idle" &&
+        currentInst.copyStatus === "idle"
       ) {
         this.removeInstance(target);
       }
@@ -458,6 +500,57 @@ export class FloatingController {
           }
         }
       }, 2000);
+    }
+  }
+
+  private scheduleCopyReset(inst: ActiveInstance) {
+    if (inst.copyTimer) clearTimeout(inst.copyTimer);
+    inst.copyTimer = window.setTimeout(() => {
+      inst.copyTimer = undefined;
+      if (this.instances.get(inst.target) !== inst) return;
+      inst.copyStatus = "idle";
+      if (inst.isHovering) this.renderReact();
+      else this.scheduleHideInstance(inst.target);
+    }, 2000);
+  }
+
+  private async triggerCopy(inst: ActiveInstance) {
+    if (inst.copyStatus === "busy") return;
+    if (inst.copyTimer) {
+      clearTimeout(inst.copyTimer);
+      inst.copyTimer = undefined;
+    }
+
+    inst.copyStatus = "busy";
+    this.renderReact();
+
+    // 关键：ClipboardItem 接收 Promise<Blob>，clipboard.write 必须在点击任务内同步调用，
+    // 否则等 fetch 完成后再写会因 transient activation 失效而抛 NotAllowedError。
+    const pngPromise = this.processor.fetchImageAsPng(
+      inst.url,
+      window.location.href,
+    );
+    // 写入失败时该 Promise 可能无人消费，先挂一个空 handler 避免 unhandled rejection
+    pngPromise.catch(() => {});
+
+    try {
+      await copyPngToClipboard(pngPromise);
+      inst.copyStatus = "image";
+    } catch (err) {
+      console.warn(
+        "[FloatingController] Copy image failed, falling back to link:",
+        err,
+      );
+      try {
+        await navigator.clipboard.writeText(inst.url);
+        inst.copyStatus = "link";
+      } catch (fallbackErr) {
+        console.warn("[FloatingController] Copy link failed:", fallbackErr);
+        inst.copyStatus = "error";
+      }
+    } finally {
+      this.renderReact();
+      this.scheduleCopyReset(inst);
     }
   }
 

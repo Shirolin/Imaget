@@ -147,6 +147,18 @@ export default {
   labelFloatingClose: {
     message: "暂时隐藏按钮",
   },
+  labelFloatingCopy: {
+    message: "复制图片",
+  },
+  labelFloatingCopySuccess: {
+    message: "已复制图片",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "已复制图片链接",
+  },
+  labelFloatingCopyError: {
+    message: "复制失败",
+  },
   labelFloatingDisable: {
     message: "在此网站禁用",
   },

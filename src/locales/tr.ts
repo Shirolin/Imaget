@@ -148,6 +148,18 @@ export default {
   labelFloatingClose: {
     message: "Geçici olarak gizle",
   },
+  labelFloatingCopy: {
+    message: "Görseli kopyala",
+  },
+  labelFloatingCopySuccess: {
+    message: "Görsel kopyalandı",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "Görsel bağlantısı kopyalandı",
+  },
+  labelFloatingCopyError: {
+    message: "Kopyalama başarısız",
+  },
   labelFloatingDisable: {
     message: "Bu sitede devre dışı bırak",
   },

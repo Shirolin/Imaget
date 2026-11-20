@@ -148,6 +148,18 @@ export default {
   labelFloatingClose: {
     message: "Masquer le bouton temporairement",
   },
+  labelFloatingCopy: {
+    message: "Copier l'image",
+  },
+  labelFloatingCopySuccess: {
+    message: "Image copiée",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "Lien de l'image copié",
+  },
+  labelFloatingCopyError: {
+    message: "Échec de la copie",
+  },
   labelFloatingDisable: {
     message: "Désactiver sur ce site Web",
   },

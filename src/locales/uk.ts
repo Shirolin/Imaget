@@ -149,6 +149,18 @@ export default {
   labelFloatingClose: {
     message: "Тимчасово приховати кнопку",
   },
+  labelFloatingCopy: {
+    message: "Копіювати зображення",
+  },
+  labelFloatingCopySuccess: {
+    message: "Зображення скопійовано",
+  },
+  labelFloatingCopyLinkSuccess: {
+    message: "Посилання на зображення скопійовано",
+  },
+  labelFloatingCopyError: {
+    message: "Не вдалося скопіювати",
+  },
   labelFloatingDisable: {
     message: "Вимкнути на цьому сайті",
   },
