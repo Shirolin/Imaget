@@ -487,7 +487,10 @@ const CloseAction = ({
           transform,
           transitionDelay: "100ms",
         },
-        out: { opacity: 0, transform: getActionTransform(layout, "close", 0.4) },
+        out: {
+          opacity: 0,
+          transform: getActionTransform(layout, "close", 0.4),
+        },
         transitionProperty: "transform, opacity",
       }}
       duration={400}
