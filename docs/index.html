@@ -250,6 +250,48 @@
   #export .ui-tg { min-height: 44px; padding: 6px 14px; }
   #works .ui-app { height: 36px; min-height: 0; padding-block: 0; }
 }
+/* each language keeps its own faces: Latin in the display face, the rest in the platform's own */
+html[lang="zh-CN"] { --font-display: "Reddit Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-text: "Reddit Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
+html[lang="zh-TW"] { --font-display: "Reddit Sans", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-text: "Reddit Sans", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
+html[lang="ja"] { --font-display: "Reddit Sans", "Hiragino Sans", "Meiryo", system-ui, sans-serif;
+  --font-text: "Reddit Sans", "Hiragino Sans", "Meiryo", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
+html[lang="ko"] { --font-display: "Reddit Sans", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-text: "Reddit Sans", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
+/* break where the language breaks: Japanese at phrase boundaries, Korean between words */
+html[lang="ko"] :is(h1, h2, h3, p, li) { word-break: keep-all; }
+html[lang="ko"] #questions .faq__item p { line-height: 1.45; }
+html[lang="ja"] { line-break: strict; }
+
+/* the language switch: each language in its own name, no flag */
+.lang { position: relative; }
+.lang__btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px 0 9px;
+  border: 1px solid color-mix(in oklab, var(--p-ink) 15%, transparent); border-radius: 999px; background: transparent;
+  color: var(--p-ink); font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;
+  transition: background-color var(--dur) var(--ease); }
+.lang__btn:hover, .lang__btn[aria-expanded="true"] { background: color-mix(in oklab, var(--p-ink) 6%, transparent); }
+.lang__btn > svg { width: 15px; height: 15px; flex: none; }
+.lang__chev { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round;
+  stroke-linejoin: round; transition: transform var(--dur) var(--ease); }
+.lang__btn[aria-expanded="true"] .lang__chev { transform: rotate(180deg); }
+.lang__menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; display: none; min-width: 176px;
+  margin: 0; padding: 6px; list-style: none; background: var(--p-bg); border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--p-ink) 12%, transparent); box-shadow: 0 14px 34px rgb(11 12 14 / .16); }
+.lang.is-open .lang__menu { display: block; }
+.lang__menu button { display: block; width: 100%; min-height: 40px; padding: 8px 10px; border: 0; border-radius: 9px;
+  background: none; color: var(--p-ink); font: inherit; font-size: 14px; text-align: start; cursor: pointer; }
+.lang__menu button:hover, .lang__menu button:focus-visible { background: color-mix(in oklab, var(--p-ink) 7%, transparent); }
+.lang__menu button[aria-current] { font-weight: 600; }
+@media (max-width: 1023px) {
+  .nav.is-open .nav__actions .lang { order: 0; width: 100%; }
+  .nav.is-open .lang__btn { display: none; }
+  .nav.is-open .lang__menu { position: static; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px;
+    width: 100%; min-width: 0; padding: 0; background: none; border: 0; border-radius: 0; box-shadow: none; }
+  .nav.is-open .lang__menu button { width: auto; min-height: 44px; padding: 0 10px; }
+  .nav.is-open .lang__menu button[aria-current] { background: color-mix(in oklab, var(--p-ink) 7%, transparent); }
+}
+@media (max-width: 639px) { .nav.is-open .lang__menu button { padding: 0 6px; font-size: 13px; } }
 </style>
 </head>
 <body>
@@ -261,18 +303,32 @@
 
 <header class="nav nav--centre">
   <div class="wrap nav__bar">
-    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="skip-link" data-i18n="nav.skip" href="#top">Skip to content</a>
     <a class="nav__logo" href="index.html"><img loading="lazy" src="assets/img/icon-128.png" width="28" height="28" alt="">Imaget</a>
-    <nav class="nav__links" aria-label="Main">
-      <div class="nav__item"><a class="nav__link" href="#panel">Panel</a></div>
-      <div class="nav__item"><a class="nav__link" href="#works">Features</a></div>
-      <div class="nav__item"><a class="nav__link" href="#export">Settings</a></div>
-      <div class="nav__item"><a class="nav__link" href="#questions">Questions</a></div>
+    <nav class="nav__links" data-i18n-aria="nav.main" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" data-i18n="nav.panel" href="#panel">Panel</a></div>
+      <div class="nav__item"><a class="nav__link" data-i18n="nav.features" href="#works">Features</a></div>
+      <div class="nav__item"><a class="nav__link" data-i18n="nav.settings" href="#export">Settings</a></div>
+      <div class="nav__item"><a class="nav__link" data-i18n="nav.questions" href="#questions">Questions</a></div>
     </nav>
     <div class="nav__actions">
-      <a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases">Download extension</a>
+      <div class="lang" data-lang-switch>
+        <button class="lang__btn" type="button" aria-expanded="false" data-i18n-aria="nav.lang" aria-label="Language">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6.1"/><path d="M1.9 8h12.2"/><path d="M8 1.9c2.1 1.8 2.1 10.4 0 12.2M8 1.9c-2.1 1.8-2.1 10.4 0 12.2"/></svg>
+          <span class="lang__code">EN</span>
+          <svg class="lang__chev" viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.7 3 3 3-3"/></svg>
+        </button>
+        <ul class="lang__menu">
+          <li><button type="button" data-lang="en" lang="en">English</button></li>
+          <li><button type="button" data-lang="zh-CN" lang="zh-CN">简体中文</button></li>
+          <li><button type="button" data-lang="zh-TW" lang="zh-TW">繁體中文</button></li>
+          <li><button type="button" data-lang="ja" lang="ja">日本語</button></li>
+          <li><button type="button" data-lang="ko" lang="ko">한국어</button></li>
+        </ul>
+      </div>
+      <a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases"><span data-i18n="cta.download">Download extension</span></a>
     </div>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+    <button class="nav__toggle" type="button" aria-expanded="false" data-i18n-aria="nav.menu" aria-label="Menu">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
   </div>
@@ -282,33 +338,33 @@
   <section class="hero hero--collage" data-enter aria-labelledby="hero-h">
     <div class="wrap"><div class="hero-text grid hero__grid">
       <div class="hero__text span-5">
-        <h1 id="hero-h">Batch image downloader for Chrome</h1>
-        <p class="hero__lead">Imaget lists every image a page loads — srcset, CSS backgrounds, inline SVG and nested frames — filters it by size and type, then saves the set as one ZIP.</p>
-        <div class="btn-row"><a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases">Download extension<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></div>
-        <p class="hero__proof">Free and open source under GPL-3.0, in 14 languages.</p>
+        <h1 id="hero-h" data-i18n-html="hero.h1">Batch image downloader for Chrome</h1>
+        <p class="hero__lead" data-i18n="hero.lead">Imaget lists every image a page loads — srcset, CSS backgrounds, inline SVG and nested frames — filters it by size and type, then saves the set as one ZIP.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases"><span data-i18n="cta.download">Download extension</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></div>
+        <p class="hero__proof" data-i18n="hero.proof">Free and open source under GPL-3.0, in 14 languages.</p>
       </div>
-      <div class="hero__art span-6 start-7" role="img" aria-label="Imaget's side panel over a photo gallery: a grid of images with their formats, a download bar at the foot">
+      <div class="hero__art span-6 start-7" role="img" data-i18n-aria="hero.art" aria-label="Imaget's side panel over a photo gallery: a grid of images with their formats, a download bar at the foot">
         <div class="ly-piece ly-piece--main g-win" aria-hidden="true" data-ui="">
           <div class="g-bar">
             <span class="g-dots"><i></i><i></i><i></i></span>
             <span class="g-brand"><img loading="lazy" src="assets/img/icon-128.png" width="18" height="18" alt="">IMAGET</span>
-            <span class="g-tabs"><b>Images</b><span>Settings</span></span>
+            <span class="g-tabs"><b data-i18n="w.images">Images</b><span data-i18n="w.settings">Settings</span></span>
             <span class="g-spacer"></span>
             <span class="g-chip">◫</span><span class="g-chip">✕</span>
           </div>
           <div class="g-toolbar">
-            <span class="g-input"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search</span>
-            <span class="g-input"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Exclude</span>
-            <span class="g-input">Type</span>
-            <span class="g-input">Not type</span>
+            <span class="g-input"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span data-i18n="w.search">Search</span></span>
+            <span class="g-input"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span data-i18n="w.exclude">Exclude</span></span>
+            <span class="g-input" data-i18n="w.type">Type</span>
+            <span class="g-input" data-i18n="w.nottype">Not type</span>
           </div>
           <div class="g-filters">
             <span class="g-size">200</span><span class="g-or">OR</span><span class="g-size">200</span><span class="g-px">px</span>
             <span class="g-spacer"></span>
-            <span class="g-chip">All</span><span class="g-chip">Order</span>
+            <span class="g-chip" data-i18n="w.all">All</span><span class="g-chip" data-i18n="w.order">Order</span>
             <span class="g-views"><i></i><i></i><i></i><i></i></span>
           </div>
-          <div class="g-sub"><b>34 images</b><span>2 filters</span><span class="g-spacer"></span><span class="g-saved">Saved to the-quiet-field.zip</span><span class="g-act g-act--ghost">Download ZIP</span><span class="g-act g-act--primary">Download</span></div>
+          <div class="g-sub"><b data-i18n="w.images34">34 images</b><span data-i18n="w.filters2">2 filters</span><span class="g-spacer"></span><span class="g-saved" data-i18n="w.saved">Saved to the-quiet-field.zip</span><span class="g-act g-act--ghost" data-i18n="w.dlzip">Download ZIP</span><span class="g-act g-act--primary" data-i18n="w.download">Download</span></div>
           <div class="g-grid">
             <div class="g-tile g-tile--big"><img width="500" height="331" src="assets/img/photo-f51439634-500.webp" alt=""></div>
             <div class="g-tile"><img width="500" height="333" loading="lazy" src="assets/img/photo-f51440844-500.webp" alt=""></div>
@@ -323,29 +379,29 @@
   <section class="section" id="panel" aria-labelledby="panel-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="panel-h">Every image on the page, in one panel</h2>
-        <p>The side panel opens beside the page and lists what loaded: tags, srcset, CSS backgrounds, inline SVG and frames.</p>
+        <h2 id="panel-h" data-i18n="panel.h2">Every image on the page, in one panel</h2>
+        <p data-i18n="panel.lead">The side panel opens beside the page and lists what loaded: tags, srcset, CSS backgrounds, inline SVG and frames.</p>
       </div>
-      <div class="g-stage"><div class="g-app" role="img" aria-label="Imaget's side panel: a list of the page's images with their sizes, beside a full-size preview of the selected file">
+      <div class="g-stage"><div class="g-app" role="img" data-i18n-aria="panel.art" aria-label="Imaget's side panel: a list of the page's images with their sizes, beside a full-size preview of the selected file">
         <div class="g-pane g-pane--list">
           <div class="g-list">
-            <div class="g-list__bar"><b>This page</b><span>·</span><span>34 images</span><span class="g-spacer"></span><span>Order</span></div>
+            <div class="g-list__bar"><b data-i18n="list.this">This page</b><span>·</span><span data-i18n="w.images34">34 images</span><span class="g-spacer"></span><span data-i18n="list.order">Order</span></div>
             <ul class="g-list__rows">
-              <li class="g-list__row"><img width="960" height="720" loading="lazy" src="assets/img/photo-f121400900-960.webp" alt=""><span><span class="g-list__name">the-quiet-field-01.jpg</span><span class="g-list__sub">1280 × 962 · 208 KB</span></span><span class="g-list__st">Selected</span></li>
-              <li class="g-list__row"><img width="500" height="331" loading="lazy" src="assets/img/photo-f51439634-500.webp" alt=""><span><span class="g-list__name">highland-meadow.webp</span><span class="g-list__sub">1280 × 848 · 34 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f51440844-500.webp" alt=""><span><span class="g-list__name">trees-at-dawn.jpg</span><span class="g-list__sub">1280 × 853 · 12 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f98801324-500.webp" alt=""><span><span class="g-list__name">over-betuwe.jpg</span><span class="g-list__sub">1280 × 853 · 22 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f51440683-500.webp" alt=""><span><span class="g-list__name">sky-sunny-night.webp</span><span class="g-list__sub">1280 × 853 · 21 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="375" loading="lazy" src="assets/img/photo-f77074593-500.webp" alt=""><span><span class="g-list__name">hiking-trail-02.jpg</span><span class="g-list__sub">960 × 722 · 45 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="667" loading="lazy" src="assets/img/photo-f169397649-500.webp" alt=""><span><span class="g-list__name">green-space.png</span><span class="g-list__sub">500 × 667 · 93 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
-              <li class="g-list__row"><img width="500" height="334" loading="lazy" src="assets/img/photo-f126608256-500.webp" alt=""><span><span class="g-list__name">madurai-ridge.jpg</span><span class="g-list__sub">1280 × 853 · 19 KB</span></span><span class="g-list__st g-list__st--muted">Thumb</span></li>
+              <li class="g-list__row"><img width="960" height="720" loading="lazy" src="assets/img/photo-f121400900-960.webp" alt=""><span><span class="g-list__name">the-quiet-field-01.jpg</span><span class="g-list__sub">1280 × 962 · 208 KB</span></span><span class="g-list__st" data-i18n="list.selected">Selected</span></li>
+              <li class="g-list__row"><img width="500" height="331" loading="lazy" src="assets/img/photo-f51439634-500.webp" alt=""><span><span class="g-list__name">highland-meadow.webp</span><span class="g-list__sub">1280 × 848 · 34 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f51440844-500.webp" alt=""><span><span class="g-list__name">trees-at-dawn.jpg</span><span class="g-list__sub">1280 × 853 · 12 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f98801324-500.webp" alt=""><span><span class="g-list__name">over-betuwe.jpg</span><span class="g-list__sub">1280 × 853 · 22 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="333" loading="lazy" src="assets/img/photo-f51440683-500.webp" alt=""><span><span class="g-list__name">sky-sunny-night.webp</span><span class="g-list__sub">1280 × 853 · 21 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="375" loading="lazy" src="assets/img/photo-f77074593-500.webp" alt=""><span><span class="g-list__name">hiking-trail-02.jpg</span><span class="g-list__sub">960 × 722 · 45 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="667" loading="lazy" src="assets/img/photo-f169397649-500.webp" alt=""><span><span class="g-list__name">green-space.png</span><span class="g-list__sub">500 × 667 · 93 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
+              <li class="g-list__row"><img width="500" height="334" loading="lazy" src="assets/img/photo-f126608256-500.webp" alt=""><span><span class="g-list__name">madurai-ridge.jpg</span><span class="g-list__sub">1280 × 853 · 19 KB</span></span><span class="g-list__st g-list__st--muted" data-i18n="list.thumb">Thumb</span></li>
             </ul>
           </div>
         </div>
         <div class="g-pane g-pane--open">
           <div class="g-prev">
             <div class="g-prev__bar"><b>the-quiet-field-01.jpg</b><span class="g-prev__meta">1280 × 962 · WEBP</span></div>
-            <img width="960" height="720" loading="lazy" class="g-prev__img" src="assets/img/photo-f121400900-960.webp" alt="A green hillside under low cloud in the western Ghats">
+            <img width="960" height="720" loading="lazy" class="g-prev__img" data-i18n-alt="list.alt" src="assets/img/photo-f121400900-960.webp" alt="A green hillside under low cloud in the western Ghats">
             <div class="g-prev__tools"><i>1:1</i><i>−</i><i>+</i><i>↻</i></div>
           </div>
         </div>
@@ -356,54 +412,54 @@
   <section class="section" id="works" aria-labelledby="works-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="works-h">Four image features. <span class="muted">Reads the page, resolves the original, filters and saves.</span></h2>
+        <h2 id="works-h"><span data-i18n="works.h2a">Four image features.</span> <span class="muted" data-i18n="works.h2b">Reads the page, resolves the original, filters and saves.</span></h2>
       </div>
       <div class="grid">
         <article class="card card--row card--open span-3">
-          <h3>Reads images in every frame</h3>
-          <p>Tags, srcset, CSS backgrounds, inline SVG and nested iframes, Shadow DOM included.</p>
+          <h3 data-i18n="card1.h">Reads images in every frame</h3>
+          <p data-i18n="card1.p">Tags, srcset, CSS backgrounds, inline SVG and nested iframes, Shadow DOM included.</p>
           <div class="panel" data-visual>
             <div class="stage stage--pad"><div class="g-mini" aria-hidden="true" data-ui="">
-              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m4.5 10 2.4-2.6 2 2 1.6-1.7 1.5 2.3"/></svg><span>img and picture tags</span><em>21</em></div>
-              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 5.5h11M2.5 8.5h11M2.5 11.5h7"/></svg><span>srcset and CSS</span><em>8</em></div>
-              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><rect x="5" y="5" width="6" height="6" rx="1"/></svg><span>Shadow roots</span><em>3</em></div>
-              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="M2.5 6.5h11"/></svg><span>Nested frames</span><em>2</em></div>
+              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m4.5 10 2.4-2.6 2 2 1.6-1.7 1.5 2.3"/></svg><span data-i18n="mini.img">img and picture tags</span><em>21</em></div>
+              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 5.5h11M2.5 8.5h11M2.5 11.5h7"/></svg><span data-i18n="mini.srcset">srcset and CSS</span><em>8</em></div>
+              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><rect x="5" y="5" width="6" height="6" rx="1"/></svg><span data-i18n="mini.shadow">Shadow roots</span><em>3</em></div>
+              <div class="g-mini__row"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="M2.5 6.5h11"/></svg><span data-i18n="mini.frames">Nested frames</span><em>2</em></div>
             </div></div>
           </div>
         </article>
         <article class="card card--row card--open span-3 card--apps">
-          <h3>Resolves original images</h3>
-          <p>On six sites the panel swaps a thumbnail for the file behind it, at full size.</p>
+          <h3 data-i18n="card2.h">Resolves original images</h3>
+          <p data-i18n="card2.p">On six sites the panel swaps a thumbnail for the file behind it, at full size.</p>
           <div class="panel" data-visual>
             <div class="stage"><div class="at-center" style="width: min(320px, 100% - 48px)" data-ui-loop>
               <div class="ui ui-panel ui-apps" style="--apps-w: 100%" data-ui="integrations">
-                <div class="ui-head"><div class="ui-title">Original files</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count>6 sites</div></div>
+                <div class="ui-head"><div class="ui-title" data-i18n="apps.title">Original files</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count data-i18n-count="apps.sites">6 sites</div></div>
                 <ul class="ui-apps__list">
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="24" height="24" loading="lazy" src="assets/ui/icons/pixiv.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Pixiv</span><span class="ui-app__sub">Full size</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="251" height="256" loading="lazy" src="assets/ui/icons/x.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">X</span><span class="ui-app__sub">4096px</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
-                  <li class="ui-app" data-apps-target><span class="ui-logo ui-logo--sm"><img width="25" height="21" loading="lazy" src="assets/ui/icons/sinaweibo.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Weibo</span><span class="ui-app__sub">Full size</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="256" loading="lazy" src="assets/ui/icons/reddit.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Reddit</span><span class="ui-app__sub">Full image</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="256" loading="lazy" src="assets/ui/icons/telegram.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Telegram</span><span class="ui-app__sub">Chat blob</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="199" loading="lazy" src="assets/ui/icons/discord.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Discord</span><span class="ui-app__sub">Unwrapped</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Connected</span></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="24" height="24" loading="lazy" src="assets/ui/icons/pixiv.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Pixiv</span><span class="ui-app__sub" data-i18n="apps.full">Full size</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="251" height="256" loading="lazy" src="assets/ui/icons/x.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">X</span><span class="ui-app__sub">4096px</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
+                  <li class="ui-app" data-apps-target><span class="ui-logo ui-logo--sm"><img width="25" height="21" loading="lazy" src="assets/ui/icons/sinaweibo.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Weibo</span><span class="ui-app__sub" data-i18n="apps.full">Full size</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="256" loading="lazy" src="assets/ui/icons/reddit.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Reddit</span><span class="ui-app__sub" data-i18n="apps.fullimg">Full image</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="256" loading="lazy" src="assets/ui/icons/telegram.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Telegram</span><span class="ui-app__sub" data-i18n="apps.blob">Chat blob</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><img width="256" height="199" loading="lazy" src="assets/ui/icons/discord.svg" alt=""></span><span class="ui-app__text"><span class="ui-app__name">Discord</span><span class="ui-app__sub" data-i18n="apps.unwrap">Unwrapped</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-i18n="apps.connected">Connected</span></span></li>
                 </ul>
               </div>
             </div></div>
           </div>
         </article>
         <article class="card card--row card--open span-3">
-          <h3>Filters images before download</h3>
-          <p>Width and height, PNG, JPG, WebP or GIF, plus keyword and exclude rules.</p>
+          <h3 data-i18n="card3.h">Filters images before download</h3>
+          <p data-i18n="card3.p">Width and height, PNG, JPG, WebP or GIF, plus keyword and exclude rules.</p>
           <div class="panel" data-visual>
             <div class="stage stage--pad"><div class="g-filterbar" aria-hidden="true" data-ui="">
               <div class="g-fb__row"><span class="g-fb__chip is-on">≥ 200 × 200</span><span class="g-fb__chip is-on">PNG</span><span class="g-fb__chip is-on">JPG</span><span class="g-fb__chip is-on">WebP</span><span class="g-fb__chip">GIF</span></div>
-              <div class="g-fb__row"><span class="g-fb__chip is-on">Keyword: field</span><span class="g-fb__chip">Exclude: icon</span></div>
-              <div class="g-fb__count"><span><b>34</b> of 67 images</span><span>2 on</span></div>
+              <div class="g-fb__row"><span class="g-fb__chip is-on" data-i18n="fb.keyword">Keyword: field</span><span class="g-fb__chip" data-i18n="fb.exclude">Exclude: icon</span></div>
+              <div class="g-fb__count"><span data-i18n-html="fb.count"><b>34</b> of 67 images</span><span data-i18n="fb.on">2 on</span></div>
             </div></div>
           </div>
         </article>
         <article class="card card--row card--open span-3">
-          <h3>Saves images on hover</h3>
-          <p>A floating button on any image above 128 px opens a preview, then saves it in place.</p>
+          <h3 data-i18n="card4.h">Saves images on hover</h3>
+          <p data-i18n="card4.p">A floating button on any image above 128 px opens a preview, then saves it in place.</p>
           <div class="panel" data-visual>
             <div class="stage">
               <div class="at-center" style="width: min(290px, 100% - 48px)">
@@ -412,7 +468,7 @@
                   <img id="hover-demo" class="g-gif" src="assets/img/quick-download.gif" alt="" width="336" height="252" loading="lazy">
                 </picture>
               </div>
-              <button class="loop-pause" type="button" aria-label="Pause the demo" aria-pressed="false">
+              <button class="loop-pause" type="button" data-i18n-aria="pause.label" aria-label="Pause the demo" aria-pressed="false">
                 <svg viewBox="0 0 14 14" aria-hidden="true"><rect x="3.2" y="2" width="2.8" height="10" rx="1"/><rect x="8" y="2" width="2.8" height="10" rx="1"/></svg>
               </button>
             </div>
@@ -425,30 +481,30 @@
   <section class="section ground-inverse" id="export" data-moment="line-carries-colour" data-moment-opts='{"from":"base"}' aria-labelledby="export-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="export-h">Settings for every download. <span class="muted">Format, file names, folders and the smallest image.</span></h2>
+        <h2 id="export-h"><span data-i18n-html="export.h2a">Settings for every download.</span> <span class="muted" data-i18n="export.h2b">Format, file names, folders and the smallest image.</span></h2>
       </div>
       <div class="settings">
         <ul class="rows">
-          <li><span class="rows__name">Format</span><p>WebP by default, or JPG and PNG for older editors.</p><span class="rows__value">WebP</span></li>
-          <li><span class="rows__name">File name</span><p><code>{date}-{page_title}-{index}</code>, or the file's own name.</p><span class="rows__value">{title}-{index}</span></li>
-          <li><span class="rows__name">Folder</span><p>One subfolder per page title, off by default.</p><span class="rows__value">On</span></li>
-          <li><span class="rows__name">Smallest image</span><p>Below this, the panel skips it.</p><span class="rows__value">200 × 200 px</span></li>
+          <li><span class="rows__name" data-i18n="row.format">Format</span><p data-i18n="row.format.p">WebP by default, or JPG and PNG for older editors.</p><span class="rows__value">WebP</span></li>
+          <li><span class="rows__name" data-i18n="row.name">File name</span><p><code>{date}-{page_title}-{index}</code><span data-i18n="row.name.tail">, or the file's own name.</span></p><span class="rows__value">{title}-{index}</span></li>
+          <li><span class="rows__name" data-i18n="row.folder">Folder</span><p data-i18n="row.folder.p">One subfolder per page title, off by default.</p><span class="rows__value" data-i18n="row.folder.v">On</span></li>
+          <li><span class="rows__name" data-i18n="row.min">Smallest image</span><p data-i18n="row.min.p">Below this, the panel skips it.</p><span class="rows__value">200 × 200 px</span></li>
         </ul>
         <div class="panel" data-visual>
           <div class="stage"><div class="at-rise fit" style="--fit-max:330px;--ax:max(18px, 50% - 165px);--ay:22px;--ay-sm:16px">
             <div class="ui ui-panel ui-toggles" data-ui="toggles">
               <div class="ui-head">
                 <svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg>
-                <div class="ui-title">What it does on its own</div>
+                <div class="ui-title" data-i18n="tg.title">What it does on its own</div>
                 <span class="ui-spacer"></span>
-                <div class="ui-meta" data-tg-count>4 of 5 on</div>
+                <div class="ui-meta" data-tg-count data-i18n-count="tg.on">4 of 5 on</div>
               </div>
               <ul class="ui-toggles__list">
-                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Convert to WebP on download</span><span class="ui-tg__sub">Quality 0.9, or keep the original</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Convert to WebP on download"><i></i></button></li>
-                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Read CSS background images</span><span class="ui-tg__sub">Also inside Shadow roots</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Read CSS background images"><i></i></button></li>
-                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Show the floating button</span><span class="ui-tg__sub">Images from 128 px up</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Show the floating button"><i></i></button></li>
-                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Sort downloads into folders</span><span class="ui-tg__sub">Named after the page title</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Sort downloads into folders"><i></i></button></li>
-                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Ask before a batch</span><span class="ui-tg__sub">One confirmation above 50 files</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" aria-label="Ask before a batch"><i></i></button></li>
+                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-i18n="tg1.l">Convert to WebP on download</span><span class="ui-tg__sub" data-i18n="tg1.s">Quality 0.9, or keep the original</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" data-i18n-aria="tg1.l" aria-label="Convert to WebP on download"><i></i></button></li>
+                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-i18n="tg2.l">Read CSS background images</span><span class="ui-tg__sub" data-i18n="tg2.s">Also inside Shadow roots</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" data-i18n-aria="tg2.l" aria-label="Read CSS background images"><i></i></button></li>
+                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-i18n="tg3.l">Show the floating button</span><span class="ui-tg__sub" data-i18n="tg3.s">Images from 128 px up</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" data-i18n-aria="tg3.l" aria-label="Show the floating button"><i></i></button></li>
+                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-i18n="tg4.l">Sort downloads into folders</span><span class="ui-tg__sub" data-i18n="tg4.s">Named after the page title</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" data-i18n-aria="tg4.l" aria-label="Sort downloads into folders"><i></i></button></li>
+                <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-i18n="tg5.l">Ask before a batch</span><span class="ui-tg__sub" data-i18n="tg5.s">One confirmation above 50 files</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" data-i18n-aria="tg5.l" aria-label="Ask before a batch"><i></i></button></li>
               </ul>
             </div>
           </div></div>
@@ -460,23 +516,23 @@
   <section class="section" id="questions" aria-labelledby="questions-h">
     <div class="wrap grid">
       <div class="span-6">
-        <div class="section-head"><h2 id="questions-h">Questions</h2></div>
+        <div class="section-head"><h2 id="questions-h" data-i18n="questions.h2">Questions</h2></div>
         <div class="faq">
-          <div class="faq__item"><h3>Which sites give the original image?</h3><p>Pixiv, X, Weibo, Reddit, Telegram and Discord. Every other site lists its images at the size the page loads.</p></div>
-          <div class="faq__item"><h3>Where do the images go?</h3><p>To Downloads, or to a subfolder named after the page title when that rule is on.</p></div>
-          <div class="faq__item"><h3>Does the panel work where right-click is blocked?</h3><p>Yes. It lists the page's images without the context menu.</p></div>
-          <div class="faq__item"><h3>Do images leave the browser?</h3><p>No. Sniffing, conversion and ZIP packing run on your machine; there is no account.</p></div>
-          <div class="faq__item"><h3>What does a batch of images cost?</h3><p>Nothing. Imaget is open source under GPL-3.0, and the code is on GitHub.</p></div>
+          <div class="faq__item"><h3 data-i18n="q1.h">Which sites give the original image?</h3><p data-i18n="q1.p">Pixiv, X, Weibo, Reddit, Telegram and Discord. Every other site lists its images at the size the page loads.</p></div>
+          <div class="faq__item"><h3 data-i18n="q2.h">Where do the images go?</h3><p data-i18n="q2.p">To Downloads, or to a subfolder named after the page title when that rule is on.</p></div>
+          <div class="faq__item"><h3 data-i18n="q3.h">Does the panel work where right-click is blocked?</h3><p data-i18n="q3.p">Yes. It lists the page's images without the context menu.</p></div>
+          <div class="faq__item"><h3 data-i18n="q4.h">Do images leave the browser?</h3><p data-i18n="q4.p">No. Sniffing, conversion and ZIP packing run on your machine; there is no account.</p></div>
+          <div class="faq__item"><h3 data-i18n="q5.h">What does a batch of images cost?</h3><p data-i18n="q5.p">Nothing. Imaget is open source under GPL-3.0, and the code is on GitHub.</p></div>
         </div>
       </div>
       <div class="span-6 start-7">
         <div class="g-zip" aria-hidden="true" data-ui="">
           <div class="g-zip__row">
             <span class="g-zip__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M15 3v4h4"/><path d="M12 8v2m0 2v2m0 2v1"/></svg></span>
-            <span><span class="g-zip__name">the-quiet-field.zip</span><span class="g-zip__sub">34 images · 2.4 MB</span></span>
+            <span><span class="g-zip__name">the-quiet-field.zip</span><span class="g-zip__sub" data-i18n="zip.sub">34 images · 2.4 MB</span></span>
           </div>
           <div class="g-zip__bar"><i></i></div>
-          <div class="g-zip__foot"><span>Saved to Downloads</span><span>100%</span></div>
+          <div class="g-zip__foot"><span data-i18n="zip.saved">Saved to Downloads</span><span>100%</span></div>
           <ul class="g-zip__list">
             <li><span>the-quiet-field-01.webp</span><em>1280 × 962 · 208 KB</em></li>
             <li><span>the-quiet-field-02.webp</span><em>1280 × 962 · 196 KB</em></li>
@@ -489,35 +545,35 @@
             <li><span>madurai-ridge.webp</span><em>1280 × 853 · 19 KB</em></li>
             <li><span>bute-ridge.webp</span><em>1280 × 853 · 27 KB</em></li>
           </ul>
-          <div class="g-zip__more">24 more files</div>
+          <div class="g-zip__more" data-i18n="zip.more">24 more files</div>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+<footer class="footer closing footer--statement" id="contact" data-i18n-aria="nav.footer" aria-label="Footer" aria-labelledby="close-h">
   <div class="wrap">
     <div class="closing__cta close--type">
       <div class="section-head">
-        <h2 id="close-h">Save the whole page in one folder</h2>
-        <p class="t-lead">Version 1.3.0 for Chrome, Edge and Brave. Free under GPL-3.0.</p>
+        <h2 id="close-h" data-i18n-html="close.h2">Save the whole page in one folder</h2>
+        <p class="t-lead" data-i18n="close.lead">Version 1.3.0 for Chrome, Edge and Brave. Free under GPL-3.0.</p>
       </div>
-      <a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases">Download extension<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases"><span data-i18n="cta.download">Download extension</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
     <div class="closing__links">
       <div class="grid">
         <div class="span-6 stack-4">
           <a class="nav__logo" href="#top"><img loading="lazy" src="assets/img/icon-128.png" width="28" height="28" alt="">Imaget</a>
-          <p class="footer__lede">Image sniffing and batch download for the browser.</p>
+          <p class="footer__lede" data-i18n="footer.lede">Image sniffing and batch download for the browser.</p>
         </div>
-        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="#panel">Panel</a></li><li><a href="#works">Features</a></li><li><a href="#export">Settings</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Project</h3><ul><li><a href="https://github.com/Shirolin/Imaget">GitHub</a></li><li><a href="https://github.com/Shirolin/Imaget/releases">Releases</a></li><li><a href="#questions">Questions</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="https://github.com/Shirolin/Imaget/blob/main/LICENSE">License</a></li></ul></div>
+        <div class="span-2 footer__col"><h3 data-i18n="footer.product">Product</h3><ul><li><a data-i18n="footer.panel" href="#panel">Panel</a></li><li><a data-i18n="footer.features" href="#works">Features</a></li><li><a data-i18n="footer.settings" href="#export">Settings</a></li></ul></div>
+        <div class="span-2 footer__col"><h3 data-i18n="footer.project">Project</h3><ul><li><a data-i18n="footer.github" href="https://github.com/Shirolin/Imaget">GitHub</a></li><li><a data-i18n="footer.releases" href="https://github.com/Shirolin/Imaget/releases">Releases</a></li><li><a data-i18n="footer.questions" href="#questions">Questions</a></li></ul></div>
+        <div class="span-2 footer__col"><h3 data-i18n="footer.legal">Legal</h3><ul><li><a data-i18n="footer.privacy" href="privacy.html">Privacy</a></li><li><a data-i18n="footer.license" href="https://github.com/Shirolin/Imaget/blob/main/LICENSE">License</a></li></ul></div>
       </div>
       <div class="footer__legal">
         <span>&copy; 2026 Shirolin</span>
-        <details class="credits"><summary>Photographs via Wikimedia Commons</summary><p>The gallery images are stand-ins, CC0, via Wikimedia Commons: Over-Betuwe by Cultureel Gelderland; sky, mountains and tree by Pixel.la Free Stock Photos; Newcastle trail by Reinhart Coetsee (CC BY-SA 4.0); Unilorin green space by Abdurrazaq A.F.O (CC BY-SA 4.0); Murshid Thali Paramban (CC BY-SA 4.0); Madurai by Arjuncommons (CC BY-SA 4.0).</p></details>
+        <details class="credits"><summary data-i18n="footer.credits">Photographs via Wikimedia Commons</summary><p data-i18n="footer.credits.p">The gallery images are stand-ins, CC0, via Wikimedia Commons: Over-Betuwe by Cultureel Gelderland; sky, mountains and tree by Pixel.la Free Stock Photos; Newcastle trail by Reinhart Coetsee (CC BY-SA 4.0); Unilorin green space by Abdurrazaq A.F.O (CC BY-SA 4.0); Murshid Thali Paramban (CC BY-SA 4.0); Madurai by Arjuncommons (CC BY-SA 4.0).</p></details>
       </div>
     </div>
   </div>
@@ -526,6 +582,7 @@
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/i18n.js"></script>
 <script type="module">
   // mark the nav link of the section the visitor is in
   const links = [...document.querySelectorAll('.nav__links a[href^="#"]')];
@@ -537,7 +594,8 @@
     const paused = demoBtn.getAttribute('aria-pressed') === 'true';
     demo.src = paused ? 'assets/img/quick-download.gif' : 'assets/img/quick-download-still.webp';
     demoBtn.setAttribute('aria-pressed', String(!paused));
-    demoBtn.setAttribute('aria-label', paused ? 'Pause the demo' : 'Play the demo');
+    const tr = (k, fallback) => (window.imagetI18n ? window.imagetI18n.t(k) || fallback : fallback);
+    demoBtn.setAttribute('aria-label', paused ? tr('pause.label', 'Pause the demo') : tr('play.label', 'Play the demo'));
   });
   const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) set(byId.has(e.target.id) ? e.target.id : null); }, { rootMargin: '-49% 0px -49% 0px' });
   for (const id of ['top', ...byId.keys()]) { const s = document.getElementById(id); if (s) io.observe(s); }
