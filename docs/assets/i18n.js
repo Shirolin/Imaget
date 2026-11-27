@@ -15,6 +15,7 @@ const T = {
     'meta.desc': 'Imaget lists every image a page loads, filters it by size and file type, and saves the set as one ZIP. Free, open source and local to your browser.',
     'meta.ogtitle': 'Imaget: batch image downloader for Chrome',
     'meta.ogdesc': 'Lists every image a page loads, filters it by size and type, and saves the set as one ZIP.',
+    'meta.ogalt': 'Imaget: grab every image on the page, in one click',
 
     'nav.skip': 'Skip to content',
     'nav.main': 'Main',
@@ -145,6 +146,7 @@ const T = {
     'meta.desc': 'Imaget 列出页面加载的每一张图片，按尺寸和文件类型筛选，再把整组图片保存为一个 ZIP。免费、开源，全程在本地浏览器中完成。',
     'meta.ogtitle': 'Imaget：Chrome 批量图片下载扩展',
     'meta.ogdesc': '列出页面加载的每一张图片，按尺寸和类型筛选，再整组保存为一个 ZIP。',
+    'meta.ogalt': 'Imaget：一键抓取页面上的每一张图片',
 
     'nav.skip': '跳到正文',
     'nav.main': '主导航',
@@ -275,6 +277,7 @@ const T = {
     'meta.desc': 'Imaget 列出網頁載入的每一張圖片，依尺寸與檔案類型篩選，再把整組圖片存成一個 ZIP。免費、開源，全程在瀏覽器本機完成。',
     'meta.ogtitle': 'Imaget：Chrome 批次圖片下載擴充功能',
     'meta.ogdesc': '列出網頁載入的每一張圖片，依尺寸與類型篩選，再整組存成一個 ZIP。',
+    'meta.ogalt': 'Imaget：一鍵抓取頁面上的每一張圖片',
 
     'nav.skip': '跳至內容',
     'nav.main': '主要導覽',
@@ -405,6 +408,7 @@ const T = {
     'meta.desc': 'Imaget はページが読み込むすべての画像を一覧にし、サイズとファイル形式で絞り込んで 1 つの ZIP にまとめて保存します。無料・オープンソースで、すべてブラウザー内で完結します。',
     'meta.ogtitle': 'Imaget：Chrome 向け画像一括ダウンローダー',
     'meta.ogdesc': 'ページが読み込むすべての画像を一覧にし、サイズと形式で絞り込んで 1 つの ZIP に保存します。',
+    'meta.ogalt': 'Imaget：ページ上のすべての画像をワンクリックで',
 
     'nav.skip': '本文へスキップ',
     'nav.main': 'メインナビゲーション',
@@ -535,6 +539,7 @@ const T = {
     'meta.desc': 'Imaget는 페이지가 불러오는 모든 이미지를 나열하고, 크기와 파일 형식으로 걸러 하나의 ZIP으로 저장합니다. 무료 오픈 소스이며 모든 작업이 브라우저 안에서 이루어집니다.',
     'meta.ogtitle': 'Imaget: Chrome용 이미지 일괄 다운로더',
     'meta.ogdesc': '페이지가 불러오는 모든 이미지를 나열하고, 크기와 형식으로 걸러 하나의 ZIP으로 저장합니다.',
+    'meta.ogalt': 'Imaget: 페이지의 모든 이미지를 한 번에',
 
     'nav.skip': '본문으로 건너뛰기',
     'nav.main': '주 메뉴',
@@ -736,6 +741,9 @@ function apply(code, { writeUrl = false } = {}) {
   setMeta('meta[name="description"]', t('meta.desc'));
   setMeta('meta[property="og:title"]', t('meta.ogtitle'));
   setMeta('meta[property="og:description"]', t('meta.ogdesc'));
+  setMeta('meta[property="og:image:alt"]', t('meta.ogalt'));
+  setMeta('meta[name="twitter:title"]', t('meta.ogtitle'));
+  setMeta('meta[name="twitter:description"]', t('meta.ogdesc'));
 
   const pause = document.querySelector('.loop-pause');
   if (pause) pause.setAttribute('aria-label', pause.getAttribute('aria-pressed') === 'true' ? t('play.label') : t('pause.label'));
