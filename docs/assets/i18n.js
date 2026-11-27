@@ -25,7 +25,7 @@ const T = {
     'nav.questions': 'Questions',
     'nav.menu': 'Menu',
     'nav.lang': 'Language',
-    'cta.download': 'Download extension',
+    'cta.download': 'Add to Chrome',
 
     'hero.h1': 'Batch image downloader for Chrome',
     'hero.lead': 'Imaget lists every image a page loads — srcset, CSS backgrounds, inline SVG and nested frames — filters it by size and type, then saves the set as one ZIP.',
@@ -155,7 +155,7 @@ const T = {
     'nav.questions': '常见问题',
     'nav.menu': '菜单',
     'nav.lang': '语言',
-    'cta.download': '下载扩展',
+    'cta.download': '添加到 Chrome',
 
     'hero.h1': 'Chrome 批量图片下载器',
     'hero.lead': 'Imaget 列出页面加载的全部图片——srcset、CSS 背景、内联 SVG 和嵌套框架——按尺寸与类型筛选，再把整组保存成一个 ZIP。',
@@ -285,7 +285,7 @@ const T = {
     'nav.questions': '常見問題',
     'nav.menu': '選單',
     'nav.lang': '語言',
-    'cta.download': '下載擴充功能',
+    'cta.download': '加到 Chrome',
 
     'hero.h1': 'Chrome 批次圖片下載器',
     'hero.lead': 'Imaget 列出網頁載入的所有圖片——srcset、CSS 背景、內嵌 SVG 與巢狀框架——依尺寸與類型篩選，再把整組存成一個 ZIP。',
@@ -415,7 +415,7 @@ const T = {
     'nav.questions': 'よくある質問',
     'nav.menu': 'メニュー',
     'nav.lang': '言語',
-    'cta.download': 'ダウンロード',
+    'cta.download': 'Chrome に追加',
 
     'hero.h1': 'Chrome の画像<br>一括ダウンロード',
     'hero.lead': 'Imaget はページが読み込むすべての画像（srcset、CSS 背景、インライン SVG、ネストしたフレーム）を一覧にし、サイズと形式で絞り込んで、まとめて 1 つの ZIP に保存します。',
@@ -545,7 +545,7 @@ const T = {
     'nav.questions': '질문',
     'nav.menu': '메뉴',
     'nav.lang': '언어',
-    'cta.download': '다운로드',
+    'cta.download': 'Chrome에 추가',
 
     'hero.h1': 'Chrome용 이미지 일괄 다운로더',
     'hero.lead': 'Imaget는 페이지가 불러오는 모든 이미지(srcset, CSS 배경, 인라인 SVG, 중첩 프레임)를 나열하고, 크기와 형식으로 걸러 하나의 ZIP으로 저장합니다.',
