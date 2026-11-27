@@ -49,3 +49,8 @@ temp/
 
 # Test coverage
 coverage/
+
+# design-taste artifacts
+.taste-skill/
+docs/.taste-skill/
+.tmp/

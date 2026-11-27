@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-type="software" data-radius="soft" data-buttons="tonal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imaget: privacy policy</title>
+<meta name="description" content="What Imaget reads, where the images go, and why nothing leaves your browser.">
+<meta name="theme-color" content="#eef0f3">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<style>
+:root {
+  --p-bg: #eef0f3; --p-surface: #e2e5ea; --p-ink: #0b0c0e; --p-muted: #5d6470;
+  --p-accent: #1f2de6; --p-accent-ink: #ffffff; --p-action: #1f2de6; --p-action-ink: #ffffff;
+  --p-inv-bg: #0b0c0e; --p-inv-surface: #17181a; --p-inv-ink: #eef0f3; --p-inv-muted: #8e8f92;
+  --font-display: "Reddit Sans", system-ui, sans-serif;
+  --font-text: "Reddit Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --display-weight: 500; --display-tracking: -0.03em;
+}
+.legal { max-width: 720px; padding-block: 120px 96px; }
+.legal h1 { font-size: clamp(34px, 4vw, 52px); line-height: 1.05; margin: 0 0 8px; }
+.legal .date { color: var(--muted); margin: 0 0 40px; }
+.legal h2 { font-size: 24px; margin: 40px 0 12px; }
+.legal p, .legal li { font-size: 17px; line-height: 1.65; color: var(--ink); }
+.legal ul { padding-left: 20px; display: grid; gap: 8px; margin: 12px 0; }
+.legal code { font-family: var(--font-mono); font-size: 14px; background: var(--p-surface); padding: 1px 5px; border-radius: 4px; }
+.legal a { text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.legal__back { display: inline-block; margin-bottom: 32px; font-weight: 500; }
+@media (max-width: 639px) {
+  .footer .grid { row-gap: var(--s-3); }
+  .footer__col ul, .footer__col ul:has(> li > a) { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  .footer__col ul:has(> li > a) a:not(.btn) { min-width: 0; }
+  .footer__col h3 { margin-bottom: var(--s-1); }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .closing__links > .grid > .span-6 { grid-column: 1 / -1; }
+  .closing__links > .grid > .footer__col { grid-column: auto / span 4; }
+}
+</style>
+</head>
+<body>
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="nav__logo" href="index.html"><img src="assets/img/icon-128.png" width="28" height="28" alt="">Imaget</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" href="index.html#panel">Panel</a></div>
+      <div class="nav__item"><a class="nav__link" href="index.html#works">Features</a></div>
+      <div class="nav__item"><a class="nav__link" href="index.html#export">Settings</a></div>
+      <div class="nav__item"><a class="nav__link" href="index.html#questions">Questions</a></div>
+    </nav>
+    <div class="nav__actions"><a class="btn btn--primary" href="https://github.com/Shirolin/Imaget/releases">Download extension</a></div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+<main class="wrap legal" id="main">
+  <a class="link legal__back" href="index.html">← Imaget</a>
+  <h1>Privacy policy</h1>
+  <p class="date">Last updated 3 April 2026</p>
+  <p>Imaget does not collect, store or transmit any personal data. All image sniffing, processing and downloading happens inside your browser.</p>
+  <h2>What the extension reads</h2>
+  <p>It reads the page you have open to find images: image tags, srcset lists, CSS backgrounds, inline SVG and nested frames. That work stays in the tab and is never sent anywhere.</p>
+  <h2>Permissions and what they do</h2>
+  <ul>
+    <li><code>downloads</code> saves images to your device or packs them into a ZIP.</li>
+    <li><code>activeTab</code>, <code>http://*/*</code> and <code>https://*/*</code> let the panel find images on the page you visit.</li>
+    <li><code>storage</code> keeps your filters and preferences on your machine.</li>
+    <li><code>contextMenus</code> adds the "Download with Imaget" entry to the right-click menu.</li>
+    <li><code>sidePanel</code> opens the panel beside the page.</li>
+  </ul>
+  <h2>Third parties</h2>
+  <p>There is no analytics, no advertising and no tracking. No data is shared with anyone.</p>
+  <h2>Where the work happens</h2>
+  <p>Finding image URLs, converting formats and packing a ZIP all run on your computer. Nothing is uploaded to a server, and there is no account.</p>
+  <h2>Changes</h2>
+  <p>If this policy changes, the date at the top changes with it.</p>
+  <h2>Contact</h2>
+  <p>Questions go to the <a href="https://github.com/Shirolin/Imaget/issues">issue tracker</a>.</p>
+</main>
+<footer class="footer closing footer--statement" aria-label="Footer">
+  <div class="wrap">
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-6 stack-4">
+          <a class="nav__logo" href="index.html"><img src="assets/img/icon-128.png" width="28" height="28" alt="">Imaget</a>
+          <p class="footer__lede">Image sniffing and batch download for the browser.</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="index.html#panel">Panel</a></li><li><a href="index.html#works">Features</a></li><li><a href="index.html#export">Settings</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Project</h3><ul><li><a href="https://github.com/Shirolin/Imaget">GitHub</a></li><li><a href="https://github.com/Shirolin/Imaget/releases">Releases</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="https://github.com/Shirolin/Imaget/blob/main/LICENSE">License</a></li></ul></div>
+      </div>
+      <div class="footer__legal"><span>&copy; 2026 Shirolin &nbsp; <a href="privacy.html">Privacy</a></span></div>
+    </div>
+  </div>
+</footer>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+</body>
+</html>
