@@ -1,0 +1,418 @@
+{
+  "duration": 30.0,
+  "fps": 30,
+  "bgm": "bgm.wav",
+  "bgm_start": 12.0,
+  "bgm_gain_db": 0.0,
+  "intro_fade": 0.25,
+  "tail_fade": 1.6,
+  "cues": [
+    {
+      "name": "intro_optical_grid_open",
+      "frame": 6,
+      "sfx": "sfx/brand_reveal.wav",
+      "gain_db": -14.0,
+      "duck_db": -1.2,
+      "duck_attack": 0.025,
+      "duck_hold": 0.05,
+      "duck_release": 0.22
+    },
+    {
+      "name": "hook_bracket_lock",
+      "frame": 33,
+      "sfx": "sfx/shutter_lock.wav",
+      "gain_db": -11.0,
+      "duck_db": -1.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.18
+    },
+    {
+      "name": "brand_aperture_reveal",
+      "frame": 72,
+      "sfx": "sfx/aperture_glint.wav",
+      "gain_db": -10.5,
+      "duck_db": -1.6,
+      "duck_attack": 0.025,
+      "duck_hold": 0.08,
+      "duck_release": 0.26
+    },
+    {
+      "name": "pre_drop_riser",
+      "frame": 109,
+      "sfx": "sfx/whoosh_reverse.wav",
+      "gain_db": -8.5,
+      "duck_db": -1.4,
+      "duck_attack": 0.03,
+      "duck_hold": 0.06,
+      "duck_release": 0.18
+    },
+    {
+      "name": "main_groove_drop_scene2",
+      "frame": 120,
+      "sfx": "sfx/drop_impact.wav",
+      "gain_db": -4.5,
+      "duck_db": -2.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.08,
+      "duck_release": 0.25
+    },
+    {
+      "name": "shadow_dom_scan_sweep",
+      "frame": 132,
+      "sfx": "sfx/scan_sweep.wav",
+      "gain_db": -9.5,
+      "duck_db": -1.6,
+      "duck_attack": 0.03,
+      "duck_hold": 0.12,
+      "duck_release": 0.30
+    },
+    {
+      "name": "adapter_pixiv_lock",
+      "frame": 177,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.14
+    },
+    {
+      "name": "adapter_x_lock",
+      "frame": 189,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.14
+    },
+    {
+      "name": "adapter_weibo_lock",
+      "frame": 201,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.0,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.14
+    },
+    {
+      "name": "adapter_reddit_lock",
+      "frame": 211,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "adapter_telegram_lock",
+      "frame": 222,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -10.5,
+      "duck_db": -1.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.16
+    },
+    {
+      "name": "sidepanel_slide_in",
+      "frame": 270,
+      "sfx": "sfx/panel_slide.wav",
+      "gain_db": -6.5,
+      "duck_db": -2.0,
+      "duck_attack": 0.02,
+      "duck_hold": 0.08,
+      "duck_release": 0.24
+    },
+    {
+      "name": "filter_min_resolution_snap",
+      "frame": 306,
+      "sfx": "sfx/filter_snap.wav",
+      "gain_db": -9.0,
+      "duck_db": -1.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.16
+    },
+    {
+      "name": "filter_format_toggle",
+      "frame": 345,
+      "sfx": "sfx/filter_snap.wav",
+      "gain_db": -9.0,
+      "duck_db": -1.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.16
+    },
+    {
+      "name": "filter_aspect_landscape",
+      "frame": 381,
+      "sfx": "sfx/ui_click_soft.wav",
+      "gain_db": -9.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.15
+    },
+    {
+      "name": "filter_keyword_search_type_1",
+      "frame": 414,
+      "sfx": "sfx/typing_key.wav",
+      "gain_db": -12.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.20,
+      "duck_release": 0.22
+    },
+    {
+      "name": "filter_keyword_search_type_2",
+      "frame": 418,
+      "sfx": "sfx/typing_key.wav",
+      "gain_db": -13.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "filter_keyword_search_type_3",
+      "frame": 422,
+      "sfx": "sfx/typing_key.wav",
+      "gain_db": -12.5,
+      "duck_db": 0.0
+    },
+    {
+      "name": "filter_keyword_search_type_4",
+      "frame": 426,
+      "sfx": "sfx/typing_key.wav",
+      "gain_db": -13.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "filter_keyword_search_type_5",
+      "frame": 430,
+      "sfx": "sfx/typing_key.wav",
+      "gain_db": -12.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "scene4_photo_zoom_in",
+      "frame": 450,
+      "sfx": "sfx/scene_whoosh_soft.wav",
+      "gain_db": -8.0,
+      "duck_db": -1.8,
+      "duck_attack": 0.025,
+      "duck_hold": 0.06,
+      "duck_release": 0.22
+    },
+    {
+      "name": "floating_button_pop_in",
+      "frame": 468,
+      "sfx": "sfx/ui_pop.wav",
+      "gain_db": -8.5,
+      "duck_db": -1.4,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.16
+    },
+    {
+      "name": "quick_download_click",
+      "frame": 489,
+      "sfx": "sfx/ui_thock.wav",
+      "gain_db": -7.5,
+      "duck_db": -1.6,
+      "duck_attack": 0.015,
+      "duck_hold": 0.04,
+      "duck_release": 0.16
+    },
+    {
+      "name": "quick_download_saved_chime",
+      "frame": 510,
+      "sfx": "sfx/confirm_chime.wav",
+      "gain_db": -7.0,
+      "duck_db": -2.0,
+      "duck_attack": 0.02,
+      "duck_hold": 0.08,
+      "duck_release": 0.24
+    },
+    {
+      "name": "batch_grid_whip_pan",
+      "frame": 525,
+      "sfx": "sfx/scene_whoosh_tight.wav",
+      "gain_db": -7.0,
+      "duck_db": -2.0,
+      "duck_attack": 0.02,
+      "duck_hold": 0.06,
+      "duck_release": 0.20
+    },
+    {
+      "name": "shift_key_hold_hud",
+      "frame": 555,
+      "sfx": "sfx/key_down.wav",
+      "gain_db": -8.0,
+      "duck_db": -1.5,
+      "duck_attack": 0.015,
+      "duck_hold": 0.05,
+      "duck_release": 0.18
+    },
+    {
+      "name": "shift_click_batch_cascade",
+      "frame": 567,
+      "sfx": "sfx/ui_thock.wav",
+      "gain_db": -7.5,
+      "duck_db": -2.0,
+      "duck_attack": 0.015,
+      "duck_hold": 0.14,
+      "duck_release": 0.24
+    },
+    {
+      "name": "shift_click_batch_ripple_1",
+      "frame": 570,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -12.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "shift_click_batch_ripple_2",
+      "frame": 574,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.5,
+      "duck_db": 0.0
+    },
+    {
+      "name": "shift_click_batch_ripple_3",
+      "frame": 578,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "settings_tab_switch",
+      "frame": 615,
+      "sfx": "sfx/panel_slide.wav",
+      "gain_db": -7.5,
+      "duck_db": -1.8,
+      "duck_attack": 0.02,
+      "duck_hold": 0.06,
+      "duck_release": 0.22
+    },
+    {
+      "name": "format_select_webp",
+      "frame": 636,
+      "sfx": "sfx/ui_click_soft.wav",
+      "gain_db": -9.0,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.15
+    },
+    {
+      "name": "quality_slider_scrub_1",
+      "frame": 654,
+      "sfx": "sfx/slider_tick.wav",
+      "gain_db": -13.0,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.14,
+      "duck_release": 0.18
+    },
+    {
+      "name": "quality_slider_scrub_2",
+      "frame": 661,
+      "sfx": "sfx/slider_tick.wav",
+      "gain_db": -13.0,
+      "duck_db": 0.0
+    },
+    {
+      "name": "quality_slider_scrub_3",
+      "frame": 668,
+      "sfx": "sfx/slider_tick.wav",
+      "gain_db": -12.5,
+      "duck_db": 0.0
+    },
+    {
+      "name": "zip_export_start",
+      "frame": 681,
+      "sfx": "sfx/scene_whoosh_soft.wav",
+      "gain_db": -8.0,
+      "duck_db": -1.6,
+      "duck_attack": 0.02,
+      "duck_hold": 0.06,
+      "duck_release": 0.20
+    },
+    {
+      "name": "zip_export_complete_chime",
+      "frame": 717,
+      "sfx": "sfx/batch_complete.wav",
+      "gain_db": -5.0,
+      "duck_db": -2.5,
+      "duck_attack": 0.02,
+      "duck_hold": 0.12,
+      "duck_release": 0.32
+    },
+    {
+      "name": "global_privacy_bento_enter",
+      "frame": 735,
+      "sfx": "sfx/scene_whoosh_soft.wav",
+      "gain_db": -8.5,
+      "duck_db": -1.6,
+      "duck_attack": 0.025,
+      "duck_hold": 0.06,
+      "duck_release": 0.22
+    },
+    {
+      "name": "bento_card_stagger_1",
+      "frame": 741,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.15
+    },
+    {
+      "name": "bento_card_stagger_2",
+      "frame": 759,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.5,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.15
+    },
+    {
+      "name": "bento_card_stagger_3",
+      "frame": 777,
+      "sfx": "sfx/ui_glass_tick.wav",
+      "gain_db": -11.0,
+      "duck_db": -1.2,
+      "duck_attack": 0.015,
+      "duck_hold": 0.03,
+      "duck_release": 0.15
+    },
+    {
+      "name": "finale_aperture_clear",
+      "frame": 825,
+      "sfx": "sfx/scene_whoosh_soft.wav",
+      "gain_db": -9.0,
+      "duck_db": -1.6,
+      "duck_attack": 0.025,
+      "duck_hold": 0.06,
+      "duck_release": 0.22
+    },
+    {
+      "name": "finale_logo_cta_settle",
+      "frame": 834,
+      "sfx": "sfx/finale_settle.wav",
+      "gain_db": -5.5,
+      "duck_db": -2.2,
+      "duck_attack": 0.02,
+      "duck_hold": 0.08,
+      "duck_release": 0.28
+    },
+    {
+      "name": "finale_logo_cta_shimmer",
+      "frame": 836,
+      "sfx": "sfx/brand_reveal.wav",
+      "gain_db": -11.5,
+      "duck_db": 0.0
+    }
+  ]
+}
